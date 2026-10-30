@@ -316,6 +316,47 @@ def owl():
     m.save_glb(path('models', 'owl.glb'))
 
 
+def crustodon():
+    """King Crustodon: a huge lizard of baked crust that swallows what it breathes in."""
+    m = Model()
+    C = hexc
+    root = m.bone('root', (0, 0, 0))
+    bod = m.bone('body', (0, 1.4, 0), root)
+    neck = m.bone('neck', (0, 1.8, -1.6), bod)
+    jaw = m.bone('jaw', (0, 1.9, -2.6), neck)
+    tail = m.bone('tail', (0, 1.4, 1.6), bod)
+    tail2 = m.bone('tail2', (0, 1.2, 3.2), tail)
+    m.box((-1.3, 0.8, -1.8), (1.3, 2.4, 1.8), bod, C('#b8803a'))
+    m.box((-1.0, 2.3, -1.4), (1.0, 2.7, 1.4), bod, C('#8a5a24'))                  # the crust ridge
+    for k in range(4):
+        m.box((-0.15, 2.6, -1.2 + k * 0.8), (0.15, 3.1, -0.8 + k * 0.8), bod, C('#6a4018'))
+    m.box((-0.9, 1.4, -3.2), (0.9, 2.6, -1.6), neck, C('#c08a40'))                # head
+    m.box((-0.95, 2.4, -3.0), (0.95, 2.7, -1.8), neck, C('#8a5a24'))
+    for x in (-1, 1):
+        m.box((x * 0.55 - 0.18, 2.1, -3.22), (x * 0.55 + 0.18, 2.4, -3.18), neck, C('#ffe060'))
+        m.box((x * 0.55 - 0.07, 2.15, -3.25), (x * 0.55 + 0.07, 2.35, -3.22), neck, C('#200000'))
+    m.box((-0.85, 1.0, -3.3), (0.85, 1.45, -1.9), jaw, C('#a06a30'))              # lower jaw
+    m.box((-0.7, 1.4, -3.1), (0.7, 1.5, -2.0), jaw, C('#d04030'))                 # tongue
+    m.box((-0.7, 1.0, 1.6), (0.7, 1.9, 3.3), tail, C('#b8803a'))
+    m.box((-0.4, 1.0, 3.2), (0.4, 1.5, 4.8), tail2, C('#a06a30'))
+    legs = []
+    for k, (x, z) in enumerate([(1, -1.1), (-1, -1.1), (1, 1.1), (-1, 1.1)]):
+        lb = m.bone('leg%d' % k, (x * 1.3, 1.1, z), bod)
+        legs.append(lb)
+        m.box((x * 1.3 - 0.35, 0.0, z - 0.35), (x * 1.3 + 0.35, 1.2, z + 0.35), lb, C('#8a5a24'))
+    m.animation('idle', rotations={tail: [(0, R(y=-8)), (1, R(y=8)), (2, R(y=-8))], neck: [(0, R()), (1, R(x=-4)), (2, R())]},
+                translations={bod: [(0, (0, 0, 0)), (1, (0, 0.05, 0)), (2, (0, 0, 0))]})
+    walk = {lb: cycle(4, 0.9, lambda p, k=k: R(x=25 * math.sin(2 * math.pi * p + (k % 2) * math.pi + (k // 2) * math.pi))) for k, lb in enumerate(legs)}
+    walk[tail] = cycle(4, 0.9, lambda p: R(y=12 * math.sin(2 * math.pi * p)))
+    m.animation('walk', rotations=walk)
+    m.animation('inhale', rotations={jaw: [(0, R()), (0.4, R(x=40)), (2, R(x=40))], neck: [(0, R()), (0.4, R(x=-15)), (2, R(x=-15))]})
+    m.animation('stunned', rotations={neck: [(0, R(x=20)), (1, R(x=20, z=10)), (2, R(x=20))], jaw: [(0, R(x=25)), (2, R(x=25))]},
+                translations={bod: [(0, (0, -0.6, 0)), (2, (0, -0.6, 0))]})
+    m.animation('breathe', rotations={jaw: [(0, R(x=10)), (0.2, R(x=35)), (0.8, R(x=35)), (1.0, R())]})
+    m.animation('dead', rotations={bod: [(0, R()), (1.5, R(z=80))]}, translations={bod: [(0, (0, 0, 0)), (1.5, (0, -0.8, 0))]})
+    m.save_glb(path('models', 'crustodon.glb'))
+
+
 def people():
     s = 1.0
     sprig, b = figure(s, shirt='#4f9a3e', trousers='#d8c8a0', shoes='#6a4422', hair='#a8642a', hat='#5cb84a', apron='#3a7a2a')
@@ -350,6 +391,24 @@ def people():
     fig, fb = figure(1.0, shirt='#e8a83a', trousers='#c8603a', hair='#e8c050', hat='#f0d040', hat_kind='tiara', girl=True, apron='#f4e0a0')
     standard_anims(fig, fb, 1.0)
     fig.save_glb(path('models', 'saffron.glb'))
+    # the Hardtack Clan: big round biscuit-rock folk
+    for name, sc, body, belly in [('biscotti', 1.9, '#c89a5a', 0.16), ('hardtack', 1.6, '#b08a5a', 0.12), ('hardtack_kid', 1.0, '#c8a06a', 0.08)]:
+        fig, fb = figure(sc, shirt=body, trousers='#8a6a3a', hair='#6a4a24', skin=body, shoes='#6a4a24', belly=belly, big_head=1.15,
+                         eyes='#201008', hat='#8a5a2a' if name == 'biscotti' else None, hat_kind='spiky')
+        standard_anims(fig, fb, sc)
+        fig.animation('dance', rotations={fb['arm_l']: cycle(4, 0.6, lambda p: R(z=60 + 50 * math.sin(2 * math.pi * p))),
+                                          fb['arm_r']: cycle(4, 0.6, lambda p: R(z=-60 - 50 * math.sin(2 * math.pi * p))),
+                                          fb['hips']: cycle(4, 0.6, lambda p: R(y=20 * math.sin(2 * math.pi * p)))},
+                      translations={fb['hips']: cycle(4, 0.6, lambda p: (0, 0.08 * sc * abs(math.sin(2 * math.pi * p)), 0))})
+        fig.animation('roll', rotations={fb['spine']: [(0, R(x=80)), (1, R(x=80))], fb['head']: [(0, R(x=40)), (1, R(x=40))]},
+                      translations={fb['hips']: [(0, (0, -0.25 * sc, 0)), (1, (0, -0.25 * sc, 0))]})
+        fig.save_glb(path('models', name + '.glb'))
+    # Peppermill
+    for name, kw in {'miller': dict(shirt='#d8d0b8', trousers='#6a5a3a', hair='#e0e0e0', hat='#c8b890', hat_kind='tall', belly=0.05),
+                     'gravekeeper': dict(shirt='#4a4a5a', trousers='#2a2a32', hair='#8a8a8a', skin='#c8b8a8', belly=0.0)}.items():
+        fig, fb = figure(1.3, **kw)
+        standard_anims(fig, fb, 1.3)
+        fig.save_glb(path('models', name + '.glb'))
     # a Stalebie: a loaf gone stale and walking, that rises from the field at night
     fig, fb = figure(1.2, shirt='#9a7a4a', trousers='#7a5a34', hair='#5a4020', skin='#c8a870', shoes='#4a3018', eyes='#ff3020', belly=0.03)
     standard_anims(fig, fb, 1.2, hero=True)
@@ -412,6 +471,31 @@ def statics():
     o = Obj('a bean (a gem of the Pantry Kingdom)')
     o.sphere((0, 0.15, 0), 0.12, 8, 5, squash=1.4)
     o.save(path('models', 'bean.obj'))
+    o = Obj('a popcorn bomb: a big puffy kernel with a wick')
+    o.sphere((0, 0.3, 0), 0.3, 10, 6, squash=0.9)
+    o.sphere((0.12, 0.42, 0.1), 0.17, 6, 4)
+    o.sphere((-0.14, 0.38, -0.08), 0.15, 6, 4)
+    o.box((-0.025, 0.55, -0.025), (0.025, 0.72, 0.025), uvs=4)
+    o.save(path('models', 'bomb.obj'))
+    o = Obj('a bomb flower: leaves round a bud')
+    for k in range(5):
+        a = 2 * math.pi * k / 5
+        x, z = math.cos(a) * 0.35, math.sin(a) * 0.35
+        o.tri((0, 0.05, 0), (x + math.sin(a) * 0.18, 0.1, z - math.cos(a) * 0.18), (x - math.sin(a) * 0.18, 0.1, z + math.cos(a) * 0.18))
+        o.tri((0, 0.05, 0), (x - math.sin(a) * 0.18, 0.1, z + math.cos(a) * 0.18), (x + math.sin(a) * 0.18, 0.1, z - math.cos(a) * 0.18))
+    o.save(path('models', 'bombflower.obj'))
+    o = Obj('windmill sails: four slats round a hub, in the x-y plane, facing +z')
+    for k in range(4):
+        a = math.pi / 2 * k
+        ca, sa = math.cos(a), math.sin(a)
+        def P(u, v, w=0.0):
+            return (u * ca - v * sa, u * sa + v * ca, w)
+        q4 = [P(0.6, -0.5), P(5.0, -0.5), P(5.0, 0.6), P(0.6, 0.6)]
+        o.quad(*[(p[0], p[1], 0.05) for p in q4])
+        o.quad(*[(p[0], p[1], -0.05) for p in reversed(q4)])
+        o.box((-0.1, -0.1, -0.1), (0.1, 0.1, 0.1))
+    o.cylinder((0, 0, -0.3), 0.4, 0.5, 8)
+    o.save(path('models', 'sails.obj'))
     o = Obj('a key')
     o.box((-0.03, 0, -0.02), (0.03, 0.3, 0.02), uvs=4)
     o.box((-0.08, 0.3, -0.02), (0.08, 0.42, 0.02), uvs=4)
@@ -423,10 +507,12 @@ def statics():
 if __name__ == '__main__':
     people()
     owl()
+    crustodon()
     blob('fuzzball', '#7a9a6a', size=0.6, fuzz='#a8c890')
     blob('larva', '#c8d0a0', size=0.35, legs=4)
     blob('nut', '#7a4a1a', size=0.2, eye='#7a4a1a', pupil='#7a4a1a')
     scrub()
     queen()
+    blob('crustling', '#c08a40', size=0.7, legs=4, eye='#ffe060', pupil='#301000')
     statics()
     print('models written')

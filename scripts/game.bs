@@ -172,6 +172,14 @@ func add_item(name: string) -> void {
         peas = max_peas()
         put_on_button(name)
     }
+    if name == "bombs" {
+        add_count("bombs", 20 - count("bombs"))
+        put_on_button(name)
+    }
+    if name == "pipe" {
+        if not contains(items, "song_fennel") { push(items, "song_fennel") }
+        put_on_button(name)
+    }
     commit()
 }
 
@@ -224,6 +232,9 @@ func collect(kind: string) -> void {
     } elif kind == "key" {
         add_count("keys_" + dungeon, 1)
         play_sound("sfx/secret.wav", 0.7)
+    } elif kind == "popcorn" {
+        add_count("bombs", min(5, 20 - count("bombs")))
+        play_sound("sfx/bean.wav", 0.5, 0.7)
     }
 }
 
@@ -236,6 +247,8 @@ func roll_drop(at: vec3, chance: number) -> void {
         kind = "heart"
     } elif has_item("shooter") and peas < max_peas() and r < 0.5 {
         kind = "peas"
+    } elif has_item("bombs") and count("bombs") < 20 and r < 0.62 {
+        kind = "popcorn"
     } elif r > 0.93 {
         kind = "bean5"
     }
@@ -276,6 +289,10 @@ func on_resume() -> void {
         after = ""
         sprig.talk_ended()
         if then != "" { story.after(then, global("talk_choice", -1)) }
+    } elif state == "pipe" {
+        state = "play"
+        var song: string = global("song_played", "")
+        if song != "" { broadcast("song_played", song) }
     } elif state == "paused" {
         load_state()
         state = "play"
@@ -297,6 +314,12 @@ func on_resume() -> void {
             load_scene("areas/" + area + ".scene")
         }
     }
+}
+
+func play_pipe() -> void {
+    if state != "play" { return }
+    state = "pipe"
+    push_scene("pipe.scene", true, false)
 }
 
 func pause() -> void {

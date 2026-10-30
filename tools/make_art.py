@@ -150,6 +150,19 @@ def cobble(x, y):          # town cobbles: rounded stones in warm grey
     return mix(base, (100, 92, 80), 0.6) if edge else mix(base, (210, 200, 180), fbm(x, y, 4, 24, 32) * 0.25)
 
 
+def crack(x, y):           # a cracked wall: stone with dark cracks running across it
+    c = stone(x, y)
+    k = abs(y - 16 - 7 * math.sin(x * 0.35)) < 1.1 or abs(x - 10 - 5 * math.sin(y * 0.4)) < 1.0 and y > 10
+    return mix(c, (30, 26, 24), 0.85) if k else c
+
+
+def lavacheese(x, y):      # bubbling molten cheese
+    n = fbm(x, y, 8, 25, 32)
+    b = vnoise(x, y, 4, 26, wrap=8) > 0.75
+    c = mix((240, 150, 30), (255, 210, 80), n)
+    return mix(c, (255, 250, 200), 0.6) if b else c
+
+
 def flowers(x, y):
     g = grass(x, y)
     h = hash2(x // 2, y // 2, 22)
@@ -162,7 +175,7 @@ def flowers(x, y):
 
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
-         'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle']
+         'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss']
 
 
 def icon_pixel(name, x, y):
@@ -255,6 +268,23 @@ def icon_pixel(name, x, y):
         if d < 5.5 or (-1 < cx < 1 and cy < -4 and cy > -7):
             return (160, 170, 200, 255) if d < 4.5 else (90, 100, 130, 255)
         return (0, 0, 0, 0)
+    if name == 'bomb':
+        d = math.hypot(cx, cy + 1)
+        if d < 5.5:
+            return (255, 244, 210, 255) if cx + cy < 0 else (230, 200, 150, 255)
+        if abs(cx - 1) < 1 and -7 < cy < -5:
+            return (120, 80, 40, 255)
+        return (0, 0, 0, 0)
+    if name == 'bracelet':
+        d = math.hypot(cx, cy)
+        return (230, 120, 170, 255) if 3.5 < d < 6 else (0, 0, 0, 0)
+    if name == 'ember2':
+        e = icon_pixel('ember', x, y)
+        return (255, 90, 60, 255) if e[3] and e[1] < 200 else e
+    if name == 'letter':
+        if abs(cx) < 6 and abs(cy) < 4:
+            return (200, 60, 60, 255) if abs(cx) < 1.5 and abs(cy) < 1.5 else (240, 230, 200, 255)
+        return (0, 0, 0, 0)
     return (255, 0, 255, 255)
 
 
@@ -263,7 +293,7 @@ def main():
                            ('thatch', thatch, 32), ('leaves', leaves, 32), ('hedge', hedge, 32), ('stone', stone, 32),
                            ('crock', crock, 32), ('dough', dough, 32), ('crust', crust, 32), ('mould', mould, 32),
                            ('clay', clay, 16), ('sack', sack, 16), ('chest', chest, 32), ('rot', rot, 32),
-                           ('flowers', flowers, 32), ('cobble', cobble, 32)]:
+                           ('flowers', flowers, 32), ('cobble', cobble, 32), ('crack', crack, 32), ('lavacheese', lavacheese, 32)]:
         tex(name, size, fn)
     tex('water', 32, water, alpha=True)
     tex('web', 32, web, alpha=True)

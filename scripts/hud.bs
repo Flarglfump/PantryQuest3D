@@ -92,7 +92,15 @@ func draw() -> void {
         button(c, 9, [210, 170, 40, 210], "")
         var it: string = game.slots[i]
         if it != "" {
-            draw_image("art/icons/" + it + ".png", c)
+            var ic: string = it
+            if it == "pipe" { ic = "whistle" }
+            if it == "bombs" { ic = "bomb" }
+            draw_image("art/icons/" + ic + ".png", c)
+            if it == "bombs" {
+                var bc2: list = [255, 255, 255]
+                if game.count("bombs") == 0 { bc2 = [255, 90, 90] }
+                draw_text(str(game.count("bombs")), c + vec2(-4, 6), bc2, 1)
+            }
             if it == "shooter" {
                 var pc: list = [255, 255, 255]
                 if game.peas == 0 { pc = [255, 90, 90] }

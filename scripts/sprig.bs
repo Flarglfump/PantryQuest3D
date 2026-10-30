@@ -44,6 +44,7 @@ var platform: entity
 var plat_last: vec3
 
 var vine: entity
+var carrying: entity                # a bomb held over his head
 var zone: entity                   # the way out he's standing in (it may wait for a story flag)
 var action_label: string = ""      # what A does now (the HUD shows it)
 var action_target: entity
@@ -211,7 +212,43 @@ func damage() -> int {
 }
 
 # ---- the C buttons ----
+# Holding something up (a bomb): A throws it, B puts it down.
+func carry(e: entity) -> void {
+    carrying = e
+    e.carried = true
+    play_animation(body, "hold", 1, true)
+}
+
+func throw_held() -> void {
+    if carrying == nil { return }
+    var f: vec3 = forward_of(facing)
+    if target != nil {
+        var to: vec3 = target.global_position - self.position
+        to.y = 0
+        if length(to) > 0.1 { f = normalize(to) }
+    }
+    carrying.throw(f * (7 + move_amount * 3) + vec3(0, 5, 0))
+    carrying = nil
+    play_sound("sfx/swing.wav", 0.6, 0.7)
+}
+
 func use_item(name: string) -> void {
+    if name == "bombs" {
+        if carrying != nil { return }
+        if game.count("bombs") <= 0 {
+            play_sound("sfx/empty.wav", 0.6)
+            return
+        }
+        game.add_count("bombs", -1)
+        var b: entity = spawn("prefabs/bomb.scene", self.position + vec3(0, 1.3, 0))
+        carry(b)
+        play_sound("sfx/pop.wav", 0.5)
+        return
+    }
+    if name == "pipe" {
+        game.play_pipe()
+        return
+    }
     if name == "shooter" {
         if game.peas <= 0 {
             play_sound("sfx/empty.wav", 0.6)
@@ -405,6 +442,13 @@ func update(dt: number) -> void {
     if zone != nil and zone.alive and playing and st != "dead" { zone.entered(self) }
 
     at = self.position
+    if carrying != nil and carrying.alive and carrying.carried {
+        carrying.position = self.position + vec3(0, 1.35, 0) + forward_of(facing) * 0.05
+        if st == "hurt" or st == "dead" or st == "climb" {
+            carrying.put_down(self.position + vec3(0, 0.3, 0))
+            carrying = nil
+        }
+    }
     update_context()
     place_gear(dt)
     animate()
@@ -430,6 +474,19 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
     if has_lid() and action_down("shield") and on_floor {
         shielding = true
         drawn = 3
+    }
+    if carrying != nil and carrying.alive {
+        if action_pressed("action") {
+            throw_held()
+            return
+        }
+        if action_pressed("attack") {
+            carrying.put_down(self.position + forward_of(facing) * 0.7 + vec3(0, 0.2, 0))
+            carrying = nil
+            return
+        }
+    } elif carrying != nil {
+        carrying = nil
     }
     if action_pressed("action") {
         if action_target != nil {
@@ -471,7 +528,7 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
             return
         }
     }
-    if action_pressed("attack") and has_spoon() {
+    if action_pressed("attack") and has_spoon() and carrying == nil {
         combo = 0
         if focusing and move_amount > 0.3 and dot(dir, forward_of(facing)) > 0.6 { start_slash("thrust") } else { start_slash("slash") }
         return
@@ -540,6 +597,16 @@ func carry_on_platform() -> void {
     platform = under
 }
 
+func burned() -> void {
+    play_sound("sfx/sizzle.wav", 0.8)
+    self.position = safe_pos + vec3(0, 0.2, 0)
+    vel = vec3(0, 0, 0)
+    st = "free"
+    pitch = 0
+    cam.snap_behind()
+    hurt(4, self.position, "fall")
+}
+
 func fell() -> void {
     self.position = safe_pos + vec3(0, 0.2, 0)
     vel = vec3(0, 0, 0)
@@ -553,6 +620,7 @@ func fell() -> void {
 func on_trigger(other: entity) -> void {
     if has_tag(other, "climbable") { vine = other }
     if has_tag(other, "pit") and st != "dead" { fell() }
+    if has_tag(other, "lava") and st != "dead" { burned() }
     if has_tag(other, "loadzone") { zone = other }
 }
 func on_trigger_exit(other: entity) -> void {
@@ -582,7 +650,9 @@ func update_context() -> void {
             action_target = e
         }
     }
-    if action_target != nil {
+    if carrying != nil {
+        action_label = "Throw"
+    } elif action_target != nil {
         action_label = action_target.prompt
     } elif vine != nil and vine.reachable(self.position) {
         action_label = "Climb"
@@ -643,7 +713,9 @@ func animate() -> void {
     body.position = lift
     var visible: bool = not (flash > 0 and floor(flash * 20) % 2 == 0)
     body.Mesh.visible = visible
-    if st == "free" {
+    if st == "free" and carrying != nil {
+        if move_amount > 0.1 { play_animation(body, "walk", 1.2, true) } else { play_animation(body, "hold", 1, true) }
+    } elif st == "free" {
         if not is_on_floor(self) and abs(vel.y) > 1.5 {
             play_animation(body, "jump", 1, false)
         } elif shielding {

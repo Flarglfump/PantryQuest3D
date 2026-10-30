@@ -1,0 +1,178 @@
+@strict @3d
+# crustodon.bs - King Crustodon, master of Hardtack Caverns: a great crust lizard. It
+# stalks Sprig, breathes fire, and now and then stops to breathe IN, mouth wide: a bomb
+# near its mouth then is swallowed, goes off inside, and leaves it stunned for Sprig to
+# strike (no more than 4 a time). Its hide turns the spoon otherwise.
+
+var hp: int = 12
+var max_hp: int = 12
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait walk inhale swallowed breathe stunned dead
+var st_t: number = 0
+var yaw: number = 0
+var flash: number = 0
+var next_t: number = 3
+var stun_dmg: int = 0
+var dead_t: number = 0
+var swallowed: entity
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    yaw = self.rotation.y
+    if game.flag("hardcaves_boss") {
+        destroy(self)
+        return
+    }
+}
+
+func fwd() -> vec3 { return vec3(-sin(yaw), 0, -cos(yaw)) }
+func mouth() -> vec3 { return self.position + fwd() * 3.0 + vec3(0, 1.6, 0) }
+func focus_point() -> vec3 { return self.position + fwd() * 2.4 + vec3(0, 2.2, 0) }
+
+func face(p: vec3, rate: number, dt: number) -> void {
+    var to: vec3 = p - self.position
+    to.y = 0
+    if length(to) < 0.1 { return }
+    var want: number = atan2(-to.x, -to.z)
+    var d: number = ((want - yaw + 540) % 360) - 180
+    yaw += clamp(d, -rate * dt, rate * dt)
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "dead" or st == "wait" { return }
+    if st == "stunned" and how != "pea" and how != "bomb" {
+        hp -= amount
+        stun_dmg += amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.6)
+        shake_camera(1.5, 0.15)
+        if stun_dmg >= 4 { st_t = max(st_t, 3.6) }
+        if hp <= 0 { die() }
+        return
+    }
+    play_sound("sfx/block.wav", 0.6, 0.7)
+}
+
+func die() -> void {
+    st = "dead"
+    st_t = 0
+    remove_tag(self, "focusable")
+    play_animation(self, "dead", 1, false)
+    play_sound("sfx/boss_roar.wav", 0.9, 0.6)
+    stop_music(1.5)
+    shake_camera(3, 1.5)
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    if st == "wait" {
+        if d < 13 {
+            st = "walk"
+            st_t = 0
+            play_sound("sfx/boss_roar.wav", 0.9)
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "KING CRUSTODON")
+            game.talk("crustodon_title", "")
+        }
+        return
+    }
+    if st == "walk" {
+        face(sprig.position, 50, dt)
+        play_animation(self, "walk", 1, true)
+        var v: vec3 = move_and_slide(self, fwd() * 1.4 + vec3(0, -5, 0))
+        next_t -= dt
+        if next_t <= 0 {
+            next_t = 4 + random(0, 2)
+            st_t = 0
+            if random() < 0.55 {
+                st = "inhale"
+                play_animation(self, "inhale", 1, false)
+                play_sound("sfx/rumble.wav", 0.6, 1.8)
+            } else {
+                st = "breathe"
+                play_animation(self, "breathe", 1, false)
+            }
+        }
+    } elif st == "inhale" {
+        face(sprig.position, 30, dt)
+        # bombs near the mouth are drawn in and swallowed
+        for b in find_tagged("bomb") {
+            if b.alive and not b.carried and distance(b.position, mouth()) < 2.4 {
+                b.flying = false
+                b.position = lerp(b.position, mouth(), min(1, dt * 6))
+                if distance(b.position, mouth()) < 0.5 {
+                    swallowed = b
+                    b.fuse = b.t + 0.7
+                    b.Mesh.visible = false
+                    st = "swallowed"
+                    st_t = 0
+                    play_sound("sfx/hop.wav", 0.9, 0.4)
+                }
+            }
+        }
+        # (and so is Sprig, a little)
+        if d < 7 and st_t > 0.4 {
+            sprig.position = sprig.position - normalize(to) * 0.6 * dt
+        }
+        if st == "inhale" and st_t > 2.4 {
+            st = "walk"
+            st_t = 0
+        }
+    } elif st == "swallowed" {
+        if st_t > 0.75 {
+            st = "stunned"
+            st_t = 0
+            stun_dmg = 0
+            play_animation(self, "stunned", 1, true)
+            play_sound("sfx/boss_roar.wav", 0.8, 1.3)
+        }
+    } elif st == "breathe" {
+        face(sprig.position, 60, dt)
+        if st_t > 0.3 and floor(st_t * 6) != floor((st_t - dt) * 6) and st_t < 1.0 {
+            var f: entity = spawn("prefabs/fireball.scene", mouth())
+            var dir: vec3 = normalize(sprig.position + vec3(0, 0.6, 0) - mouth())
+            var side := vec3(-dir.z, 0, dir.x)
+            f.dir = normalize(dir + side * random(-0.15, 0.15))
+            f.owner = self
+            play_sound("sfx/ignite.wav", 0.5)
+        }
+        if st_t > 1.3 {
+            st = "walk"
+            st_t = 0
+        }
+    } elif st == "stunned" {
+        if st_t > 4.2 {
+            st = "walk"
+            st_t = 0
+            next_t = 2.5
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) and dead_t < 2.5 {
+            spawn("prefabs/blast.scene", self.position + vec3(random(-2, 2), random(0.5, 2.5), random(-2, 2)))
+            play_sound("sfx/blast.wav", 0.5, 0.7 + random() * 0.5)
+        }
+        if dead_t > 2.6 {
+            game.set_flag("hardcaves_boss")
+            game.talk("crustodon_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    at = self.position
+    if st != "stunned" and st != "dead" and st != "swallowed" and d < 2.6 {
+        sprig.hurt(4, self.position, "touch")
+    }
+    self.rotation = vec3(0, yaw, 0)
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff9090ff" } else { self.Mesh.color = "#ffffffff" }
+}

@@ -1,0 +1,49 @@
+@strict @3d
+# bombflower.bs - a bomb flower. With the Gum Bracelet, A pulls the bomb off it (Sprig holds
+# it over his head, its fuse burning); it grows another after a while. A bomb or fire near
+# it sets it off where it stands.
+
+var prompt: string = "Pick"
+var reach: number = 1.4
+var game: entity
+var regrow: number = 0
+var bud: entity
+
+func start() -> void {
+    game = find("Game")
+    bud = child(self, "Bud")
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.4, 0) }
+func can_use(p: vec3) -> bool { return regrow <= 0 and game.has_item("bracelet") }
+
+func interact(who: entity) -> void {
+    if regrow > 0 { return }
+    if who.carrying != nil { return }
+    var b: entity = spawn("prefabs/bomb.scene", self.position + vec3(0, 1.3, 0))
+    who.carry(b)
+    regrow = 7
+    bud.scale = vec3(0.001, 0.001, 0.001)
+    play_sound("sfx/pop.wav", 0.6)
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if regrow > 0 { return }
+    if how == "bomb" or how == "fire" {
+        var b: entity = spawn("prefabs/bomb.scene", self.position + vec3(0, 0.2, 0))
+        b.fuse = 0.3
+        b.flying = false
+        regrow = 7
+        bud.scale = vec3(0.001, 0.001, 0.001)
+    }
+}
+
+func update(dt: number) -> void {
+    if regrow > 0 {
+        regrow -= dt
+        if regrow <= 0 {
+            bud.scale = vec3(1, 1, 1)
+            play_sound("sfx/grow.wav", 0.4)
+        }
+    }
+}

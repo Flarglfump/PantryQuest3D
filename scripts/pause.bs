@@ -14,25 +14,26 @@ var msg_t: number = 0
 var closing: bool = false
 
 const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
-const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "whistle", "lens", "beans", "jar1", "jar2"]
+const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "lens", "beans", "jar1", "jar2"]
 
 func start() -> void { s = global("save", []) }
 
 func has(name: string) -> bool { return contains(s[1], name) }
 
 func item_shown(name: string) -> bool {
-    if name == "whistle" { return has("pipe") or has("whistle") }
+    if name == "pipe" { return has("pipe") }
     return has(name)
 }
 
 func icon(name: string) -> string {
-    if name == "whistle" { return "art/icons/whistle.png" }
+    if name == "pipe" { return "art/icons/whistle.png" }
+    if name == "bombs" { return "art/icons/bomb.png" }
     return "art/icons/" + name + ".png"
 }
 
 func label(name: string) -> string {
     var names: list = [["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
-                       ["whistle", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
+                       ["pipe", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
                        ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"],
                        ["ember_courage", "EMBER OF COURAGE"], ["ember_power", "EMBER OF POWER"], ["ember_wisdom", "EMBER OF WISDOM"]]
     for n in names {
@@ -62,7 +63,7 @@ func update(dt: number) -> void {
         if action_pressed("m_down") { move(cols) }
         var it: string = ITEM_GRID[cur]
         for i in 3 {
-            if action_pressed("item" + (i + 1)) and item_shown(it) and it != "whistle" {
+            if action_pressed("item" + (i + 1)) and item_shown(it) {
                 var slots: list = s[6]
                 for j in 3 {
                     if slots[j] == it { slots[j] = "" }
@@ -171,7 +172,7 @@ func draw_items() -> void {
     var it: string = ITEM_GRID[cur]
     if item_shown(it) {
         draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 170), [255, 255, 255])
-        if it != "whistle" { draw_text("U / I / O: put it on that button", vec2(36, 186), [190, 180, 150]) }
+        if true { draw_text("U / I / O: put it on that button", vec2(36, 186), [190, 180, 150]) }
     }
 }
 

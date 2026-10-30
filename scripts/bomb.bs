@@ -1,0 +1,90 @@
+@strict @3d
+# bomb.bs - a popcorn bomb. Its fuse burns for `fuse` seconds (it flashes faster at the
+# end), then it pops: everything near is hit (enemies, cracked walls, Sprig too if he's
+# close). Carried over Sprig's head, it follows him; thrown, it flies in an arc and lands.
+
+var fuse: number = 3.2
+var carried: bool = false
+var vel: vec3
+var flying: bool = false
+var t: number = 0
+var gone: bool = false
+var radius: number = 2.6
+var at: vec3
+
+func throw(v: vec3) -> void {
+    carried = false
+    flying = true
+    vel = v
+}
+
+func put_down(p: vec3) -> void {
+    carried = false
+    flying = true
+    vel = vec3(0, 0, 0)
+    self.position = p
+}
+
+func update(dt: number) -> void {
+    if gone { return }
+    t += dt
+    var left: number = fuse - t
+    var rate: number = 4
+    if left < 1 { rate = 14 }
+    if floor(t * rate) % 2 == 0 { self.Mesh.color = "#fff4d0ff" } else { self.Mesh.color = "#ff6040ff" }
+    if flying {
+        vel.y -= 18 * dt
+        var to: vec3 = self.position + vel * dt
+        var hit: any = raycast(self.position + vec3(0, 0.3, 0), to + vec3(0, 0.3, 0), find("Sprig"))
+        if hit != nil {
+            if hit[2].y > 0.6 {
+                self.position = hit[1]
+                vel = vec3(vel.x * 0.3, 0, vel.z * 0.3)
+                if length(vel) < 0.5 { flying = false }
+            } else {
+                vel = vec3(-vel.x * 0.3, vel.y, -vel.z * 0.3)
+            }
+        } else {
+            self.position = to
+        }
+        var down: any = raycast(self.position + vec3(0, 0.2, 0), self.position + vec3(0, -0.15, 0), find("Sprig"))
+        if down != nil and vel.y <= 0 {
+            self.position = down[1]
+            vel = vec3(vel.x * 0.85, 0, vel.z * 0.85)
+            if length(vel) < 0.3 { flying = false }
+        }
+        if self.y < -40 { gone = true }
+    }
+    at = self.position
+    if left <= 0 { pop() }
+}
+
+# Something else blew up near it, or a slash: it goes off at once.
+func hit(amount: int, how: string, from: vec3) -> void {
+    if how == "bomb" or how == "fire" { t = max(t, fuse - 0.1) }
+}
+
+func pop() -> void {
+    gone = true
+    var at: vec3 = self.position + vec3(0, 0.3, 0)
+    spawn("prefabs/blast.scene", at)
+    play_sound("sfx/blast.wav", 0.9)
+    shake_camera(3, 0.35)
+    var sprig: entity = find("Sprig")
+    if sprig.carrying == self { sprig.carrying = nil }
+    for e in overlap_sphere(at, radius) {
+        if e == self { continue }
+        if e.name == "Sprig" {
+            e.hurt(4, at, "unblockable")
+        } else {
+            send(e, "hit", 4, "bomb", at)
+        }
+    }
+    for b in find_tagged("bombable") {
+        if distance(b.global_position, at) < radius + b.size_r { b.hit(4, "bomb", at) }
+    }
+    for o in find_tagged("bomb") {
+        if o != self and o.alive and distance(o.position, at) < radius { o.hit(4, "bomb", at) }
+    }
+    destroy(self)
+}

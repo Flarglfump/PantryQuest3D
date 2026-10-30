@@ -1,0 +1,134 @@
+@strict
+# pipe.bs - playing Fennel's pipe (later the Kettle Whistle): a scene pushed over the area.
+# Five notes - {action} and the three item buttons and {shield} - and the songs Sprig knows.
+# When the last notes played make a song, it plays back, the global "song_played" names
+# it, and the scene closes. {attack} or Esc puts the pipe away.
+
+var draw_layer: int = 96
+var notes: list[string] = []
+var t: number = 0
+var done: number = -1
+var song: string = ""
+var known: list = []
+
+# [id, name, notes] (a, l, u, r, d: A, left, up, right, down)
+const SONGS: list = [["fennel", "FENNEL'S TUNE", "drldrl"], ["lullaby", "SAFFRON'S LULLABY", "lurlur"]]
+
+func start() -> void {
+    var s: list = global("save", [])
+    var items: list = []
+    if len(s) > 1 { items = s[1] }
+    for sg in SONGS {
+        if contains(items, "song_" + sg[0]) { push(known, sg) }
+    }
+    set_global("song_played", "")
+}
+
+func pitch(n: string) -> number {
+    if n == "a" { return 587 }      # D5
+    if n == "d" { return 698 }      # F5
+    if n == "r" { return 880 }      # A5
+    if n == "l" { return 988 }      # B5
+    return 1175                     # D6 (up)
+}
+
+func note(n: string) -> void {
+    push(notes, n)
+    if len(notes) > 8 { remove(notes, 0) }
+    play_tone("triangle", pitch(n), 0.35, 0.5)
+    var tail: string = ""
+    for x in notes { tail = tail + x }
+    for sg in known {
+        var want: string = sg[2]
+        if len(tail) >= len(want) and substr(tail, len(tail) - len(want)) == want {
+            song = sg[0]
+            done = 0
+            play_sound("sfx/secret.wav", 0.7)
+            return
+        }
+    }
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if done >= 0 {
+        done += dt
+        if done > 1.6 {
+            set_global("song_played", song)
+            done = -100
+            pop_scene()
+        }
+        return
+    }
+    if done < -10 { return }
+    if action_pressed("attack") or action_pressed("m_back") {
+        done = -100
+        pop_scene()
+        return
+    }
+    if action_pressed("action") { note("a") }
+    if action_pressed("item1") { note("l") }
+    if action_pressed("item2") { note("u") }
+    if action_pressed("item3") { note("r") }
+    if action_pressed("shield") { note("d") }
+}
+
+func glyph(n: string) -> string {
+    if n == "a" { return "A" }
+    if n == "l" { return "<" }
+    if n == "u" { return "^" }
+    if n == "r" { return ">" }
+    return "v"
+}
+
+func row(n: string) -> int {
+    if n == "a" { return 4 }
+    if n == "d" { return 3 }
+    if n == "r" { return 2 }
+    if n == "l" { return 1 }
+    return 0
+}
+
+func keyname(n: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    if n == "a" { if pad { return "A" } return "SPACE" }
+    if n == "l" { if pad { return "Y" } return "U" }
+    if n == "u" { if pad { return "B" } return "I" }
+    if n == "r" { if pad { return "UP" } return "O" }
+    if pad { return "RT" }
+    return "K"
+}
+
+func draw() -> void {
+    if done < -10 { return }
+    draw_rect(vec2(16, 150), vec2(288, 78), [16, 12, 30, 220])
+    draw_rect(vec2(16, 150), vec2(288, 78), [220, 190, 120, 255], false)
+    for i in 5 { draw_line(vec2(28, 162 + i * 10), vec2(292, 162 + i * 10), [140, 120, 90]) }
+    for i in len(notes) {
+        var n: string = notes[i]
+        var c: vec2 = vec2(44 + i * 32, 162 + row(n) * 10)
+        var col: list = [255, 230, 120]
+        if done >= 0 { col = [140, 255, 140] }
+        draw_circle(c, 5, col)
+        draw_text(glyph(n), c - vec2(3, 3), [40, 30, 10])
+    }
+    var line: string = "A:" + keyname("a") + " <:" + keyname("l") + " ^:" + keyname("u") + " >:" + keyname("r") + " v:" + keyname("d")
+    draw_text(line, vec2(24, 216), [200, 190, 160])
+    if done >= 0 {
+        var name: string = ""
+        for sg in known {
+            if sg[0] == song { name = sg[1] }
+        }
+        draw_text("You played " + name + "!", vec2(160 - text_size("You played " + name + "!").x / 2, 136), [140, 255, 140])
+    } else {
+        draw_text("FENNEL'S PIPE", vec2(26, 140), [255, 220, 130])
+        var y: number = 26
+        for sg in known {
+            var str2: string = ""
+            var w: string = sg[2]
+            for k in len(w) { str2 = str2 + glyph(w[k]) + " " }
+            draw_text(sg[1] + "  " + str2, vec2(150 - 120, y), [220, 210, 190])
+            y += 11
+        }
+    }
+}

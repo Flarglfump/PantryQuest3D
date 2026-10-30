@@ -1,0 +1,28 @@
+# A bomb going off.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Blast"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 60
+    max = 68
+    lifetime = 0.6
+    lifetime_random = 0.4
+    speed = 6
+    speed_random = 0.5
+    spread = 180
+    gravity = -2
+    drag = 1.2
+    size_start = 0.5
+    size_end = 0.02
+    color_start = #fff0b0ff
+    color_end = #ff401000
+    blend = add
+    auto_destroy = true

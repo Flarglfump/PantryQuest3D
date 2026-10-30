@@ -14,11 +14,23 @@ func start() -> void {
     var it: list = s[1]
     for f in flags { push(fl, f) }
     for i in items {
+        if substr(i, 0, 4) == "key:" {
+            push(s[7], ["keys_" + substr(i, 4), 1])
+            continue
+        }
         push(it, i)
-        if i == "shooter" {
-            s[5] = 30
+        if i == "shooter" { s[5] = 30 }
+        if i == "bombs" { push(s[7], ["bombs", 20]) }
+        if i == "pipe" { push(it, "song_fennel") }
+        if i == "shooter" or i == "bombs" or i == "pipe" {
             var slots: list = s[6]
-            slots[0] = "shooter"
+            var placed: bool = false
+            for k in 3 {
+                if not placed and slots[k] == "" {
+                    slots[k] = i
+                    placed = true
+                }
+            }
         }
         if i == "heartpie" {
             s[3] = s[3] + 4

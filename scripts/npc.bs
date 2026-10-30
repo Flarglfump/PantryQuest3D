@@ -16,6 +16,7 @@ var talking: number = 0
 var auto: bool = false               # talks by itself, once, when Sprig comes near (the owl)
 var leaves: bool = false             # flies off after that
 var flying: number = -1
+var dancing: number = -1
 
 func start() -> void {
     game = find("Game")
@@ -42,6 +43,13 @@ func hide() -> void {
     remove_tag(self, "focusable")
 }
 
+# Someone played a song: Big Biscotti can't help dancing to Fennel's tune.
+func song_played(name: string) -> void {
+    if who == "biscotti" and name == "fennel" and distance(sprig.position, self.position) < 8 and not game.has_item("bracelet") {
+        dancing = 0
+    }
+}
+
 func fly_away() -> void {
     flying = 0
     play_sound("sfx/hop.wav", 0.6, 0.6)
@@ -63,6 +71,15 @@ func update(dt: number) -> void {
         return
     }
     if has_tag(self, "hidden") { return }
+    if dancing >= 0 {
+        dancing += dt
+        play_animation(self, "dance", 1, true)
+        if dancing > 3 {
+            dancing = -1
+            game.talk("biscotti_dance", "bracelet")
+        }
+        return
+    }
     if auto and game.state == "play" and distance(sprig.position, self.position) < 5 and not game.flag("talked:" + who) {
         game.set_flag("talked:" + who)
         interact(sprig)
@@ -93,6 +110,8 @@ func interact(who_by: entity) -> void {
     if who == "basil" { then = "basil_shop" }
     if who == "owl" and leaves { then = "owl_leaves" }
     if who == "saffron" or who == "kimchi" { then = "saffron_done" }
+    if id == "mtguard_letter" { then = "mountain_open" }
+    if id == "biscotti_ember" { then = "ember_power" }
     if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
     if id == "fennel_1" { game.set_flag("talked_fennel") }
     game.talk(id, then)
@@ -120,6 +139,21 @@ func talk_for() -> string {
     if who == "pip" {
         if game.flag("met_saffron") { return "pip_2" }
         return "pip_1"
+    }
+    if who == "mtguard" {
+        if game.flag("mountain_open") { return "mtguard_open" }
+        if game.has_item("letter") { return "mtguard_letter" }
+        return "mtguard_no"
+    }
+    if who == "biscotti" {
+        if game.flag("hardcaves_done") and not game.has_item("ember_power") { return "biscotti_ember" }
+        if game.has_item("ember_power") { return "biscotti_after" }
+        if game.has_item("bracelet") { return "biscotti_2" }
+        return "biscotti_1"
+    }
+    if who == "hardtack" {
+        if game.has_item("bracelet") { return "hardtack_2" }
+        return "hardtack_1"
     }
     if who == "guard" {
         if game.flag("met_saffron") { return "guard_2" }

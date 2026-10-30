@@ -36,6 +36,7 @@ func start() -> void {
     wander_to = home
     yaw = self.rotation.y
     if trio { add_tag(self, "trio") }
+    if group != "" { add_tag(self, "grp_" + group) }
     if brain == "scrub" {
         st = "hidden"
         play_animation(self, "hide", 1, true)
@@ -48,6 +49,7 @@ func focus_point() -> vec3 {
     if brain == "scrub" { return self.position + vec3(0, 0.45, 0) }
     if brain == "dummy" { return self.position + vec3(0, 1.0, 0) }
     if brain == "stalebie" { return self.position + vec3(0, 1.1, 0) }
+    if brain == "roller" { return self.position + vec3(0, 0.7, 0) }
     return self.position + vec3(0, 0.35, 0)
 }
 
@@ -70,6 +72,10 @@ func hit(amount: int, how: string, from: vec3) -> void {
             beaten()
             return
         }
+    }
+    if brain == "roller" and how != "bomb" {
+        play_sound("sfx/block.wav", 0.6)
+        return
     }
     if brain == "dummy" {
         wobble = 1
@@ -100,8 +106,8 @@ func die() -> void {
     game.roll_drop(self.position, 0.7)
     if group != "" {
         var left: int = 0
-        for e in find_tagged("enemy") {
-            if e != self and e.alive and not has_tag(e, "hidden") and e.group == group { left += 1 }
+        for e in find_tagged("grp_" + group) {
+            if e != self and e.alive and not has_tag(e, "hidden") { left += 1 }
         }
         if left == 0 { game.set_flag("clear:" + group) }
     }
@@ -169,6 +175,10 @@ func update(dt: number) -> void {
         scrub(dt, to, d)
     } elif brain == "stalebie" {
         move = stalebie(dt, to, d)
+    } elif brain == "crustling" {
+        move = fuzzball(dt, to, d) * 0.8
+    } elif brain == "roller" {
+        move = roller(dt, to, d)
     }
     if brain == "stalebie" and (st == "under" or st == "rising" or st == "sinking") {
         self.rotation = vec3(0, yaw, 0)
@@ -267,6 +277,36 @@ func stalebie(dt: number, to: vec3, d: number) -> vec3 {
     }
     play_animation(self, "walk", 0.8, true)
     return fwd() * 1.5
+}
+
+# A rolling Hardtack: curls up and rolls straight at Sprig, bouncing off walls. Swords
+# just bounce off it; a bomb knocks it out.
+var roll_dir: vec3
+func roller(dt: number, to: vec3, d: number) -> vec3 {
+    if st == "idle" {
+        play_animation(self, "idle", 1, true)
+        if d < 9 and st_t > 1.0 {
+            st = "roll"
+            st_t = 0
+            roll_dir = normalize(to)
+            play_sound("sfx/roll.wav", 0.7, 0.6)
+        }
+        return vec3(0, 0, 0)
+    }
+    if st == "roll" {
+        play_animation(self, "roll", 1, true)
+        yaw += 720 * dt
+        if is_on_wall(self) and st_t > 0.2 {
+            roll_dir = roll_dir * -1
+            shake_camera(1, 0.1)
+        }
+        if st_t > 3.0 {
+            st = "idle"
+            st_t = 0
+        }
+        return roll_dir * 5.5
+    }
+    return vec3(0, 0, 0)
 }
 
 func fuzzball(dt: number, to: vec3, d: number) -> vec3 {

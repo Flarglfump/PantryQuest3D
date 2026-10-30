@@ -1,0 +1,10 @@
+@strict @3d
+# spinner.bs - turns round and round (the windmill's sails): `speed` degrees a second about z.
+var speed: number = 30
+var a: number = 0
+var yaw: number = 0
+func start() -> void { yaw = self.rotation.y }
+func update(dt: number) -> void {
+    a += speed * dt
+    self.rotation = vec3(0, yaw, a)
+}

@@ -1,0 +1,31 @@
+# A gout of fire (shot.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Fireball"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.4 0.4 0.4
+  Mesh
+    shape = sphere
+    color = #ffa030ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 50
+    max = 40
+    lifetime = 0.4
+    speed = 0.6
+    spread = 180
+    size_start = 0.3
+    size_end = 0
+    color_start = #ffe080ff
+    color_end = #ff200000
+    blend = add
+  Script
+    file = "scripts/shot.bs"
+    vars = "kind = \"fire\", life = 2"

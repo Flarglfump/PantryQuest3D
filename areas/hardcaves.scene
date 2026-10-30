@@ -1,0 +1,1942 @@
+# Hardtack Caverns - an area of Pantry Quest 3D.
+# Made by tools/areas/hardcaves.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"hardcaves\", area_name = \"Hardtack Caverns\", music = \"music/caverns.wav\", dungeon = \"hardcaves\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -80 0 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #ffa060ff
+    intensity = 0.35
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #c08060ff
+    intensity = 0.55
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 36
+    clear_color = #1c0c04ff
+    fog = true
+    fog_color = #2a1206ff
+    fog_start = 12
+    fog_end = 34
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 12.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.6 3 0.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"fondue\", at = \"caves\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 6.5
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 1.8 0.45 9.6
+    rotation = 0 0 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 1.8 0.85 9.6
+    rotation = 0 0 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"hc_enter\""
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = -6.5778 0 -2.3941
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 12
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 6.5778 0 -2.3941
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 14
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = -4 0.1 2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = 4 0.1 -2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Cracked Wall"
+  Transform3D
+    position = 0 1.5 -9.6
+    rotation = 0 0 0
+    scale = 2.8 3 0.8
+  Mesh
+    shape = cube
+    texture = "art/crack.png"
+    color = #b8a890ff
+    uv_scale = 1.4 1.5
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "bombable"
+  Script
+    file = "scripts/bombable.bs"
+    vars = "id = \"hc_wall1\", size_r = 1.4"
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffa050ff
+    intensity = 1.3
+    range = 14
+
+entity
+  Name
+    text = "Cheese"
+  Transform3D
+    position = 0 -1.2 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 15 1.2 15
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "lava"
+
+entity
+  Name
+    text = "Pool Floor"
+  Transform3D
+    position = 0 -2.2 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 16 0.4 16
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Crust Raft"
+  Transform3D
+    position = 3 -0.25 -27
+    rotation = 0 0 0
+    scale = 2 0.5 2
+  Mesh
+    shape = cube
+    texture = "art/crust.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "platform"
+  Script
+    file = "scripts/platform.bs"
+    vars = "a = vec3(3, -0.25, -27), b = vec3(0, -0.25, -30.8), speed = 1.4, wait = 1.5"
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = -3.215 0 -32.8331
+    rotation = 0 -160 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"map_hardcaves\", id = \"hc_map\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 23
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -4.6 0.3 -16.0326
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = -4.6 0.8 -16.0326
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 4.6 0.3 -16.0326
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = 4.6 0.8 -16.0326
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 5 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffb050ff
+    intensity = 1.4
+    range = 16
+
+entity
+  Name
+    text = "Locked Door"
+  Transform3D
+    position = 0 1.4 -36.2
+    rotation = 0 0 0
+    scale = 2.4 2.8 0.3
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/lockdoor.bs"
+    vars = "id = \"hc_north\""
+
+entity
+  Name
+    text = "Lock"
+  Transform3D
+    position = 0 1.3 -36
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.2
+  Mesh
+    shape = cube
+    color = #c8a040ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Crustling"
+  Transform3D
+    position = -26 0.1 -27
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/crustling.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 0.8 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.4 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"crustling\", hp = 3, damage = 4, group = \"hc_crust\""
+
+entity
+  Name
+    text = "Crustling"
+  Transform3D
+    position = -27 0.1 -21.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/crustling.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 0.8 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.4 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"crustling\", hp = 3, damage = 4, group = \"hc_crust\""
+
+entity
+  Name
+    text = "Crustling"
+  Transform3D
+    position = -22 0.1 -22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/crustling.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 0.8 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.4 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"crustling\", hp = 3, damage = 4, group = \"hc_crust\""
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = -28.8 0 -24
+    rotation = 0 -90 0
+    scale = 1.4 1.4 1.4
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"bombs\", id = \"hc_bombs\", appear = \"clear:hc_crust\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 35
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -29.5 0.3 -27.5
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = -29.5 0.8 -27.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -24 4 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffa050ff
+    intensity = 1.2
+    range = 11
+
+entity
+  Name
+    text = "Boulder"
+  Transform3D
+    position = 14.5 1.2 -24
+    rotation = 0 0 0
+    scale = 2.4 2.4 2.2
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #c8b8a0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "bombable, focusable"
+  Script
+    file = "scripts/bombable.bs"
+    vars = "id = \"hc_boulder\", size_r = 1.2"
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = 28.8 0 -26
+    rotation = 0 90 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"compass_hardcaves\", id = \"hc_compass\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 41
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = 28.8 0 -22
+    rotation = 0 90 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"key\", id = \"hc_key\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 43
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = 24 0.1 -21
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = 21 0 -29.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = 22.5 0 -30.2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = 26 0 -18.2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 24 4 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffa050ff
+    intensity = 1.2
+    range = 11
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 6.0622 0 -44.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 50
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = -6.0622 0 -44.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 52
+
+entity
+  Name
+    text = "Crustling"
+  Transform3D
+    position = 3 0.1 -48
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/crustling.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 0.8 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.4 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"crustling\", hp = 3, damage = 4"
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = -3 0.1 -51
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Cracked Wall"
+  Transform3D
+    position = -9.5 1.5 -48
+    rotation = 0 0 0
+    scale = 0.8 3 2.8
+  Mesh
+    shape = cube
+    texture = "art/crack.png"
+    color = #b8a890ff
+    uv_scale = 0.4 1.5
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "bombable"
+  Script
+    file = "scripts/bombable.bs"
+    vars = "id = \"hc_wall2\", size_r = 1.4"
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = -20 0 -48
+    rotation = 0 -90 0
+    scale = 1.4 1.4 1.4
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"bosskey_hardcaves\", id = \"hc_bosskey\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 57
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 -48
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffa050ff
+    intensity = 1.2
+    range = 12
+
+entity
+  Name
+    text = "Boss Door"
+  Transform3D
+    position = 0 1.5 -58
+    rotation = 0 0 0
+    scale = 2.6 3 0.4
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #8a3a2aff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/lockdoor.bs"
+    vars = "id = \"hc_boss\", boss = true"
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 9.9593 0 -68.25
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 61
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = -9.9593 0 -68.25
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 63
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = -9.9593 0 -79.75
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 65
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 9.9593 0 -79.75
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 67
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 9.051 0.3 -64.949
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = 9.051 0.8 -64.949
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -9.051 0.3 -64.949
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = -9.051 0.8 -64.949
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -9.051 0.3 -83.051
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = -9.051 0.8 -83.051
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 9.051 0.3 -83.051
+    rotation = 0 0 0
+    scale = 0.5 0.6 0.5
+  Mesh
+    shape = cylinder
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = 9.051 0.8 -83.051
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 30
+    lifetime = 0.5
+    speed = 0.8
+    spread = 25
+    area = 0.3 0.3
+    gravity = -1.5
+    size_start = 0.25
+    size_end = 0.02
+    color_start = #ffe080ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Crustodon"
+  Transform3D
+    position = 0 0 -78
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/crustodon.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 3 1
+    radius = 1.6
+    friction = 0.8
+    offset = 0 1.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable, boss"
+  Script
+    file = "scripts/crustodon.bs"
+
+entity
+  Name
+    text = "Heart Pie"
+  Transform3D
+    position = 0 0.8 -70
+    rotation = 0 0 0
+    scale = 2 2 2
+  Mesh
+    shape = model
+    file = "models/heart.obj"
+    color = #ff3048ff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"heartpie\", id = \"hc_pie\", when = \"hardcaves_boss\""
+
+entity
+  Name
+    text = "Blue Light"
+  Transform3D
+    position = 0 1.5 -74
+    rotation = 0 0 0
+    scale = 1.6 3 1.6
+  Mesh
+    shape = cylinder
+    color = #80c0ff60
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Particles
+    rate = 20
+    max = 40
+    lifetime = 1.5
+    speed = 1.2
+    spread = 10
+    area = 1.6 1.6
+    size_start = 0.15
+    size_end = 0
+    color_start = #c0e0ffff
+    color_end = #4080ff00
+    blend = add
+  Script
+    file = "scripts/warp.bs"
+    vars = "to = \"fondue\", at = \"caves\", sets = \"hardcaves_done\", when = \"hardcaves_boss\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 7 -74
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffa050ff
+    intensity = 1.5
+    range = 20
+
+entity
+  Name
+    text = "spawn_t_b"
+  Transform3D
+    position = 0 0.1 -15
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_t_e"
+  Transform3D
+    position = 0 0.1 -42
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_t_boss"
+  Transform3D
+    position = 0 0.1 -61
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "lava 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/lava_0_-2.obj"
+    texture = "art/lavacheese.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock -2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-2_-4.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-2_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-2_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-1_-5.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-1_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-1_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_-1_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-6.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-5.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-4.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_0_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardcaves/rock_1_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

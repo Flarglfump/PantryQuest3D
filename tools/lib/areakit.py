@@ -20,6 +20,8 @@ MATERIALS = {
     'flowers': ('art/flowers.png', '#ffffffff', True, False, True, True),
     'dirt': ('art/dirt.png', '#ffffffff', True, False, True, True),
     'cobble': ('art/cobble.png', '#ffffffff', True, False, True, True),
+    'lava': ('art/lavacheese.png', '#ffffffff', False, False, False, True),
+    'rock': ('art/stone.png', '#c8a080ff', True, False, True, True),
     'cliff': ('art/stone.png', '#c8d0b8ff', True, False, True, True),
     'stone': ('art/stone.png', '#ffffffff', True, True, True, True),
     'bark': ('art/bark.png', '#ffffffff', True, True, True, True),
@@ -152,18 +154,32 @@ class Area:
                     ('Parent', [('entity', i)]))
 
     def enemy(self, brain, x, y, z, yaw=0, hp=2, damage=2, group='', model=None, **more):
-        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub', 'stalebie': 'stalebie'}[brain]
+        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub', 'stalebie': 'stalebie', 'crustling': 'crustling', 'roller': 'hardtack_kid'}[brain]
         kw = {'brain': brain, 'hp': hp, 'damage': damage}
         if group:
             kw['group'] = group
         kw.update(more)
-        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7), 'stalebie': (0.32, 1.3)}[brain]
+        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7), 'stalebie': (0.32, 1.3), 'crustling': (0.4, 0.8), 'roller': (0.45, 1.0)}[brain]
         self.entity(brain.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % model, shadow=True),
                     ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
                     collider('capsule', (1, h, 1), r, offset=(0, h / 2, 0)), kinematic(),
                     tags('enemy', 'focusable'), script('scripts/enemy.bs', **kw))
         if brain == 'scrub':     # its bush
             self.entity('Scrub Bush', t3((x, y + 0.15, z), (0, 0, 0), (1.0, 0.45, 1.0)), mesh('sphere', '#ffffffff', 'art/hedge.png'))
+
+    def bombflower(self, x, y, z):
+        i = self.entity('Bomb Flower', t3((x, y, z)), mesh('model', '#4a9a3aff', file='models/bombflower.obj', cull=False),
+                        tags('interact', 'focusable'), script('scripts/bombflower.bs'))
+        self.entity('Bud', t3((0, 0.05, 0)), mesh('model', '#fff4d0ff', file='models/bomb.obj'), ('Parent', [('entity', i)]))
+
+    def cracked(self, x, y, z, w, h, d, id, yaw=0, boulder=False):
+        """A cracked wall (or a boulder) a bomb can break."""
+        if boulder:
+            self.entity('Boulder', t3((x, y + h / 2, z), (0, yaw, 0), (w, h, d)), mesh('sphere', '#c8b8a0ff', 'art/stone.png'),
+                        collider('sphere', radius=0.5), tags('bombable', 'focusable'), script('scripts/bombable.bs', id=id, size_r=max(w, d) / 2))
+        else:
+            self.entity('Cracked Wall', t3((x, y + h / 2, z), (0, yaw, 0), (w, h, d)), mesh('cube', '#b8a890ff', 'art/crack.png', uv=(w / 2, h / 2)),
+                        collider('box'), tags('bombable'), script('scripts/bombable.bs', id=id, size_r=max(w, d) / 2))
 
     def dummy(self, x, y, z, yaw=0):
         self.entity('Dummy', t3((x, y, z), (0, yaw, 0)), mesh('model', '#ffffffff', 'art/sack.png', file='models/dummy.obj'),
@@ -286,8 +302,12 @@ def ring_floor(o, cx, cz, r0, r1, y, a0=0.0, a1=360.0, segs=24, thick=0.5, uvs=0
 def ring_wall(o, cx, cz, r, y0, y1, segs=24, holes=(), uvs=0.3):
     """The inside wall of a round room, from y0 up to y1, facing in. holes: (angle,
     half-width in units, y bottom, y top) - doorways."""
+    step = 360.0 / segs
+    off = 0.0
+    if holes:                     # (turned so the first doorway is in the middle of a segment)
+        off = (holes[0][0] % step) - step / 2
     for i in range(segs):
-        aa, ab = 360.0 * i / segs, 360.0 * (i + 1) / segs
+        aa, ab = off + step * i, off + step * (i + 1)
         mid = (aa + ab) / 2
         spans = [(y0, y1)]
         for ha, hw, hy0, hy1 in holes:

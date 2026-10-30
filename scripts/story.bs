@@ -208,6 +208,69 @@ func talk(id: string) -> list {
                 p("NANNY KIMCHI", "Listen well. It is called SAFFRON'S LULLABY. Royal doors and old magic will answer it."),
                 p("NANNY KIMCHI", "Now come. I'll see you out before the guards see you in.")]
     }
+    # ---- Peppermill Village
+    if id == "sign_pepper" { return [p("", "PEPPERMILL VILLAGE|Home of the finest pepper in the kingdom. N: Mount Fondue trail.")] }
+    if id == "sign_well" { return [p("", "The old well has run dry. Something glints far below... but it's too deep to climb.")] }
+    if id == "sign_grave" { return [p("", "PEPPERMILL GRAVEYARD|Here lie those who were ground fine. Please keep off the graves.")] }
+    if id == "sign_potions" { return [p("", "OLD GINGER'S POTIONS|Closed until the mushrooms are back in season.")] }
+    if id == "grave" { return [p("", "HERE LIES A GOOD PEPPERCORN.|He was always well seasoned.")] }
+    if id == "miller" {
+        return [p("MILLER", "The windmill turns, the pepper grinds. That's how it's been in Peppermill for three hundred years."),
+                p("MILLER", "Lately the wind smells of mould, though. Coming down off the mountain, it is.")]
+    }
+    if id == "gravekeeper" {
+        return [p("GRANDPA GRISTLE", "Heh heh. Come to dig, have you? Not today, young sprout. The ground's too hard."),
+                p("GRANDPA GRISTLE", "Come back when you're older. Much older. Heh heh heh.")]
+    }
+    if id == "mtguard_no" {
+        return [p("GUARD", "Halt! The Mount Fondue trail is closed by order of the King. The Hardtack have been in a foul mood, and the mountain's grumbling."),
+                p("GUARD", "No one goes up without royal permission.")]
+    }
+    if id == "mtguard_letter" {
+        return [p("GUARD", "What's that? A letter... from Princess Saffron herself? 'Please let this Sprout go wherever he likes.'"),
+                p("GUARD", "Ha! Her Highness always did have a sense of humour. Very well, go on up. Mind the falling rocks!")]
+    }
+    if id == "mtguard_open" { return [p("GUARD", "Up the trail with you, then. The Hardtack City door is half way up.")] }
+
+    # ---- Mount Fondue and the Hardtack
+    if id == "sign_fondue" { return [p("", "MOUNT FONDUE TRAIL|Hardtack City ahead. Beware of falling cheese.")] }
+    if id == "sign_caves" { return [p("", "HARDTACK CAVERNS|Hardtack food storage. Keep out! (signed: the Hardtack Clan)")] }
+    if id == "boulder_caves" { return [p("FLICKER", "A huge boulder blocks the cave! If only we could blow it up... I wonder what those bulbs growing nearby are?")] }
+    if id == "bombflower_no" { return [p("FLICKER", "Those are BOMB FLOWERS. Don't touch them! ...Well, you couldn't pull one off anyway. Not without something to grip with.")] }
+    if id == "hardtack_1" {
+        return [p("HARDTACK", "Hungry... so hungry... The Duke blocked our caverns. No more delicious rocks."),
+                p("HARDTACK", "Big Biscotti is in his room, sulking. He won't open the door to anyone. Except maybe royalty.")]
+    }
+    if id == "hardtack_2" { return [p("HARDTACK", "You made Big Biscotti dance! Brother, you've got rhythm! Now clear our caverns!")] }
+    if id == "biscotti_door" { return [p("", "BIG BISCOTTI'S ROOM. A royal crest is carved on the door: only a song of the royal family will open it.")] }
+    if id == "biscotti_1" {
+        return [p("BIG BISCOTTI", "WHAT?! Who dares disturb the Chief of the Hardtack Clan?!"),
+                p("BIG BISCOTTI", "A Sprout?! With a letter from the princess... Bah! What does the royal family care? My people are STARVING!"),
+                p("BIG BISCOTTI", "The Duke of Mildew wanted our treasure, the Ember of Power. I said no. So he filled Hardtack Caverns with monsters!"),
+                p("BIG BISCOTTI", "Now no one can get at the rock roast. GO AWAY! I'm in a terrible mood. Nothing could cheer me up!")]
+    }
+    if id == "biscotti_dance" {
+        return [p("BIG BISCOTTI", "...Hey. Hey hey HEY! That tune! It makes me want to..."),
+                p("BIG BISCOTTI", "DANCE!! WOOO! I feel GREAT! Little brother, you've cheered me right up!"),
+                p("BIG BISCOTTI", "Here. Take my GUM BRACELET. With it you can pull the bomb flowers that grow on the mountain."),
+                p("BIG BISCOTTI", "Blow open the boulder at the caverns' mouth, and deal with whatever the Duke put in there!")]
+    }
+    if id == "biscotti_2" { return [p("BIG BISCOTTI", "The caverns are along the trail, past the bend! Blow the boulder with a bomb flower, brother!")] }
+    if id == "biscotti_ember" {
+        return [p("BIG BISCOTTI", "BROTHER!! You beat King Crustodon! The caverns are ours again! The rock roast is BACK!"),
+                p("BIG BISCOTTI", "From today you are my Sworn Brother. And a brother should have this..."),
+                p("BIG BISCOTTI", "The EMBER OF POWER! Our clan has guarded it since the First Hearth was lit. Keep it from the Duke!")]
+    }
+    if id == "biscotti_after" { return [p("BIG BISCOTTI", "Brother! Have some rock roast! ...No? Your loss! Go find the last Ember, brother. The Fizzlings have it, at Fizzwater Falls.")] }
+
+    # ---- Hardtack Caverns
+    if id == "hc_enter" {
+        return [p("FLICKER", "Phew, it's HOT in here! The floor is molten cheese in places - don't fall in!"),
+                p("FLICKER", "Those cracked walls look like a bomb would break them...")]
+    }
+    if id == "crustodon_title" { return [p("", "KING CRUSTODON|Infernal Crust Lizard")] }
+    if id == "crustodon_beaten" { return [p("FLICKER", "You did it! The caverns are free! Step into the light - Big Biscotti will want to know!")] }
+    if id == "tbc_summit" { return [p("FLICKER", "The crater's up there. It's way too hot to go up now... maybe later!")] }
     if id == "to_be_continued" {
         return [p("FLICKER", "Breadbasket Fields is out there... but the rest of the kingdom isn't finished yet!"),
                 p("FLICKER", "(Thanks for playing this much of Pantry Quest 3D. More of the world is on its way.)")]
@@ -314,6 +377,12 @@ func after(what: string, choice: int) -> void {
     } elif what == "escort" {
         game.set_flag("met_saffron")
         game.go("town", "castle")
+    } elif what == "mountain_open" {
+        game.set_flag("mountain_open")
+    } elif what == "bracelet" {
+        game.give("bracelet", "")
+    } elif what == "ember_power" {
+        game.give("ember_power", "")
     } elif what == "caught" {
         game.go(game.area, "start")
     } elif what == "owl_leaves" {
@@ -330,6 +399,10 @@ func area_started(area: string) -> void {
     if area == "sprouthollow" and not game.flag("met_flicker") { game.talk("intro", "met_flicker") }
     if area == "fields" and not game.flag("fields_entered") {
         game.set_flag("fields_entered")
+    }
+    if area == "hardcaves" and not game.flag("hc_entered") {
+        game.set_flag("hc_entered")
+        game.talk("hc_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -356,9 +429,25 @@ func hint() -> string {
     if not game.flag("met_saffron") {
         if game.area == "castle" { return "Sneak through the garden to the princess! Stay out of the guards' sight - see the pale light in front of them? Wait behind the shrubs till they turn." }
         if game.area == "town" { return "The castle road leaves the north side of town. The princess is somewhere in the castle garden!" }
-    } else {
-        return "The Ember of Power is with the Hardtack Clan on Mount Fondue, past Peppermill Village (north-east of the field). That part of the kingdom is still being built!"
     }
+    if game.dungeon == "hardcaves" { return hardcaves_hint() }
+    if not game.flag("mountain_open") { return "The Ember of Power is with the Hardtack Clan on Mount Fondue. Go to Peppermill Village (north-east of the field) - and show the princess's letter to the guard at the trail!" }
+    if not game.has_item("bracelet") {
+        if not game.flag("door:biscotti") { return "Big Biscotti's room is at the top of Hardtack City. Its door has a royal crest... play SAFFRON'S LULLABY on your pipe!" }
+        return "Big Biscotti is in a terrible mood. Fennel said her tune cheers anyone up... play FENNEL'S TUNE for him!"
+    }
+    if not game.flag("caves_boulder") { return "Pull a bomb flower with the Gum Bracelet and blow up the boulder at Hardtack Caverns, further up the trail!" }
+    if not game.flag("hardcaves_done") { return "Into Hardtack Caverns! Find out what the Duke put in there." }
+    if not game.has_item("ember_power") { return "Big Biscotti is waiting outside the caverns!" }
+    return "Two Embers! The last, the Ember of Wisdom, is with the Fizzlings at Fizzwater Falls, east of the field. (Not built yet!)"
+}
+
+func hardcaves_hint() -> string {
+    if not game.flag("hc_wall1") { return "That cracked wall to the north... pull a bomb flower and throw it (A), or put it down beside the wall (B) and stand back!" }
+    if not game.has_item("bombs") { return "There must be something in here to carry bombs with. Search the rooms off the cheese hall!" }
+    if not game.flag("door:hc_north") { return "We need a small key for the door north of the cheese hall. Try the east room - is something blocking the way?" }
+    if not game.has_item("bosskey_hardcaves") { return "The Boss Key must be in the north room. Cracked walls hide things!" }
+    return "The big door! King Crustodon is behind it. If he breathes in... feed him a bomb!"
     if game.area == "sprouthollow" { return "The bridge to the south leads out of Sprouthollow, to Breadbasket Fields and Castle Larder beyond." }
     return "Castle Larder is north, across the field. Mother Starter said to find the princess there!"
 }
@@ -394,6 +483,12 @@ func item_text(kind: string) -> string {
     if kind == "heartpie" { return "You got a HEART PIE!|Your life energy has grown by one heart!" }
     if kind == "ember_courage" { return "You got the EMBER OF COURAGE!|The ember that makes things rise. Mother Starter kept it for four hundred years." }
     if kind == "pipe" { return "You got FENNEL'S PIPE!|A reed pipe that sounds like the grove. Its songs will come later..." }
+    if kind == "bracelet" { return "You got the GUM BRACELET!|Now you can pull up bomb flowers: A picks one, A throws it, B puts it down." }
+    if kind == "bombs" { return "You got POPCORN BOMBS!|Put them on a button. Press it to hold a bomb up, A to throw, B to set it down. Holds 20." }
+    if kind == "ember_power" { return "You got the EMBER OF POWER!|The ember that transforms. Two Embers, and one to go." }
+    if kind == "map_hardcaves" { return "You found the DUNGEON MAP!|See every room of Hardtack Caverns in the pause menu." }
+    if kind == "compass_hardcaves" { return "You found the COMPASS!|Now the map shows the treasure and the boss." }
+    if kind == "bosskey_hardcaves" { return "You got the BOSS KEY!|It opens the door to King Crustodon's lair." }
     if kind == "letter" { return "You got SAFFRON'S LETTER!|Signed by the princess herself. Show it to anyone who serves the royal family." }
     if kind == "song_lullaby" { return "You learned SAFFRON'S LULLABY!|A gentle royal song. Royal doors and old magic answer it." }
     if kind == "slice" { return "You found a PIE SLICE!|Collect four to make a whole new heart." }

@@ -15,6 +15,7 @@ var at: vec3
 
 func start() -> void {
     if kind == "nut" { speed = 7 }
+    if kind == "fire" { speed = 9 }
 }
 
 func update(dt: number) -> void {
@@ -38,6 +39,11 @@ func update(dt: number) -> void {
     var hit: any = raycast(from, to, owner)
     if hit != nil {
         var e: entity = hit[0]
+        if e.name == "Sprig" and kind == "fire" {
+            e.hurt(4, from, "fire")
+            destroy(self)
+            return
+        }
         if e.name == "Sprig" and kind == "nut" {
             var r: string = e.hurt(2, from, "nut")
             if r == "blocked" {

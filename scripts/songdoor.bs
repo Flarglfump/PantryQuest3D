@@ -1,0 +1,40 @@
+@strict @3d
+# songdoor.bs - a door that opens to a song (`song`) played near it; the flag `id` keeps it
+# open. Reading it says what it wants.
+
+var song: string = "lullaby"
+var id: string = ""
+var say: string = ""
+var prompt: string = "Check"
+var reach: number = 2.4
+var game: entity
+var sprig: entity
+var base_y: number = 0
+var opening: number = -1
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    base_y = self.y
+    if game.flag(id) { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position }
+func can_use(p: vec3) -> bool { return opening < 0 }
+func interact(who: entity) -> void { game.talk(say, "") }
+
+func song_played(name: string) -> void {
+    if name != song or opening >= 0 or distance(sprig.position, self.position) > 7 { return }
+    game.set_flag(id)
+    opening = 0
+    play_sound("sfx/door.wav", 0.8)
+    play_sound("sfx/secret.wav", 0.8)
+    remove_tag(self, "interact")
+}
+
+func update(dt: number) -> void {
+    if opening < 0 { return }
+    opening += dt
+    self.y = base_y + opening * 2
+    if opening > 1.8 { destroy(self) }
+}

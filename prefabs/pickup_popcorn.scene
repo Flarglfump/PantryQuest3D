@@ -1,0 +1,22 @@
+# A pickup: popcorn (pickup.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Pickup"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.6 0.6 0.6
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+    shadow = true
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"popcorn\""

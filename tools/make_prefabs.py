@@ -43,7 +43,8 @@ def main():
             script('scripts/shot.bs', kind='nut')))
     looks = {'heart': ('models/heart.obj', '#ff3048ff', 1.0), 'bean1': ('models/bean.obj', '#40e060ff', 1.0),
              'bean5': ('models/bean.obj', '#4080ffff', 1.0), 'bean20': ('models/bean.obj', '#ff4040ff', 1.1),
-             'peas': ('models/bean.obj', '#a0e040ff', 0.7), 'key': ('models/key.obj', '#f0c850ff', 1.0)}
+             'peas': ('models/bean.obj', '#a0e040ff', 0.7), 'key': ('models/key.obj', '#f0c850ff', 1.0),
+             'popcorn': ('models/bomb.obj', '#fff4d0ff', 0.6)}
     for kind, (file, color, s) in looks.items():
         prefab('pickup_' + kind, 'A pickup: ' + kind + ' (pickup.bs).',
                ('Pickup', t3((0, 0, 0), scale=s), mesh('model', color, file=file, lit=False, cast=False, shadow=True),
@@ -55,6 +56,18 @@ def main():
             script('scripts/enemy.bs', brain='larva', hp=1, damage=1)))
     prefab('sight', "A guard's sight: a pale cone on the ground (guard.bs places it).",
            ('Sight', t3((0, 0, 0), (90, 0, 0)), mesh('cone', '#fff0a040', lit=False, cull=False, cast=False)))
+    prefab('bomb', "A popcorn bomb (bomb.bs).",
+           ('Bomb', t3((0, 0, 0)), mesh('model', '#fff4d0ff', file='models/bomb.obj', shadow=True, cast=False), tags('bomb'),
+            particles(rate=25, max=20, lifetime=0.3, speed=0.8, spread=40, size_start=0.08, size_end=0, color_start='#ffe080ff',
+                      color_end='#ff400000', blend='add', local=True, area=(0.05, 0.05)),
+            script('scripts/bomb.bs')))
+    prefab('fireball', "A gout of fire (shot.bs).",
+           ('Fireball', t3((0, 0, 0), scale=0.4), mesh('sphere', '#ffa030ff', lit=False, cast=False),
+            particles(rate=50, max=40, lifetime=0.4, speed=0.6, spread=180, size_start=0.3, size_end=0, color_start='#ffe080ff',
+                      color_end='#ff200000', blend='add'),
+            script('scripts/shot.bs', kind='fire', life=2.0)))
+    prefab('blast', "A bomb going off.",
+           ('Blast', t3((0, 0, 0)), burst('#fff0b0ff', '#ff401000', 60, 6.0, 0.5, 0.6, -2.0, blend='add')))
     prefab('poof', "A puff of smoke (an enemy beaten, something appearing).",
            ('Poof', t3((0, 0, 0)), burst('#f0f0e0e0', '#a0a09000', 30, 2.5, 0.3, 0.7, -1.0)))
     prefab('spark', "Sparks where a shot hits.",
@@ -74,7 +87,8 @@ def main():
     # ---- overlay scenes (2D, drawn by their scripts) ----
     for name, file, comment in [('dialogue', 'scripts/dialogue.bs', 'The text box (pushed over an area).'),
                                 ('pause', 'scripts/pause.bs', 'The pause menu (pushed over an area).'),
-                                ('gameover', 'scripts/gameover.bs', 'Game over (pushed over an area).')]:
+                                ('gameover', 'scripts/gameover.bs', 'Game over (pushed over an area).'),
+                                ('pipe', 'scripts/pipe.bs', 'Playing the pipe (pushed over an area).')]:
         s = Scene(comment + '\nMade by tools/make_prefabs.py.')
         s.entity(name.capitalize(), t2((0, 0)), script(file))
         s.save(name + '.scene')

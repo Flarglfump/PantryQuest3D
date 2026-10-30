@@ -143,6 +143,22 @@ def main():
                     + ['F2:0.5 r:0.5'] * 4 + ['E2:0.5 r:0.5'] * 4 + ['A2:0.5 r:0.5'] * 2 + ['E2:0.5 r:0.5'] * 2 + ['A2:0.5 r:0.5'] * 4)
     song('castle', 100, [(lead, 'square', 0.125, 0.13, {'release': 0.02}), (bass, 'triangle', 0.5, 0.3, {})],
          drums='. . h . . . h . . . h . . . h h', echo=0.2)
+    # ---- Peppermill: a gentle waltz-like turn in F, the windmill going round ----
+    lead = ('C5:1 F5:1 A5:1 G5:1 F5:1 E5:1 F5:2 C5:2 D5:1 E5:1 F5:1 G5:1 A5:1 G5:3 r:1 '
+            'A5:1 Bb5:1 C6:1 A5:1 G5:1 F5:1 G5:2 E5:2 F5:1 G5:1 A5:1 G5:1 E5:1 F5:3 r:1')
+    bass = 'F3:2 C3:2 F3:2 C3:2 Bb2:2 F3:2 C3:2 C3:2 F3:2 A2:2 Bb2:2 G2:2 C3:2 C3:2 F3:2 F3:2'
+    song('peppermill', 104, [(lead, 'square', 0.25, 0.13, LEAD), (bass, 'triangle', 0.5, 0.3, {})], drums='k . . . h . . . s . . . h . h .')
+    # ---- Mount Fondue: heavy, rumbling, in C minor ----
+    lead = ('C5:1.5 Eb5:0.5 G5:1 F5:1 Eb5:1 D5:1 C5:2 Ab4:1.5 C5:0.5 Eb5:1 D5:1 G4:4 '
+            'C5:1.5 Eb5:0.5 G5:1 Ab5:1 G5:1 F5:1 Eb5:2 F5:1 Eb5:1 D5:1 B4:1 C5:4')
+    bass = ' '.join(['C2:0.5 C3:0.5'] * 8 + ['Ab1:0.5 Ab2:0.5'] * 4 + ['G1:0.5 G2:0.5'] * 4 + ['C2:0.5 C3:0.5'] * 8
+                    + ['F1:0.5 F2:0.5'] * 2 + ['G1:0.5 G2:0.5'] * 2 + ['C2:0.5 C3:0.5'] * 4)
+    song('fondue', 112, [(lead, 'square', 0.5, 0.12, LEAD), (bass, 'triangle', 0.5, 0.34, {})], drums='k . . k s . . . k . k . s . . h')
+    # ---- Hardtack Caverns: hot and driving, in E Phrygian ----
+    lead = ('E5:0.5 F5:0.5 E5:1 r:0.5 B4:0.5 C5:1 D5:0.5 C5:0.5 B4:1 A4:1 B4:1 '
+            'E5:0.5 F5:0.5 G5:1 r:0.5 F5:0.5 E5:1 D5:0.5 E5:0.5 F5:1 E5:2')
+    bass = ' '.join(['E2:0.5 r:0.5 E2:0.5 F2:0.5'] * 4 + ['D2:0.5 r:0.5 D2:0.5 E2:0.5'] * 2 + ['E2:0.5 r:0.5 E2:0.5 F2:0.5'] * 2)
+    song('caverns', 120, [(lead, 'square', 0.25, 0.11, LEAD), (bass, 'triangle', 0.5, 0.34, {})], drums='k . h k s . h . k . h k s . h h', echo=0.3)
     # ---- game over ----
     song('gameover', 70, [('E5:1 D5:1 C5:1 B4:1 A4:2 C5:2 B4:4 r:4', 'square', 0.25, 0.14, LEAD),
                           ('A3:4 F3:4 E3:4 r:4', 'triangle', 0.5, 0.3, {})], loop=False, echo=0.3)

@@ -60,7 +60,15 @@ a jump attack.
 - **The castle garden**: sneak through the hedges past patrolling guards (their sight is
   the pale cone on the ground; caught, you're marched back to the gate) to meet Princess
   Saffron, get her letter, and learn Saffron's Lullaby from Nanny Kimchi.
-  Peppermill, Mount Fondue and Hardtack Caverns (dungeon 2) are next.
+- **Peppermill Village** (windmill, dry well, graveyard; the trail gate opens to the
+  princess's letter), the **Mount Fondue** trail (molten cheese, rolling boulders, rolling
+  Hardtack), **Hardtack City** (Big Biscotti's door opens to Saffron's Lullaby; Fennel's
+  Tune makes him dance and earns the Gum Bracelet) and **Hardtack Caverns** (dungeon 2:
+  bomb flowers and cracked walls, the cheese hall, crustlings, the Popcorn Bombs, keys,
+  and **King Crustodon**, who must be fed a bomb while he breathes in). Biscotti then gives
+  the Ember of Power.
+- Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
+  and the shield button), picking up, carrying and throwing bombs.
 - Core systems: lock-on combat (combos, spin attack, side-hops, jump attack, shield),
   rolling, the automatic hop off ledges, climbing, moving platforms, talking and shops,
   chests, keys and locked doors, grass and pots, pickups, the pause menu, three saved
@@ -79,7 +87,7 @@ a jump attack.
 ```
 project.bronto        the project (main scene: title.scene; 320 x 240; strict typing)
 title.scene           the title (made from Sprouthollow's scenery)       scripts/title.bs
-areas/*.scene         the areas: sprouthollow, crock, fields, town, castle (tools/areas/*.py)
+areas/*.scene         the areas: sprouthollow, crock, fields, town, castle, peppermill, fondue, hardtack, hardcaves
 dialogue.scene        the text box                                         scripts/dialogue.bs
 pause.scene           the pause menu                                       scripts/pause.bs
 gameover.scene        game over                                            scripts/gameover.bs

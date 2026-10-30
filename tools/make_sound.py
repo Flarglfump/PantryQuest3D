@@ -81,6 +81,10 @@ def main():
     sfx('warp', 1.6, seq([('C5', 1), ('E5', 1), ('G5', 1), ('C6', 1), ('E6', 1), ('G6', 1), ('C7', 4)], 0.12, wave='triangle', vol=0.25, vibrato=3))
     sfx('step', 0.08, [(0, tone(R, 300, 0.07, 'noise', vol=0.08, decay=0.02))])
     sfx('grow', 0.5, [(0, tone(R, 200, 0.45, wave='triangle', vol=0.3, f1=600))])
+    sfx('blast', 0.6, [(0, tone(R, 900, 0.58, 'noise', vol=0.5, f1=80, decay=0.18)), (0, tone(R, 110, 0.4, wave='triangle', vol=0.5, f1=35, decay=0.12))])
+    sfx('crumble', 0.5, [(0, tone(R, 700, 0.48, 'noise', vol=0.4, f1=120, decay=0.15))])
+    sfx('sizzle', 0.4, [(0, tone(R, 5000, 0.38, 'noise', vol=0.25, decay=0.15))])
+    sfx('song', 0.1, [(0, tone(R, 'A5', 0.08, wave='triangle', vol=0.2))])
     print('sounds written')
 
 
