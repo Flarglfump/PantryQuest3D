@@ -1,0 +1,93 @@
+@strict @3d
+# npc.bs - someone to talk to. Turns to face Sprig when he comes near, and says the talk
+# that fits the story so far (talk_for()). `who` picks their lines; `needs` / `until` are
+# story flags they wait for or leave after.
+
+var who: string = "fennel"
+var needs: string = ""
+var until: string = ""
+var prompt: string = "Talk"
+var reach: number = 1.6
+var game: entity
+var sprig: entity
+var home_yaw: number = 0
+var yaw: number = 0
+var talking: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    home_yaw = self.rotation.y
+    yaw = home_yaw
+    if not present() { hide() }
+}
+
+func present() -> bool {
+    if needs != "" and not game.flag(needs) { return false }
+    if until != "" and game.flag(until) { return false }
+    return true
+}
+
+func hide() -> void {
+    self.Mesh.visible = false
+    self.Collider3D.size = vec3(0.001, 0.001, 0.001)
+    self.Collider3D.radius = 0.001
+    add_tag(self, "hidden")
+    remove_tag(self, "interact")
+    remove_tag(self, "focusable")
+}
+
+func flags_changed() -> void {
+    if not present() and not has_tag(self, "hidden") { hide() }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 1.0, 0) }
+func can_use(p: vec3) -> bool { return not has_tag(self, "hidden") }
+
+func update(dt: number) -> void {
+    if has_tag(self, "hidden") { return }
+    talking = max(0, talking - dt)
+    var want: number = home_yaw
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    if length(to) < 4 { want = atan2(-to.x, -to.z) }
+    var d: number = ((want - yaw + 540) % 360) - 180
+    yaw += clamp(d, -360 * dt, 360 * dt)
+    self.rotation = vec3(0, yaw, 0)
+    if game.state == "talk" and talking > 0 {
+        play_animation(self, "talk", 1, true)
+        talking = 0.2
+    } else {
+        play_animation(self, "idle", 1, true)
+    }
+}
+
+func interact(who_by: entity) -> void {
+    talking = 0.5
+    var id: string = talk_for()
+    var then: string = ""
+    if who == "chive" and id == "chive_move" { then = "chive_moved" }
+    if who == "sage" { then = "shop" }
+    if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
+    if id == "fennel_1" { game.set_flag("talked_fennel") }
+    game.talk(id, then)
+}
+
+func talk_for() -> string {
+    if who == "fennel" {
+        if game.flag("crock_done") and not game.has_item("pipe") { return "fennel_bridge" }
+        if not game.flag("talked_fennel") { return "fennel_1" }
+        return "fennel_2"
+    }
+    if who == "chive" {
+        if game.flag("crock_done") { return "chive_sorry" }
+        if game.flag("chive_moved") { return "chive_after" }
+        var spoon: bool = game.has_item("spoon")
+        var lid: bool = game.has_item("potlid")
+        if spoon and lid { return "chive_move" }
+        if spoon or lid { return "chive_half" }
+        return "chive_block"
+    }
+    if who == "sage" { return "sage_shop" }
+    return who
+}

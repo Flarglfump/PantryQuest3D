@@ -1,0 +1,28 @@
+# Sparks where a shot hits.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Spark"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 10
+    max = 18
+    lifetime = 0.3
+    lifetime_random = 0.4
+    speed = 3
+    speed_random = 0.5
+    spread = 180
+    gravity = 4
+    drag = 1.2
+    size_start = 0.08
+    size_end = 0.02
+    color_start = #fff0a0ff
+    color_end = #ff802000
+    blend = add
+    auto_destroy = true

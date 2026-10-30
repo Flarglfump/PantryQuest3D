@@ -1,0 +1,28 @@
+@strict @3d
+# loadzone.bs - walking into it takes Sprig to another area (`to`, arriving at `at`).
+# With `to` empty it says `say` instead (a way out that isn't built yet), and nudges him back.
+# `needs`: a story flag before it works.
+
+var to: string = ""
+var at: string = "start"
+var say: string = ""
+var needs: string = ""
+var game: entity
+var cool: number = 0
+
+func start() -> void { game = find("Game") }
+
+func update(dt: number) -> void { cool = max(0, cool - dt) }
+
+func on_trigger(other: entity) -> void {
+    if other.name != "Sprig" or cool > 0 or game.state != "play" { return }
+    if needs != "" and not game.flag(needs) { return }
+    cool = 2
+    if to == "" {
+        other.position = other.position - self.forward * 1.2
+        game.talk(say, "")
+        return
+    }
+    play_sound("sfx/door.wav", 0.6)
+    game.go(to, at)
+}

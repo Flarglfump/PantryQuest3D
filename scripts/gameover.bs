@@ -1,0 +1,43 @@
+@strict
+# gameover.bs - pushed over the area when Sprig's hearts run out: CONTINUE (from the area's
+# entrance, with three hearts) or SAVE AND QUIT.
+
+var draw_layer: int = 97
+var t: number = 0
+var cur: int = 0
+var done: bool = false
+
+func start() -> void { play_music("music/gameover.wav", 0.6, 0.3) }
+
+func update(dt: number) -> void {
+    t += dt
+    if done or t < 1.5 { return }
+    if action_pressed("m_up") or action_pressed("m_down") {
+        cur = 1 - cur
+        play_sound("sfx/cursor.wav", 0.4)
+    }
+    if action_pressed("m_ok") {
+        done = true
+        play_sound("sfx/select.wav", 0.6)
+        set_global("gameover_choice", cur)
+        pop_scene()
+    }
+}
+
+func draw() -> void {
+    var a: number = min(1, t / 1.2)
+    draw_rect(vec2(0, 0), vec2(320, 240), [20, 0, 0, floor(a * 200)])
+    var title: string = "GAME OVER"
+    var w: number = text_size(title, 3).x
+    draw_text(title, vec2(160 - w / 2, 80), [255, 80, 70, floor(a * 255)], 3)
+    if t < 1.5 { return }
+    var opts: list = ["CONTINUE", "SAVE AND QUIT"]
+    for i in 2 {
+        var c: list = [200, 190, 170]
+        if i == cur {
+            c = [255, 230, 120]
+            draw_text(">", vec2(110, 140 + i * 18), c)
+        }
+        draw_text(opts[i], vec2(124, 140 + i * 18), c)
+    }
+}

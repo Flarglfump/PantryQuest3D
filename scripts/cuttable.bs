@@ -1,0 +1,41 @@
+@strict @3d
+# cuttable.bs - grass tufts, pots and bushes: a swing (or a roll, for pots) breaks them,
+# with a puff of bits and sometimes a drop. They come back when the area is entered again.
+# `drops` is the chance of a drop; `fixed` makes it always that pickup.
+
+var kind: string = "grass"          # grass, pot, bush
+var drops: number = 0.35
+var fixed: string = ""
+var game: entity
+var gone: bool = false
+
+func start() -> void { game = find("Game") }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if gone { return }
+    if kind == "pot" and how == "fire" { return }
+    gone = true
+    var at: vec3 = self.position
+    if kind == "grass" {
+        spawn("prefabs/clippings.scene", at + vec3(0, 0.2, 0))
+        play_sound("sfx/cut.wav", 0.5, 0.9 + random() * 0.3)
+    } elif kind == "pot" {
+        spawn("prefabs/shards.scene", at + vec3(0, 0.3, 0))
+        play_sound("sfx/smash.wav", 0.7)
+    } else {
+        spawn("prefabs/clippings.scene", at + vec3(0, 0.5, 0))
+        play_sound("sfx/cut.wav", 0.6, 0.7)
+    }
+    if fixed != "" {
+        var p: entity = spawn("prefabs/pickup_" + fixed + ".scene", at + vec3(0, 0.3, 0))
+        p.dropped = true
+    } else {
+        game.roll_drop(at, drops)
+    }
+    destroy(self)
+}
+
+# A roll into a pot breaks it too.
+func bonked(from: vec3) -> void {
+    if kind == "pot" { hit(1, "roll", from) }
+}

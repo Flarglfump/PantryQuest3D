@@ -1,0 +1,78 @@
+@strict @3d
+# chest.bs - a treasure chest. A (from in front) opens it: the lid swings up and Sprig
+# holds up what was inside. `id` remembers it was opened; `appear` (a flag) keeps it
+# hidden until then (a chest that appears when a room is cleared).
+
+var item: string = "bean20"
+var id: string = ""
+var appear: string = ""
+var prompt: string = "Open"
+var reach: number = 1.7
+var game: entity
+var lid: entity
+var opened: bool = false
+var shown: bool = true
+var opening: number = -1
+
+func start() -> void {
+    game = find("Game")
+    lid = child(self, "Lid")
+    if game.flag("chest:" + id) {
+        opened = true
+        lid.rotation = vec3(100, 0, 0)
+        prompt = ""
+    }
+    if appear != "" and not game.flag(appear) { set_shown(false) }
+}
+
+func set_shown(on: bool) -> void {
+    shown = on
+    self.Mesh.visible = on
+    lid.Mesh.visible = on
+    if on {
+        self.Collider3D.size = vec3(1, 0.6, 0.7)
+        add_tag(self, "interact")
+    } else {
+        self.Collider3D.size = vec3(0.001, 0.001, 0.001)
+        remove_tag(self, "interact")
+    }
+}
+
+func flags_changed() -> void {
+    if not shown and game.flag(appear) {
+        set_shown(true)
+        spawn("prefabs/poof.scene", self.position + vec3(0, 0.4, 0))
+        play_sound("sfx/secret.wav", 0.8)
+    }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.6, 0) }
+
+func can_use(p: vec3) -> bool {
+    if opened or not shown { return false }
+    var f: vec3 = self.forward
+    var to: vec3 = p - self.position
+    to.y = 0
+    return dot(normalize(to), f) > 0.3
+}
+
+func interact(who: entity) -> void {
+    if opened { return }
+    opened = true
+    prompt = ""
+    remove_tag(self, "interact")
+    game.set_flag("chest:" + id)
+    tween(lid, "rotation", vec3(100, 0, 0), 0.5, "back_out")
+    play_sound("sfx/chest.wav", 0.8)
+    opening = 0
+    who.hold_up()
+}
+
+func update(dt: number) -> void {
+    if opening < 0 { return }
+    opening += dt
+    if opening >= 0.7 {
+        opening = -1
+        game.give(item, "")
+    }
+}

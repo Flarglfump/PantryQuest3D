@@ -1,0 +1,263 @@
+@strict @3d
+# enemy.bs - the common part of every enemy (health, being hit, flashing, knock-back, dying
+# with a puff and a drop) and the brains of the small ones:
+#   fuzzball - a mould puff that hops about and lunges at Sprig
+#   larva    - a mite larva that crawls after him
+#   scrub    - hides in its leaves, pops up and spits nuts (shield them straight back!)
+#   dummy    - a training dummy: it wobbles, and never falls
+# `group` names a set of enemies: when the last of one dies, the flag "clear:<group>" is set.
+
+var brain: string = "fuzzball"
+var hp: int = 2
+var damage: int = 2                     # quarter hearts, on touching Sprig
+var group: string = ""
+var order: int = 0                      # (scrub brothers: which one this is)
+var trio: bool = false
+var game: entity
+var sprig: entity
+var vel: vec3
+var st: string = "idle"
+var st_t: number = 0
+var flash: number = 0
+var stun: number = 0
+var yaw: number = 0
+var home: vec3
+var wander_to: vec3
+var dead: bool = false
+var spit_t: number = 1.5
+var wobble: number = 0
+var popped: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    home = self.position
+    wander_to = home
+    yaw = self.rotation.y
+    if brain == "scrub" {
+        st = "hidden"
+        play_animation(self, "hide", 1, true)
+    }
+    if group != "" and game.flag("clear:" + group) { destroy(self) }
+}
+
+func focus_point() -> vec3 {
+    if brain == "scrub" { return self.position + vec3(0, 0.45, 0) }
+    if brain == "dummy" { return self.position + vec3(0, 1.0, 0) }
+    return self.position + vec3(0, 0.35, 0)
+}
+
+func fwd() -> vec3 { return vec3(-sin(yaw), 0, -cos(yaw)) }
+
+func face(p: vec3, rate: number, dt: number) -> void {
+    var to: vec3 = p - self.position
+    to.y = 0
+    if length(to) < 0.01 { return }
+    var want: number = atan2(-to.x, -to.z)
+    var d: number = ((want - yaw + 540) % 360) - 180
+    yaw += clamp(d, -rate * dt, rate * dt)
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if dead { return }
+    if brain == "scrub" {
+        if st == "hidden" and how != "nut" { return }
+        if how == "nut" or trio {
+            beaten()
+            return
+        }
+    }
+    if brain == "dummy" {
+        wobble = 1
+        play_sound("sfx/thunk.wav", 0.6)
+        return
+    }
+    if stun <= 0 and how == "pea" and brain == "fuzzball" {
+        stun = 2.5                           # a pea stuns; it doesn't hurt much
+    }
+    hp -= amount
+    flash = 0.25
+    var away: vec3 = self.position - from
+    away.y = 0
+    if length(away) > 0.01 { vel = normalize(away) * 5 + vec3(0, 2.5, 0) }
+    st = "hurt"
+    st_t = 0
+    play_sound("sfx/hit.wav", 0.7, 0.9 + random() * 0.2)
+    play_animation(self, "hurt", 1, false)
+    if hp <= 0 { die() }
+}
+
+func die() -> void {
+    dead = true
+    add_tag(self, "hidden")
+    remove_tag(self, "focusable")
+    spawn("prefabs/poof.scene", self.position + vec3(0, 0.4, 0))
+    play_sound("sfx/defeat.wav", 0.7)
+    game.roll_drop(self.position, 0.7)
+    if group != "" {
+        var left: int = 0
+        for e in find_tagged("enemy") {
+            if e != self and e.alive and not has_tag(e, "hidden") and e.group == group { left += 1 }
+        }
+        if left == 0 { game.set_flag("clear:" + group) }
+    }
+    destroy(self)
+}
+
+# A scrub hit by its own nut (or, for the brothers, by anything): it gives up.
+func beaten() -> void {
+    play_sound("sfx/hit.wav", 0.7)
+    flash = 0.4
+    if trio {
+        st = "hidden"
+        popped = false
+        play_animation(self, "hide", 1, true)
+        broadcast("scrub_struck", order)
+        return
+    }
+    dead = true
+    add_tag(self, "hidden")
+    remove_tag(self, "focusable")
+    game.talk("scrub_beaten", "")
+    spawn("prefabs/poof.scene", self.position + vec3(0, 0.4, 0))
+    game.roll_drop(self.position, 1)
+    destroy(self)
+}
+
+# (the brothers' puzzle wants them all back up after a wrong order)
+func reset_trio() -> void {
+    st = "hidden"
+    st_t = 0
+}
+
+func update(dt: number) -> void {
+    if dead or game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    stun = max(0, stun - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    var move := vec3(0, 0, 0)
+    if brain == "dummy" {
+        wobble = max(0, wobble - dt * 2)
+        self.rotation = vec3(sin(st_t * 1500) * 12 * wobble, yaw, 0)
+        return
+    }
+    if st == "hurt" {
+        move = vec3(vel.x, 0, vel.z)
+        vel = vel * max(0, 1 - dt * 5)
+        if st_t > 0.35 { st = "idle" }
+    } elif stun > 0 {
+        play_animation(self, "hurt", 0.3, true)
+    } elif brain == "fuzzball" {
+        move = fuzzball(dt, to, d)
+    } elif brain == "larva" {
+        if d < 9 {
+            face(sprig.position, 240, dt)
+            move = fwd() * 1.6
+            play_animation(self, "walk", 1, true)
+        } else {
+            play_animation(self, "idle", 1, true)
+        }
+    } elif brain == "scrub" {
+        scrub(dt, to, d)
+    }
+    if brain != "scrub" {
+        vel.y -= 20 * dt
+        var v := vec3(move.x, vel.y, move.z)
+        v = move_and_slide(self, v)
+        vel.y = v.y
+        if is_on_floor(self) and vel.y < 0 { vel.y = -1 }
+        if self.y < game.kill_y { die() }
+    }
+    self.rotation = vec3(0, yaw, 0)
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff8080ff" } else { self.Mesh.color = "#ffffffff" }
+    # touching Sprig hurts him (not while stunned, or for a scrub)
+    if brain != "scrub" and stun <= 0 and st != "hurt" and d < 0.75 and abs(sprig.y - self.y) < 1.2 {
+        var r: string = sprig.hurt(damage, self.position, "touch")
+        if r == "blocked" or r == "hit" {
+            vel = normalize(to) * -4 + vec3(0, 2, 0)
+            st = "hurt"
+            st_t = 0.1
+        }
+    }
+}
+
+func fuzzball(dt: number, to: vec3, d: number) -> vec3 {
+    if st == "idle" or st == "wander" {
+        if d < 7 {
+            st = "chase"
+            st_t = 0
+        } else {
+            if distance(self.position, wander_to) < 0.5 or st_t > 4 {
+                wander_to = home + vec3(random(-2.5, 2.5), 0, random(-2.5, 2.5))
+                st_t = 0
+            }
+            face(wander_to, 180, dt)
+            play_animation(self, "hop", 1, true)
+            return fwd() * 0.9
+        }
+    }
+    if st == "chase" {
+        face(sprig.position, 300, dt)
+        play_animation(self, "hop", 1.4, true)
+        if d > 10 { st = "wander" }
+        if d < 2.6 and st_t > 0.8 {
+            st = "windup"
+            st_t = 0
+        }
+        return fwd() * 1.8
+    }
+    if st == "windup" {
+        face(sprig.position, 400, dt)
+        play_animation(self, "idle", 3, true)
+        if st_t > 0.45 {
+            st = "lunge"
+            st_t = 0
+            vel.y = 3.5
+            play_animation(self, "lunge", 1, false)
+            play_sound("sfx/lunge.wav", 0.5)
+        }
+        return vec3(0, 0, 0)
+    }
+    if st == "lunge" {
+        if st_t > 0.5 {
+            st = "chase"
+            st_t = 0
+        }
+        return fwd() * 6.5
+    }
+    return vec3(0, 0, 0)
+}
+
+func scrub(dt: number, to: vec3, d: number) -> void {
+    face(sprig.position, 360, dt)
+    if st == "hidden" {
+        if d < 9 and d > 2.6 and st_t > 1.2 {
+            st = "up"
+            st_t = 0
+            popped = true
+            play_animation(self, "idle", 1, true)
+            play_sound("sfx/pop.wav", 0.5)
+            spit_t = 0.9
+        }
+    } elif st == "up" {
+        spit_t -= dt
+        if spit_t <= 0 {
+            spit_t = 2.2
+            play_animation(self, "spit", 1, false)
+            var n: entity = spawn("prefabs/nut.scene", self.position + vec3(0, 0.45, 0) + fwd() * 0.45)
+            n.dir = normalize(sprig.position + vec3(0, 0.5, 0) - (self.position + vec3(0, 0.45, 0)))
+            n.owner = self
+            play_sound("sfx/spit.wav", 0.6)
+        }
+        if d < 2.2 or d > 11 {
+            st = "hidden"
+            st_t = 0
+            popped = false
+            play_animation(self, "hide", 1, true)
+        }
+    }
+    if st == "hidden" { add_tag(self, "hidden") } else { remove_tag(self, "hidden") }
+}

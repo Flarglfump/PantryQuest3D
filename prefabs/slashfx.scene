@@ -1,0 +1,28 @@
+# A spark where the spoon hits.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "SlashFx"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 12
+    max = 20
+    lifetime = 0.25
+    lifetime_random = 0.4
+    speed = 4
+    speed_random = 0.5
+    spread = 180
+    gravity = 0
+    drag = 1.2
+    size_start = 0.08
+    size_end = 0.02
+    color_start = #ffffffff
+    color_end = #a0d0ff00
+    blend = add
+    auto_destroy = true

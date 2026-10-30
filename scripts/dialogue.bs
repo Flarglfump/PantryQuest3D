@@ -1,0 +1,205 @@
+@strict
+# dialogue.bs - the text box, a scene pushed over the area (the area waits underneath).
+# The talk comes in the global "talk": pages of [speaker, text, choices, icon]. Text types
+# out a letter at a time; {action} or {attack} finishes the page or goes on. A page with
+# choices waits for one, and the global "talk_choice" says which (0, 1, ...). {action},
+# {attack}... in the text become the player's keys or buttons.
+
+var draw_layer: int = 95
+var pages: list = []                     # [speaker, lines, choices, icon]
+var page: int = 0
+var shown: number = 0
+var total: int = 0
+var choice: int = 0
+var t: number = 0
+var closing: bool = false
+
+const WIDTH: int = 34
+const LINES: int = 4
+
+func start() -> void {
+    var given: list = global("talk", [])
+    if len(given) == 0 { given = [["", "...", [], ""]] }
+    for pg in given {
+        var width: int = WIDTH
+        if pg[3] != "" { width = WIDTH - 3 }
+        var all: list[string] = wrap(keys(pg[1]), width)
+        var i: int = 0
+        while i < len(all) {
+            var chunk: list[string] = []
+            var j: int = i
+            while j < len(all) and j < i + LINES {
+                push(chunk, all[j])
+                j += 1
+            }
+            var ch: list = []
+            if j >= len(all) { ch = pg[2] }         # the choices go with the last box of the page
+            push(pages, [pg[0], chunk, ch, pg[3]])
+            i = j
+        }
+    }
+    open_page()
+}
+
+func open_page() -> void {
+    shown = 0
+    choice = 0
+    total = 0
+    for l in pages[page][1] { total += len(l) }
+}
+
+func keys(text: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    var names: list = [["{action}", "SPACE", "(A)"], ["{attack}", "J", "(X)"], ["{focus}", "SHIFT", "(LT)"],
+                       ["{shield}", "K", "(RT)"], ["{flicker}", "TAB", "(BACK)"], ["{item}", "U, I or O", "(Y), (B) or (UP)"],
+                       ["{pause}", "ENTER", "(START)"]]
+    var out: string = text
+    for n in names {
+        var with: string = n[1]
+        if pad { with = n[2] }
+        out = replace(out, n[0], with)
+    }
+    return out
+}
+
+func replace(text: string, what: string, with: string) -> string {
+    var out: string = ""
+    var i: int = 0
+    var n: int = len(what)
+    while i < len(text) {
+        if substr(text, i, n) == what {
+            out = out + with
+            i += n
+        } else {
+            out = out + text[i]
+            i += 1
+        }
+    }
+    return out
+}
+
+func wrap(words: string, width: int) -> list[string] {
+    var out: list[string] = []
+    var line: string = ""
+    var word: string = ""
+    for i in len(words) + 1 {
+        var c: string = " "
+        if i < len(words) { c = words[i] }
+        if c == " " or c == "|" {
+            if word != "" {
+                if line != "" and len(line) + len(word) + 1 > width {
+                    push(out, line)
+                    line = word
+                } elif line == "" {
+                    line = word
+                } else {
+                    line = line + " " + word
+                }
+            }
+            word = ""
+            if c == "|" {
+                push(out, line)
+                line = ""
+            }
+        } else {
+            word = word + c
+        }
+    }
+    if line != "" { push(out, line) }
+    if len(out) == 0 { push(out, "") }
+    return out
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if closing { return }
+    var before: int = floor(shown)
+    shown = min(total, shown + dt * 60)
+    if floor(shown) != before and floor(shown) % 3 == 0 and floor(shown) < total { play_sound("sfx/blip.wav", 0.25) }
+    var ch: list = pages[page][2]
+    var go: bool = action_pressed("m_ok") or action_pressed("attack") or action_pressed("action")
+    if shown < total {
+        if go { shown = total }
+        return
+    }
+    if len(ch) > 0 {
+        if action_pressed("m_up") {
+            choice = (choice + len(ch) - 1) % len(ch)
+            play_sound("sfx/cursor.wav", 0.4)
+        }
+        if action_pressed("m_down") {
+            choice = (choice + 1) % len(ch)
+            play_sound("sfx/cursor.wav", 0.4)
+        }
+    }
+    if go {
+        if len(ch) > 0 {
+            set_global("talk_choice", choice)
+            play_sound("sfx/select.wav", 0.5)
+        }
+        page += 1
+        if page >= len(pages) {
+            closing = true
+            pop_scene()
+            return
+        }
+        open_page()
+    }
+}
+
+func icon_file(item: string) -> string {
+    var map: list = [["map_crock", "map"], ["compass_crock", "compass"], ["bosskey_crock", "bosskey"], ["heartpie", "pie"],
+                     ["ember_courage", "ember"], ["pipe", "whistle"], ["bean20", "bean"], ["bean50", "bean"]]
+    for m in map {
+        if m[0] == item { return "art/icons/" + m[1] + ".png" }
+    }
+    return "art/icons/" + item + ".png"
+}
+
+func draw() -> void {
+    if closing { return }
+    var pg: list = pages[page]
+    var ch: list = pg[2]
+    var top: number = 172
+    if len(ch) > 0 { top = 172 - len(ch) * 11 }
+    var h: number = 240 - 6 - top
+    draw_rect(vec2(8, top), vec2(304, h), [16, 12, 30, 215])
+    draw_rect(vec2(8, top), vec2(304, h), [220, 190, 120, 255], false)
+    draw_rect(vec2(10, top + 2), vec2(300, h - 4), [120, 100, 70, 255], false)
+    var x: number = 18
+    if pg[3] != "" {
+        draw_rect(vec2(16, top + 10), vec2(22, 22), [60, 50, 40, 255])
+        draw_image(icon_file(pg[3]), vec2(27, top + 21))
+        x = 44
+    }
+    if pg[0] != "" {
+        var w: number = text_size(pg[0]).x
+        draw_rect(vec2(14, top - 9), vec2(w + 10, 12), [16, 12, 30, 235])
+        draw_rect(vec2(14, top - 9), vec2(w + 10, 12), [220, 190, 120, 255], false)
+        draw_text(pg[0], vec2(19, top - 7), [255, 214, 120])
+    }
+    var left: int = floor(shown)
+    var y: number = top + 9
+    for l in pg[1] {
+        var s: string = l
+        if left < len(l) { s = substr(l, 0, left) }
+        left = max(0, left - len(l))
+        draw_text(s, vec2(x, y), [244, 240, 228])
+        y += 11
+    }
+    if shown >= total {
+        if len(ch) > 0 {
+            y = top + 9 + LINES * 11 - 2
+            for i in len(ch) {
+                var col: list = [200, 196, 180]
+                if i == choice {
+                    col = [255, 230, 120]
+                    draw_text(">", vec2(x + 2 + floor(t * 4) % 2, y + i * 11), col)
+                }
+                draw_text(ch[i], vec2(x + 14, y + i * 11), col)
+            }
+        } elif floor(t * 3) % 2 == 0 {
+            draw_text("v", vec2(298, 224), [255, 214, 120])
+        }
+    }
+}

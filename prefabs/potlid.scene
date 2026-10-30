@@ -1,0 +1,17 @@
+# The pot-lid shield (sprig.bs places it).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "PotLid"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/potlid.obj"
+    color = #c0c0c8ff
+    uv_scale = 1 1
+    cast_shadow = false

@@ -1,0 +1,250 @@
+@strict
+# pause.bs - the pause menu, pushed over the area. Pages (Q / E, or left and right at the
+# edges): ITEMS (choose one, then press an item button to put it there), GEAR & QUEST,
+# MAP and SYSTEM (save, save and quit). It works on the global "save" and the area reloads
+# it when the menu closes.
+
+var draw_layer: int = 96
+var page: int = 0
+var cur: int = 0
+var t: number = 0
+var s: list = []
+var message: string = ""
+var msg_t: number = 0
+var closing: bool = false
+
+const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
+const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "whistle", "lens", "beans", "jar1", "jar2"]
+
+func start() -> void { s = global("save", []) }
+
+func has(name: string) -> bool { return contains(s[1], name) }
+
+func item_shown(name: string) -> bool {
+    if name == "whistle" { return has("pipe") or has("whistle") }
+    return has(name)
+}
+
+func icon(name: string) -> string {
+    if name == "whistle" { return "art/icons/whistle.png" }
+    return "art/icons/" + name + ".png"
+}
+
+func label(name: string) -> string {
+    var names: list = [["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
+                       ["whistle", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
+                       ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"],
+                       ["ember_courage", "EMBER OF COURAGE"], ["ember_power", "EMBER OF POWER"], ["ember_wisdom", "EMBER OF WISDOM"]]
+    for n in names {
+        if n[0] == name { return n[1] }
+    }
+    return name
+}
+
+func update(dt: number) -> void {
+    t += dt
+    msg_t = max(0, msg_t - dt)
+    if closing { return }
+    if action_pressed("pause") or action_pressed("m_back") {
+        close()
+        return
+    }
+    if action_pressed("m_page_l") { turn(-1) }
+    if action_pressed("m_page_r") { turn(1) }
+    if page == 0 {
+        var cols: int = 4
+        if action_pressed("m_left") {
+            if cur % cols == 0 { turn(-1) } else { move(-1) }
+        } elif action_pressed("m_right") {
+            if cur % cols == cols - 1 { turn(1) } else { move(1) }
+        }
+        if action_pressed("m_up") { move(-cols) }
+        if action_pressed("m_down") { move(cols) }
+        var it: string = ITEM_GRID[cur]
+        for i in 3 {
+            if action_pressed("item" + (i + 1)) and item_shown(it) and it != "whistle" {
+                var slots: list = s[6]
+                for j in 3 {
+                    if slots[j] == it { slots[j] = "" }
+                }
+                slots[i] = it
+                s[6] = slots
+                set_global("save", s)
+                play_sound("sfx/select.wav", 0.5)
+            }
+        }
+    } elif page == 3 {
+        if action_pressed("m_up") { move(-1) }
+        if action_pressed("m_down") { move(1) }
+        if action_pressed("m_ok") { system(cur) }
+        if action_pressed("m_left") { turn(-1) }
+    } else {
+        if action_pressed("m_left") { turn(-1) }
+        if action_pressed("m_right") { turn(1) }
+    }
+}
+
+func move(d: int) -> void {
+    var n: int = len(ITEM_GRID)
+    if page == 3 { n = 3 }
+    var c: int = cur + d
+    if c < 0 or c >= n { return }
+    cur = c
+    play_sound("sfx/cursor.wav", 0.4)
+}
+
+func turn(d: int) -> void {
+    page = (page + d + len(PAGES)) % len(PAGES)
+    cur = 0
+    play_sound("sfx/page.wav", 0.5)
+}
+
+func system(i: int) -> void {
+    if i == 0 or i == 1 {
+        var slot: int = global("slot", 0)
+        if save_data("slot" + slot, s) {
+            message = "Your journey was saved."
+            play_sound("sfx/save.wav", 0.6)
+        } else {
+            message = "Couldn't save!"
+        }
+        msg_t = 2.5
+        if i == 1 {
+            set_global("quit_to_title", true)
+            close()
+        }
+    } else {
+        close()
+    }
+}
+
+func close() -> void {
+    closing = true
+    play_sound("sfx/menu.wav", 0.5, 0.8)
+    pop_scene()
+}
+
+func frame(title: string) -> void {
+    draw_rect(vec2(0, 0), vec2(320, 240), [0, 0, 0, 120])
+    draw_rect(vec2(20, 26), vec2(280, 190), [30, 22, 40, 235])
+    draw_rect(vec2(20, 26), vec2(280, 190), [220, 190, 120, 255], false)
+    draw_rect(vec2(22, 28), vec2(276, 186), [110, 90, 60, 255], false)
+    var w: number = text_size(title, 2).x
+    draw_text(title, vec2(160 - w / 2, 34), [255, 220, 130], 2)
+    draw_text("< Q", vec2(28, 38), [180, 160, 120])
+    draw_text("E >", vec2(270, 38), [180, 160, 120])
+    for i in len(PAGES) {
+        var c: list = [90, 80, 70]
+        if i == page { c = [255, 220, 130] }
+        draw_circle(vec2(148 + i * 8, 56), 2, c)
+    }
+}
+
+func draw() -> void {
+    if closing { return }
+    frame(PAGES[page])
+    if page == 0 { draw_items() }
+    if page == 1 { draw_gear() }
+    if page == 2 { draw_map() }
+    if page == 3 { draw_system() }
+    if msg_t > 0 {
+        var w: number = text_size(message).x
+        draw_rect(vec2(160 - w / 2 - 6, 222), vec2(w + 12, 13), [0, 0, 0, 200])
+        draw_text(message, vec2(160 - w / 2, 225), [255, 255, 200])
+    }
+}
+
+func draw_items() -> void {
+    for i in len(ITEM_GRID) {
+        var c: vec2 = vec2(88 + (i % 4) * 48, 88 + floor(i / 4) * 40)
+        draw_rect(c - vec2(14, 14), vec2(28, 28), [60, 50, 70, 255])
+        if item_shown(ITEM_GRID[i]) { draw_image(icon(ITEM_GRID[i]), c) }
+        if i == cur {
+            var o: number = floor(t * 4) % 2
+            draw_rect(c - vec2(16 + o, 16 + o), vec2(32 + o * 2, 32 + o * 2), [255, 220, 90, 255], false)
+        }
+        var slots: list = s[6]
+        for j in 3 {
+            if slots[j] == ITEM_GRID[i] and slots[j] != "" { draw_text(["U", "I", "O"][j], c + vec2(7, 6), [255, 220, 90]) }
+        }
+    }
+    var it: string = ITEM_GRID[cur]
+    if item_shown(it) {
+        draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 170), [255, 255, 255])
+        if it != "whistle" { draw_text("U / I / O: put it on that button", vec2(36, 186), [190, 180, 150]) }
+    }
+}
+
+func draw_gear() -> void {
+    draw_text("GEAR", vec2(40, 68), [255, 220, 130])
+    var gear: list = ["spoon", "potlid"]
+    for i in len(gear) {
+        var c: vec2 = vec2(52 + i * 30, 92)
+        draw_rect(c - vec2(12, 12), vec2(24, 24), [60, 50, 70, 255])
+        if has(gear[i]) { draw_image(icon(gear[i]), c) }
+    }
+    draw_text("EMBERS", vec2(40, 118), [255, 220, 130])
+    var embers: list = ["ember_courage", "ember_power", "ember_wisdom"]
+    for i in 3 {
+        var c2: vec2 = vec2(52 + i * 30, 142)
+        draw_circle(c2, 11, [60, 50, 70, 255])
+        if has(embers[i]) { draw_image("art/icons/ember.png", c2) }
+    }
+    draw_text("HEARTS", vec2(180, 68), [255, 220, 130])
+    var mx: int = s[3]
+    draw_text(str(floor(mx / 4)) + " hearts", vec2(180, 82), [255, 255, 255])
+    var slices: int = 0
+    for c3 in s[7] {
+        if c3[0] == "slices" { slices = c3[1] }
+    }
+    draw_image("art/icons/slice.png", vec2(188, 102))
+    draw_text("x " + (slices % 4) + " / 4", vec2(200, 99), [255, 255, 255])
+    draw_text("TIME", vec2(180, 124), [255, 220, 130])
+    var secs: int = floor(s[10])
+    var m: int = floor(secs / 60)
+    var sec: int = secs % 60
+    var pad: string = ""
+    if sec < 10 { pad = "0" }
+    draw_text(str(floor(m / 60)) + ":" + (m % 60) + ":" + pad + sec, vec2(180, 138), [255, 255, 255])
+    if has("pipe") {
+        draw_image("art/icons/whistle.png", vec2(188, 168))
+        draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
+    }
+}
+
+func draw_map() -> void {
+    var name: string = global("area_name", "")
+    draw_text(name, vec2(160 - text_size(name).x / 2, 70), [255, 255, 255])
+    var dun: string = global("dungeon", "")
+    if dun == "" {
+        draw_text("SPROUTHOLLOW", vec2(118, 100), [140, 220, 120])
+        draw_text("The village of the Sprouts,", vec2(54, 120), [200, 190, 160])
+        draw_text("hidden in the Thicket.", vec2(54, 132), [200, 190, 160])
+        draw_text("North: Mother Starter's grove", vec2(54, 152), [200, 190, 160])
+        draw_text("South: the bridge", vec2(54, 164), [200, 190, 160])
+        return
+    }
+    var hm: bool = has("map_" + dun)
+    var hc: bool = has("compass_" + dun)
+    draw_text("FLOORS", vec2(40, 92), [255, 220, 130])
+    var floors: list = ["3F", "2F", "1F", "B1"]
+    for i in 4 {
+        draw_rect(vec2(40, 104 + i * 20), vec2(40, 16), [60, 50, 70, 255])
+        draw_text(floors[i], vec2(52, 108 + i * 20), [255, 255, 255])
+    }
+    if hm { draw_text("You have the map.", vec2(110, 104), [140, 220, 120]) } else { draw_text("Find the DUNGEON MAP!", vec2(110, 104), [200, 190, 160]) }
+    if hc { draw_text("The Queen lurks on 3F,", vec2(110, 124), [255, 140, 120]); draw_text("past the web below.", vec2(110, 136), [255, 140, 120]) }
+    if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(118, 160)); draw_text("Boss Key", vec2(130, 157), [255, 255, 255]) }
+}
+
+func draw_system() -> void {
+    var opts: list = ["SAVE", "SAVE AND QUIT", "BACK TO THE GAME"]
+    for i in 3 {
+        var c: list = [200, 190, 160]
+        if i == cur {
+            c = [255, 230, 120]
+            draw_text(">", vec2(90 + floor(t * 4) % 2, 100 + i * 20), c)
+        }
+        draw_text(opts[i], vec2(104, 100 + i * 20), c)
+    }
+}

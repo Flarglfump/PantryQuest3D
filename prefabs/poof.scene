@@ -1,0 +1,28 @@
+# A puff of smoke (an enemy beaten, something appearing).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Poof"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 30
+    max = 38
+    lifetime = 0.7
+    lifetime_random = 0.4
+    speed = 2.5
+    speed_random = 0.5
+    spread = 180
+    gravity = -1
+    drag = 1.2
+    size_start = 0.3
+    size_end = 0.02
+    color_start = #f0f0e0e0
+    color_end = #a0a09000
+    blend = alpha
+    auto_destroy = true

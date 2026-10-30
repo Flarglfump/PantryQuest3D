@@ -1,0 +1,78 @@
+@strict @3d
+# shot.bs - a flying pea (Sprig's) or nut (a scrub's). It flies straight, a ray at a time,
+# and hits the first thing in its way. A pea through a torch's flame catches fire, and a
+# burning pea burns mould webs. A nut that meets Sprig's raised shield goes back where it
+# came from - and hurts its owner.
+
+var kind: string = "pea"              # pea, nut
+var dir: vec3 = vec3(0, 0, -1)
+var speed: number = 18
+var owner: entity
+var fire: bool = false
+var life: number = 1.6
+var reflected: bool = false
+
+func start() -> void {
+    if kind == "nut" { speed = 7 }
+}
+
+func update(dt: number) -> void {
+    life -= dt
+    if life <= 0 {
+        destroy(self)
+        return
+    }
+    var from: vec3 = self.position
+    var to: vec3 = from + dir * speed * dt
+    if kind == "pea" and not fire {
+        for t in find_tagged("torch") {
+            if t.lit and distance(t.flame_point(), to) < 0.45 {
+                fire = true
+                self.Mesh.color = "#ff8020ff"
+                self.Particles.emitting = true
+                play_sound("sfx/ignite.wav", 0.6)
+            }
+        }
+    }
+    var ignore: entity = owner
+    if reflected { ignore = nil }
+    var hit: any = raycast(from, to, ignore)
+    if hit != nil {
+        var e: entity = hit[0]
+        if e.name == "Sprig" and kind == "nut" {
+            var r: string = e.hurt(2, from, "nut")
+            if r == "blocked" {
+                dir = dir * -1
+                reflected = true
+                owner = e
+                speed = 10
+                self.position = hit[1] + dir * 0.1
+                return
+            }
+            destroy(self)
+            return
+        }
+        if e.name != "Sprig" {
+            var how: string = kind
+            if fire { how = "fire" }
+            send(e, "hit", 1, how, from)
+            spawn("prefabs/spark.scene", hit[1])
+            play_sound("sfx/tick.wav", 0.5)
+        }
+        destroy(self)
+        return
+    }
+    # (triggers aren't solid: webs and switches are found by distance)
+    for w in find_tagged("shootable") {
+        if distance(w.global_position, to) < w.radius {
+            var how2: string = kind
+            if fire { how2 = "fire" }
+            w.hit(1, how2, from)
+            if not w.passthrough {
+                destroy(self)
+                return
+            }
+        }
+    }
+    self.position = to
+}

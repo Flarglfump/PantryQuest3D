@@ -1,0 +1,18 @@
+@strict @3d
+# blocker.bs - something in the way (Chive's fence, a mould web, bars) until a story flag
+# is set; then it goes, with a puff.
+
+var until: string = ""
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(until) { destroy(self) }
+}
+
+func flags_changed() -> void {
+    if game.flag(until) {
+        spawn("prefabs/poof.scene", self.position + vec3(0, 0.6, 0))
+        destroy(self)
+    }
+}

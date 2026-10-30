@@ -1,0 +1,134 @@
+@strict
+# hud.bs - drawn over the 3D view: hearts, beans, the buttons (what A does now, the spoon,
+# the three item buttons with their ammo), small keys in a dungeon, the focus marks round
+# what Flicker has focused, and a prompt when Flicker has something to say.
+
+var draw_layer: int = 70
+var game: entity
+var sprig: entity
+var t: number = 0
+var shown_beans: number = 0
+var boss: entity
+var boss_name: string = ""
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    shown_beans = game.beans
+}
+
+func update(dt: number) -> void {
+    t += dt
+    var b: number = game.beans
+    if shown_beans < b { shown_beans = min(b, shown_beans + dt * 30) }
+    if shown_beans > b { shown_beans = max(b, shown_beans - dt * 30) }
+}
+
+func show_boss(e: entity, name: string) -> void {
+    boss = e
+    boss_name = name
+}
+
+func hearts() -> void {
+    var hp: int = game.hp
+    var mx: int = game.max_hp
+    var n: int = floor(mx / 4)
+    var low: bool = hp <= 4 and floor(t * 3) % 2 == 0
+    for i in n {
+        var q: int = clamp(hp - i * 4, 0, 4)
+        var x: number = 14 + (i % 10) * 11
+        var y: number = 14 + floor(i / 10) * 11
+        var s: number = 1
+        if q > 0 and (i + 1) * 4 >= hp and i * 4 < hp and low { y -= 1 }
+        draw_image("art/icons/heart" + q + ".png", vec2(x, y))
+    }
+}
+
+func button(c: vec2, r: number, col: list, label: string) -> void {
+    draw_circle(c + vec2(1, 1), r, [0, 0, 0, 120])
+    draw_circle(c, r, col)
+    draw_circle(c, r, [255, 255, 255, 140], false)
+    if label != "" {
+        var w: number = text_size(label).x
+        draw_text(label, c - vec2(w / 2, 3), [255, 255, 255])
+    }
+}
+
+func draw() -> void {
+    if game.state == "paused" or game.fade >= 1 { return }
+    hearts()
+    # beans
+    draw_image("art/icons/bean.png", vec2(18, 224))
+    var cap: int = game.max_beans()
+    var bc: list = [255, 255, 255]
+    if floor(shown_beans) >= cap { bc = [120, 255, 120] }
+    draw_text(str(floor(shown_beans)), vec2(28, 221), bc)
+    # small keys
+    if game.dungeon != "" {
+        var keys: int = game.count("keys_" + game.dungeon)
+        if keys > 0 {
+            draw_image("art/icons/key.png", vec2(18, 206))
+            draw_text("x" + keys, vec2(28, 203), [255, 255, 255])
+        }
+    }
+    # A: what the action button does
+    var label: string = sprig.action_label
+    var ax: number = 236
+    button(vec2(ax, 22), 10, [60, 110, 220, 220], "A")
+    if label != "" {
+        draw_rect(vec2(ax - 54, 17), vec2(42, 11), [20, 30, 70, 190])
+        var w: number = text_size(label).x
+        draw_text(label, vec2(ax - 33 - w / 2, 19), [255, 255, 255])
+    }
+    # B: the spoon
+    button(vec2(ax + 18, 38), 10, [60, 170, 80, 220], "")
+    if game.has_item("spoon") { draw_image("art/icons/spoon.png", vec2(ax + 18, 38)) } else { draw_text("B", vec2(ax + 15, 35), [255, 255, 255]) }
+    # the three item buttons
+    var cs: list = [vec2(272, 18), vec2(294, 32), vec2(272, 46)]
+    var names: list = ["U", "I", "O"]
+    if last_input() == "gamepad" or last_input() == "touch" { names = ["Y", "B", "^"] }
+    for i in 3 {
+        var c: vec2 = cs[i]
+        button(c, 9, [210, 170, 40, 210], "")
+        var it: string = game.slots[i]
+        if it != "" {
+            draw_image("art/icons/" + it + ".png", c)
+            if it == "shooter" {
+                var pc: list = [255, 255, 255]
+                if game.peas == 0 { pc = [255, 90, 90] }
+                if game.peas >= game.max_peas() { pc = [120, 255, 120] }
+                draw_text(str(game.peas), c + vec2(-4, 6), pc, 1)
+            }
+        } else {
+            draw_text(names[i], c - vec2(3, 3), [90, 60, 10])
+        }
+    }
+    # focus marks
+    var tg: entity = sprig.target
+    if tg != nil and tg.alive {
+        var p: vec2 = world_to_screen(tg.focus_point())
+        if p.x > -1000 {
+            var r: number = 14 + sin(t * 500) * 2
+            var col: list = [255, 220, 90]
+            if not has_tag(tg, "enemy") { col = [140, 255, 120] }
+            for k in 4 {
+                var a: number = 45 + k * 90 + t * 120
+                var c2: vec2 = p + from_angle(a, r)
+                var c3: vec2 = p + from_angle(a, r - 6)
+                draw_line(c2 + from_angle(a + 90, 4), c3, col)
+                draw_line(c2 - from_angle(a + 90, 4), c3, col)
+            }
+        }
+    } elif sprig.focusing {
+        draw_rect(vec2(0, 0), vec2(320, 14), [0, 0, 0, 255])
+        draw_rect(vec2(0, 226), vec2(320, 14), [0, 0, 0, 255])
+    }
+    # the boss's health
+    if boss != nil and boss.alive and boss.hp > 0 {
+        var frac: number = boss.hp / boss.max_hp
+        draw_text(boss_name, vec2(160 - text_size(boss_name).x / 2, 196), [255, 220, 200])
+        draw_rect(vec2(80, 207), vec2(160, 6), [40, 10, 10, 200])
+        draw_rect(vec2(80, 207), vec2(160 * frac, 6), [220, 50, 60, 255])
+        draw_rect(vec2(80, 207), vec2(160, 6), [255, 255, 255, 160], false)
+    }
+}

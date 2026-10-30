@@ -1,0 +1,91 @@
+@strict @3d
+# camera.bs - follows Sprig like the old adventure cameras: it hangs behind him on a rope,
+# so it trails round as he runs and turns. ← / → (or the right stick) swing it round;
+# Focus (or ↓) puts it straight behind him. While Flicker has something focused it looks
+# past Sprig at it. It pulls in when a wall would come between it and Sprig.
+
+var sprig: entity
+var dist: number = 4.6
+var height: number = 1.7
+var look_h: number = 0.8
+var follow_y: number = 0
+var pos: vec3
+var recenter: number = 0           # seconds of swinging back behind him
+var shake_t: number = 0
+
+func start() -> void {
+    sprig = find("Sprig")
+    snap_behind()
+}
+
+func behind_point() -> vec3 {
+    var f: vec3 = sprig.forward_of(sprig.facing)
+    return sprig.position - f * dist
+}
+
+func snap_behind() -> void {
+    if sprig == nil { return }
+    follow_y = sprig.y
+    pos = behind_point()
+    pos.y = follow_y + height
+    place(pos)
+}
+
+func update(dt: number) -> void {
+    if sprig == nil { return }
+    if not sprig.alive { return }
+    # height: follow Sprig's feet smoothly (hops and steps don't jolt the view)
+    var k: number = min(1, dt * 5)
+    if sprig.st == "climb" { k = min(1, dt * 8) }
+    follow_y = lerp(follow_y, sprig.y, k)
+    var me := vec3(sprig.x, follow_y, sprig.z)
+    var flat: vec3 = pos - me
+    flat.y = 0
+    if length(flat) < 0.1 { flat = sprig.forward_of(sprig.facing) * -1 }
+
+    var turn: number = action_axis("cam_left", "cam_right") * 110 * dt
+    var rs: vec2 = stick("right")
+    if abs(rs.x) > abs(action_axis("cam_left", "cam_right")) { turn = rs.x * 140 * dt }
+    if action_pressed("cam_center") or action_pressed("focus") { recenter = 0.25 }
+
+    var t: entity = sprig.target
+    if t != nil {
+        # behind Sprig, on the line from what's focused through him
+        var away: vec3 = me - t.global_position
+        away.y = 0
+        if length(away) > 0.1 { flat = lerp(normalize(flat), normalize(away), min(1, dt * 6)) }
+    } elif sprig.st == "climb" {
+        var back2: vec3 = sprig.forward_of(sprig.facing) * -1
+        flat = lerp(normalize(flat), back2, min(1, dt * 4))
+    } elif sprig.focusing or recenter > 0 {
+        recenter = max(0, recenter - dt)
+        var back: vec3 = sprig.forward_of(sprig.facing) * -1
+        flat = lerp(normalize(flat), back, min(1, dt * 12))
+    } elif turn != 0 {
+        var a: number = atan2(flat.x, flat.z) - turn
+        flat = vec3(sin(a), 0, cos(a))
+    }
+    flat = normalize(flat) * dist
+    var want: vec3 = me + flat + vec3(0, height, 0)
+    if t != nil { want.y += 0.4 }
+    pos = lerp(pos, want, min(1, dt * 10))
+    place(pos)
+}
+
+func place(p: vec3) -> void {
+    var focus := vec3(sprig.x, follow_y + look_h, sprig.z)
+    # pull in if something is in the way
+    var hit: any = raycast(focus, p, sprig)
+    var at: vec3 = p
+    if hit != nil and not has_tag(hit[0], "seethrough") {
+        var d: vec3 = p - focus
+        var l: number = length(d)
+        var hd: number = distance(focus, hit[1])
+        at = focus + d * (max(0.4, hd - 0.3) / l)
+    }
+    self.position = at
+    var look: vec3 = focus
+    var t: entity = sprig.target
+    if t != nil { look = lerp(focus, t.focus_point(), 0.4) }
+    look_at(self, look)
+}

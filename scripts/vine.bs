@@ -1,0 +1,9 @@
+@strict @3d
+# vine.bs - a climbable wall of vines (a trigger box in front of it). `out` is the way the
+# wall faces; `top` the height of the ledge to climb out on to.
+
+var out: vec3 = vec3(0, 0, 1)
+var top: number = 2
+var bottom: number = 0
+
+func reachable(p: vec3) -> bool { return p.y < top - 0.1 and p.y >= bottom - 0.6 }

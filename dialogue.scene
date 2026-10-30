@@ -1,0 +1,11 @@
+# The text box (pushed over an area).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Dialogue"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/dialogue.bs"

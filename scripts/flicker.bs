@@ -1,0 +1,43 @@
+@strict @3d
+# flicker.bs - Sprig's pilot light. She bobs at his shoulder, flies over whatever he has
+# focused (and turns yellow over enemies, green over friends), and glows green when she has
+# something to say (Tab / Back asks her).
+
+var sprig: entity
+var game: entity
+var t: number = 0
+var pos: vec3
+
+func start() -> void {
+    sprig = find("Sprig")
+    game = find("Game")
+    pos = self.position
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if sprig == nil { return }
+    var want: vec3
+    var tg: entity = sprig.target
+    var col: string = "#9ad8ffff"
+    if tg != nil {
+        want = tg.focus_point() + vec3(0, 0.7 + sin(t * 400) * 0.08, 0)
+        if has_tag(tg, "enemy") { col = "#ffe070ff" } else { col = "#a0ff90ff" }
+    } else {
+        var f: vec3 = sprig.forward_of(sprig.facing)
+        var side := vec3(-f.z, 0, f.x)
+        want = sprig.position + vec3(0, 1.25 + sin(t * 160) * 0.1, 0) + side * (0.45 + sin(t * 70) * 0.1) - f * 0.2
+        if game.flag("met_flicker") and story_hint() { col = "#a0ff90ff" }
+    }
+    pos = lerp(pos, want, min(1, dt * 7))
+    self.position = pos
+    self.Mesh.color = col
+    var s: number = 0.16 + sin(t * 900) * 0.015
+    self.scale = vec3(s, s, s)
+}
+
+func story_hint() -> bool {
+    return floor(t * 2) % 6 == 0
+}
+
+func focus_point() -> vec3 { return self.position }

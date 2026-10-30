@@ -1,0 +1,262 @@
+@strict
+# story.bs - every word anyone says, the names of things, Flicker's hints, and what
+# happens after a talk. The Story entity in each area runs it; the Game asks it for talks
+# by id. A talk is a list of pages: [speaker, text, choices, icon] - choices a list of
+# strings (the box asks), icon an item's picture ("" for none). '|' starts a new line.
+
+var game: entity
+
+func start() -> void { game = find("Game") }
+
+func p(who: string, text: string) -> list { return [who, text, [], ""] }
+func ask(who: string, text: string, choices: list) -> list { return [who, text, choices, ""] }
+
+# ---- the talks ----
+func talk(id: string) -> list {
+    if game == nil { game = find("Game") }
+    # ---- Sprouthollow: waking up
+    if id == "intro" {
+        return [p("???", "Sprig... SPRIG! Wake up!"),
+                p("???", "Honestly. The Great Mother Starter herself sends me to fetch you, and you're SNORING."),
+                p("FLICKER", "I'm Flicker. A pilot light. YOUR pilot light, from today - Mother Starter says so."),
+                p("FLICKER", "Every Sprout in Sprouthollow has one, and now you do too. Lucky you!"),
+                p("FLICKER", "Now get up! Mother Starter wants to see you. She's in her grove, north of the village."),
+                p("FLICKER", "If you get stuck, press {flicker} and I'll tell you what to do. I'm very wise.")]
+    }
+    if id == "flicker" { return [p("FLICKER", hint())] }
+
+    # ---- the Sprouts
+    if id == "fennel_1" {
+        return [p("FENNEL", "Sprig! You've got a pilot light! Finally!"),
+                p("FENNEL", "Mother Starter sent her? Then it must be important. She's been so quiet lately... her bubbles have gone all grey."),
+                p("FENNEL", "Chive won't let anyone up the grove path without a spoon and a shield, though. He thinks he's the boss.")]
+    }
+    if id == "fennel_2" {
+        if game.flag("crock_done") {
+            return [p("FENNEL", "Mother Starter is so quiet... Sprig, what happened in there?")]
+        }
+        return [p("FENNEL", "I heard there's a spoon hidden in the Kitchen Garden, past the hole in the hedge. Mind the rolling peas!")]
+    }
+    if id == "chive_block" {
+        return [p("CHIVE", "Hey! Mr. No-Light! Oh... you've got a pilot light now? Big deal."),
+                p("CHIVE", "Nobody goes to see the Great Mother Starter without a SPOON and a SHIELD. Them's the rules."),
+                p("CHIVE", "Come back when you look like a proper Sprout. Hmph!")]
+    }
+    if id == "chive_half" {
+        return [p("CHIVE", "Is that all you've got? I said a spoon AND a shield. Both! Hmph!")]
+    }
+    if id == "chive_move" {
+        return [p("CHIVE", "What?! A spoon AND a Pot-Lid Shield?"),
+                p("CHIVE", "...Fine. Go on, then. But I don't see why Mother Starter would want YOU. Hmph!")]
+    }
+    if id == "chive_after" { return [p("CHIVE", "Hmph. Mother Starter picked you. I still don't get it.")] }
+    if id == "chive_sorry" {
+        return [p("CHIVE", "Sprig... Mother Starter... she's gone quiet, isn't she."),
+                p("CHIVE", "I was mean to you. I'm... sorry. Hmph. There. I said it.")]
+    }
+    if id == "mint" {
+        return [p("MINT", "Did you know? If you hold {focus}, your pilot light will FOCUS on things, so you can talk to them from far away!"),
+                p("DILL", "And enemies! Focus on enemies and you'll face them while you fight. Mint learned that from a sign."),
+                p("MINT", "Dill!")]
+    }
+    if id == "dill" {
+        return [p("DILL", "Roll by pressing {action} while you run! You can bonk things off trees. Sometimes beans fall out!")]
+    }
+    if id == "parsley" {
+        return [p("PARSLEY", "Ahem. I, Parsley, Know-It-All of Sprouthollow, shall educate you."),
+                p("PARSLEY", "Hold {attack} after a swing and let go for a SPIN ATTACK. It hits everything around you."),
+                p("PARSLEY", "While focusing, press {action} to hop to the side, or back-flip. Forward + {action} with a spoon is a JUMP ATTACK."),
+                p("PARSLEY", "There. You're welcome.")]
+    }
+    if id == "sage_shop" {
+        var options: list = []
+        if not game.has_item("potlid") { push(options, "Pot-Lid Shield - 40 beans") }
+        if game.has_item("shooter") { push(options, "10 peas - 10 beans") }
+        push(options, "Just looking")
+        return [p("SAGE", "Welcome to Sage's, the only shop in Sprouthollow! You have " + game.beans + " beans."),
+                ask("SAGE", "What'll it be?", options)]
+    }
+    if id == "sage_poor" { return [p("SAGE", "Ah... you don't have enough beans, dear. Cut the grass and smash the pots - beans turn up everywhere!")] }
+    if id == "sage_bye" { return [p("SAGE", "Come again!")] }
+    if id == "sage_full" { return [p("SAGE", "Your pea pouch is already full, dear.")] }
+
+    # ---- signs
+    if id == "sign_house" { return [p("", "SPRIG'S HOUSE|(the only Sprout without a pilot light)")] }
+    if id == "sign_shop" { return [p("", "SAGE'S SHOP|Shields, peas, and sundries.")] }
+    if id == "sign_garden" { return [p("", "THE KITCHEN GARDEN|Beware of rolling peas! Crawl through the hedge to enter.")] }
+    if id == "sign_field" { return [p("", "TRAINING FIELD|Swing at the dummies with {attack}. Hold {focus} to focus on one first!")] }
+    if id == "sign_grove" { return [p("", "THE GROVE OF MOTHER STARTER|Sprouts with spoons and shields only. -Chive")] }
+    if id == "sign_bridge" { return [p("", "SOUTH: BREADBASKET FIELDS|Sprouts who leave the hollow never come back. (Probably.)")] }
+    if id == "sign_roll" { return [p("", "TIP: Press {action} while running to roll. Rolling into a tree may shake something loose!")] }
+    if id == "sign_spin" { return [p("", "TIP: Hold {attack}, then let go for a spin attack. Great for cutting grass!")] }
+
+    # ---- Mother Starter
+    if id == "starter_first" {
+        return [p("MOTHER STARTER", "Ahh... Flicker. You have brought him. Thank you."),
+                p("MOTHER STARTER", "Sprig... listen to an old starter. I have fed this village for four hundred years. But now..."),
+                p("MOTHER STARTER", "A wicked one from the Rotlands has cursed me. A mould has crept into my crock, and laid something within..."),
+                p("MOTHER STARTER", "I can feel it, feeding on me. Soon I will be nothing but grey."),
+                p("MOTHER STARTER", "Sprig. You have the courage of your kind. Will you go inside me, and break this curse?"),
+                p("FLICKER", "Inside?! Like... INSIDE inside?"),
+                p("MOTHER STARTER", "Enter, brave one... and you too, Flicker.")]
+    }
+    if id == "starter_wait" { return [p("MOTHER STARTER", "Enter, Sprig... the curse grows within me...")] }
+    if id == "starter_farewell" {
+        return [p("MOTHER STARTER", "You did it, Sprig... the mite is gone. I can feel my bubbles... but it is too late for me."),
+                p("MOTHER STARTER", "Listen. You are not a Sprout. You never needed a pilot light, because you are a HUMAN child."),
+                p("MOTHER STARTER", "Long ago, in a war, a mother brought you to my grove and asked me to keep you safe. Then she was gone."),
+                p("MOTHER STARTER", "The one who cursed me is a Duke from the Rotlands. A man of mould. He wanted this..."),
+                p("MOTHER STARTER", "The EMBER OF COURAGE. One of the three Embers of the First Hearth. I would not give it to him."),
+                p("MOTHER STARTER", "Take it to Castle Larder. Find the princess there. She... will know..."),
+                p("MOTHER STARTER", "Goodbye, Sprig. Goodbye, Flicker. Look after... one... another...")]
+    }
+    if id == "starter_gone" { return [p("FLICKER", "...She's sleeping, Sprig. Come on. We have to go to the castle.")] }
+
+    # ---- leaving
+    if id == "fennel_bridge" {
+        return [p("FENNEL", "You're leaving, aren't you? I always knew you would."),
+                p("FENNEL", "It's okay. We'll always be friends, whatever you are. Here - take my reed pipe."),
+                p("FENNEL", "Play it and think of me, okay?")]
+    }
+    if id == "to_be_continued" {
+        return [p("FLICKER", "Breadbasket Fields is out there... but the rest of the kingdom isn't finished yet!"),
+                p("FLICKER", "(Thanks for playing this much of Pantry Quest 3D. More of the world is on its way.)")]
+    }
+
+    # ---- the Great Crock
+    if id == "crock_enter" {
+        return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
+                p("FLICKER", "The curse must be deep down. Let's look around! Press {flicker} if you get stuck.")]
+    }
+    if id == "crock_eye" { return [p("FLICKER", "That eye over the door is watching us! If only we had something to shoot it with...")] }
+    if id == "crock_web" { return [p("FLICKER", "This web is made of mould. Swords won't cut it... but I bet fire would burn it right up!")] }
+    if id == "crock_torch" { return [p("FLICKER", "A torch! If a pea flew through that flame... it might catch fire!")] }
+    if id == "crock_scrubs" {
+        return [p("", "THE THREE SCRUB BROTHERS GUARD THIS DOOR.|Strike them in order: the middle one, then the right, then the left.")]
+    }
+    if id == "scrub_beaten" {
+        return [p("SPIT-SCRUB", "Ow ow ow! You win, you win! Don't hurt me!"),
+                p("SPIT-SCRUB", "We only serve the mould because it makes us strong... Here's a tip: the Queen's eye is her weak spot. Bye!")]
+    }
+    if id == "scrub_wrong" { return [p("SPIT-SCRUB", "Wrong order! Hee hee! Try again!")] }
+    if id == "scrubs_done" { return [p("FLICKER", "The door opened! Brothers, huh.")] }
+    if id == "queen_title" { return [p("", "QUEEN MILDEWMITE|Parasitic Mould Mite")] }
+    if id == "queen_beaten" {
+        return [p("FLICKER", "We did it! The curse is broken... I think."),
+                p("FLICKER", "Step into that light, Sprig. It'll take us back to Mother Starter.")]
+    }
+    if id == "locked" { return [p("", "The door is locked. You need a small key.")] }
+    if id == "boss_locked" { return [p("", "A huge lock seals this door. It needs the Boss Key.")] }
+    return [p("", "...")]
+}
+
+# ---- what happens when a talk ends ----
+func after(what: string, choice: int) -> void {
+    if game == nil { game = find("Game") }
+    if what == "met_flicker" {
+        game.set_flag("met_flicker")
+    } elif what == "chive_moved" {
+        game.set_flag("chive_moved")
+    } elif what == "starter_open" {
+        game.set_flag("starter_open")
+        broadcast("starter_opens")
+    } elif what == "ember" {
+        game.set_flag("starter_farewell")
+        game.give("ember_courage", "")
+    } elif what == "pipe" {
+        game.set_flag("fennel_bridge")
+        game.give("pipe", "")
+    } elif what == "shop" {
+        var options: list = []
+        if not game.has_item("potlid") { push(options, "potlid") }
+        if game.has_item("shooter") { push(options, "peas") }
+        push(options, "none")
+        if choice < 0 or choice >= len(options) { return }
+        var pick: string = options[choice]
+        if pick == "potlid" {
+            if game.beans < 40 { game.talk("sage_poor", "") } else {
+                game.add_beans(-40)
+                game.give("potlid", "")
+            }
+        } elif pick == "peas" {
+            if game.peas >= game.max_peas() { game.talk("sage_full", "") } elif game.beans < 10 { game.talk("sage_poor", "") } else {
+                game.add_beans(-10)
+                game.peas = min(game.max_peas(), game.peas + 10)
+                game.commit()
+                play_sound("sfx/bean.wav", 0.6)
+                game.talk("sage_bye", "")
+            }
+        } else {
+            game.talk("sage_bye", "")
+        }
+    } elif what == "crock_warp" {
+        game.set_flag("crock_done")
+        game.go("sprouthollow", "grove")
+    }
+}
+
+# A new area has started: first-time talks.
+func area_started(area: string) -> void {
+    if game == nil { game = find("Game") }
+    if area == "sprouthollow" and not game.flag("met_flicker") { game.talk("intro", "met_flicker") }
+    if area == "crock" and not game.flag("crock_entered") {
+        game.set_flag("crock_entered")
+        game.talk("crock_enter", "")
+    }
+}
+
+# ---- Flicker's hints: the first thing still to do ----
+func hint() -> string {
+    if game == nil { game = find("Game") }
+    if game.dungeon == "crock" { return crock_hint() }
+    if not game.has_item("spoon") and not game.has_item("potlid") {
+        return "Chive won't let you near Mother Starter without a spoon and a shield. There's a Kitchen Garden through the hedge on the west side - and Sage's shop sells shields!"
+    }
+    if not game.has_item("spoon") { return "You still need a spoon! Crawl through the hole in the hedge on the west side, into the Kitchen Garden." }
+    if not game.has_item("potlid") {
+        return "Sage's shop sells a Pot-Lid Shield for 40 beans. You have " + game.beans + ". Cut grass, smash pots and roll into trees to find more!"
+    }
+    if not game.flag("chive_moved") { return "Show Chive your spoon and shield! He's guarding the grove path, north of the village green." }
+    if not game.flag("starter_open") { return "Mother Starter is waiting in her grove, at the end of the path north!" }
+    if not game.flag("crock_done") { return "Mother Starter's mouth is open. We have to go inside and break the curse!" }
+    if not game.has_item("ember_courage") { return "Talk to Mother Starter, Sprig." }
+    if not game.has_item("pipe") { return "Fennel... I think she's waiting for you, by the bridge south of the village." }
+    return "The bridge to the south leads out of Sprouthollow, to Breadbasket Fields and Castle Larder beyond."
+}
+
+func crock_hint() -> string {
+    if not game.has_item("shooter") { return "There must be something in here we can use. Look on every floor - climb the vines, and ride the crusts!" }
+    if not game.flag("crock_web1") { return "The web in the middle of the floor... if only we could burn it. Remember that torch?" }
+    if not game.flag("crock_scrubs") { return "The Scrub brothers guard the door down below. The sign tells the order to beat them in!" }
+    if not game.has_item("bosskey_crock") { return "We need the big key! Search the basement." }
+    return "The Queen is below the web on the top floor! Shoot her eye when it glows red!"
+}
+
+# ---- names and descriptions of things ----
+func item_name(kind: string) -> string {
+    var names: list = [["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"], ["shooter", "PEA SHOOTER"],
+                       ["map_crock", "DUNGEON MAP"], ["compass_crock", "COMPASS"], ["bosskey_crock", "BOSS KEY"],
+                       ["key", "SMALL KEY"], ["heartpie", "HEART PIE"], ["ember_courage", "EMBER OF COURAGE"],
+                       ["pipe", "FENNEL'S PIPE"], ["slice", "PIE SLICE"], ["bean20", "RED BEAN"], ["bean50", "PURPLE BEAN"]]
+    for n in names {
+        if n[0] == kind { return n[1] }
+    }
+    return kind
+}
+
+func item_text(kind: string) -> string {
+    if kind == "spoon" { return "You got the WOODEN SPOON!|Swing it with {attack}. Hold {attack} and let go for a spin attack!" }
+    if kind == "potlid" { return "You got the POT-LID SHIELD!|Hold {shield} to raise it. It blocks attacks from the front." }
+    if kind == "shooter" { return "You got the PEA SHOOTER!|It's on a C button: press it to fire. Focus with {focus} first to aim at what Flicker marks." }
+    if kind == "map_crock" { return "You found the DUNGEON MAP!|See every room of the Great Crock in the pause menu." }
+    if kind == "compass_crock" { return "You found the COMPASS!|Now the map shows where the treasure chests and the boss are." }
+    if kind == "bosskey_crock" { return "You got the BOSS KEY!|It opens the door to the lair of the Great Crock's master." }
+    if kind == "key" { return "You found a SMALL KEY!|It opens a locked door, but only in this place." }
+    if kind == "heartpie" { return "You got a HEART PIE!|Your life energy has grown by one heart!" }
+    if kind == "ember_courage" { return "You got the EMBER OF COURAGE!|The ember that makes things rise. Mother Starter kept it for four hundred years." }
+    if kind == "pipe" { return "You got FENNEL'S PIPE!|A reed pipe that sounds like the grove. Its songs will come later..." }
+    if kind == "slice" { return "You found a PIE SLICE!|Collect four to make a whole new heart." }
+    if kind == "bean20" { return "You got a RED BEAN!|It's worth 20 beans!" }
+    if kind == "bean50" { return "You got a PURPLE BEAN!|It's worth 50 beans!" }
+    return "You got " + item_name(kind) + "!"
+}

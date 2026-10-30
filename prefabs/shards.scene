@@ -1,0 +1,28 @@
+# A pot breaking.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Shards"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 18
+    max = 26
+    lifetime = 0.6
+    lifetime_random = 0.4
+    speed = 3.5
+    speed_random = 0.5
+    spread = 180
+    gravity = 12
+    drag = 1.2
+    size_start = 0.12
+    size_end = 0.02
+    color_start = #c87848ff
+    color_end = #80482800
+    blend = alpha
+    auto_destroy = true

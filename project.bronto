@@ -1,0 +1,13 @@
+bronto_project 1
+# Pantry Quest 3D - a 3D action adventure in the Pantry Kingdom. Open this folder in the editor.
+name = Pantry Quest 3D
+main_scene = title.scene
+width = 320
+height = 240
+window_scale = 3
+# every script must declare its types (as if each began with @strict)
+strict_typing = true
+# on a phone or tablet (the web build): an on-screen stick and buttons, which work as a gamepad
+touch_controls = stick, a, x, y, b, lt, rt, back, start
+# the tools that make the art and areas, and the design notes, aren't part of the game
+exclude = tools, design

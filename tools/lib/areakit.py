@@ -1,0 +1,245 @@
+"""Building blocks for Pantry Quest 3D's areas: the entities every area has (the Game,
+the camera, Sprig, Flicker, the HUD, lights), static level geometry (merged into chunks,
+one mesh collider each) and the props people, enemies and treasure.
+
+An area script makes an Area, adds geometry and things, and saves it:
+
+    a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav')
+    a.geo('grass').ground(...)          # level geometry, by material
+    a.tree(4, 0, 6)
+    a.save()
+"""
+import math
+import os
+
+from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path)
+
+MATERIALS = {
+    # material: (texture, colour, solid, cast shadows, lit, cull)
+    'grass': ('art/grass.png', '#ffffffff', True, False, True, True),
+    'flowers': ('art/flowers.png', '#ffffffff', True, False, True, True),
+    'dirt': ('art/dirt.png', '#ffffffff', True, False, True, True),
+    'cliff': ('art/stone.png', '#c8d0b8ff', True, False, True, True),
+    'stone': ('art/stone.png', '#ffffffff', True, True, True, True),
+    'bark': ('art/bark.png', '#ffffffff', True, True, True, True),
+    'planks': ('art/planks.png', '#ffffffff', True, True, True, True),
+    'thatch': ('art/thatch.png', '#ffffffff', True, True, True, True),
+    'leaves': ('art/leaves.png', '#ffffffff', True, True, True, True),
+    'hedge': ('art/hedge.png', '#ffffffff', True, True, True, True),
+    'canopy': ('art/leaves.png', '#b8d8a8ff', False, False, True, False),
+    'water': ('art/water.png', '#ffffffc8', False, False, False, False),
+    'crock': ('art/crock.png', '#ffffffff', True, True, True, True),
+    'dough': ('art/dough.png', '#ffffffff', True, False, True, True),
+    'dough_wall': ('art/dough.png', '#e8d8c0ff', True, False, True, True),
+    'crust': ('art/crust.png', '#ffffffff', True, True, True, True),
+    'mould': ('art/mould.png', '#ffffffff', True, False, True, True),
+    'rot': ('art/rot.png', '#ffffffff', True, False, True, True),
+    'starter': ('art/dough.png', '#f0e0b8e0', False, False, True, False),
+    'deco': ('art/planks.png', '#ffffffff', False, True, True, True),
+    'ceiling': ('art/dough.png', '#a89878ff', True, False, True, True),
+}
+
+
+class Area:
+    def __init__(self, id, name, music='', dungeon='', kill_y=-20.0, sky='#a8d8f0ff', fog=(22, 60), fog_color=None,
+                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=True, chunk=24.0):
+        self.id, self.name = id, name
+        self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
+        self.chunks = Chunked(chunk)
+        self.kill_y = kill_y
+        s = self.scene
+        s.entity('Game', t2(), script('scripts/game.bs', area=id, area_name=name, music=music, dungeon=dungeon, kill_y=kill_y))
+        s.entity('Story', t2(), script('scripts/story.bs'))
+        s.entity('Sun', t3((0, 30, 0), sun_rot), light('directional', sun[0], sun[1], shadows=shadows, shadow_range=14))
+        s.entity('Sky Light', t3((0, 30, 0)), light('ambient', ambient[0], ambient[1]))
+        fc = fog_color or sky
+        s.entity('Camera', t3((0, 3, 6)),
+                 ('Camera3D', [('fov', 62), ('near_clip', 0.15), ('far_clip', fog[1] + 2), ('clear_color', sky),
+                               ('fog', True), ('fog_color', fc), ('fog_start', fog[0]), ('fog_end', fog[1])]),
+                 script('scripts/camera.bs'))
+        s.entity('Sprig', t3((0, 0.1, 0)), collider('capsule', (1, 1.1, 1), 0.28, offset=(0, 0.55, 0), friction=0),
+                 kinematic(), tags('player'), script('scripts/sprig.bs'))
+        s.entity('Flicker', t3((0, 1.5, 0), scale=0.16), mesh('sphere', '#9ad8ffff', lit=False, cast=False),
+                 particles(rate=14, max=30, lifetime=0.5, lifetime_random=0.3, speed=0.4, spread=180, size_start=0.09,
+                           size_end=0, color_start='#d0f0ffff', color_end='#60a0ff00', blend='add'),
+                 script('scripts/flicker.bs'))
+        s.entity('HUD', t2(), script('scripts/hud.bs'))
+
+    # ---- level geometry ----
+    def geo(self, material, x=0.0, z=0.0):
+        """The Obj to add `material` geometry to, for the chunk around x, z."""
+        return self.chunks.at(material, x, z)
+
+    def save(self):
+        n = 0
+        tris = 0
+        for (material, cx, cz), obj in self.chunks.items():
+            if obj.empty():
+                continue
+            texture, color, solid, cast, lit, cull = MATERIALS[material]
+            file = 'models/areas/%s/%s_%d_%d.obj' % (self.id, material, cx, cz)
+            obj.save(file)
+            comps = [t3((0, 0, 0)), mesh('model', color, texture, file=file, cast=cast, lit=lit, cull=cull)]
+            if solid:
+                comps.append(collider('mesh', friction=0.9))
+            if material == 'canopy' or material == 'water':
+                comps.append(tags('seethrough'))
+            self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
+            n += 1
+            tris += obj.tri_count()
+        self.scene.save(os.path.join('areas', self.id + '.scene'))
+        print('  %s: %d entities, %d level meshes, %d level triangles' % (self.id, self.scene.count, n, tris))
+
+    # ---- things ----
+    def spawn_point(self, name, x, y, z, yaw=0):
+        self.scene.entity('spawn_' + name, t3((x, y, z), (0, yaw, 0)))
+
+    def entity(self, name, *comps):
+        return self.scene.entity(name, *comps)
+
+    def tree(self, x, y, z, size=1.0, bonk_drop=''):
+        """A round tree: a trunk (solid) and a ball of leaves. Rolling into it can shake down a drop."""
+        h = 2.6 * size
+        self.entity('Tree', t3((x, y + h / 2, z), (0, 0, 0), (0.6 * size, h, 0.6 * size)),
+                    mesh('cylinder', '#ffffffff', 'art/bark.png', uv=(1, 2)),
+                    collider('capsule', (1, 1, 1), 0.5), tags('tree'),
+                    script('scripts/tree.bs', drop=bonk_drop))
+        self.entity('Leaves', t3((x, y + h + 0.7 * size, z), (0, x * 37 % 360, 0), (2.6 * size, 2.0 * size, 2.6 * size)),
+                    mesh('sphere', '#ffffffff', 'art/leaves.png', uv=(2, 2)))
+
+    def grass(self, x, y, z, drops=0.3):
+        self.entity('Grass', t3((x, y, z), (0, (x * 53 + z * 17) % 360, 0), (0.55, 0.45, 0.55)),
+                    mesh('cone', '#5aa848ff', cast=False),
+                    collider('sphere', radius=0.6, trigger=True, offset=(0, 0.4, 0)),
+                    script('scripts/cuttable.bs', kind='grass', drops=drops))
+
+    def pot(self, x, y, z, fixed=''):
+        kw = {'kind': 'pot', 'drops': 0.6}
+        if fixed:
+            kw['fixed'] = fixed
+        self.entity('Pot', t3((x, y, z)), mesh('model', '#ffffffff', 'art/clay.png', file='models/pot.obj'),
+                    collider('capsule', (1, 0.5, 1), 0.28, offset=(0, 0.25, 0)), script('scripts/cuttable.bs', **kw))
+
+    def sign(self, x, y, z, yaw, say):
+        self.entity('Sign', t3((x, y + 0.45, z), (0, yaw, 0), (0.1, 0.9, 0.1)), mesh('cube', '#ffffffff', 'art/planks.png'),
+                    collider('box'))
+        self.entity('Sign Board', t3((x, y + 0.85, z), (0, yaw, 0), (0.8, 0.5, 0.08)), mesh('cube', '#ffffffff', 'art/planks.png'),
+                    collider('box'), tags('interact', 'focusable'), script('scripts/sign.bs', say=say))
+
+    def npc(self, who, x, y, z, yaw=0, needs='', until=''):
+        kw = {'who': who}
+        if needs:
+            kw['needs'] = needs
+        if until:
+            kw['until'] = until
+        self.entity(who.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % who, shadow=False),
+                    ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
+                    collider('capsule', (1, 1.1, 1), 0.3, offset=(0, 0.55, 0)), tags('npc', 'interact', 'focusable'),
+                    script('scripts/npc.bs', **kw))
+
+    def chest(self, x, y, z, yaw, item, id, appear='', big=False):
+        s = 1.4 if big else 1.0
+        kw = {'item': item, 'id': id}
+        if appear:
+            kw['appear'] = appear
+        i = self.entity('Chest', t3((x, y, z), (0, yaw, 0), s), mesh('model', '#ffffffff', 'art/chest.png', file='models/chest_base.obj'),
+                        collider('box', (1, 0.6, 0.7), offset=(0, 0.3, 0)), tags('chest', 'interact'),
+                        script('scripts/chest.bs', **kw))
+        self.entity('Lid', t3((0, 0.55, 0.35)), mesh('model', '#ffffffff', 'art/chest.png', file='models/chest_lid.obj'),
+                    ('Parent', [('entity', i)]))
+
+    def enemy(self, brain, x, y, z, yaw=0, hp=2, damage=2, group='', model=None, **more):
+        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub'}[brain]
+        kw = {'brain': brain, 'hp': hp, 'damage': damage}
+        if group:
+            kw['group'] = group
+        kw.update(more)
+        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7)}[brain]
+        self.entity(brain.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % model, shadow=True),
+                    ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
+                    collider('capsule', (1, h, 1), r, offset=(0, h / 2, 0)), kinematic(),
+                    tags('enemy', 'focusable'), script('scripts/enemy.bs', **kw))
+        if brain == 'scrub':     # its bush
+            self.entity('Scrub Bush', t3((x, y + 0.15, z), (0, 0, 0), (1.0, 0.45, 1.0)), mesh('sphere', '#ffffffff', 'art/hedge.png'))
+
+    def dummy(self, x, y, z, yaw=0):
+        self.entity('Dummy', t3((x, y, z), (0, yaw, 0)), mesh('model', '#ffffffff', 'art/sack.png', file='models/dummy.obj'),
+                    collider('capsule', (1, 1.4, 1), 0.3, offset=(0, 0.7, 0)), tags('enemy', 'focusable'),
+                    script('scripts/enemy.bs', brain='dummy', hp=99))
+
+    def loadzone(self, x, y, z, w, h, d, to='', at='start', say='', needs='', yaw=0):
+        kw = {'to': to, 'at': at}
+        if say:
+            kw['say'] = say
+        if needs:
+            kw['needs'] = needs
+        self.entity('Load Zone', t3((x, y + h / 2, z), (0, yaw, 0)), collider('box', (w, h, d), trigger=True),
+                    tags('loadzone'), script('scripts/loadzone.bs', **kw))
+
+    def vine(self, x, y, z, width, height, out_yaw, top=None):
+        """A climbable wall of vines on a wall facing out_yaw (degrees: 0 faces -z... the
+        way something with rotation y = out_yaw looks). The vines are drawn; the trigger
+        sits just in front."""
+        fx, fz = -math.sin(math.radians(out_yaw)), -math.cos(math.radians(out_yaw))
+        top = y + height if top is None else top
+        self.entity('Vines', t3((x + fx * 0.05, y + height / 2, z + fz * 0.05), (0, out_yaw, 0), (width, height, 0.05)),
+                    mesh('cube', '#7ac060ff', 'art/leaves.png', uv=(width, height)))
+        self.entity('Vine Climb', t3((x + fx * 0.45, y + height / 2, z + fz * 0.45), (0, out_yaw, 0)),
+                    collider('box', (width, height + 0.6, 0.7), trigger=True), tags('climbable'),
+                    script('scripts/vine.bs', out=(round(fx, 4), 0, round(fz, 4)), top=top, bottom=y))
+
+    def pickup(self, kind, x, y, z, id=''):
+        kw = {'kind': kind}
+        if id:
+            kw['id'] = id
+        files = {'heart': ('models/heart.obj', '#ff3048ff'), 'bean1': ('models/bean.obj', '#40e060ff'),
+                 'bean5': ('models/bean.obj', '#4080ffff'), 'bean20': ('models/bean.obj', '#ff4040ff'),
+                 'key': ('models/key.obj', '#f0c850ff')}
+        f, c = files[kind]
+        self.entity('Pickup', t3((x, y, z)), mesh('model', c, file=f, lit=False, cast=False, shadow=True), script('scripts/pickup.bs', **kw))
+
+    def blocker(self, x, y, z, size, until, material='planks', yaw=0, color='#ffffffff'):
+        tex = {'planks': 'art/planks.png', 'web': 'art/web.png', 'hedge': 'art/hedge.png'}[material]
+        self.entity('Blocker', t3((x, y + size[1] / 2, z), (0, yaw, 0), size), mesh('cube', color, tex, uv=(size[0], size[1]), cull=material != 'web'),
+                    collider('box'), script('scripts/blocker.bs', until=until))
+
+    def point_light(self, x, y, z, color, intensity, range_):
+        self.entity('Lamp', t3((x, y, z)), light('point', color, intensity, range=range_))
+
+
+# ---- geometry helpers ----
+
+def stump_house(a, x, z, ground, r=2.4, h=3.0, door_yaw=0, roof='thatch'):
+    """A hollow-stump house: a bark cylinder, a cone roof, a door (a dark plank on the side
+    facing door_yaw)."""
+    y = ground(x, z) - 0.3
+    a.geo('bark', x, z).cylinder((x, y, z), r, h + 0.3, 14, top=True, uvs=0.5)
+    if roof:
+        roof_on(a, x, z, y, r, h, roof)
+    door(a, x, z, y, r, door_yaw)
+
+
+def roof_on(a, x, z, y, r, h, roof):
+    a.geo(roof, x, z).cylinder((x, y + h + 0.3, z), r + 0.6, 0.35, 14, top=False, radius_top=r + 0.4, uvs=0.5)
+    a.geo(roof, x, z).cone((x, y + h + 0.65, z), r + 0.4, 2.0, 14, uvs=0.5)
+
+
+def door(a, x, z, y, r, door_yaw):
+    fx, fz = -math.sin(math.radians(door_yaw)), -math.cos(math.radians(door_yaw))
+    dx, dz = x + fx * (r + 0.02), z + fz * (r + 0.02)
+    a.entity('Door', t3((dx, y + 0.3 + 0.75, dz), (0, door_yaw, 0), (1.0, 1.5, 0.08)), mesh('cube', '#5a3a20ff', 'art/planks.png'))
+    # a round window either side
+    for side in (-1, 1):
+        ang = math.radians(door_yaw + side * 55)
+        wx, wz = x - math.sin(ang) * (r + 0.02), z - math.cos(ang) * (r + 0.02)
+        a.entity('Window', t3((wx, y + 0.3 + 1.6, wz), (0, door_yaw + side * 55, 0), (0.55, 0.55, 0.06)),
+                 mesh('cube', '#f8e8a0ff', lit=False, cast=False))
+
+
+def box_wall(a, material, x0, z0, x1, z1, y0, y1, thick=0.6, uvs=0.5):
+    """A straight wall from (x0, z0) to (x1, z1), from y0 up to y1."""
+    dx, dz = x1 - x0, z1 - z0
+    L = math.hypot(dx, dz)
+    yaw = math.degrees(math.atan2(-dx, -dz))     # (the wall's length runs along its local -z)
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    a.geo(material, cx, cz).box((cx - thick / 2, y0, cz - L / 2), (cx + thick / 2, y1, cz + L / 2), uvs=uvs, rot_y=yaw, center=(cx, cz))

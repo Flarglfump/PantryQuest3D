@@ -1,0 +1,28 @@
+# A fire burning a web away.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Flame"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 60
+    burst = 40
+    max = 120
+    lifetime = 0.8
+    lifetime_random = 0.4
+    speed = 1.5
+    speed_random = 0.5
+    spread = 40
+    area = 1.6 1.6
+    gravity = -2
+    size_start = 0.3
+    size_end = 0.02
+    color_start = #ffd060ff
+    color_end = #ff200000
+    blend = add
+    auto_destroy = true

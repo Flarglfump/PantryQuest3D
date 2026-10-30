@@ -1,0 +1,10 @@
+@strict @3d
+# titlecam.bs - the title screen's camera: a slow flight round Sprouthollow.
+var t: number = 0
+
+func update(dt: number) -> void {
+    t += dt
+    var a: number = t * 4 + 200
+    self.position = vec3(sin(a) * 26, 9 + sin(t * 9) * 1.5, cos(a) * 26)
+    look_at(self, vec3(0, 2, -6))
+}

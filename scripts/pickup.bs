@@ -1,0 +1,72 @@
+@strict @3d
+# pickup.bs - a heart, a bean or some peas, bobbing and turning. Sprig takes it by touching
+# it (prefabs/pickup_<kind>.scene: each has its own look). One dropped by grass, a pot or an enemy pops up, falls, and fades away after a while.
+
+var kind: string = "bean1"
+var dropped: bool = false
+var id: string = ""                   # placed ones with an id are only found once
+var game: entity
+var sprig: entity
+var t: number = 0
+var vy: number = 0
+var base_y: number = 0
+var landed: bool = false
+var life: number = 12
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    if id != "" and game.flag("got:" + id) {
+        destroy(self)
+        return
+    }
+    base_y = self.y
+    if dropped {
+        vy = 3.5
+        landed = false
+    } else {
+        landed = true
+    }
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if not landed {
+        vy -= 14 * dt
+        var next: number = self.y + vy * dt
+        var hit: any = raycast(self.position + vec3(0, 0.2, 0), vec3(self.x, next - 0.05, self.z), self)
+        if hit != nil and vy < 0 {
+            self.y = hit[1].y + 0.05
+            base_y = self.y
+            landed = true
+        } else {
+            self.y = next
+        }
+        if self.y < base_y - 30 { destroy(self) }
+    } else {
+        self.y = base_y + 0.12 + sin(t * 200) * 0.06
+    }
+    self.rotation = vec3(0, t * 120, 0)
+    if dropped {
+        life -= dt
+        self.Mesh.visible = life > 3 or floor(life * 8) % 2 == 0
+        if life <= 0 {
+            destroy(self)
+            return
+        }
+    }
+    if sprig != nil and distance(sprig.position + vec3(0, 0.5, 0), self.position) < 0.75 {
+        game.collect(kind)
+        if id != "" { game.set_flag("got:" + id) }
+        destroy(self)
+    }
+}
+
+# A boomerang or a sword can knock it to him (later); for now a slash just collects it.
+func hit(amount: int, kind_of: string, from: vec3) -> void {
+    if sprig != nil and distance(sprig.position, self.position) < 2.2 {
+        game.collect(kind)
+        if id != "" { game.set_flag("got:" + id) }
+        destroy(self)
+    }
+}

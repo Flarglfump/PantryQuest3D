@@ -1,0 +1,22 @@
+# A pickup: bean20 (pickup.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Pickup"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1.1 1.1 1.1
+  Mesh
+    shape = model
+    file = "models/bean.obj"
+    color = #ff4040ff
+    uv_scale = 1 1
+    shadow = true
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"bean20\""

@@ -1,0 +1,19 @@
+# A nut spat by a scrub (shot.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Nut"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.2 0.2 0.2
+  Mesh
+    shape = sphere
+    color = #8a5a2aff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/shot.bs"
+    vars = "kind = \"nut\""

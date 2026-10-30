@@ -1,0 +1,11 @@
+# The pause menu (pushed over an area).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Pause"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/pause.bs"

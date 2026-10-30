@@ -1,0 +1,40 @@
+@strict @3d
+# roller.bs - a giant rolling pea in the Kitchen Garden: back and forth between a and b,
+# turning as it rolls. Touching it hurts and knocks Sprig back.
+
+var a: vec3 = vec3(0, 0, 0)
+var b: vec3 = vec3(0, 0, 10)
+var speed: number = 4
+var size: number = 1.5
+var damage: int = 2
+var to_b: bool = true
+var spin: number = 0
+var sprig: entity
+var game: entity
+
+func start() -> void {
+    sprig = find("Sprig")
+    game = find("Game")
+    self.scale = vec3(size, size, size)
+    self.position = a
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    var goal: vec3 = a
+    if to_b { goal = b }
+    var d: vec3 = goal - self.position
+    var l: number = length(d)
+    var step: number = speed * dt
+    if l <= step {
+        self.position = goal
+        to_b = not to_b
+    } else {
+        self.position = self.position + d * (step / l)
+    }
+    spin += step / (size * 0.5) * 57.3
+    var yaw: number = atan2(-d.x, -d.z)
+    self.rotation = vec3(-spin, yaw, 0)
+    var to: vec3 = sprig.position + vec3(0, 0.5, 0) - self.position
+    if length(to) < size * 0.5 + 0.35 { sprig.hurt(damage, self.position, "unblockable") }
+}

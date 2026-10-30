@@ -1,0 +1,27 @@
+@strict @3d
+# tree.bs - a tree. Rolling into it shakes it, and sometimes something falls out (`drop`:
+# a pickup kind; once each visit).
+
+var drop: string = ""
+var shaken: bool = false
+var shake: number = 0
+var base: vec3
+
+func start() -> void { base = self.position }
+
+func bonked(from: vec3) -> void {
+    shake = 0.5
+    if drop != "" and not shaken {
+        shaken = true
+        var to: vec3 = from - self.position
+        to.y = 0
+        var p: entity = spawn("prefabs/pickup_" + drop + ".scene", self.position + vec3(0, 1.0, 0) + normalize(to) * 0.9)
+        p.dropped = true
+    }
+}
+
+func update(dt: number) -> void {
+    if shake <= 0 { return }
+    shake = max(0, shake - dt)
+    self.position = base + vec3(sin(shake * 3000) * 0.05 * shake, 0, 0)
+}

@@ -1,0 +1,655 @@
+@strict @3d
+# sprig.bs - the hero. A kinematic capsule moved with move_and_slide(); what you see is a
+# child entity (Body: the skinned model) so it can turn, roll and spin without turning the
+# capsule. The spoon and the pot-lid are children of the body, placed by this script for
+# each move (on his back, drawn, swung, raised).
+#
+# Controls are actions (game.bs binds them): move, action (A: talk / open / climb / roll /
+# hop), attack (B: slash, combo, hold for a spin), focus (Z: lock on with Flicker), shield
+# (R), item1..3 (C buttons), flicker (hints), pause.
+
+const RUN: number = 5.2
+const GRAVITY: number = 24
+const HOP: number = 5.6            # the automatic hop off a ledge while running
+
+var game: entity
+var cam: entity
+var body: entity
+var weapon: entity
+var lid: entity
+
+var vel: vec3
+var facing: number = 0             # yaw, degrees (0: looking down -z)
+var st: string = "free"            # free slash charge spin roll hop jumpatk hurt climb hold talk shoot dead
+var st_t: number = 0
+var combo: int = 0
+var queued: bool = false
+var hit_list: list = []
+var charge: number = 0
+var spin_angle: number = 0
+var pitch: number = 0              # the body's tumble (rolls, back-flips)
+var hop_dir: vec3
+var drawn: number = 0              # seconds left with the spoon out
+var invuln: number = 0
+var flash: number = 0
+
+var target: entity                 # what Flicker has focused on
+var focusing: bool = false
+var focus_yaw: number = 0
+
+var was_floor: bool = true
+var safe_pos: vec3
+var safe_t: number = 0
+var platform: entity
+var plat_last: vec3
+
+var vine: entity
+var action_label: string = ""      # what A does now (the HUD shows it)
+var action_target: entity
+var move_amount: number = 0
+var shielding: bool = false
+var hint_glow: bool = false
+var at: vec3                       # (where he is: for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    cam = find("Camera")
+    body = spawn("prefabs/sprig_body.scene", vec3(0, 0, 0), self)
+    weapon = spawn("prefabs/spoon.scene", vec3(0, 0.6, 0.15), body)
+    lid = spawn("prefabs/potlid.scene", vec3(0, 0.6, 0.18), body)
+    safe_pos = self.position
+}
+
+# The Game has moved him to a spawn point.
+func placed() -> void {
+    facing = self.rotation.y
+    self.rotation = vec3(0, 0, 0)
+    safe_pos = self.position
+    vel = vec3(0, 0, 0)
+    if cam != nil { cam.snap_behind() }
+}
+
+func forward_of(yaw: number) -> vec3 { return vec3(-sin(yaw), 0, -cos(yaw)) }
+func yaw_of(d: vec3) -> number { return atan2(-d.x, -d.z) }
+func head() -> vec3 { return self.position + vec3(0, 0.9, 0) }
+func focus_point() -> vec3 { return self.position + vec3(0, 0.7, 0) }
+
+func turn_to(yaw: number, rate: number, dt: number) -> void {
+    var d: number = ((yaw - facing + 540) % 360) - 180
+    var step: number = rate * dt
+    if abs(d) <= step { facing = yaw } else { facing += sign(d) * step }
+}
+
+func has_spoon() -> bool { return game.has_item("spoon") }
+func has_lid() -> bool { return game.has_item("potlid") }
+
+# ---- input ----
+func stick_input() -> vec2 {
+    var mv := vec2(action_axis("left", "right"), action_axis("up", "down"))
+    var s: vec2 = stick("left")
+    if length(s) > length(mv) { mv = s }
+    if length(mv) > 1 { mv = normalize(mv) }
+    return mv
+}
+
+func world_dir(mv: vec2) -> vec3 {
+    var ahead: vec3 = cam.forward
+    ahead.y = 0
+    if length(ahead) < 0.01 { ahead = forward_of(facing) }
+    ahead = normalize(ahead)
+    var side := vec3(-ahead.z, 0, ahead.x)
+    return side * mv.x - ahead * mv.y
+}
+
+# ---- focus ----
+func acquire() -> void {
+    var best: entity = nil
+    var best_score: number = 1000
+    var fwd: vec3 = forward_of(facing)
+    for e in find_tagged("focusable") {
+        if not e.alive or has_tag(e, "hidden") { continue }
+        var to: vec3 = e.global_position - self.position
+        to.y = 0
+        var d: number = length(to)
+        if d > 11 or d < 0.05 { continue }
+        var facing_dot: number = dot(normalize(to), fwd)
+        if facing_dot < -0.3 and d > 3 { continue }
+        var score: number = d * (1.6 - facing_dot)
+        if score < best_score {
+            best_score = score
+            best = e
+        }
+    }
+    target = best
+    focusing = true
+    focus_yaw = facing
+    if target != nil {
+        play_sound("sfx/focus.wav", 0.5)
+    } else {
+        cam.snap_behind()
+    }
+}
+
+func target_point() -> vec3 { return target.focus_point() }
+
+# ---- being hurt ----
+# Something hurts Sprig: `quarters` of a heart, from a point, of a kind ("touch", "nut",
+# "fire", "fall"...). Returns "blocked" (the shield took it), "hit" or "ignored".
+func hurt(quarters: int, from: vec3, kind: string) -> string {
+    if st == "dead" or invuln > 0 or game.state != "play" { return "ignored" }
+    var to: vec3 = from - self.position
+    to.y = 0
+    if length(to) < 0.01 { to = forward_of(facing) }
+    to = normalize(to)
+    if shielding and kind != "fall" and kind != "unblockable" and dot(to, forward_of(facing)) > 0.35 {
+        play_sound("sfx/block.wav", 0.7)
+        vel = to * -3
+        return "blocked"
+    }
+    invuln = 1.2
+    flash = 1.2
+    play_sound("sfx/hurt.wav", 0.8)
+    shake_camera(2, 0.2)
+    if game.damage(quarters) {
+        die()
+        return "hit"
+    }
+    st = "hurt"
+    st_t = 0
+    vel = to * -5 + vec3(0, 3, 0)
+    play_animation(body, "hurt", 1, false)
+    return "hit"
+}
+
+func die() -> void {
+    st = "dead"
+    st_t = 0
+    vel = vec3(0, 0, 0)
+    play_animation(body, "dead", 1, false)
+    play_sound("sfx/dead.wav", 0.8)
+}
+
+# ---- fanfares and talks ----
+func hold_up() -> void {
+    st = "hold"
+    st_t = 0
+    vel = vec3(0, 0, 0)
+    play_animation(body, "hold", 1, true)
+}
+func talk_ended() -> void {
+    if st == "hold" or st == "talk" { st = "free" }
+}
+
+# ---- the spoon ----
+func start_slash(kind: string) -> void {
+    st = kind
+    st_t = 0
+    hit_list = []
+    queued = false
+    drawn = 3
+    var clip: string = "slash"
+    if kind == "slash2" { clip = "slash2" }
+    if kind == "thrust" { clip = "thrust" }
+    play_animation(body, clip, 1, false)
+    play_sound("sfx/swing.wav", 0.6, 0.9 + random() * 0.2)
+}
+
+# Hits whatever is in a sphere (once per swing).
+func strike(centre: vec3, radius: number, amount: int, kind: string) -> void {
+    for e in overlap_sphere(centre, radius) {
+        if e == self or contains(hit_list, e) { continue }
+        push(hit_list, e)
+        send(e, "hit", amount, kind, self.position)
+    }
+}
+
+func damage() -> int {
+    return 1
+}
+
+# ---- the C buttons ----
+func use_item(name: string) -> void {
+    if name == "shooter" {
+        if game.peas <= 0 {
+            play_sound("sfx/empty.wav", 0.6)
+            return
+        }
+        game.peas = game.peas - 1
+        game.commit()
+        var from: vec3 = self.position + vec3(0, 0.75, 0) + forward_of(facing) * 0.4
+        var dir: vec3 = forward_of(facing)
+        if target != nil { dir = normalize(target_point() - from) }
+        var p: entity = spawn("prefabs/pea.scene", from)
+        p.dir = dir
+        p.owner = self
+        play_sound("sfx/pea.wav", 0.6)
+        st = "shoot"
+        st_t = 0
+        play_animation(body, "aim", 1, false)
+    }
+}
+
+# ---- every step ----
+func update(dt: number) -> void {
+    invuln = max(0, invuln - dt)
+    flash = max(0, flash - dt)
+    drawn = max(0, drawn - dt)
+    st_t += dt
+    var playing: bool = game.state == "play"
+    var mv: vec2 = vec2(0, 0)
+    if playing { mv = stick_input() }
+    move_amount = length(mv)
+    var dir: vec3 = world_dir(mv)
+
+    # focus (hold to keep it)
+    if playing and action_pressed("focus") and st != "dead" { acquire() }
+    if not action_down("focus") or not playing {
+        target = nil
+        focusing = false
+    }
+    if target != nil and (not target.alive or has_tag(target, "hidden") or distance(target.global_position, self.position) > 15) {
+        target = nil
+    }
+
+    var on_floor: bool = is_on_floor(self)
+    shielding = false
+    var want := vec3(0, 0, 0)      # horizontal speed wanted
+
+    if st == "dead" {
+        if st_t > 1.6 and game.state == "play" { game.game_over() }
+    } elif not playing {
+        if st != "hold" { st = "talk" }
+    } elif st == "talk" {
+        st = "free"
+    }
+
+    if st == "free" {
+        update_free(dt, mv, dir, on_floor)
+        want = vel_want(dir, mv)
+    } elif st == "slash" or st == "slash2" or st == "thrust" {
+        want = forward_of(facing) * max(0, 2 - st_t * 8)
+        if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
+        if action_pressed("attack") and st_t > 0.05 { queued = true }
+        if st_t > 0.05 and st_t < 0.2 {
+            var reach: number = 0.75
+            if st == "thrust" { reach = 0.95 }
+            strike(self.position + vec3(0, 0.6, 0) + forward_of(facing) * reach, 0.7, damage(), "blade")
+        }
+        if st_t >= 0.3 {
+            if queued {
+                combo += 1
+                if combo == 1 { start_slash("slash2") } elif combo == 2 { start_slash("thrust") } else {
+                    combo = 0
+                    start_slash("slash")
+                }
+            } elif action_down("attack") {
+                st = "charge"
+                st_t = 0
+                charge = 0
+                combo = 0
+            } else {
+                st = "free"
+                combo = 0
+            }
+        }
+    } elif st == "charge" {
+        charge += dt
+        drawn = 3
+        if move_amount > 0.1 {
+            want = dir * 1.6
+            if target == nil { turn_to(yaw_of(dir), 400, dt) }
+        }
+        if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
+        play_animation(body, "charge", 1, true)
+        if not action_down("attack") {
+            if charge >= 0.6 {
+                st = "spin"
+                st_t = 0
+                hit_list = []
+                spin_angle = 0
+                play_animation(body, "spin", 1, true)
+                play_sound("sfx/spin.wav", 0.8)
+            } else {
+                st = "free"
+            }
+        }
+    } elif st == "spin" {
+        spin_angle = st_t / 0.45 * 360
+        strike(self.position + vec3(0, 0.6, 0), 1.9, damage() * 2, "spin")
+        if st_t >= 0.45 {
+            st = "free"
+            spin_angle = 0
+        }
+    } elif st == "roll" {
+        want = forward_of(facing) * 7.0 * max(0.3, 1 - st_t * 1.2)
+        pitch = -st_t / 0.45 * 360
+        if is_on_wall(self) and st_t > 0.08 {
+            send(wall_thing(), "bonked", self.position)
+            play_sound("sfx/bonk.wav", 0.6)
+            shake_camera(1.5, 0.15)
+            st = "hurt"
+            st_t = 0.1
+            vel = forward_of(facing) * -3 + vec3(0, 2.5, 0)
+            pitch = 0
+        }
+        if st_t >= 0.45 {
+            st = "free"
+            pitch = 0
+        }
+    } elif st == "hop" {
+        want = hop_dir * 5.5
+        if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
+        if st_t > 0.12 and on_floor {
+            st = "free"
+            pitch = 0
+        }
+    } elif st == "backflip" {
+        want = hop_dir * 4.5
+        pitch = min(1, st_t / 0.45) * 360
+        if st_t > 0.12 and on_floor {
+            st = "free"
+            pitch = 0
+        }
+    } elif st == "jumpatk" {
+        want = forward_of(facing) * 5.5
+        if st_t > 0.12 and on_floor {
+            strike(self.position + vec3(0, 0.5, 0) + forward_of(facing) * 0.8, 1.0, damage() * 2, "jump")
+            shake_camera(1.5, 0.15)
+            play_sound("sfx/land.wav", 0.7)
+            st = "slash"
+            st_t = 0.2
+        }
+    } elif st == "hurt" {
+        want = vec3(vel.x, 0, vel.z) * 0.9
+        if st_t >= 0.45 { st = "free" }
+    } elif st == "shoot" {
+        if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
+        if st_t >= 0.3 { st = "free" }
+    } elif st == "climb" {
+        update_climb(dt, mv)
+    }
+
+    # moving
+    if st != "climb" {
+        if st == "hurt" or st == "hold" or st == "talk" or st == "dead" {
+            vel.x = vel.x * max(0, 1 - dt * 6)
+            vel.z = vel.z * max(0, 1 - dt * 6)
+            if st == "hurt" { vel.x = want.x; vel.z = want.z }
+        } else {
+            vel.x = want.x
+            vel.z = want.z
+        }
+        vel.y -= GRAVITY * dt
+        if on_floor and vel.y < -2 { vel.y = -2 }
+        carry_on_platform()
+        vel = move_and_slide(self, vel)
+        var now_floor: bool = is_on_floor(self)
+        if was_floor and not now_floor and vel.y <= 0.5 and st == "free" and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() {
+            vel.y = HOP                                 # off a ledge at a run: a hop
+            play_sound("sfx/hop.wav", 0.5)
+            play_animation(body, "jump", 1, false)
+        }
+        was_floor = now_floor
+        if now_floor and st == "free" and platform == nil {
+            safe_t += dt
+            if safe_t > 0.25 {
+                safe_pos = self.position
+                safe_t = 0
+            }
+        }
+    }
+    if self.y < game.kill_y and st != "dead" { fell() }
+
+    at = self.position
+    update_context()
+    place_gear(dt)
+    animate()
+    if playing and action_pressed("flicker") { game.talk("flicker", "") }
+}
+
+func vel_want(dir: vec3, mv: vec2) -> vec3 {
+    if shielding { return vec3(0, 0, 0) }
+    var speed: number = RUN
+    if focusing { speed = 4.2 }
+    return dir * speed * move_amount
+}
+
+func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
+    # facing
+    if target != nil {
+        turn_to(yaw_of(target.global_position - self.position), 900, dt)
+    } elif focusing {
+        turn_to(focus_yaw, 900, dt)
+    } elif move_amount > 0.1 {
+        turn_to(yaw_of(dir), 720, dt)
+    }
+    if has_lid() and action_down("shield") and on_floor {
+        shielding = true
+        drawn = 3
+    }
+    if action_pressed("action") {
+        if action_target != nil {
+            action_target.interact(self)
+            return
+        }
+        if focusing and move_amount > 0.3 and on_floor {
+            var local_fwd: number = dot(dir, forward_of(facing))
+            if local_fwd > 0.6 and target != nil and has_spoon() {
+                st = "jumpatk"
+                st_t = 0
+                vel.y = 6
+                drawn = 3
+                play_animation(body, "slash", 0.6, false)
+                play_sound("sfx/jumpatk.wav", 0.7)
+            } elif local_fwd < -0.6 {
+                st = "backflip"
+                st_t = 0
+                hop_dir = forward_of(facing) * -1
+                vel.y = 6.5
+                play_animation(body, "jump", 1, false)
+                play_sound("sfx/hop.wav", 0.6)
+            } else {
+                st = "hop"
+                st_t = 0
+                hop_dir = normalize(dir - forward_of(facing) * local_fwd)
+                vel.y = 5
+                play_animation(body, "jump", 1, false)
+                play_sound("sfx/hop.wav", 0.6)
+            }
+            return
+        }
+        if move_amount > 0.3 and on_floor {
+            st = "roll"
+            st_t = 0
+            if target == nil { facing = yaw_of(dir) }
+            play_animation(body, "roll", 1, true)
+            play_sound("sfx/roll.wav", 0.6)
+            return
+        }
+    }
+    if action_pressed("attack") and has_spoon() {
+        combo = 0
+        if focusing and move_amount > 0.3 and dot(dir, forward_of(facing)) > 0.6 { start_slash("thrust") } else { start_slash("slash") }
+        return
+    }
+    for i in 3 {
+        if action_pressed("item" + (i + 1)) and game.slots[i] != "" {
+            use_item(game.slots[i])
+            return
+        }
+    }
+    if vine != nil and move_amount > 0.3 and dot(dir, vine.out * -1) > 0.6 and vine.reachable(self.position) {
+        st = "climb"
+        st_t = 0
+        facing = yaw_of(vine.out * -1)
+        play_animation(body, "climb", 1, true)
+    }
+}
+
+func update_climb(dt: number, mv: vec2) -> void {
+    if vine == nil {
+        st = "free"
+        return
+    }
+    var up: number = -mv.y
+    var side: vec3 = vec3(-vine.out.z, 0, vine.out.x)
+    var v: vec3 = vec3(0, up * 1.8, 0) + side * (mv.x * 1.4) + vine.out * -0.5
+    vel = move_and_slide(self, v)
+    if abs(up) > 0.1 or abs(mv.x) > 0.1 { play_animation(body, "climb", 1, true) } else { stop_animation(body) }
+    if self.y >= vine.top - 0.05 and up > 0 {
+        self.position = vec3(self.x, vine.top + 0.1, self.z) + vine.out * -0.7       # up over the top
+        st = "free"
+        vel = vec3(0, 0, 0)
+    } elif up < 0 and is_on_floor(self) {
+        st = "free"
+    } elif action_pressed("action") {
+        st = "free"                                   # let go
+        vel = vine.out * 2
+    }
+}
+
+func wall_thing() -> entity {
+    var from: vec3 = self.position + vec3(0, 0.5, 0)
+    var hit: any = raycast(from, from + forward_of(facing) * 0.8, self)
+    if hit == nil { return nil }
+    return hit[0]
+}
+
+# Is there a real drop just ahead (not a bump or a dip)?
+func ledge_ahead() -> bool {
+    var from: vec3 = self.position + forward_of(facing) * 0.5 + vec3(0, 0.3, 0)
+    var hit: any = raycast(from, from + vec3(0, -1.1, 0), self)
+    return hit == nil
+}
+
+func carry_on_platform() -> void {
+    var hit: any = raycast(self.position + vec3(0, 0.3, 0), self.position + vec3(0, -0.25, 0), self)
+    var under: entity = nil
+    if hit != nil and has_tag(hit[0], "platform") { under = hit[0] }
+    if under != nil {
+        if under == platform {
+            var d: vec3 = under.global_position - plat_last
+            self.position = self.position + d
+        }
+        plat_last = under.global_position
+    }
+    platform = under
+}
+
+func fell() -> void {
+    self.position = safe_pos + vec3(0, 0.2, 0)
+    vel = vec3(0, 0, 0)
+    st = "free"
+    pitch = 0
+    game.fade = 1
+    cam.snap_behind()
+    hurt(2, self.position, "fall")
+}
+
+func on_trigger(other: entity) -> void {
+    if has_tag(other, "climbable") { vine = other }
+    if has_tag(other, "pit") and st != "dead" { fell() }
+}
+func on_trigger_exit(other: entity) -> void {
+    if other == vine { vine = nil }
+}
+
+# What A would do: talk to someone, read a sign, open a chest...
+func update_context() -> void {
+    action_target = nil
+    action_label = ""
+    if st != "free" { return }
+    var best: number = 99
+    var fwd: vec3 = forward_of(facing)
+    for e in find_tagged("interact") {
+        if not e.alive { continue }
+        var to: vec3 = e.global_position - self.position
+        to.y = 0
+        var d: number = length(to)
+        var reach: number = e.reach
+        if e == target { reach = max(reach, 4) }
+        if d > reach { continue }
+        if d > 0.3 and dot(normalize(to), fwd) < 0.4 and e != target { continue }
+        if not e.can_use(self.position) { continue }
+        if d < best {
+            best = d
+            action_target = e
+        }
+    }
+    if action_target != nil {
+        action_label = action_target.prompt
+    } elif vine != nil and vine.reachable(self.position) {
+        action_label = "Climb"
+    } elif focusing and move_amount > 0.3 {
+        action_label = "Jump"
+    } elif move_amount > 0.3 {
+        action_label = "Roll"
+    }
+}
+
+# The spoon and lid: on his back, drawn, swung or raised.
+func place_gear(dt: number) -> void {
+    weapon.Mesh.visible = has_spoon()
+    lid.Mesh.visible = has_lid()
+    var out: bool = drawn > 0 or focusing
+    var wp: vec3 = vec3(0.02, 0.62, 0.19)
+    var wr: vec3 = vec3(115, 0, -25)
+    if st == "slash" or st == "slash2" {
+        var a: number = clamp(st_t / 0.22, 0, 1)
+        var yaw: number = lerp(110, -100, a)
+        if st == "slash2" { yaw = lerp(-100, 110, a) }
+        wp = vec3(-0.17, 0.66, 0) + forward_of(yaw) * 0.12
+        wr = vec3(-8, yaw, 0)
+    } elif st == "thrust" or st == "jumpatk" {
+        var t: number = clamp(st_t / 0.12, 0, 1)
+        wp = vec3(-0.1, 0.62, -0.08 - 0.3 * t)
+        wr = vec3(-4, 0, 0)
+    } elif st == "spin" {
+        wp = vec3(-0.25, 0.6, 0)
+        wr = vec3(0, 90, 0)
+    } elif st == "charge" {
+        wp = vec3(-0.25, 0.65, 0.1)
+        wr = vec3(0, 140, 0)
+    } elif out and has_spoon() {
+        wp = vec3(-0.2, 0.55, -0.12)
+        wr = vec3(28, 8, 0)
+    }
+    weapon.position = wp
+    weapon.rotation = wr
+    if shielding {
+        lid.position = vec3(0.12, 0.62, -0.26)
+        lid.rotation = vec3(-90, 0, 0)
+    } elif out {
+        lid.position = vec3(0.22, 0.55, -0.05)
+        lid.rotation = vec3(-90, -70, 0)
+    } else {
+        lid.position = vec3(0, 0.6, 0.16)
+        lid.rotation = vec3(90, 0, 0)
+    }
+}
+
+func animate() -> void {
+    var yaw: number = facing + spin_angle
+    var h: number = 0.35
+    body.rotation = vec3(pitch, yaw, 0)
+    var f: vec3 = forward_of(yaw)
+    var lift: vec3 = vec3(0, h - h * cos(pitch), 0) + f * (h * sin(pitch))
+    body.position = lift
+    var visible: bool = not (flash > 0 and floor(flash * 20) % 2 == 0)
+    body.Mesh.visible = visible
+    if st == "free" {
+        if not is_on_floor(self) and abs(vel.y) > 1.5 {
+            play_animation(body, "jump", 1, false)
+        } elif shielding {
+            play_animation(body, "shield", 1, true)
+        } elif move_amount > 0.6 {
+            play_animation(body, "run", 0.8 + move_amount * 0.4, true)
+        } elif move_amount > 0.1 {
+            play_animation(body, "walk", 0.8 + move_amount, true)
+        } else {
+            play_animation(body, "idle", 1, true)
+        }
+    } elif st == "talk" {
+        play_animation(body, "idle", 1, true)
+    }
+}

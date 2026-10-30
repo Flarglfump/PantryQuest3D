@@ -1,0 +1,13 @@
+@strict @3d
+# sign.bs - a wooden sign: A reads it (from in front), or from afar while focused.
+
+var say: string = ""
+var prompt: string = "Read"
+var reach: number = 1.5
+var game: entity
+
+func start() -> void { game = find("Game") }
+func focus_point() -> vec3 { return self.position + vec3(0, 0.9, 0) }
+func can_use(p: vec3) -> bool { return true }
+func interact(who: entity) -> void { game.talk(say, "") }
+func hit(amount: int, kind: string, from: vec3) -> void { play_sound("sfx/thunk.wav", 0.5) }

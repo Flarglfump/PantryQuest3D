@@ -1,0 +1,28 @@
+# Cut grass flying.
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Clippings"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 0
+    burst = 16
+    max = 24
+    lifetime = 0.6
+    lifetime_random = 0.4
+    speed = 2.8
+    speed_random = 0.5
+    spread = 180
+    gravity = 8
+    drag = 1.2
+    size_start = 0.1
+    size_end = 0.02
+    color_start = #70c050ff
+    color_end = #40803000
+    blend = alpha
+    auto_destroy = true

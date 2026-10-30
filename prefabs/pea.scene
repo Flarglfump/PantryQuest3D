@@ -1,0 +1,31 @@
+# A pea from the pea shooter (shot.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Pea"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.13 0.13 0.13
+  Mesh
+    shape = sphere
+    color = #7ad040ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Particles
+    rate = 40
+    max = 30
+    lifetime = 0.3
+    speed = 0.3
+    spread = 180
+    size_start = 0.12
+    size_end = 0
+    color_start = #ffd040ff
+    color_end = #ff400000
+    blend = add
+    emitting = false
+  Script
+    file = "scripts/shot.bs"
+    vars = "kind = \"pea\""

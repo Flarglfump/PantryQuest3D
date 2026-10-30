@@ -1,0 +1,66 @@
+@strict @3d
+# starter.bs - Mother Starter, the ancient sourdough in her crock. Talking to her moves the
+# story on: she asks Sprig to go inside her, opens her mouth (the way into the Great
+# Crock), and after the curse is broken gives him the Ember of Courage and falls silent.
+
+var prompt: string = "Talk"
+var reach: number = 3.5
+var game: entity
+var mouth: entity
+var eyes: list = []
+var t: number = 0
+var open: number = 0
+
+func start() -> void {
+    game = find("Game")
+    mouth = find("Starter Mouth")
+    eyes = find_all("Starter Eye")
+    if game.flag("starter_open") and not game.flag("starter_farewell") { open = 1 }
+    shape()
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 2.5, 0) }
+func can_use(p: vec3) -> bool { return true }
+
+func interact(who: entity) -> void {
+    if game.flag("starter_farewell") {
+        game.talk("starter_gone", "")
+    } elif game.flag("crock_done") {
+        game.talk("starter_farewell", "ember")
+    } elif game.flag("starter_open") {
+        game.talk("starter_wait", "")
+    } else {
+        game.talk("starter_first", "starter_open")
+    }
+}
+
+func starter_opens() -> void {
+    play_sound("sfx/rumble.wav", 0.8)
+    shake_camera(3, 1.2)
+}
+
+func flags_changed() -> void {}
+
+func update(dt: number) -> void {
+    t += dt
+    var want: number = 0
+    if game.flag("starter_open") and not game.flag("crock_done") { want = 1 }
+    if open < want { open = min(want, open + dt * 0.6) }
+    if open > want { open = max(want, open - dt * 0.6) }
+    shape()
+}
+
+func shape() -> void {
+    var asleep: bool = game.flag("starter_farewell")
+    var breathe: number = sin(t * 40) * 0.03
+    mouth.scale = vec3(2.0 + open * 0.2, 0.25 + open * 1.6 + breathe, 0.12)
+    mouth.position = vec3(mouth.x, self.y + 1.0 + open * 0.8, mouth.z)
+    if open > 0.5 {
+        mouth.Collider3D.size = vec3(0.001, 0.001, 0.001)
+    } else {
+        mouth.Collider3D.size = vec3(1, 1, 1)
+    }
+    for e in eyes {
+        if asleep { e.scale = vec3(0.7, 0.08, 0.2) } else { e.scale = vec3(0.7, 0.45 + breathe * 2, 0.2) }
+    }
+}
