@@ -70,9 +70,9 @@ func bind_controls() -> void {
     unbind("left"); bind("left", "a", "pad:left_x-")
     unbind("right"); bind("right", "d", "pad:left_x+")
     unbind("action"); bind("action", "space", "pad:a")
-    unbind("attack"); bind("attack", "j", "pad:x")
-    unbind("focus"); bind("focus", "shift", "l", "pad:lt", "pad:lb")
-    unbind("shield"); bind("shield", "k", "pad:rt", "pad:rb")
+    unbind("attack"); bind("attack", "j", "mouse:0", "pad:x")
+    unbind("focus"); bind("focus", "shift", "l", "mouse:2", "pad:lt", "pad:lb")
+    unbind("shield"); bind("shield", "k", "mouse:1", "pad:rt", "pad:rb")
     unbind("item1"); bind("item1", "u", "pad:y")
     unbind("item2"); bind("item2", "i", "pad:b")
     unbind("item3"); bind("item3", "o", "pad:up")
@@ -369,11 +369,13 @@ func on_resume() -> void {
 func play_pipe() -> void {
     if state != "play" { return }
     state = "pipe"
+    lock_mouse(false)
     push_scene("pipe.scene", true, false)
 }
 
 func pause() -> void {
     if state != "play" { return }
+    lock_mouse(false)                    # (the game below stops while the menu is up)
     commit()
     set_global("area_name", area_name)
     set_global("dungeon", dungeon)
@@ -385,6 +387,7 @@ func pause() -> void {
 
 func game_over() -> void {
     state = "gameover"
+    lock_mouse(false)
     stop_music(1.0)
     push_scene("gameover.scene", true, false)
 }
@@ -444,6 +447,18 @@ func update(dt: number) -> void {
         story.area_started(area)
     }
     if state == "play" and action_pressed("pause") { pause() }
+    mouse_look_update()
+}
+
+# ---- mouse-look: a click on the game captures the mouse, which then swings the camera
+# (camera.bs); it is let go for the menus and comes back after them ----
+func mouse_look_update() -> void {
+    var playing: bool = state == "play" or state == "fade" or state == "talk"
+    if playing and mouse_pressed(0) and last_input() != "touch" and not global("mouse_look", false) {
+        set_global("mouse_look", true)
+    }
+    var want: bool = playing and global("mouse_look", false)
+    if want != mouse_locked() { lock_mouse(want) }
 }
 
 func draw() -> void {

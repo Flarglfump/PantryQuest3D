@@ -12,6 +12,7 @@ var leaving: number = -1
 var bound: bool = false
 
 func start() -> void {
+    lock_mouse(false)
     unbind("m_up"); bind("m_up", "up", "w", "pad:up", "pad:left_y-")
     unbind("m_down"); bind("m_down", "down", "s", "pad:down", "pad:left_y+")
     unbind("m_ok"); bind("m_ok", "enter", "space", "j", "pad:a", "pad:start")

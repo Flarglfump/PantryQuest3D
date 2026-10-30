@@ -3,6 +3,7 @@
 # so it trails round as he runs and turns. ← / → (or the right stick) swing it round;
 # Focus (or ↓) puts it straight behind him. While Flicker has something focused it looks
 # past Sprig at it. It pulls in when a wall would come between it and Sprig.
+# With the mouse captured (game.bs), moving it swings the camera round and tilts it up or down.
 
 var sprig: entity
 var dist: number = 4.6
@@ -12,6 +13,9 @@ var follow_y: number = 0
 var pos: vec3
 var recenter: number = 0           # seconds of swinging back behind him
 var shake_t: number = 0
+var tilt: number = 0               # the mouse: the camera raised (+) or lowered (-), metres
+const MOUSE_TURN: number = 0.45    # degrees per game pixel of mouse motion
+const MOUSE_TILT: number = 0.02    # metres per game pixel
 
 func start() -> void {
     sprig = find("Sprig")
@@ -56,6 +60,17 @@ func update(dt: number) -> void {
 
     var t: entity = sprig.target
     if t != nil and not t.alive { t = nil }
+    var mm: vec2 = mouse_motion()
+    if mouse_locked() {
+        tilt = clamp(tilt + mm.y * MOUSE_TILT, -1.1, 2.4)
+        if mm.x != 0 and t == nil and sprig.st != "climb" and not sprig.focusing and recenter <= 0 {
+            # swing the camera itself round Sprig, so the view keeps up with the hand
+            var a2: number = atan2(flat.x, flat.z) - mm.x * MOUSE_TURN
+            var r: number = length(flat)
+            flat = vec3(sin(a2), 0, cos(a2)) * r
+            pos = vec3(me.x + flat.x, pos.y, me.z + flat.z)
+        }
+    }
     if t != nil {
         # behind Sprig, on the line from what's focused through him
         var away: vec3 = me - t.global_position
@@ -66,14 +81,15 @@ func update(dt: number) -> void {
         flat = lerp(normalize(flat), back2, min(1, dt * 4))
     } elif sprig.focusing or recenter > 0 {
         recenter = max(0, recenter - dt)
+        if recenter > 0 { tilt = lerp(tilt, 0, min(1, dt * 12)) }
         var back: vec3 = sprig.forward_of(sprig.facing) * -1
         flat = lerp(normalize(flat), back, min(1, dt * 12))
     } elif turn != 0 {
         var a: number = atan2(flat.x, flat.z) - turn
         flat = vec3(sin(a), 0, cos(a))
     }
-    flat = normalize(flat) * dist
-    var want: vec3 = me + flat + vec3(0, height, 0)
+    flat = normalize(flat) * dist * (1 - max(0, tilt) * 0.1)     # (looking down from higher up: a little closer)
+    var want: vec3 = me + flat + vec3(0, height + tilt, 0)
     if t != nil { want.y += 0.4 }
     pos = lerp(pos, want, min(1, dt * 10))
     place(pos)

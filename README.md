@@ -27,17 +27,21 @@ Or open the folder in Bronto's editor (**Load Project**) and press Play.
 
 ### Controls
 
-| | Keyboard | Gamepad |
+| | Keyboard and mouse | Gamepad |
 |---|---|---|
 | Move | WASD | left stick |
-| Camera | ← → (swing), ↓ (behind Sprig) | right stick |
+| Camera | mouse (swing and tilt), ← → (swing), ↓ (behind Sprig) | right stick |
 | Action: talk, open, read, climb, roll, hop | Space | A |
-| Attack (hold, then let go: spin attack) | J | X |
-| Focus (lock on with Flicker) | Shift, L | LT, LB |
-| Shield | K | RT, RB |
+| Attack (hold, then let go: spin attack) | left click, J | X |
+| Focus (lock on with Flicker) | middle click, Shift, L | LT, LB |
+| Shield | right click, K | RT, RB |
 | Item buttons | U, I, O | Y, B, D-pad up |
 | Ask Flicker for a hint | Tab | Back |
 | Pause (items, gear, map, save) | Enter, Esc | Start |
+
+Click on the game to capture the mouse for mouse-look; it is let go while a menu is up
+(and comes back after) and when the window is in the background. In a browser, Esc lets
+it go; click again to take it back.
 
 While focused, Action hops to the side or back-flips; forward + Action with the spoon is
 a jump attack.
