@@ -1,0 +1,237 @@
+@strict @3d
+# queen.bs - Queen Mildewmite, the master of the Great Crock. She clings to the ceiling and
+# drops larvae; when her eye glows red, a pea in it brings her crashing down, stunned, for
+# Sprig to strike. Below half health she comes down to hunt him on the floor, and only a
+# pea in the glowing eye stops her charge.
+
+var hp: int = 10
+var max_hp: int = 10
+var stun_dmg: int = 0              # (she shakes it off after 4 in one go)
+var ceiling: number = -9.6
+var floor_y: number = -16
+var game: entity
+var sprig: entity
+var hud: entity
+var eye: entity
+var st: string = "wait"            # wait ceiling falling stunned climbing hunt charge dead
+var st_t: number = 0
+var yaw: number = 0
+var glow: number = 0               # > 0: the eye is glowing (seconds left)
+var glow_t: number = 3
+var egg_t: number = 5
+var flash: number = 0
+var target: vec3
+var vel: vec3
+var dead_t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    eye = find("Queen Eye")
+    if game.flag("crock_boss") {
+        destroy(eye)
+        destroy(self)
+        return
+    }
+    self.position = vec3(self.x, ceiling, self.z)
+    target = self.position
+    add_tag(self, "hidden")
+}
+
+func upside() -> bool { return st == "wait" or st == "ceiling" or st == "climbing" }
+
+func eye_point() -> vec3 {
+    var f := vec3(-sin(yaw), 0, -cos(yaw))
+    if upside() { return self.position + f * 1.25 + vec3(0, -1.45, 0) }
+    var up: number = 1.45
+    if st == "stunned" { up = 0.6 }
+    return self.position + f * 1.25 + vec3(0, up, 0)
+}
+
+func focus_point() -> vec3 { return eye_point() }
+
+func face(p: vec3, rate: number, dt: number) -> void {
+    var to: vec3 = p - self.position
+    to.y = 0
+    if length(to) < 0.05 { return }
+    var want: number = atan2(-to.x, -to.z)
+    var d: number = ((want - yaw + 540) % 360) - 180
+    yaw += clamp(d, -rate * dt, rate * dt)
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "dead" or st == "wait" { return }
+    if (how == "pea" or how == "fire") and glow > 0 and (st == "ceiling" or st == "hunt" or st == "charge") {
+        glow = 0
+        play_sound("sfx/screech.wav", 0.9)
+        if st == "ceiling" {
+            st = "falling"
+            vel = vec3(0, 0, 0)
+        } else {
+            stun()
+        }
+        st_t = 0
+        return
+    }
+    if st == "stunned" and how != "pea" {
+        hp -= amount
+        stun_dmg += amount
+        if stun_dmg >= 4 { st_t = max(st_t, 4.0) }
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.7)
+        shake_camera(1.5, 0.15)
+        if hp <= 0 { die() }
+        return
+    }
+    play_sound("sfx/block.wav", 0.5)
+}
+
+func stun() -> void {
+    st = "stunned"
+    st_t = 0
+    stun_dmg = 0
+    play_animation(self, "stunned", 1, true)
+}
+
+func die() -> void {
+    st = "dead"
+    st_t = 0
+    remove_tag(self, "focusable")
+    play_animation(self, "dead", 1, false)
+    play_sound("sfx/boss_roar.wav", 0.9, 0.7)
+    stop_music(1.5)
+    shake_camera(3, 1.5)
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    glow = max(0, glow - dt)
+    if st == "wait" {
+        # Sprig drops in: she wakes
+        if sprig.position.y < floor_y + 3 and is_on_floor(sprig) {
+            st = "ceiling"
+            st_t = 0
+            remove_tag(self, "hidden")
+            play_sound("sfx/boss_roar.wav", 0.9)
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "QUEEN MILDEWMITE")
+            game.talk("queen_title", "")
+        }
+    } elif st == "ceiling" {
+        # creep along the ceiling after him; the eye glows now and then; eggs drop
+        face(sprig.position, 90, dt)
+        var to: vec3 = sprig.position - self.position
+        to.y = 0
+        if length(to) > 3 { self.position = self.position + normalize(to) * 1.4 * dt }
+        play_animation(self, "walk", 1, true)
+        glow_t -= dt
+        if glow_t <= 0 {
+            glow = 1.8
+            glow_t = 4.5
+            play_sound("sfx/screech.wav", 0.5, 1.4)
+        }
+        egg_t -= dt
+        if egg_t <= 0 {
+            egg_t = 6
+            if len(find_tagged("larva")) < 3 {
+                var l: entity = spawn("prefabs/larva.scene", vec3(self.x, floor_y + 0.1, self.z))
+                play_sound("sfx/pop.wav", 0.7, 0.6)
+            }
+        }
+    } elif st == "falling" {
+        vel.y -= 30 * dt
+        self.y = self.y + vel.y * dt
+        if self.y <= floor_y {
+            self.y = floor_y
+            shake_camera(4, 0.4)
+            play_sound("sfx/land.wav", 1.0, 0.5)
+            stun()
+        }
+    } elif st == "stunned" {
+        if st_t > 4.5 {
+            if hp <= max_hp / 2 {
+                st = "hunt"
+                glow_t = 2.5
+                play_sound("sfx/boss_roar.wav", 0.8)
+                play_animation(self, "roar", 1, false)
+            } else {
+                st = "climbing"
+            }
+            st_t = 0
+        }
+    } elif st == "climbing" {
+        self.y = min(ceiling, self.y + 7 * dt)
+        play_animation(self, "walk", 1.5, true)
+        if self.y >= ceiling {
+            st = "ceiling"
+            st_t = 0
+            glow_t = 3
+        }
+    } elif st == "hunt" {
+        face(sprig.position, 120, dt)
+        var f := vec3(-sin(yaw), 0, -cos(yaw))
+        var v: vec3 = move_and_slide(self, f * 2.2 + vec3(0, -5, 0))
+        play_animation(self, "walk", 1.2, true)
+        glow_t -= dt
+        if glow_t <= 0 {
+            st = "charge"
+            st_t = 0
+            glow = 1.2
+            play_sound("sfx/screech.wav", 0.7, 1.2)
+        }
+    } elif st == "charge" {
+        var f2 := vec3(-sin(yaw), 0, -cos(yaw))
+        if st_t < 1.2 {
+            face(sprig.position, 200, dt)        # winding up: the eye glows
+            play_animation(self, "idle", 3, true)
+        } else {
+            var v2: vec3 = move_and_slide(self, f2 * 9 + vec3(0, -5, 0))
+            play_animation(self, "walk", 2.5, true)
+            if is_on_wall(self) or st_t > 2.6 {
+                if is_on_wall(self) {
+                    shake_camera(3, 0.3)
+                    play_sound("sfx/bonk.wav", 1.0, 0.6)
+                }
+                st = "hunt"
+                st_t = 0
+                glow_t = 3
+            }
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) and dead_t < 2.5 {
+            spawn("prefabs/poof.scene", self.position + vec3(random(-1.5, 1.5), random(0.5, 2), random(-1.5, 1.5)))
+            play_sound("sfx/defeat.wav", 0.6, 0.6 + random() * 0.4)
+        }
+        if dead_t > 2.6 {
+            for l2 in find_tagged("larva") { send(l2, "die") }
+            game.set_flag("crock_boss")
+            game.talk("queen_beaten", "")
+            destroy(eye)
+            destroy(self)
+            return
+        }
+    }
+    # touching her hurts, when she's down here and not stunned
+    if not upside() and st != "stunned" and st != "dead" and st != "falling" {
+        var d: number = distance(vec3(sprig.x, 0, sprig.z), vec3(self.x, 0, self.z))
+        if d < 2.0 and abs(sprig.y - self.y) < 2 { sprig.hurt(4, self.position, "touch") }
+    }
+    # how she looks
+    var roll: number = 0
+    if upside() { roll = 180 }
+    self.rotation = vec3(0, yaw, roll)
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff9090ff" } else { self.Mesh.color = "#ffffffff" }
+    eye.position = eye_point()
+    if glow > 0 {
+        eye.Mesh.color = "#ff2020ff"
+        eye.scale = vec3(0.6, 0.6, 0.6)
+    } else {
+        eye.Mesh.color = "#f0f0d0ff"
+        eye.scale = vec3(0.35, 0.35, 0.35)
+    }
+    if st == "wait" { eye.scale = vec3(0.001, 0.001, 0.001) }
+}

@@ -1,0 +1,36 @@
+@strict @3d
+# warp.bs - the blue light left when a dungeon's master is beaten: stepping in takes Sprig
+# out (to `to`, at `at`), setting the flag `sets` on the way.
+
+var to: string = "sprouthollow"
+var at: string = "grove"
+var sets: string = ""
+var when: string = ""                  # it appears when this flag is set
+var game: entity
+var used: bool = false
+var t: number = 0
+var scale0: vec3
+
+func start() -> void {
+    game = find("Game")
+    scale0 = self.scale
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if used { return }
+    if when != "" and not game.flag(when) {
+        self.scale = vec3(0.001, 0.001, 0.001)
+        return
+    }
+    self.scale = scale0
+    self.rotation = vec3(0, t * 60, 0)
+    var sprig: entity = find("Sprig")
+    var d: vec3 = sprig.position - self.position
+    if abs(d.x) < 1.0 and abs(d.z) < 1.0 and abs(d.y) < 2 and game.state == "play" {
+        used = true
+        play_sound("sfx/warp.wav", 0.8)
+        if sets != "" { game.set_flag(sets) }
+        game.go(to, at)
+    }
+}

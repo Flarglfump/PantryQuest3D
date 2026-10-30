@@ -1,0 +1,36 @@
+# A mite larva, laid by Queen Mildewmite (enemy.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Larva"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/larva.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.25
+    friction = 0.8
+    offset = 0 0.25 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable, larva"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"larva\", hp = 1, damage = 1"

@@ -1,0 +1,29 @@
+@strict
+# testsetup.bs - for trying an area on its own (the play-test bots put these at the top of
+# a copy of an area): adds items and story flags to the journey before the Game starts.
+
+var items: list = []
+var flags: list = []
+var spawn: string = ""
+
+func start() -> void {
+    var s: list = global("save", [])
+    if len(s) < 12 { s = [[], [], 12, 12, 0, 0, ["", "", ""], [], "", "start", 0, "fresh"] }
+    var fl: list = s[0]
+    var it: list = s[1]
+    for f in flags { push(fl, f) }
+    for i in items {
+        push(it, i)
+        if i == "shooter" {
+            s[5] = 30
+            var slots: list = s[6]
+            slots[0] = "shooter"
+        }
+        if i == "heartpie" {
+            s[3] = s[3] + 4
+            s[2] = s[3]
+        }
+    }
+    if spawn != "" { s[9] = spawn }
+    set_global("save", s)
+}

@@ -7,6 +7,7 @@ var to: string = ""
 var at: string = "start"
 var say: string = ""
 var needs: string = ""
+var until: string = ""                # (and stops working once this one is)
 var game: entity
 var cool: number = 0
 
@@ -14,12 +15,16 @@ func start() -> void { game = find("Game") }
 
 func update(dt: number) -> void { cool = max(0, cool - dt) }
 
-func on_trigger(other: entity) -> void {
-    if other.name != "Sprig" or cool > 0 or game.state != "play" { return }
+func entered(other: entity) -> void {
+    if cool > 0 or game.state != "play" { return }
     if needs != "" and not game.flag(needs) { return }
+    if until != "" and game.flag(until) { return }
     cool = 2
     if to == "" {
-        other.position = other.position - self.forward * 1.2
+        var back: vec3 = other.position - self.position
+        back.y = 0
+        if length(back) < 0.01 { back = self.forward * -1 }
+        other.position = other.position + normalize(back) * 1.5
         game.talk(say, "")
         return
     }

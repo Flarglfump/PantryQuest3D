@@ -30,7 +30,7 @@ entity
     kind = directional
     color = #fff2dcff
     intensity = 0.95
-    shadows = true
+    shadows = false
     shadow_range = 14
 
 entity
@@ -189,6 +189,7 @@ entity
     file = "models/chive.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -219,6 +220,7 @@ entity
     file = "models/chive.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -755,6 +757,7 @@ entity
     file = "models/sage.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -771,7 +774,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"sage\""
+    vars = "who = \"sage\", reach = 2.9"
 
 entity
   Name
@@ -1097,10 +1100,10 @@ entity
     uv_scale = 1 1
   Collider3D
     shape = box
-    size = 1 0.6 0.7
+    size = 1 1.3 0.7
     radius = 0.5
     friction = 0.8
-    offset = 0 0.3 0
+    offset = 0 0.65 0
   Tags
     list = "chest, interact"
   Script
@@ -1296,6 +1299,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1332,6 +1336,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1368,6 +1373,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1404,6 +1410,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1440,6 +1447,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1476,6 +1484,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1512,6 +1521,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1548,6 +1558,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1584,6 +1595,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -1620,6 +1632,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -2957,6 +2970,7 @@ entity
     file = "models/fennel.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -2987,6 +3001,7 @@ entity
     file = "models/fennel.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -3017,6 +3032,7 @@ entity
     file = "models/mint.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -3047,6 +3063,7 @@ entity
     file = "models/dill.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -3077,6 +3094,7 @@ entity
     file = "models/parsley.glb"
     color = #ffffffff
     uv_scale = 1 1
+    shadow = true
   Animator
     clip = "idle"
     speed = 1
@@ -3403,6 +3421,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -3439,6 +3458,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -3475,6 +3495,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -3489,6 +3510,7 @@ entity
     radius = 0.5
     friction = 0.8
     offset = 0 1.25 0.2
+    trigger = true
   Tags
     list = "interact, focusable, npc"
   Script
@@ -3562,12 +3584,12 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = 0 3.4 -43
+    position = 0 3.4 -42.4
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
     shape = box
-    size = 1.8 1.8 0.6
+    size = 1.8 1.8 0.8
     radius = 0.5
     friction = 0.8
     trigger = true
@@ -3575,7 +3597,7 @@ entity
     list = "loadzone"
   Script
     file = "scripts/loadzone.bs"
-    vars = "to = \"crock\", at = \"start\", needs = \"starter_open\""
+    vars = "to = \"crock\", at = \"start\", until = \"crock_done\", needs = \"starter_open\""
 
 entity
   Name

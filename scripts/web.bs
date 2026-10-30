@@ -1,0 +1,50 @@
+@strict @3d
+# web.bs - a web of mould stretched over a hole. `breaks`:
+#   "fall" - Sprig falling on to it from high up tears through it (it holds him otherwise)
+#   "fire" - only fire burns it (a pea lit at a torch)
+# Once gone, the flag `id` remembers it.
+
+var id: string = ""
+var breaks: string = "fire"
+var radius: number = 2.5               # (for shots: shootable within this of its middle)
+var passthrough: bool = false
+var game: entity
+var sprig: entity
+var gone: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    if game.flag(id) { remove() }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func remove() -> void {
+    gone = true
+    destroy(self)
+}
+
+func burn() -> void {
+    if gone { return }
+    game.set_flag(id)
+    spawn("prefabs/flame.scene", self.position)
+    play_sound("sfx/burn.wav", 0.8)
+    remove()
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if how == "fire" { burn() } elif breaks == "fire" and how == "pea" { play_sound("sfx/tick.wav", 0.4) }
+}
+
+func update(dt: number) -> void {
+    if gone or breaks != "fall" { return }
+    # falling fast on to it from above: it tears
+    var d: vec3 = sprig.position - self.position
+    if abs(d.x) < radius and abs(d.z) < radius and d.y > -0.2 and d.y < 2.6 and sprig.vel.y < -15 {
+        game.set_flag(id)
+        spawn("prefabs/poof.scene", self.position)
+        play_sound("sfx/smash.wav", 0.8)
+        remove()
+    }
+}

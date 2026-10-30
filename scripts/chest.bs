@@ -30,7 +30,7 @@ func set_shown(on: bool) -> void {
     self.Mesh.visible = on
     lid.Mesh.visible = on
     if on {
-        self.Collider3D.size = vec3(1, 0.6, 0.7)
+        self.Collider3D.size = vec3(1, 1.3, 0.7)
         add_tag(self, "interact")
     } else {
         self.Collider3D.size = vec3(0.001, 0.001, 0.001)

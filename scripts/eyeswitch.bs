@@ -1,0 +1,39 @@
+@strict @3d
+# eyeswitch.bs - a staring eye over a door. A pea in it makes it shut, and sets the flag
+# `id` (bars watching that flag go: blocker.bs).
+
+var id: string = ""
+var radius: number = 0.6
+var passthrough: bool = false
+var game: entity
+var shut: bool = false
+var t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(id) { close() }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func close() -> void {
+    shut = true
+    self.scale = vec3(self.scale.x, 0.06, self.scale.z)
+    remove_tag(self, "focusable")
+    remove_tag(self, "shootable")
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if shut { return }
+    if how == "pea" or how == "fire" {
+        close()
+        play_sound("sfx/switch.wav", 0.8)
+        play_sound("sfx/secret.wav", 0.7)
+        game.set_flag(id)
+    }
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if not shut { self.scale = vec3(self.scale.x, 0.5 + sin(t * 200) * 0.04, self.scale.z) }
+}

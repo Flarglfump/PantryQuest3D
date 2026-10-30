@@ -11,6 +11,7 @@ var owner: entity
 var fire: bool = false
 var life: number = 1.6
 var reflected: bool = false
+var at: vec3
 
 func start() -> void {
     if kind == "nut" { speed = 7 }
@@ -34,9 +35,7 @@ func update(dt: number) -> void {
             }
         }
     }
-    var ignore: entity = owner
-    if reflected { ignore = nil }
-    var hit: any = raycast(from, to, ignore)
+    var hit: any = raycast(from, to, owner)
     if hit != nil {
         var e: entity = hit[0]
         if e.name == "Sprig" and kind == "nut" {
@@ -46,7 +45,7 @@ func update(dt: number) -> void {
                 reflected = true
                 owner = e
                 speed = 10
-                self.position = hit[1] + dir * 0.1
+                self.position = hit[1] + dir * 0.3
                 return
             }
             destroy(self)
@@ -62,6 +61,17 @@ func update(dt: number) -> void {
         destroy(self)
         return
     }
+    # a nut sent back flies at the enemies
+    if reflected {
+        for en in find_tagged("enemy") {
+            if en.alive and distance(en.focus_point(), to) < 0.6 {
+                send(en, "hit", 1, kind, from)
+                spawn("prefabs/spark.scene", to)
+                destroy(self)
+                return
+            }
+        }
+    }
     # (triggers aren't solid: webs and switches are found by distance)
     for w in find_tagged("shootable") {
         if distance(w.global_position, to) < w.radius {
@@ -75,4 +85,5 @@ func update(dt: number) -> void {
         }
     }
     self.position = to
+    at = to
 }

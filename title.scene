@@ -505,6 +505,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -518,6 +519,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -531,6 +533,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -544,6 +547,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -557,6 +561,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -570,6 +575,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -583,6 +589,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -596,6 +603,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -609,6 +617,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -622,6 +631,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -674,6 +684,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -687,6 +698,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name
@@ -700,6 +712,7 @@ entity
     texture = "art/leaves.png"
     color = #ffffffff
     uv_scale = 2 2
+    shadow = true
 
 entity
   Name

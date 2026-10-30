@@ -49,6 +49,7 @@ func update(dt: number) -> void {
     if action_pressed("cam_center") or action_pressed("focus") { recenter = 0.25 }
 
     var t: entity = sprig.target
+    if t != nil and not t.alive { t = nil }
     if t != nil {
         # behind Sprig, on the line from what's focused through him
         var away: vec3 = me - t.global_position
@@ -86,6 +87,6 @@ func place(p: vec3) -> void {
     self.position = at
     var look: vec3 = focus
     var t: entity = sprig.target
-    if t != nil { look = lerp(focus, t.focus_point(), 0.4) }
+    if t != nil and t.alive { look = lerp(focus, t.focus_point(), 0.4) }
     look_at(self, look)
 }

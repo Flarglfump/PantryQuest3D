@@ -44,8 +44,11 @@ def height(x, z):
     # the stream
     d = stream_d(x, z) if z < 33 else 99
     h -= 0.45 * smooth((1.8 - d) / 1.2)
-    # the bowl's rim
-    h += 9 * smooth((r - R_EDGE) / 5)
+    # the bowl's rim (further out behind the grove, where Mother Starter sits)
+    edge = R_EDGE
+    if z < -26:
+        edge = R_EDGE + 14 * smooth((16 - abs(x)) / 4)
+    h += 9 * smooth((r - edge) / 5)
     return h
 
 
@@ -172,10 +175,10 @@ def build():
     a.geo('planks', sx, sz).box((sx - 2.2, sy - 0.2, sz - 0.4), (sx + 2.2, sy + 1.0, sz + 0.4), uvs=0.8)
     a.geo('planks', sx, sz).box((sx - 2.6, sy - 0.2, sz - 3.6), (sx + 2.6, sy + 2.6, sz - 3.2), uvs=0.6)
     for xx in (-2.4, 2.4):
-        a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy, sz + 0.6), 0.12, 2.8, 6, uvs=1)
+        a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy, sz + 0.3), 0.12, 2.8, 6, uvs=1)
         a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy, sz - 3.2), 0.12, 2.8, 6, uvs=1)
     a.entity('Awning', t3((sx, sy + 3.0, sz - 1.3), (-12, 0, 0), (5.8, 0.15, 4.6)), mesh('cube', '#e8a858ff', 'art/thatch.png'))
-    a.npc('sage', sx, sy, sz - 1.4, 0)
+    a.npc('sage', sx, sy, sz - 1.4, 0, reach=2.9)
     for k, (xx, c) in enumerate([(-1.4, '#c0c0c8ff'), (1.3, '#80d050ff')]):
         a.entity('Wares', t3((sx + xx, sy + 1.15, sz), (0, 20, 0), 0.6), mesh('cylinder', c))
     a.sign(sx - 3.4, sy, sz + 0.8, 20, 'sign_shop')
@@ -256,7 +259,7 @@ def build():
     a.geo('crock', cx, cz).cylinder((cx, gy - 0.3, cz), 4.2, 5.0, 18, top=False, radius_top=3.8, uvs=0.4)
     a.geo('crock', cx, cz).cylinder((cx, gy + 4.7, cz), 3.8, 0.35, 18, top=False, radius_top=4.2, uvs=0.4)
     a.geo('dough', cx, cz).sphere((cx, gy + 4.8, cz), 4.0, 16, 6, squash=0.5, uvs=2)
-    a.entity('Mother Starter', t3((cx, gy, cz + 4.2)), collider('box', (3, 2.5, 1), offset=(0, 1.25, 0.2)),
+    a.entity('Mother Starter', t3((cx, gy, cz + 4.2)), collider('box', (3, 2.5, 1), offset=(0, 1.25, 0.2), trigger=True),
              tags('interact', 'focusable', 'npc'), script('scripts/starter.bs'))
     for side in (-1, 1):
         a.entity('Starter Eye', t3((cx + side * 1.3, gy + 3.4, cz + 4.0), (0, 0, 0), (0.7, 0.45, 0.2)), mesh('sphere', '#3a2a18ff', lit=False))
@@ -264,7 +267,7 @@ def build():
     a.entity('Starter Bubbles', t3((cx, gy + 6.2, cz)), particles(rate=3, max=20, lifetime=1.6, speed=0.3, spread=40, area=(5, 5),
                                                                 gravity=-0.1, size_start=0.25, size_end=0.0,
                                                                 color_start='#f0f0e0c0', color_end='#a0a09000'))
-    a.loadzone(cx, gy, cz + 4.0, 1.8, 1.8, 0.6, to='crock', at='start', needs='starter_open')
+    a.loadzone(cx, gy, cz + 4.6, 1.8, 1.8, 0.8, to='crock', at='start', needs='starter_open', until='crock_done')
     a.spawn_point('grove', 0, gy + 0.1, cz + 9, 0)
 
     # ---- ways out ----

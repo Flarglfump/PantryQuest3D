@@ -27,7 +27,7 @@ def burst(color0, color1, count=24, speed=3.0, size=0.12, life=0.6, gravity=6.0,
 
 def main():
     prefab('sprig_body', "Sprig's body: the skinned model (sprig.bs turns, rolls and spins it).",
-           ('SprigBody', t3((0, 0, 0)), mesh('model', file='models/sprig.glb', shadow=False),
+           ('SprigBody', t3((0, 0, 0)), mesh('model', file='models/sprig.glb', shadow=True),
             ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.12)])))
     prefab('spoon', "The wooden spoon (sprig.bs places it).",
            ('Spoon', t3((0, 0, 0)), mesh('model', '#d8a868ff', file='models/spoon.obj', cast=False)))
@@ -48,6 +48,11 @@ def main():
         prefab('pickup_' + kind, 'A pickup: ' + kind + ' (pickup.bs).',
                ('Pickup', t3((0, 0, 0), scale=s), mesh('model', color, file=file, lit=False, cast=False, shadow=True),
                 script('scripts/pickup.bs', kind=kind)))
+    prefab('larva', "A mite larva, laid by Queen Mildewmite (enemy.bs).",
+           ('Larva', t3((0, 0, 0)), mesh('model', file='models/larva.glb', shadow=True),
+            ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
+            collider('capsule', (1, 0.5, 1), 0.25, offset=(0, 0.25, 0)), kinematic(), tags('enemy', 'focusable', 'larva'),
+            script('scripts/enemy.bs', brain='larva', hp=1, damage=1)))
     prefab('poof', "A puff of smoke (an enemy beaten, something appearing).",
            ('Poof', t3((0, 0, 0)), burst('#f0f0e0e0', '#a0a09000', 30, 2.5, 0.3, 0.7, -1.0)))
     prefab('spark', "Sparks where a shot hits.",

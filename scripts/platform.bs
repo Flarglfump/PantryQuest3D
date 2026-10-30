@@ -1,0 +1,36 @@
+@strict @3d
+# platform.bs - a crust platform that rides back and forth between a and b, waiting at each
+# end. Sprig standing on it is carried (sprig.bs: things tagged "platform").
+
+var a: vec3 = vec3(0, 0, 0)
+var b: vec3 = vec3(0, 0, 4)
+var speed: number = 1.6
+var wait: number = 1.2
+var to_b: bool = true
+var hold: number = 0
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    self.position = a
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    if hold > 0 {
+        hold -= dt
+        return
+    }
+    var goal: vec3 = a
+    if to_b { goal = b }
+    var d: vec3 = goal - self.position
+    var l: number = length(d)
+    var step: number = speed * dt
+    if l <= step {
+        self.position = goal
+        to_b = not to_b
+        hold = wait
+    } else {
+        self.position = self.position + d * (step / l)
+    }
+}

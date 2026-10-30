@@ -7,7 +7,7 @@ var who: string = "fennel"
 var needs: string = ""
 var until: string = ""
 var prompt: string = "Talk"
-var reach: number = 1.6
+var reach: number = 2.0
 var game: entity
 var sprig: entity
 var home_yaw: number = 0

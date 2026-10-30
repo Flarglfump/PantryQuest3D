@@ -44,12 +44,14 @@ var platform: entity
 var plat_last: vec3
 
 var vine: entity
+var zone: entity                   # the way out he's standing in (it may wait for a story flag)
 var action_label: string = ""      # what A does now (the HUD shows it)
 var action_target: entity
 var move_amount: number = 0
 var shielding: bool = false
 var hint_glow: bool = false
 var at: vec3                       # (where he is: for the play-test bots)
+var last_hurt: string = ""         # (what hurt him last: for the bots)
 
 func start() -> void {
     game = find("Game")
@@ -148,6 +150,7 @@ func hurt(quarters: int, from: vec3, kind: string) -> string {
     }
     invuln = 1.2
     flash = 1.2
+    last_hurt = kind + " " + str(from)
     play_sound("sfx/hurt.wav", 0.8)
     shake_camera(2, 0.2)
     if game.damage(quarters) {
@@ -399,6 +402,7 @@ func update(dt: number) -> void {
         }
     }
     if self.y < game.kill_y and st != "dead" { fell() }
+    if zone != nil and zone.alive and playing and st != "dead" { zone.entered(self) }
 
     at = self.position
     update_context()
@@ -549,9 +553,11 @@ func fell() -> void {
 func on_trigger(other: entity) -> void {
     if has_tag(other, "climbable") { vine = other }
     if has_tag(other, "pit") and st != "dead" { fell() }
+    if has_tag(other, "loadzone") { zone = other }
 }
 func on_trigger_exit(other: entity) -> void {
     if other == vine { vine = nil }
+    if other == zone { zone = nil }
 }
 
 # What A would do: talk to someone, read a sign, open a chest...

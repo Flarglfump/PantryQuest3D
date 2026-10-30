@@ -42,7 +42,7 @@ MATERIALS = {
 
 class Area:
     def __init__(self, id, name, music='', dungeon='', kill_y=-20.0, sky='#a8d8f0ff', fog=(22, 60), fog_color=None,
-                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=True, chunk=24.0):
+                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0):
         self.id, self.name = id, name
         self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
         self.chunks = Chunked(chunk)
@@ -105,7 +105,7 @@ class Area:
                     collider('capsule', (1, 1, 1), 0.5), tags('tree'),
                     script('scripts/tree.bs', drop=bonk_drop))
         self.entity('Leaves', t3((x, y + h + 0.7 * size, z), (0, x * 37 % 360, 0), (2.6 * size, 2.0 * size, 2.6 * size)),
-                    mesh('sphere', '#ffffffff', 'art/leaves.png', uv=(2, 2)))
+                    mesh('sphere', '#ffffffff', 'art/leaves.png', uv=(2, 2), shadow=True))
 
     def grass(self, x, y, z, drops=0.3):
         self.entity('Grass', t3((x, y, z), (0, (x * 53 + z * 17) % 360, 0), (0.55, 0.45, 0.55)),
@@ -126,13 +126,15 @@ class Area:
         self.entity('Sign Board', t3((x, y + 0.85, z), (0, yaw, 0), (0.8, 0.5, 0.08)), mesh('cube', '#ffffffff', 'art/planks.png'),
                     collider('box'), tags('interact', 'focusable'), script('scripts/sign.bs', say=say))
 
-    def npc(self, who, x, y, z, yaw=0, needs='', until=''):
+    def npc(self, who, x, y, z, yaw=0, needs='', until='', reach=None):
         kw = {'who': who}
+        if reach:
+            kw['reach'] = reach
         if needs:
             kw['needs'] = needs
         if until:
             kw['until'] = until
-        self.entity(who.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % who, shadow=False),
+        self.entity(who.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % who, shadow=True),
                     ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
                     collider('capsule', (1, 1.1, 1), 0.3, offset=(0, 0.55, 0)), tags('npc', 'interact', 'focusable'),
                     script('scripts/npc.bs', **kw))
@@ -143,7 +145,7 @@ class Area:
         if appear:
             kw['appear'] = appear
         i = self.entity('Chest', t3((x, y, z), (0, yaw, 0), s), mesh('model', '#ffffffff', 'art/chest.png', file='models/chest_base.obj'),
-                        collider('box', (1, 0.6, 0.7), offset=(0, 0.3, 0)), tags('chest', 'interact'),
+                        collider('box', (1, 1.3, 0.7), offset=(0, 0.65, 0)), tags('chest', 'interact'),
                         script('scripts/chest.bs', **kw))
         self.entity('Lid', t3((0, 0.55, 0.35)), mesh('model', '#ffffffff', 'art/chest.png', file='models/chest_lid.obj'),
                     ('Parent', [('entity', i)]))
@@ -167,8 +169,10 @@ class Area:
                     collider('capsule', (1, 1.4, 1), 0.3, offset=(0, 0.7, 0)), tags('enemy', 'focusable'),
                     script('scripts/enemy.bs', brain='dummy', hp=99))
 
-    def loadzone(self, x, y, z, w, h, d, to='', at='start', say='', needs='', yaw=0):
+    def loadzone(self, x, y, z, w, h, d, to='', at='start', say='', needs='', yaw=0, until=''):
         kw = {'to': to, 'at': at}
+        if until:
+            kw['until'] = until
         if say:
             kw['say'] = say
         if needs:
@@ -243,3 +247,109 @@ def box_wall(a, material, x0, z0, x1, z1, y0, y1, thick=0.6, uvs=0.5):
     yaw = math.degrees(math.atan2(-dx, -dz))     # (the wall's length runs along its local -z)
     cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
     a.geo(material, cx, cz).box((cx - thick / 2, y0, cz - L / 2), (cx + thick / 2, y1, cz + L / 2), uvs=uvs, rot_y=yaw, center=(cx, cz))
+
+
+# ---- dungeon geometry: rooms are round, joined by square tunnels ----
+
+def ring_floor(o, cx, cz, r0, r1, y, a0=0.0, a1=360.0, segs=24, thick=0.5, uvs=0.35, edges=True):
+    """A flat ring (or disc, r0 = 0) at height y from angle a0 to a1 (degrees: 0 is +x, 90 is
+    +z), with its edges as thick as `thick`."""
+    n = max(1, int(segs * (a1 - a0) / 360.0 + 0.5))
+    P = lambda r, a, yy: (cx + math.cos(math.radians(a)) * r, yy, cz + math.sin(math.radians(a)) * r)
+    U = lambda p: (p[0] * uvs, p[2] * uvs)
+    for i in range(n):
+        aa, ab = a0 + (a1 - a0) * i / n, a0 + (a1 - a0) * (i + 1) / n
+        # (seen from above, angle grows clockwise here: x right, z down)
+        if r0 > 0:
+            q = [P(r0, aa, y), P(r0, ab, y), P(r1, ab, y), P(r1, aa, y)]
+            o.quad(q[0], q[1], q[2], q[3], U(q[0]), U(q[1]), U(q[2]), U(q[3]))
+        else:
+            c = (cx, y, cz)
+            o.tri(c, P(r1, ab, y), P(r1, aa, y), U(c), U(P(r1, ab, y)), U(P(r1, aa, y)))
+        if edges and thick > 0:
+            lo = y - thick
+            o.quad(P(r1, aa, lo), P(r1, aa, y), P(r1, ab, y), P(r1, ab, lo), (0, 0), (0, thick * uvs), (1, thick * uvs), (1, 0))
+            if r0 > 0:
+                o.quad(P(r0, ab, lo), P(r0, ab, y), P(r0, aa, y), P(r0, aa, lo), (0, 0), (0, thick * uvs), (1, thick * uvs), (1, 0))
+            o.quad(P(r1, aa, lo), P(r1, ab, lo), P(r0 if r0 > 0 else 0.001, ab, lo), P(r0 if r0 > 0 else 0.001, aa, lo))
+    if edges and thick > 0 and a1 - a0 < 360:
+        for a in (a0, a1):
+            p0, p1 = P(r0, a, y - thick), P(r1, a, y - thick)
+            p2, p3 = P(r1, a, y), P(r0, a, y)
+            if a == a0:
+                o.quad(p0, p1, p2, p3)
+            else:
+                o.quad(p1, p0, p3, p2)
+
+
+def ring_wall(o, cx, cz, r, y0, y1, segs=24, holes=(), uvs=0.3):
+    """The inside wall of a round room, from y0 up to y1, facing in. holes: (angle,
+    half-width in units, y bottom, y top) - doorways."""
+    for i in range(segs):
+        aa, ab = 360.0 * i / segs, 360.0 * (i + 1) / segs
+        mid = (aa + ab) / 2
+        spans = [(y0, y1)]
+        for ha, hw, hy0, hy1 in holes:
+            d = abs(((mid - ha + 180) % 360) - 180)
+            if math.radians(d) * r < hw:
+                new = []
+                for s0, s1 in spans:
+                    if hy0 > s0:
+                        new.append((s0, min(s1, hy0)))
+                    if hy1 < s1:
+                        new.append((max(s0, hy1), s1))
+                spans = new
+        for s0, s1 in spans:
+            if s1 - s0 < 0.01:
+                continue
+            P = lambda a, yy: (cx + math.cos(math.radians(a)) * r, yy, cz + math.sin(math.radians(a)) * r)
+            u0, u1 = math.radians(aa) * r * uvs, math.radians(ab) * r * uvs
+            # facing the middle
+            o.quad(P(aa, s0), P(ab, s0), P(ab, s1), P(aa, s1), (u0, s0 * uvs), (u1, s0 * uvs), (u1, s1 * uvs), (u0, s1 * uvs))
+
+
+def ceiling_disc(o, cx, cz, r, y, hole=0.0, segs=24, uvs=0.3):
+    """A ceiling (facing down), with an optional hole in the middle."""
+    P = lambda rr, a: (cx + math.cos(math.radians(a)) * rr, y, cz + math.sin(math.radians(a)) * rr)
+    for i in range(segs):
+        aa, ab = 360.0 * i / segs, 360.0 * (i + 1) / segs
+        if hole > 0:
+            o.quad(P(hole, ab), P(hole, aa), P(r, aa), P(r, ab))
+        else:
+            o.tri((cx, y, cz), P(r, aa), P(r, ab))
+
+
+def tunnel(o_floor, o_wall, x0, z0, x1, z1, y, w=2.4, h=2.8, uvs=0.35, ceiling=True):
+    """A straight square tunnel between two points (open at both ends), floor at y."""
+    dx, dz = x1 - x0, z1 - z0
+    L = math.hypot(dx, dz)
+    ux, uz = dx / L, dz / L
+    px, pz = -uz * w / 2, ux * w / 2
+    A, B = (x0, z0), (x1, z1)
+    def p(c, side, yy):
+        return (c[0] + px * side, yy, c[1] + pz * side)
+    # floor (facing up)
+    q = [p(A, 1, y), p(B, 1, y), p(B, -1, y), p(A, -1, y)]
+    if (q[1][0] - q[0][0]) * (q[2][2] - q[0][2]) - (q[1][2] - q[0][2]) * (q[2][0] - q[0][0]) > 0:
+        q = q[::-1]
+    o_floor.quad(*q, *[(v[0] * uvs, v[2] * uvs) for v in q])
+    o_floor.box((min(x0, x1) - abs(px), y - 0.5, min(z0, z1) - abs(pz)), (max(x0, x1) + abs(px), y, max(z0, z1) + abs(pz)), sides=('ny',))
+    # walls (facing in) and a ceiling (facing down)
+    for side in (1, -1):
+        w0, w1 = p(A, side, y), p(B, side, y)
+        quad = [w0, w1, (w1[0], y + h, w1[2]), (w0[0], y + h, w0[2])]
+        # face inwards: towards the middle line
+        n = ((quad[1][1] - quad[0][1]) * (quad[2][2] - quad[0][2]) - (quad[1][2] - quad[0][2]) * (quad[2][1] - quad[0][1]),
+             0, 0)
+        e1 = [quad[1][i] - quad[0][i] for i in range(3)]
+        e2 = [quad[2][i] - quad[0][i] for i in range(3)]
+        nx = e1[1] * e2[2] - e1[2] * e2[1]
+        nz = e1[0] * e2[1] - e1[1] * e2[0]
+        if nx * (-px * side) + nz * (-pz * side) < 0:
+            quad = quad[::-1]
+        o_wall.quad(*quad, (0, 0), (L * uvs, 0), (L * uvs, h * uvs), (0, h * uvs))
+    if ceiling:
+        q = [p(A, 1, y + h), p(B, 1, y + h), p(B, -1, y + h), p(A, -1, y + h)]
+        if (q[1][0] - q[0][0]) * (q[2][2] - q[0][2]) - (q[1][2] - q[0][2]) * (q[2][0] - q[0][0]) < 0:
+            q = q[::-1]
+        o_wall.quad(*q, *[(v[0] * uvs, v[2] * uvs) for v in q])

@@ -5,6 +5,8 @@
 var kind: string = "bean1"
 var dropped: bool = false
 var id: string = ""                   # placed ones with an id are only found once
+var when: string = ""                 # hidden until this story flag is set
+var scale0: vec3
 var game: entity
 var sprig: entity
 var t: number = 0
@@ -21,6 +23,8 @@ func start() -> void {
         return
     }
     base_y = self.y
+    scale0 = self.scale
+    if when != "" and not game.flag(when) { self.scale = vec3(0.001, 0.001, 0.001) }
     if dropped {
         vy = 3.5
         landed = false
@@ -29,8 +33,16 @@ func start() -> void {
     }
 }
 
+func flags_changed() -> void {
+    if when != "" and game.flag(when) and self.scale.x < 0.01 {
+        self.scale = scale0
+        spawn("prefabs/poof.scene", self.position)
+    }
+}
+
 func update(dt: number) -> void {
     t += dt
+    if when != "" and not game.flag(when) { return }
     if not landed {
         vy -= 14 * dt
         var next: number = self.y + vy * dt
@@ -55,7 +67,7 @@ func update(dt: number) -> void {
             return
         }
     }
-    if sprig != nil and distance(sprig.position + vec3(0, 0.5, 0), self.position) < 0.75 {
+    if sprig != nil and distance(sprig.position + vec3(0, 0.5, 0), self.position) < 0.75 + self.scale.x * 0.2 {
         game.collect(kind)
         if id != "" { game.set_flag("got:" + id) }
         destroy(self)

@@ -144,3 +144,56 @@ def goto(g, x, z, near=0.6, max_frames=900, step=3):
     for k in held: g.key(k, False)
     g.frames(1)
     return done
+
+
+def test_scene(area, items=(), flags=(), spawn=None):
+    """A copy of an area for a test, starting with these items and flags (and at a spawn
+    point). Returns its path (relative to the project) for Game(test_scene=...)."""
+    src = open(os.path.join(ROOT, 'areas', area + '.scene')).read()
+    ents = []
+    def ent(vars_):
+        ents.append('entity\n  Name\n    text = "TestSetup"\n  Script\n    file = "scripts/testsetup.bs"\n    vars = "%s"\n' % vars_)
+    q = lambda xs: '[' + ', '.join('\\"%s\\"' % x for x in xs) + ']'
+    items, flags = list(items), list(flags)
+    for i in range(0, max(len(items), 1), 4):
+        ent('items = %s' % q(items[i:i + 4]))
+    for i in range(0, len(flags), 4):
+        ent('flags = %s' % q(flags[i:i + 4]))
+    if spawn:
+        ent('spawn = \\"%s\\"' % spawn)
+    n = len(ents)                      # (parents are written as file positions: move them along)
+    src = re.sub(r'(  Parent\n    entity = )(\d+)', lambda m: m.group(1) + str(int(m.group(2)) + n), src)
+    src = src.replace('bronto_scene 1\n', 'bronto_scene 1\n\n' + '\n'.join(ents) + '\n', 1)
+    rel = os.path.join('tools', 'bot', 'tmp_%s.scene' % area)
+    with open(os.path.join(ROOT, rel), 'w') as f:
+        f.write(src)
+    return rel
+
+
+def dir_keys(g, dx, dz):
+    """The movement keys that push Sprig towards world direction (dx, dz), given the camera."""
+    p = sprig_pos(g)
+    cam = g.var('Camera', 'pos')[0]
+    ax, az = p[0] - cam[0], p[2] - cam[2]
+    l = math.hypot(ax, az) or 1
+    ax, az = ax / l, az / l
+    rx, rz = -az, ax
+    l = math.hypot(dx, dz) or 1
+    f, r = (dx * ax + dz * az) / l, (dx * rx + dz * rz) / l
+    keys = []
+    if f > 0.38: keys.append('w')
+    if f < -0.38: keys.append('s')
+    if r > 0.38: keys.append('d')
+    if r < -0.38: keys.append('a')
+    return keys
+
+
+def face(g, dx, dz, shield=True):
+    """Turns Sprig to face (dx, dz) without moving (behind his shield)."""
+    if shield:
+        g.key('k', True)
+    keys = dir_keys(g, dx, dz)
+    for k in keys: g.key(k, True)
+    g.frames(12)
+    for k in keys: g.key(k, False)
+    g.frames(1)

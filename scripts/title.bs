@@ -87,6 +87,7 @@ func draw() -> void {
     draw_text(sub, vec2(160 - w2 / 2 + 2, 58 + bob), [60, 20, 10, floor(a * 255)], 4)
     draw_text(sub, vec2(160 - w2 / 2, 56 + bob), [120, 220, 100, floor(a * 255)], 4)
     var tag: string = "The Ember of the First Hearth"
+    draw_rect(vec2(160 - text_size(tag).x / 2 - 6, 97), vec2(text_size(tag).x + 12, 13), [20, 16, 30, floor(a * 150)])
     draw_text(tag, vec2(160 - text_size(tag).x / 2, 100), [240, 230, 200, floor(a * 220)])
     # the three journeys
     for i in 3 {

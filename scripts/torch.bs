@@ -1,0 +1,8 @@
+@strict @3d
+# torch.bs - a burning torch on a pedestal. A pea shot through its flame catches fire
+# (shot.bs looks for torches); the flame sits `flame_h` above it.
+
+var lit: bool = true
+var flame_h: number = 0.6
+
+func flame_point() -> vec3 { return self.position + vec3(0, flame_h, 0) }

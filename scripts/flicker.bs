@@ -19,6 +19,7 @@ func update(dt: number) -> void {
     if sprig == nil { return }
     var want: vec3
     var tg: entity = sprig.target
+    if tg != nil and not tg.alive { tg = nil }
     var col: string = "#9ad8ffff"
     if tg != nil {
         want = tg.focus_point() + vec3(0, 0.7 + sin(t * 400) * 0.08, 0)

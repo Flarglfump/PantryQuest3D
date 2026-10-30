@@ -203,7 +203,9 @@ func damage(quarters: int) -> bool {
 }
 
 func collect(kind: string) -> void {
-    if kind == "heart" {
+    if kind == "heartpie" or kind == "slice" {
+        give(kind, "")
+    } elif kind == "heart" {
         heal(4)
         play_sound("sfx/heart.wav", 0.7)
     } elif kind == "bean1" {

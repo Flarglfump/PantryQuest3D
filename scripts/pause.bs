@@ -45,7 +45,7 @@ func update(dt: number) -> void {
     t += dt
     msg_t = max(0, msg_t - dt)
     if closing { return }
-    if action_pressed("pause") or action_pressed("m_back") {
+    if action_pressed("m_back") or (action_pressed("pause") and not action_pressed("m_ok")) {
         close()
         return
     }

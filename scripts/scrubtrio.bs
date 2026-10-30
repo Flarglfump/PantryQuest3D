@@ -1,0 +1,39 @@
+@strict @3d
+# scrubtrio.bs - the three Scrub brothers: struck in the right order (the sign says: the
+# middle one, then the right, then the left) they give up and the bars open (flag `id`).
+# A wrong one, and they laugh and it starts again.
+
+var id: string = "crock_scrubs"
+var order: list = [1, 2, 0]
+var next: int = 0
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(id) {
+        for e in find_tagged("trio") {
+            destroy(e)
+        }
+    }
+}
+
+func scrub_struck(which: int) -> void {
+    if game.flag(id) { return }
+    if which == order[next] {
+        next += 1
+        play_sound("sfx/switch.wav", 0.6, 0.8 + next * 0.2)
+        if next >= len(order) {
+            for e in find_tagged("trio") {
+                spawn("prefabs/poof.scene", e.position + vec3(0, 0.4, 0))
+                destroy(e)
+            }
+            game.set_flag(id)
+            play_sound("sfx/secret.wav", 0.8)
+            game.talk("scrub_beaten", "")
+        }
+    } else {
+        next = 0
+        broadcast("trio_reset")
+        game.talk("scrub_wrong", "")
+    }
+}
