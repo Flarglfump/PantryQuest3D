@@ -118,6 +118,9 @@ func interact(who_by: entity) -> void {
     if id == "fizzy_ember" { then = "ember_wisdom" }
     if id == "cinder" { then = "prelude" }
     if id == "cinder_minuet" { then = "minuet" }
+    if id == "cinder_bolero" { then = "bolero" }
+    if who == "little_biscotti" and not game.has_item("apron") { then = "apron" }
+    if id == "biscotti_keeper" and not game.flag("keeper_spice") { then = "med_spice" }
     if id == "fennel_keeper" and not game.flag("keeper_bitter") { then = "med_bitter" }
     if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
     if id == "fennel_1" { game.set_flag("talked_fennel") }
@@ -171,6 +174,10 @@ func talk_for() -> string {
     }
     if who == "mozz" { return "mozz_2" }
     if who == "cinder" {
+        if game.flag("keeper_spice") and game.area == "fondue" {
+            if game.has_item("song_bolero") { return "cinder_after" }
+            return "cinder_bolero"
+        }
         if game.flag("keeper_bitter") and game.area == "thicket" {
             if game.has_item("song_minuet") { return "cinder_after" }
             return "cinder_minuet"

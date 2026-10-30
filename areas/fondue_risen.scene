@@ -1,0 +1,1598 @@
+# Mount Fondue - an area of Pantry Quest 3D.
+# Made by tools/areas/fondue.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"fondue\", area_name = \"Mount Fondue\", music = \"music/fondue.wav\", dungeon = \"\", kill_y = -25"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -55 -35 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #ffd8a0ff
+    intensity = 0.9
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #a88870ff
+    intensity = 0.55
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 56
+    clear_color = #e8b080ff
+    fog = true
+    fog_color = #d8a070ff
+    fog_start = 26
+    fog_end = 54
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Sky"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/sky.bs"
+    vars = "runs = false"
+
+entity
+  Name
+    text = "Cheese Pool"
+  Transform3D
+    position = -8 17.1313 -20
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 5.25 1 5.25
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "lava"
+
+entity
+  Name
+    text = "Steam"
+  Transform3D
+    position = -8 17.0313 -20
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 8
+    max = 30
+    lifetime = 1.6
+    speed = 0.8
+    spread = 25
+    area = 3.5 3.5
+    gravity = -0.4
+    size_start = 0.4
+    size_end = 1
+    color_start = #ffd890a0
+    color_end = #ffffff00
+
+entity
+  Name
+    text = "Cheese Pool"
+  Transform3D
+    position = 12 15.1259 -10
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 4.5 1 4.5
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "lava"
+
+entity
+  Name
+    text = "Steam"
+  Transform3D
+    position = 12 15.0259 -10
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 8
+    max = 30
+    lifetime = 1.6
+    speed = 0.8
+    spread = 25
+    area = 3 3
+    gravity = -0.4
+    size_start = 0.4
+    size_end = 1
+    color_start = #ffd890a0
+    color_end = #ffffff00
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 2 45
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 6 4 1.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"peppermill\", at = \"fondue\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 40
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 3 1.7833 36
+    rotation = 0 0 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 3 2.1833 36
+    rotation = 0 0 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_fondue\""
+
+entity
+  Name
+    text = "City Door"
+  Transform3D
+    position = -23.1 8.5 6
+    rotation = 0 90 0
+    scale = 2.6 3 0.1
+  Mesh
+    shape = cube
+    color = #20140aff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = -22.9 8.5 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 0.8 3 2.6
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"hardtack\", at = \"start\""
+
+entity
+  Name
+    text = "spawn_city"
+  Transform3D
+    position = -20.5 7.1 6
+    rotation = 0 -90 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Hardtack"
+  Transform3D
+    position = -16.5 7 9.2
+    rotation = 0 150 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"hardtack\""
+
+entity
+  Name
+    text = "Cave Mouth"
+  Transform3D
+    position = 27.1 18.6 -30
+    rotation = 0 -90 0
+    scale = 3 3.2 0.1
+  Mesh
+    shape = cube
+    color = #100804ff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Boulder"
+  Transform3D
+    position = 25.6 18.6 -30
+    rotation = 0 0 0
+    scale = 3.2 3.2 3
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #c8b8a0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "bombable, focusable"
+  Script
+    file = "scripts/bombable.bs"
+    vars = "id = \"caves_boulder\", size_r = 1.6"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 26.9 18.5 -30
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 0.8 3 2.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"hardcaves\", at = \"start\""
+
+entity
+  Name
+    text = "spawn_caves"
+  Transform3D
+    position = 23.5 17.1 -32
+    rotation = 0 -90 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 19.5 17.45 -26.5
+    rotation = 0 90 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 19.5 17.85 -26.5
+    rotation = 0 90 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_caves\""
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 21 17.75 -33.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 27
+
+entity
+  Name
+    text = "Bomb Flower"
+  Transform3D
+    position = 21 16.61 -27
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bombflower.obj"
+    color = #4a9a3aff
+    uv_scale = 1 1
+    cull = false
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/bombflower.bs"
+
+entity
+  Name
+    text = "Bud"
+  Transform3D
+    position = 0 0.05 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/bomb.obj"
+    color = #fff4d0ff
+    uv_scale = 1 1
+  Parent
+    entity = 29
+
+entity
+  Name
+    text = "Boulder"
+  Transform3D
+    position = 20.8 20.9 -46
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #c89870ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  RigidBody3D
+    type = kinematic
+  Script
+    file = "scripts/roller.bs"
+    vars = "a = vec3(20.8, 20.9, -46), b = vec3(20.8, 19.7214, -38.5), speed = 5, size = 1.6, damage = 4"
+
+entity
+  Name
+    text = "Boulder"
+  Transform3D
+    position = 23.2 20.9 -46
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #c89870ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  RigidBody3D
+    type = kinematic
+  Script
+    file = "scripts/roller.bs"
+    vars = "a = vec3(23.2, 20.9, -46), b = vec3(23.2, 19.7214, -38.5), speed = 6, size = 1.6, damage = 4"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 22 22 -48
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 6 4 1.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"forge\", at = \"start\""
+
+entity
+  Name
+    text = "spawn_forge"
+  Transform3D
+    position = 22 19.8857 -43
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 25 20.0214 -42
+    rotation = 0 180 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 25 20.4214 -42
+    rotation = 0 180 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_forge\""
+
+entity
+  Name
+    text = "Cinder"
+  Transform3D
+    position = 20.2 19.1429 -40
+    rotation = 0 150 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/cinder.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"cinder\", reach = 2.4, needs = \"keeper_spice\""
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = -12 11.1 -14
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Roller"
+  Transform3D
+    position = 6 13.8175 -14
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.45
+    friction = 0.8
+    offset = 0 0.5 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"roller\", hp = 2, damage = 4"
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -3.2 1.0516 40
+    rotation = 0 341.4981 0
+    scale = 1.5399 1.0779 1.5399
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 3.2 2.3785 32
+    rotation = 0 30.0782 0
+    scale = 1.5139 1.0598 1.5139
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -3.2 3.6517 24
+    rotation = 0 152.5491 0
+    scale = 1.2736 0.8915 1.2736
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -4.9646 4.806 20.1926
+    rotation = 0 46.9091 0
+    scale = 1.2241 0.8568 1.2241
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -7.0354 5.7384 10.4741
+    rotation = 0 160.0465 0
+    scale = 0.9536 0.6675 0.9536
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -16.9646 6.7442 10.8593
+    rotation = 0 163.8119 0
+    scale = 0.9768 0.6838 0.9768
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -21.2 7.205 3.3333
+    rotation = 0 30.8787 0
+    scale = 0.8198 0.5739 0.8198
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -14.8 8.842 -2
+    rotation = 0 151.6494 0
+    scale = 1.368 0.9576 1.368
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -21.2 9.8025 -7.3333
+    rotation = 0 264.3153 0
+    scale = 1.2101 0.8471 1.2101
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -15.0119 10.9385 -14.3691
+    rotation = 0 20.7196 0
+    scale = 1.0872 0.761 1.0872
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = -4.9881 12.3566 -10.9642
+    rotation = 0 212.0845 0
+    scale = 1.4265 0.9985 1.4265
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 0.9881 13.6649 -19.7025
+    rotation = 0 223.5569 0
+    scale = 1.3263 0.9284 1.3263
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 6.7467 14.8941 -22.56
+    rotation = 0 130.6053 0
+    scale = 1.5766 1.1036 1.5766
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 15.92 15.852 -21.44
+    rotation = 0 132.7262 0
+    scale = 1.4078 0.9855 1.4078
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 17.4133 16.8144 -30.56
+    rotation = 0 237.7916 0
+    scale = 1.2576 0.8803 1.2576
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 18.8 17.7629 -32.3333
+    rotation = 0 30.865 0
+    scale = 1.0515 0.7361 1.0515
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 25.2 18.7948 -37
+    rotation = 0 258.449 0
+    scale = 1.1793 0.8255 1.1793
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Rock"
+  Transform3D
+    position = 18.8 19.8181 -41.6667
+    rotation = 0 161.0826 0
+    scale = 1.2725 0.8907 1.2725
+  Mesh
+    shape = sphere
+    texture = "art/stone.png"
+    color = #d0a880ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "lava -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/lava_-1_-1.obj"
+    texture = "art/lavacheese.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "lava 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/lava_0_-1.obj"
+    texture = "art/lavacheese.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-2_2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_-1_2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_0_2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_-3.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rock 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/rock_1_2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/stone_-2_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fondue_risen/stone_1_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

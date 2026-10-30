@@ -1,0 +1,179 @@
+@strict @3d
+# gratinox.bs - Gratinox, the broiling dragon Mildew woke under Mount Fondue. It lives in
+# the molten cheese and rises out of one of the holes round the lair: the hole glows first.
+# Knock its head with the Meat Tenderizer as it comes up and it slumps, stunned (strike it
+# then, no more than 4 a time). Otherwise it flies round the lair breathing fire and dives
+# into another hole. Its body trails behind its head (spheres following the path).
+
+var hp: int = 12
+var max_hp: int = 12
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait warn up fly stunned dead
+var st_t: number = 0
+var flash: number = 0
+var hole: int = 0
+var holes: list = []
+var centre: vec3
+var trail: list = []
+var segs: list = []
+var down_dmg: int = 0
+var fly_a: number = 0
+var fire_t: number = 1
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    centre = self.position
+    if game.flag("forge_boss") {
+        destroy(self)
+        return
+    }
+    for k in 6 {
+        var a: number = k * 60 + 30
+        push(holes, centre + vec3(cos(a) * 7, 0, sin(a) * 7))
+    }
+    for k in 6 {
+        var sg: entity = spawn("prefabs/dragonseg.scene", centre + vec3(0, -20, 0))
+        push(segs, sg)
+    }
+    hide()
+}
+
+func hide() -> void {
+    self.position = centre + vec3(0, -20, 0)
+    remove_tag(self, "focusable")
+    for sg in segs { sg.position = centre + vec3(0, -20, 0) }
+    trail = []
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.6, 0) }
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "up" and how == "hammer" {
+        set_state("stunned")
+        down_dmg = 0
+        play_sound("sfx/boss_roar.wav", 0.8, 1.2)
+        shake_camera(2, 0.3)
+        return
+    }
+    if st == "stunned" and how != "hammer" and how != "arrow" and down_dmg < 4 {
+        hp -= amount
+        down_dmg += amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.6)
+        if down_dmg >= 4 { st_t = max(st_t, 3.0) }
+        if hp <= 0 {
+            set_state("dead")
+            remove_tag(self, "focusable")
+            stop_music(1.5)
+            play_sound("sfx/boss_roar.wav", 0.9, 0.6)
+            shake_camera(3, 1.5)
+        }
+        return
+    }
+    if st != "dead" { play_sound("sfx/block.wav", 0.5, 0.7) }
+}
+
+func lay_trail() -> void {
+    push(trail, self.position)
+    if len(trail) > 60 { remove(trail, 0) }
+    for k in len(segs) {
+        var idx: int = len(trail) - 1 - (k + 1) * 6
+        if idx >= 0 { segs[k].position = trail[idx] } else { segs[k].position = centre + vec3(0, -20, 0) }
+    }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    if st == "wait" {
+        if distance(sprig.position, centre) < 10 {
+            set_state("warn")
+            hole = floor(random() * 6)
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "GRATINOX")
+            game.talk("gratinox_title", "")
+        }
+        return
+    }
+    if st == "warn" {
+        if floor(st_t * 6) != floor((st_t - dt) * 6) {
+            spawn("prefabs/flame.scene", holes[hole] + vec3(random(-0.6, 0.6), 0.2, random(-0.6, 0.6)))
+        }
+        if st_t > 1.6 {
+            set_state("up")
+            self.position = holes[hole] + vec3(0, -1.5, 0)
+            add_tag(self, "focusable")
+            play_sound("sfx/boss_roar.wav", 0.9)
+            shake_camera(1.5, 0.4)
+        }
+    } elif st == "up" {
+        self.position = lerp(self.position, holes[hole] + vec3(0, 1.0, 0), min(1, dt * 6))
+        var to: vec3 = sprig.position - self.position
+        self.rotation = vec3(-20, atan2(-to.x, -to.z), 0)
+        if distance(self.position, sprig.position + vec3(0, 0.6, 0)) < 1.3 { sprig.hurt(4, self.position, "touch") }
+        if st_t > 2.4 {
+            set_state("fly")
+            fly_a = atan2(holes[hole].z - centre.z, holes[hole].x - centre.x)
+            fire_t = 1.2
+        }
+    } elif st == "fly" {
+        fly_a += 50 * dt
+        var r: number = 6.5
+        var p: vec3 = centre + vec3(cos(fly_a) * r, 3.2 + sin(st_t * 120) * 1.2, sin(fly_a) * r)
+        var d: vec3 = p - self.position
+        self.position = p
+        if length(d) > 0.01 { self.rotation = vec3(0, atan2(-d.x, -d.z), 0) }
+        fire_t -= dt
+        if fire_t <= 0 {
+            fire_t = 2.0
+            var f: entity = spawn("prefabs/fireball.scene", self.position)
+            f.dir = normalize(sprig.position + vec3(0, 0.5, 0) - self.position)
+            f.owner = self
+            play_sound("sfx/burn.wav", 0.7)
+        }
+        if distance(self.position, sprig.position + vec3(0, 0.6, 0)) < 1.3 { sprig.hurt(4, self.position, "touch") }
+        if st_t > 4.5 {
+            hide()
+            set_state("warn")
+            var nh: int = floor(random() * 6)
+            if nh == hole { nh = (nh + 2) % 6 }
+            hole = nh
+            remove_tag(self, "focusable")
+        }
+    } elif st == "stunned" {
+        self.position = lerp(self.position, holes[hole] + vec3(0, 0.5, 0) + (centre - holes[hole]) * 0.12, min(1, dt * 4))
+        self.rotation = vec3(30, self.rotation.y, sin(st_t * 600) * 10)
+        if st_t > 3.6 {
+            hide()
+            set_state("warn")
+            hole = (hole + 3) % 6
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) and dead_t < 2.4 {
+            spawn("prefabs/blast.scene", self.position + vec3(random(-1, 1), random(0, 1.5), random(-1, 1)))
+        }
+        if dead_t > 2.6 {
+            for sg in segs { destroy(sg) }
+            game.set_flag("forge_boss")
+            game.talk("gratinox_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    if st != "warn" { lay_trail() }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = "#ff9050ff" }
+}

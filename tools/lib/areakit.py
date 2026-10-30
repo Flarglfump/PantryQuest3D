@@ -48,14 +48,17 @@ MATERIALS = {
 
 class Area:
     def __init__(self, id, name, music='', dungeon='', kill_y=-20.0, sky='#a8d8f0ff', fog=(22, 60), fog_color=None,
-                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0, variant=''):
+                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0, variant='', hot=False):
         self.id, self.name = id, name
         self.file_id = id + ('_' + variant if variant else '')     # (the Risen era's version: areas/<id>_risen.scene)
         self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
         self.chunks = Chunked(chunk)
         self.kill_y = kill_y
         s = self.scene
-        s.entity('Game', t2(), script('scripts/game.bs', area=id, area_name=name, music=music, dungeon=dungeon, kill_y=kill_y))
+        gk = dict(area=id, area_name=name, music=music, dungeon=dungeon, kill_y=kill_y)
+        if hot:
+            gk['hot'] = True
+        s.entity('Game', t2(), script('scripts/game.bs', **gk))
         s.entity('Story', t2(), script('scripts/story.bs'))
         s.entity('Sun', t3((0, 30, 0), sun_rot), light('directional', sun[0], sun[1], shadows=shadows, shadow_range=14))
         s.entity('Sky Light', t3((0, 30, 0)), light('ambient', ambient[0], ambient[1]))
@@ -262,6 +265,10 @@ class Area:
                     collider('box'), tags('hookable', 'focusable'), script('scripts/target.bs'))
         self.entity('Bullseye', t3((x - math.sin(math.radians(yaw)) * 0.14, y, z - math.cos(math.radians(yaw)) * 0.14), (90, yaw, 0), (0.45, 0.02, 0.45)),
                     mesh('cylinder', '#d03030ff', lit=False))
+
+    def hammerswitch(self, x, y, z, id):
+        self.entity('Rusty Switch', t3((x, y, z)), mesh('model', '#a07050ff', file='models/switch.obj'), collider('box', (1.4, 0.3, 1.4), offset=(0, 0.0, 0)),
+                    tags('focusable'), script('scripts/hammerswitch.bs', id=id))
 
     def point_light(self, x, y, z, color, intensity, range_):
         self.entity('Lamp', t3((x, y, z)), light('point', color, intensity, range=range_))

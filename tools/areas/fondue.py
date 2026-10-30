@@ -48,10 +48,11 @@ def height(x, z):
     return hy * (1 - flat) + max(hy, mountain) * flat if d > 3.5 else hy
 
 
-def build():
+def build(era='fresh'):
     random.seed(23)
+    risen = era == 'risen'
     a = Area('fondue', 'Mount Fondue', music='music/fondue.wav', kill_y=-25, sky='#e8b080ff', fog=(26, 54),
-             fog_color='#d8a070ff', ambient=('#a88870ff', 0.55), sun=('#ffd8a0ff', 0.9), chunk=22)
+             fog_color='#d8a070ff', ambient=('#a88870ff', 0.55), sun=('#ffd8a0ff', 0.9), chunk=22, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=False))
     for cz in range(-52, 52, 13):
         for cx in range(-36, 40, 13):
@@ -86,14 +87,21 @@ def build():
     a.sign(vx - 2.5, vy, vz + 3.5, 90, 'sign_caves')
     for dz in (-3.5, 3.0):
         a.bombflower(vx - 1.0, height(vx - 1, vz + dz), vz + dz)
-    a.npc('biscotti', vx - 1, vy, vz - 4.5, -60, needs='hardcaves_done', reach=3.0)
+    if not risen:
+        a.npc('biscotti', vx - 1, vy, vz - 4.5, -60, needs='hardcaves_done', reach=3.0)
     # rolling boulders down the third leg
     for k, (t0, sp) in enumerate([(0.0, 5.0), (0.5, 6.0)]):
         A = (22 + (k - 0.5) * 2.4, height(22, -46) + 0.9, -46)
         B = (22 + (k - 0.5) * 2.4, height(22, -38.5) + 0.9, -38.5)
         a.entity('Boulder', t3(A), mesh('sphere', '#c89870ff', 'art/stone.png'), collider('sphere', radius=0.5),
                  ('RigidBody3D', [('type', 'kinematic')]), script('scripts/roller.bs', a=A, b=B, speed=sp, size=1.6, damage=4))
-    a.loadzone(22, height(22, -47), -48, 6, 4, 1.2, to='', say='tbc_summit')
+    if risen:      # the crater is open: the Fondue Forge
+        a.loadzone(22, height(22, -47), -48, 6, 4, 1.2, to='forge', at='start')
+        a.spawn_point('forge', 22, height(22, -43) + 0.1, -43, 180)
+        a.sign(25, height(25, -42), -42, 180, 'sign_forge')
+        a.npc('cinder', 20.2, height(20.2, -40), -40, 150, needs='keeper_spice', reach=2.4)
+    else:
+        a.loadzone(22, height(22, -47), -48, 6, 4, 1.2, to='', say='tbc_summit')
     # Hardtack rollers on the second leg
     for x, z in [(-12, -14), (6, -14)]:
         a.enemy('roller', x, height(x, z), z, hp=2, damage=4)
@@ -110,3 +118,7 @@ def build():
             a.entity('Rock', t3((px, height(px, pz) + s * 0.25, pz), (0, random.uniform(0, 360), 0), (s, s * 0.7, s)),
                      mesh('sphere', '#d0a880ff', 'art/stone.png'), collider('sphere', radius=0.5))
     a.save()
+
+
+def build_risen():
+    build('risen')

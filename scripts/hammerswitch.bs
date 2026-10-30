@@ -1,0 +1,28 @@
+@strict @3d
+# hammerswitch.bs - a rusted switch in the floor, stuck fast: only the Meat Tenderizer can
+# knock it down. Then the flag `id` is set (doors watching it open).
+
+var id: string = ""
+var game: entity
+var base_y: number = 0
+
+func start() -> void {
+    game = find("Game")
+    base_y = self.y
+    if game.flag(id) { self.y = base_y - 0.1 }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.2, 0) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if game.flag(id) { return }
+    if how != "hammer" {
+        play_sound("sfx/block.wav", 0.5, 0.8)
+        return
+    }
+    game.set_flag(id)
+    self.y = base_y - 0.1
+    play_sound("sfx/switch.wav", 0.8, 0.7)
+    play_sound("sfx/secret.wav", 0.7)
+    remove_tag(self, "focusable")
+}

@@ -657,7 +657,7 @@ entity
     text = "Chest"
   Transform3D
     position = 21 0 -19
-    rotation = 0 180 0
+    rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
@@ -854,7 +854,7 @@ entity
     text = "Chest"
   Transform3D
     position = -5 0 -52
-    rotation = 0 -45 0
+    rotation = 0 -135 0
     scale = 1 1 1
   Mesh
     shape = model

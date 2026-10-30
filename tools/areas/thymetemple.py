@@ -99,7 +99,7 @@ def build():
     for dx, dz in [(2, -2.5), (2.5, 2.5)]:
         a.enemy('stalebie', dx0 + dx, 0, bz + dz, hp=4, damage=4, group='tt_d', always=True)
     a.chest(dx0 + 4.6, 0, bz, 90, 'bow', 'tt_bow', appear='clear:tt_d', big=True)
-    a.chest(dx0 - 1, 0, bz + 5, 180, 'compass_thymetemple', 'tt_compass')
+    a.chest(dx0 - 1, 0, bz + 5, 0, 'compass_thymetemple', 'tt_compass')
     a.geo('stone', dx0, bz - 5.5).box((dx0 - 2, 0, bz - 7), (dx0 + 2, 3.2, bz - 4.6), uvs=0.4)
     a.chest(dx0, 3.2, bz - 5.6, 180, 'key', 'tt_key')
     a.target(dx0 + 1.6, 4.4, bz - 6.0, 180)
@@ -113,7 +113,7 @@ def build():
     a.entity('Lock', t3((0, 1.3, bz - 11.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'))
     room(a, 0, ez, 9, [(90, 1.4), (0, 1.4)], ceil=8)
     sister(a, 0, 0, ez, 'tt_flame2', hp=6, arrow_only=True, float_h=3.6, speed=1.0)
-    a.chest(-5, 0, ez - 4, -45, 'slice', 'tt_slice', appear='tt_flame2')
+    a.chest(-5, 0, ez - 4, -135, 'slice', 'tt_slice', appear='tt_flame2')
     a.point_light(0, 5, ez, '#ffb0b0ff', 1.2, 12)
     # east to F, over a pit
     fx = 22.0

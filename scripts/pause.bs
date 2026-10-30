@@ -14,7 +14,7 @@ var msg_t: number = 0
 var closing: bool = false
 
 const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
-const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "bow", "lash", "lens", "beans", "jar1", "jar2"]
+const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "bow", "lash", "hammer", "lens", "beans", "jar1", "jar2"]
 
 func start() -> void { s = global("save", []) }
 
@@ -33,7 +33,7 @@ func icon(name: string) -> string {
 }
 
 func label(name: string) -> string {
-    var names: list = [["bow", "SKEWER BOW"], ["lash", "LICORICE LASH"], ["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
+    var names: list = [["hammer", "MEAT TENDERIZER"], ["bow", "SKEWER BOW"], ["lash", "LICORICE LASH"], ["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
                        ["pipe", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
                        ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"],
                        ["ember_courage", "EMBER OF COURAGE"], ["ember_power", "EMBER OF POWER"], ["ember_wisdom", "EMBER OF WISDOM"]]
@@ -215,7 +215,7 @@ func draw_gear() -> void {
         draw_image("art/icons/whistle.png", vec2(188, 168))
         draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
     }
-    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"]]
+    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"], ["song_bolero", "Bolero of Embers"]]
     var sy: number = 180
     for sg in songs {
         if has(sg[0]) {
@@ -258,7 +258,8 @@ func draw_map() -> void {
     var names: list = [["crock", "THE GREAT CROCK", "The Queen lurks on 3F,", "past the web below."],
                        ["hardcaves", "HARDTACK CAVERNS", "King Crustodon waits", "beyond the north cave."],
                        ["gulp", "INSIDE LORD GULP", "Something knotted lurks", "past the north chamber."],
-                       ["thymetemple", "THYME TEMPLE", "The master waits below,", "down the lift in the hall."]]
+                       ["thymetemple", "THYME TEMPLE", "The master waits below,", "down the lift in the hall."],
+                       ["forge", "FONDUE FORGE", "The dragon sleeps in the cheese,", "past the north room."]]
     var title: string = dun
     var b1: string = ""
     var b2: string = ""

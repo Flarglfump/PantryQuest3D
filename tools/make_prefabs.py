@@ -84,6 +84,11 @@ def main():
     prefab('pickup_arrows', "A bundle of skewers to pick up (pickup.bs).",
            ('Pickup', t3((0, 0, 0), scale=(0.08, 0.08, 0.6)), mesh('cube', '#e0c890ff', lit=False, cast=False), tags('pickup'),
             script('scripts/pickup.bs', kind='arrows')))
+    prefab('hammer', "The Meat Tenderizer in Sprig's hands (sprig.bs, while he swings it).",
+           ('Hammer', t3((0, 0, 0)), mesh('model', '#c0c0c8ff', file='models/hammer.obj', cast=False)))
+    prefab('dragonseg', "A piece of Gratinox's body (gratinox.bs moves it).",
+           ('Dragon Body', t3((0, 0, 0), scale=1.1), mesh('sphere', '#d06030ff', 'art/crust.png', cast=False),
+            particles(rate=6, max=10, lifetime=0.6, speed=0.5, spread=60, size_start=0.4, size_end=0, color_start='#ffb040c0', color_end='#ff400000', blend='add')))
     prefab('bigfire', "A great fire (the castle burning: storm.bs).",
            ('Big Fire', t3((0, 0, 0)), particles(rate=40, max=80, lifetime=1.4, speed=2.5, spread=20, area=(6, 2), gravity=-2,
                                                  size_start=2.4, size_end=0.3, color_start='#ffb040ff', color_end='#c0200000', blend='add'),

@@ -20,10 +20,12 @@ def build():
         a.geo('stone', x, z).cylinder((x, 0, z), 1.0, 0.6, 10, uvs=0.5)
         a.entity('Glow', t3((x, 0.7, z)), particles(rate=6, max=20, lifetime=1.5, speed=0.5, spread=10, area=(1.4, 1.4), gravity=-0.3,
                                                     size_start=0.15, size_end=0, color_start=colors[k], color_end='#ffffff00', blend='add'))
-    a.npc('fennel_keeper', 0, 0.6, -6.5, 0, model='fennel', reach=3.0)
+    a.npc('fennel_keeper', 0, 0.6, -6.5, 0, model='fennel', reach=3.0, needs='thymetemple_done', until='left_bitter')
+    a.npc('biscotti_keeper', 0, 0.6, -6.5, 0, model='biscotti', reach=3.4, needs='forge_done', until='left_spice')
     a.spawn_point('start', 0, 0.1, 2, 0)
-    a.entity('Blue Light', t3((0, 1.5, 5.5), (0, 0, 0), (1.6, 3.0, 1.6)), mesh('cylinder', '#80c0ff60', lit=False, cull=False, cast=False),
-             particles(rate=20, max=40, lifetime=1.5, speed=1.2, spread=10, area=(1.6, 1.6), size_start=0.15, size_end=0,
-                       color_start='#c0e0ffff', color_end='#4080ff00', blend='add'),
-             script('scripts/warp.bs', to='thicket', at='glade', when='keeper_bitter'))
+    for to, at, keeper in [('thicket', 'glade', 'bitter'), ('fondue', 'forge', 'spice')]:
+        a.entity('Blue Light', t3((0, 1.5, 5.5), (0, 0, 0), (1.6, 3.0, 1.6)), mesh('cylinder', '#80c0ff60', lit=False, cull=False, cast=False),
+                 particles(rate=20, max=40, lifetime=1.5, speed=1.2, spread=10, area=(1.6, 1.6), size_start=0.15, size_end=0,
+                           color_start='#c0e0ffff', color_end='#4080ff00', blend='add'),
+                 script('scripts/warp.bs', to=to, at=at, when='keeper_' + keeper, until='left_' + keeper, sets='left_' + keeper))
     a.save()

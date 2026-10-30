@@ -64,6 +64,14 @@ func draw() -> void {
     var bc: list = [255, 255, 255]
     if floor(shown_beans) >= cap { bc = [120, 255, 120] }
     draw_text(str(floor(shown_beans)), vec2(28, 221), bc)
+    # the heat, without the Oven Apron
+    if game.hot and not game.has_item("apron") {
+        var hs: string = str(ceil(game.heat))
+        var hc: list = [255, 200, 120]
+        if game.heat < 10 and floor(t * 4) % 2 == 0 { hc = [255, 80, 60] }
+        draw_rect(vec2(140, 18), vec2(40, 13), [80, 20, 0, 200])
+        draw_text(hs, vec2(160 - text_size(hs).x / 2, 21), hc)
+    }
     # small keys
     if game.dungeon != "" {
         var keys: int = game.count("keys_" + game.dungeon)

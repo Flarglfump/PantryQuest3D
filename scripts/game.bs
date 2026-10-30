@@ -13,6 +13,8 @@ var area_name: string = ""             # shown as the area is entered
 var music: string = ""
 var dungeon: string = ""               # a dungeon's id for its keys, map and compass ("" outside)
 var kill_y: number = -20               # falling below this: back to the last safe spot
+var hot: bool = false                  # too hot to bear for long without the Oven Apron
+var heat: number = 40                  # (seconds left before the heat hurts)
 
 var flags: list[string] = []
 var items: list[string] = []
@@ -189,7 +191,7 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
-    if name == "boomerang" or name == "jar1" or name == "lash" { put_on_button(name) }
+    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" { put_on_button(name) }
     if name == "bow" {
         add_count("arrows", 30 - count("arrows"))
         put_on_button(name)
@@ -320,9 +322,13 @@ func on_resume() -> void {
             play_sound("sfx/warp.wav", 0.8)
             go("temple", "start")
         }
-        if song == "minuet" and dungeon == "" {           # ...and to the Glade in the Thicket
+        if song == "minuet" and dungeon == "" {           # ...to the Glade in the Thicket...
             play_sound("sfx/warp.wav", 0.8)
             go("thicket", "glade")
+        }
+        if song == "bolero" and dungeon == "" {           # ...and to Mount Fondue's crater
+            play_sound("sfx/warp.wav", 0.8)
+            go("fondue", "forge")
         }
     } elif state == "paused" {
         load_state()
@@ -387,7 +393,7 @@ func go(to: string, at: string) -> void {
 }
 
 # The scene for an area: some areas have a Risen-era version (areas/<id>_risen.scene).
-const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket"]
+const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket", "hardtack", "fondue"]
 func scene_for(a: string) -> string {
     if era == "risen" and contains(RISEN_AREAS, a) { return "areas/" + a + "_risen.scene" }
     return "areas/" + a + ".scene"
@@ -402,6 +408,13 @@ func save_journey() -> bool {
 
 func update(dt: number) -> void {
     if state == "play" or state == "fade" { playtime += dt }
+    if hot and state == "play" and not has_item("apron") {
+        heat -= dt
+        if heat <= 0 {
+            heat = 8
+            if sprig != nil { sprig.hurt(4, sprig.position, "unblockable") }
+        }
+    }
     if state == "play" { banner_t = max(0, banner_t - dt) }
     if fade < fade_to { fade = min(fade_to, fade + dt * 2.5) }
     if fade > fade_to { fade = max(fade_to, fade - dt * 2) }

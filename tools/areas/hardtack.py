@@ -35,9 +35,10 @@ def ramp(o, a0, a1, y0, y1, r0, r1, segs=16):
             o.quad(*inner)
 
 
-def build():
+def build(era='fresh'):
+    risen = era == 'risen'
     a = Area('hardtack', 'Hardtack City', music='music/fondue.wav', kill_y=-20, sky='#2a1408ff', fog=(14, 40), fog_color='#2a1408ff',
-             ambient=('#c09070ff', 0.55), sun=('#ffc080ff', 0.4), sun_rot=(-80, 0, 0), chunk=16)
+             ambient=('#c09070ff', 0.55), sun=('#ffc080ff', 0.4), sun_rot=(-80, 0, 0), chunk=16, variant=era if risen else '')
     holes = [(90, 1.4, 0, 3.0), (270, 1.4, UP, UP + 3.0)]
     for k in range(4):
         ring_wall(a.geo('rock', *polar(9, 45 + 90 * k)), 0, 0, R, -0.5, 12, 32, holes)
@@ -66,11 +67,15 @@ def build():
     ring_wall(a.geo('rock', 0, bz), 0, bz, 6, UP - 0.5, UP + 6, 20, [(90, 1.4, UP, UP + 3.0)])
     ceiling_disc(a.geo('rock', 0, bz), 0, bz, 6, UP + 6, 0, 16)
     ring_floor(a.geo('rock', 0, bz), 0, bz, 0, 6, UP, segs=16, thick=0.5)
-    a.npc('biscotti', 0, UP, bz - 2, 0, until='hardcaves_done', reach=3.2)
+    if not risen:
+        a.npc('biscotti', 0, UP, bz - 2, 0, until='hardcaves_done', reach=3.2)
     a.point_light(0, UP + 3, bz, '#ffb060ff', 1.2, 10)
     # the Hardtack about town
-    a.npc('hardtack', -6, 0, 4, 120)
-    a.npc('hardtack', 5, 0, -6, 210, model='hardtack_kid')
+    if risen:          # the Duke took them all to the forge: only Biscotti's boy is left, hiding
+        a.npc('little_biscotti', 5, 0, -6, 210, model='hardtack_kid', reach=2.4)
+    else:
+        a.npc('hardtack', -6, 0, 4, 120)
+        a.npc('hardtack', 5, 0, -6, 210, model='hardtack_kid')
     for ang in (150, 200, 230):
         x, z = polar(11, ang)
         a.bombflower(x, 0, z)
@@ -78,3 +83,7 @@ def build():
         x, z = polar(12, ang)
         a.pot(x, 0, z)
     a.save()
+
+
+def build_risen():
+    build('risen')

@@ -14,7 +14,7 @@ func start() -> void {
 func focus_point() -> vec3 { return self.global_position }
 
 func hit(amount: int, how: string, from: vec3) -> void {
-    if how != "bomb" { return }
+    if how != "bomb" and how != "hammer" { return }
     if id != "" { game.set_flag(id) }
     spawn("prefabs/poof.scene", self.global_position)
     spawn("prefabs/shards.scene", self.global_position)

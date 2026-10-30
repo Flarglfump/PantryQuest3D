@@ -1,0 +1,28 @@
+# A piece of Gratinox's body (gratinox.bs moves it).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Dragon Body"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1.1 1.1 1.1
+  Mesh
+    shape = sphere
+    texture = "art/crust.png"
+    color = #d06030ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Particles
+    rate = 6
+    max = 10
+    lifetime = 0.6
+    speed = 0.5
+    spread = 60
+    size_start = 0.4
+    size_end = 0
+    color_start = #ffb040c0
+    color_end = #ff400000
+    blend = add

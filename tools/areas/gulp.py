@@ -76,7 +76,7 @@ def build():
     for dx, dz in [(-2, -3), (-3, 2.5), (1.5, 2)]:
         a.enemy('jelly', cx + dx, 0.1, bz + dz, hp=2, damage=2, group='gc_jelly')
     a.chest(cx - 4.2, 0, bz, -90, 'boomerang', 'gc_boomerang', appear='clear:gc_jelly', big=True)
-    a.chest(cx + 1, 0, bz - 5, 0, 'map_gulp', 'gc_map')
+    a.chest(cx + 1, 0, bz - 5, 180, 'map_gulp', 'gc_map')
     glow(a, cx, bz)
 
     # ---- D: the pit (east) ----

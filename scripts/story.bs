@@ -522,6 +522,38 @@ func talk(id: string) -> list {
                 p("CINDER", "The next Keeper sleeps in fire, under Mount Fondue. Your sworn brother's people need you, Hero.")]
     }
 
+
+    # ---- the Fondue Forge arc
+    if id == "little_biscotti" {
+        if game.has_item("apron") { return [p("LITTLE BISCOTTI", "Go get 'em, big brother! Bring my dad back!")] }
+        return [p("LITTLE BISCOTTI", "W-who's there?! ...You're not one of the Duke's? You smell like... my dad's Sworn Brother!"),
+                p("LITTLE BISCOTTI", "The Duke's dragon came out of the crater. It took everyone to the Forge to feed it! Dad went after them and never came back."),
+                p("LITTLE BISCOTTI", "You're going up there? Then take this! Dad's spare OVEN APRON. Without it you'd cook in a minute up there!")]
+    }
+    if id == "sign_forge" { return [p("", "THE CRATER OF MOUNT FONDUE.|The Fondue Forge burns below. The heat cooks the unprotected.")] }
+    if id == "forge_enter" {
+        if game.has_item("apron") { return [p("FLICKER", "Phew - good thing you've got that apron on! It's like the inside of an oven in here.")] }
+        return [p("FLICKER", "It's SO hot! Sprig, we can't stay in here long - we need something to keep the heat off!")]
+    }
+    if id == "prisoner" {
+        return [p("HARDTACK", "Brother?! Biscotti's Sworn Brother! The Duke's dragon locked us all in here to eat later!"),
+                p("HARDTACK", "Big Biscotti went down to fight it... Don't worry about us. Find him! The big hammer's in the west room, guarded by crust golems.")]
+    }
+    if id == "prisoner2" { return [p("HARDTACK", "Brother! The Boss Key's on the far side of the cheese. That rusty switch moves the old bridge - give it a good WHACK!")] }
+    if id == "gratinox_title" { return [p("", "GRATINOX|Broiling Dragon of the Crater")] }
+    if id == "gratinox_beaten" { return [p("FLICKER", "The dragon's gone! Mount Fondue is safe! Step into the light, Sprig!")] }
+    if id == "biscotti_keeper" {
+        if game.flag("keeper_spice") { return [p("BIG BISCOTTI", "Go, brother! The others are waiting for you!")] }
+        return [p("BIG BISCOTTI", "BROTHER!! Look at you, all grown up! And you beat that dragon! Ha HA!"),
+                p("BIG BISCOTTI", "Turns out I'm a Keeper, brother. The Keeper of SPICE. The heat of the mountain, the fire in the rock roast!"),
+                p("BIG BISCOTTI", "My people are free, and my boy is safe. Take my medallion, brother. And keep the apron. It suits you!")]
+    }
+    if id == "cinder_bolero" {
+        return [p("CINDER", "The Keeper of Spice wakes. The mountain's fire is its own again."),
+                p("CINDER", "This is the BOLERO OF EMBERS. Play it, and it will carry you here, to the crater's edge."),
+                p("CINDER", "Three Keepers sleep still. The lake has frozen, Hero. The Fizzlings need you.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -695,6 +727,14 @@ func after(what: string, choice: int) -> void {
     } elif what == "minuet" {
         play_sound("sfx/secret.wav", 0.8)
         game.give("song_minuet", "")
+    } elif what == "apron" {
+        game.give("apron", "")
+    } elif what == "med_spice" {
+        game.set_flag("keeper_spice")
+        game.give("med_spice", "")
+    } elif what == "bolero" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_bolero", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -736,6 +776,10 @@ func area_started(area: string) -> void {
     if area == "thymetemple" and not game.flag("tt_entered") {
         game.set_flag("tt_entered")
         game.talk("tt_enter", "")
+    }
+    if area == "forge" and not game.flag("forge_entered") {
+        game.set_flag("forge_entered")
+        game.talk("forge_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -795,7 +839,20 @@ func hint() -> string {
     if not game.flag("thymetemple_done") { return "The Thyme Temple! Through the Thicket, east of the field, up the broken stair in the Glade. Lash yourself across to the target!" }
     if not game.flag("keeper_bitter") { return "Fennel is waiting in the Chamber of Keepers." }
     if not game.has_item("song_minuet") { return "Cinder's in the Glade. Go and see what they want." }
-    return "The next Keeper sleeps in fire, under Mount Fondue. (The Fondue Forge isn't built yet!)"
+    if game.dungeon == "forge" { return forge_hint() }
+    if not game.has_item("apron") { return "The next Keeper sleeps in fire, in the Fondue Forge up in Mount Fondue's crater. It'll be too hot without protection... someone in Hardtack City might help." }
+    if not game.flag("forge_done") { return "The Fondue Forge! Up the Mount Fondue trail, past Peppermill, into the crater." }
+    if not game.flag("keeper_spice") { return "Big Biscotti is waiting in the Chamber of Keepers." }
+    if not game.has_item("song_bolero") { return "Cinder's waiting at the crater's edge." }
+    return "The lake has frozen, Cinder said. The Fizzwater Temple is under Lake Brine. (It isn't built yet!)"
+}
+
+func forge_hint() -> string {
+    if not game.has_item("hammer") { return "The prisoner said the big hammer's in the west room, guarded by crust golems." }
+    if not game.flag("fg_rust") { return "That rusty switch in the east room won't budge... unless you whack it with the Meat Tenderizer!" }
+    if not game.flag("door:fg_north") { return "The small key's in the alcove past the east room's rusty door." }
+    if not game.has_item("bosskey_forge") { return "Hit the rusty switch in the north room to raise the bridge over the cheese." }
+    return "The dragon's lair is past the big door. When a hole glows, be ready to WHACK its head with the hammer as it comes up!"
 }
 
 func thyme_hint() -> string {
@@ -850,6 +907,13 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "apron" { return "You got the OVEN APRON!|Big Biscotti's spare. Now the worst heat can't hurt you." }
+    if kind == "hammer" { return "You got the MEAT TENDERIZER!|Put it on a button and SMASH: rusty switches, cracked rock, and the odd dragon." }
+    if kind == "med_spice" { return "You got the SPICE MEDALLION!|Big Biscotti, Keeper of Spice, has woken." }
+    if kind == "song_bolero" { return "You learned the BOLERO OF EMBERS!|Play it anywhere outside a dungeon to warp to Mount Fondue's crater." }
+    if kind == "map_forge" { return "You found the DUNGEON MAP!|See every room of the Fondue Forge in the pause menu." }
+    if kind == "compass_forge" { return "You found the COMPASS!|Now the map shows the treasure and the master." }
+    if kind == "bosskey_forge" { return "You got the BOSS KEY!|It opens the door to the dragon's lair." }
     if kind == "song_minuet" { return "You learned the MINUET OF THYME!|Play it anywhere outside a dungeon to warp to the Glade in the Thicket." }
     if kind == "map_thymetemple" { return "You found the DUNGEON MAP!|See every room of the Thyme Temple in the pause menu." }
     if kind == "compass_thymetemple" { return "You found the COMPASS!|Now the map shows the treasure and the master." }

@@ -6,6 +6,7 @@ var to: string = "sprouthollow"
 var at: string = "grove"
 var sets: string = ""
 var when: string = ""                  # it appears when this flag is set
+var until: string = ""                 # (and is gone once this one is)
 var game: entity
 var used: bool = false
 var t: number = 0
@@ -19,7 +20,7 @@ func start() -> void {
 func update(dt: number) -> void {
     t += dt
     if used { return }
-    if when != "" and not game.flag(when) {
+    if (when != "" and not game.flag(when)) or (until != "" and game.flag(until)) {
         self.scale = vec3(0.001, 0.001, 0.001)
         if has(self, "Particles") { self.Particles.emitting = false }
         return

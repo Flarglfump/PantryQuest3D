@@ -90,6 +90,12 @@ a jump attack.
   only a skewer reaches — and **the Hollow Duke**, who rides out of paintings: skewer the
   one that glows, then bat his balls of light back at him). Fennel wakes as the Keeper of
   Bitter; Cinder teaches the Minuet of Thyme.
+- **The Fondue Forge** (dungeon 5, in Mount Fondue's crater): Biscotti's boy in empty
+  Hardtack City gives the Oven Apron (without it the forge's heat hurts); Hardtack
+  prisoners in cells, crust golems guarding the **Meat Tenderizer** (it smashes rusted
+  switches and cracked rock), a bridge over molten cheese, and **Gratinox**, a dragon who
+  rises out of the holes in its lair — knock its head as it comes up. Big Biscotti wakes
+  as the Keeper of Spice; Cinder teaches the Bolero of Embers.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.
