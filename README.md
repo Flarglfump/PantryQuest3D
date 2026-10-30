@@ -67,6 +67,14 @@ a jump attack.
   bomb flowers and cracked walls, the cheese hall, crustlings, the Popcorn Bombs, keys,
   and **King Crustodon**, who must be fed a bomb while he breathes in). Biscotti then gives
   the Ember of Power.
+- **Brine Valley** (the river gorge west of the field: swim it, cross the bridge, climb
+  to the falls, which part to Saffron's Lullaby), the **Fizzling Domain** (King
+  Carbonarius, the diving game and the Fizz Bubble), **Lake Brine** (the island, Professor
+  Brineworth's lab, a letter in a jar on the lake bed), **Fizzwater Fountain** (catch a
+  fish in the jar and feed it to Lord Gulp) and **Inside Lord Gulp** (dungeon 3: carry
+  Princess Fizzy and set her on floor switches, shock jellies, the Spatula Boomerang,
+  tendrils only it can cut, and **the Gristle Knot**). Fizzy gives the Ember of Wisdom.
+- Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.
 - Core systems: lock-on combat (combos, spin attack, side-hops, jump attack, shield),
