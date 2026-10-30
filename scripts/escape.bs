@@ -1,0 +1,46 @@
+@strict @3d
+# escape.bs - the Moldering Spire coming down: once Mildew falls, a countdown; reach the way
+# out before it runs out, or the tower takes you (and you start again at the top).
+
+var draw_layer: int = 72
+var game: entity
+var sprig: entity
+var left: number = 150
+var shake_t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    left = global("escape_left", 150)
+}
+
+func update(dt: number) -> void {
+    if not game.flag("escaping") or game.state != "play" { return }
+    left -= dt
+    set_global("escape_left", left)
+    shake_t -= dt
+    if shake_t <= 0 {
+        shake_t = 1.5 + random() * 2
+        shake_camera(1.2, 0.5)
+        play_sound("sfx/rumble.wav", 0.6)
+        spawn("prefabs/shards.scene", sprig.position + vec3(random(-3, 3), 4, random(-3, 3)))
+    }
+    if left <= 0 {
+        left = 150
+        set_global("escape_left", 150)
+        game.talk("escape_fail", "")
+        game.go("spire", "top")
+    }
+}
+
+func draw() -> void {
+    if not game.flag("escaping") { return }
+    var txt: string = str(floor(left / 60)) + ":" + pad(floor(left) % 60)
+    draw_rect(vec2(132, 30), vec2(56, 14), [60, 10, 10, 200])
+    draw_text(txt, vec2(160 - text_size(txt).x / 2, 33), [255, 200, 180])
+}
+
+func pad(n: int) -> string {
+    if n < 10 { return "0" + n }
+    return str(n)
+}

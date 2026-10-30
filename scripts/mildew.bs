@@ -1,0 +1,119 @@
+@strict @3d
+# mildew.bs - Duke Mildew, at the top of the Moldering Spire. He floats out of reach and
+# throws balls of rot (orb.bs: bat them back - he bats them back too). Struck by his own
+# rot, he drops to the floor, stunned: strike him (no more than 4 a time). Hurt badly, he
+# throws faster and sends rot creeping across the floor.
+
+var hp: int = 16
+var max_hp: int = 16
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait float down dead
+var st_t: number = 0
+var flash: number = 0
+var centre: vec3
+var volley: int = 0
+var throw_t: number = 2
+var down_dmg: int = 0
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    centre = self.position
+    if game.flag("mildew_beaten") { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 1.4, 0) }
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func orb_back(o: entity) -> bool {
+    volley += 1
+    if random() < 0.8 - volley * 0.15 {
+        play_sound("sfx/swing.wav", 0.7, 0.7)
+        return true
+    }
+    set_state("down")
+    down_dmg = 0
+    play_sound("sfx/boss_roar.wav", 0.8, 0.9)
+    shake_camera(2, 0.3)
+    return false
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "down" and how != "lash" and how != "arrow" and down_dmg < 4 {
+        hp -= amount
+        down_dmg += amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.5)
+        if down_dmg >= 4 { st_t = max(st_t, 3.5) }
+        if hp <= 0 {
+            set_state("dead")
+            for o in find_all("Orb") { destroy(o) }
+            stop_music(2)
+            play_sound("sfx/boss_roar.wav", 1.0, 0.5)
+            shake_camera(3, 2)
+        }
+        return
+    }
+    if st != "dead" { play_sound("sfx/block.wav", 0.5, 0.6) }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    if st == "wait" {
+        if distance(vec3(sprig.x, 0, sprig.z), vec3(centre.x, 0, centre.z)) < 11 {
+            set_state("float")
+            play_music("music/boss.wav", 0.8, 0.5)
+            hud.show_boss(self, "DUKE MILDEW")
+            game.talk("mildew_top", "")
+        }
+        return
+    }
+    if st == "float" {
+        var want: vec3 = centre + vec3(sin(st_t * 25) * 3, 2.6, cos(st_t * 20) * 3)
+        self.position = lerp(self.position, want, min(1, dt * 2))
+        var to: vec3 = sprig.position - self.position
+        self.rotation = vec3(0, atan2(-to.x, -to.z), 0)
+        if len(find_all("Orb")) == 0 {
+            throw_t -= dt
+            if throw_t <= 0 {
+                throw_t = 2.0
+                if hp <= max_hp / 2 { throw_t = 1.2 }
+                volley = 0
+                var o: entity = spawn("prefabs/orb.scene", self.position + vec3(0, 1.2, 0))
+                o.duke = self
+                play_sound("sfx/zap.wav", 0.8, 0.6)
+            }
+        }
+    } elif st == "down" {
+        self.position = lerp(self.position, vec3(self.x, centre.y, self.z), min(1, dt * 6))
+        self.rotation = vec3(sin(st_t * 600) * 6, self.rotation.y, 0)
+        add_tag(self, "focusable")
+        if st_t > 4 {
+            set_state("float")
+            remove_tag(self, "focusable")
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        self.position = lerp(self.position, centre + vec3(0, 1, 0), min(1, dt))
+        if floor(dead_t * 5) != floor((dead_t - dt) * 5) { spawn("prefabs/poof.scene", self.position + vec3(random(-1, 1), random(0, 2), random(-1, 1))) }
+        if dead_t > 3 {
+            game.set_flag("mildew_beaten")
+            game.talk("mildew_falls", "escape")
+            destroy(self)
+            return
+        }
+    }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = "#ffffffff" }
+}

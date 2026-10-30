@@ -68,7 +68,11 @@ def build(era='fresh'):
     a.spawn_point('castle', 0, height(0, -34) + 0.1, -34, 180)
     # the castle road and its gate
     if risen:
-        a.blocker(0, height(0, -36), -36, (7.6, 3.0, 0.6), 'never', material='hedge', color='#506040ff')
+        a.blocker(0, height(0, -36), -36, (7.6, 3.0, 0.6), 'rainbow', material='hedge', color='#506040ff')
+        a.entity('Rainbow Bridge', t3((0, height(0, -38) + 0.2, -39), (0, 0, 0), (3.4, 0.2, 4)), mesh('cube', '#ffe0a0c0', lit=False, cast=False),
+                 script('scripts/appear.bs', when='rainbow'))
+        a.loadzone(0, height(0, -HALF + 1), -HALF + 0.9, 5, 4, 1.2, to='spire', at='start', needs='rainbow')
+        a.spawn_point('spire', 0, height(0, -34) + 0.1, -34, 180)
         a.entity('Spire', t3((0, -4, -58)), mesh('model', '#5a6a48ff', 'art/mould.png', file='models/spire.obj', cast=False))
         a.sign(3.4, height(3.4, -27), -27, 180, 'spire')
     else:

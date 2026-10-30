@@ -1,0 +1,1140 @@
+# Moldering Spire - an area of Pantry Quest 3D.
+# Made by tools/areas/spire.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"spire\", area_name = \"Moldering Spire\", music = \"music/castle.wav\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -80 0 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #c0d0a0ff
+    intensity = 0.3
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #90a080ff
+    intensity = 0.55
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 36
+    clear_color = #101408ff
+    fog = true
+    fog_color = #182010ff
+    fog_start = 12
+    fog_end = 34
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Escape"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/escape.bs"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 13.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.6 3 0.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"town\", at = \"spire\", until = \"escaping\""
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 13.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.6 3 0.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"ruins\", at = \"start\", needs = \"escaping\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 7
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_bottom"
+  Transform3D
+    position = 0 0.1 4
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = -4 0 -2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"sp1\", always = true"
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = 4 0 -2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"sp1\", always = true"
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = 0 0 -5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"sp1\", always = true"
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = -5 0 3
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"sp1\", always = true"
+
+entity
+  Name
+    text = "Switch Door"
+  Transform3D
+    position = 0 1.5 -7.5
+    rotation = 0 0 0
+    scale = 3.2 3 0.6
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #506040ff
+    uv_scale = 3.2 3
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  RigidBody3D
+    type = kinematic
+  Script
+    file = "scripts/switchdoor.bs"
+    vars = "when = \"clear:sp1\", stay = true"
+
+entity
+  Name
+    text = "Stair Glow"
+  Transform3D
+    position = 0 0.3 -8.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 10
+    max = 20
+    lifetime = 1.2
+    speed = 1
+    spread = 10
+    area = 2 2
+    size_start = 0.15
+    size_end = 0
+    color_start = #e0ffa0ff
+    color_end = #60a02000
+    blend = add
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1 -8.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.4 2 2.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"spire\", at = \"f2\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #c0e0a0ff
+    intensity = 1.2
+    range = 14
+
+entity
+  Name
+    text = "Pit"
+  Transform3D
+    position = 0 -6.5 -40.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 20 0.6 8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "pit"
+
+entity
+  Name
+    text = "Lash Target"
+  Transform3D
+    position = 0 2 -45.95
+    rotation = 0 180 0
+    scale = 0.8 0.8 0.25
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #c89058ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "hookable, focusable"
+  Script
+    file = "scripts/target.bs"
+
+entity
+  Name
+    text = "Bullseye"
+  Transform3D
+    position = 0 2 -45.81
+    rotation = 90 180 0
+    scale = 0.45 0.02 0.45
+  Mesh
+    shape = cylinder
+    color = #d03030ff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "spawn_f2"
+  Transform3D
+    position = 0 0.1 -32.5
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Stair Glow"
+  Transform3D
+    position = 5 0.3 -47.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 10
+    max = 20
+    lifetime = 1.2
+    speed = 1
+    spread = 10
+    area = 2 2
+    size_start = 0.15
+    size_end = 0
+    color_start = #e0ffa0ff
+    color_end = #60a02000
+    blend = add
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 5 1 -47.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.4 2 2.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"spire\", at = \"f3\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 -40
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #c0e0a0ff
+    intensity = 1.2
+    range = 14
+
+entity
+  Name
+    text = "Pit"
+  Transform3D
+    position = 0 -6.5 -80.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 20 0.6 8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "pit"
+
+entity
+  Name
+    text = "Unseen Bridge"
+  Transform3D
+    position = 3 -0.25 -80.5
+    rotation = 0 0 0
+    scale = 1.6 0.5 8.2
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #d0b0ffa0
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "False Bridge"
+  Transform3D
+    position = -3 -0.25 -80.5
+    rotation = 0 0 0
+    scale = 1.6 0.5 8.2
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"fake\""
+
+entity
+  Name
+    text = "spawn_f3"
+  Transform3D
+    position = 0 0.1 -72.5
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Stair Glow"
+  Transform3D
+    position = 0 0.3 -87.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 10
+    max = 20
+    lifetime = 1.2
+    speed = 1
+    spread = 10
+    area = 2 2
+    size_start = 0.15
+    size_end = 0
+    color_start = #e0ffa0ff
+    color_end = #60a02000
+    blend = add
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1 -87.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.4 2 2.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"spire\", at = \"top\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 -80
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #c0e0a0ff
+    intensity = 1.2
+    range = 14
+
+entity
+  Name
+    text = "Duke Mildew"
+  Transform3D
+    position = 0 0 -125
+    rotation = 0 0 0
+    scale = 1.2 1.2 1.2
+  Mesh
+    shape = model
+    file = "models/mildew.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 2 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 1 0
+    trigger = true
+  Tags
+    list = "enemy, boss"
+  Script
+    file = "scripts/mildew.bs"
+
+entity
+  Name
+    text = "Crystal"
+  Transform3D
+    position = 0 1.6 -132
+    rotation = 0 0 0
+    scale = 1.8 3.2 1.8
+  Mesh
+    shape = cube
+    color = #a0ff80a0
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/blocker.bs"
+    vars = "until = \"mildew_beaten\""
+
+entity
+  Name
+    text = "Saffron"
+  Transform3D
+    position = 0 0.2 -132
+    rotation = 0 0 0
+    scale = 1.3 1.3 1.3
+  Mesh
+    shape = model
+    file = "models/saffron.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+
+entity
+  Name
+    text = "spawn_top"
+  Transform3D
+    position = 0 0.1 -113
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Stair Glow"
+  Transform3D
+    position = 9 0.3 -116
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 10
+    max = 20
+    lifetime = 1.2
+    speed = 1
+    spread = 10
+    area = 2 2
+    size_start = 0.15
+    size_end = 0
+    color_start = #e0ffa0ff
+    color_end = #60a02000
+    blend = add
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 9 1 -116
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.4 2 2.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"spire\", at = \"bottom\", needs = \"escaping\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 7 -122
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #c0e0a0ff
+    intensity = 1.6
+    range = 20
+
+entity
+  Name
+    text = "mould -1 -8"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_-1_-8.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_-1_-5.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_-1_-3.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_-1_0.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -9"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-9.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -8"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-8.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-6.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-5.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-3.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_-1.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "mould 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/mould_0_0.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rot 0 -8"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/rot_0_-8.obj"
+    texture = "art/rot.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rot 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/rot_0_-6.obj"
+    texture = "art/rot.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rot 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/rot_0_-5.obj"
+    texture = "art/rot.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rot 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/rot_0_-3.obj"
+    texture = "art/rot.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "rot 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/rot_0_0.obj"
+    texture = "art/rot.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -8"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/stone_0_-8.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/stone_0_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/stone_0_-3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/spire/stone_0_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

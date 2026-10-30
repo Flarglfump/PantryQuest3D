@@ -1,0 +1,622 @@
+# Castle Garden - an area of Pantry Quest 3D.
+# Made by tools/areas/ending.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"ending\", area_name = \"Castle Garden\", music = \"music/title.wav\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -55 -35 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #fff2dcff
+    intensity = 0.95
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #a0b0c8ff
+    intensity = 0.65
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 52
+    clear_color = #b0dcf0ff
+    fog = true
+    fog_color = #b0dcf0ff
+    fog_start = 24
+    fog_end = 50
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 14 1.56 0
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 14 3.96 0
+    rotation = 0 158 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 12.1244 1.56 7
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 12.1244 3.96 7
+    rotation = 0 88.6012 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 7 1.56 12.1244
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 7 3.96 12.1244
+    rotation = 0 259 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 0 1.56 14
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 0 3.96 14
+    rotation = 0 0 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -7 1.56 12.1244
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -7 3.96 12.1244
+    rotation = 0 101 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -12.1244 1.56 7
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -12.1244 3.96 7
+    rotation = 0 271.3988 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -14 1.56 0
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -14 3.96 0
+    rotation = 0 202 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -12.1244 1.56 -7
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -12.1244 3.96 -7
+    rotation = 0 271.3988 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -7 1.56 -12.1244
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -7 3.96 -12.1244
+    rotation = 0 101 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 0 1.56 -14
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 0 3.96 -14
+    rotation = 0 360 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 7 1.56 -12.1244
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 7 3.96 -12.1244
+    rotation = 0 259 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 12.1244 1.56 -7
+    rotation = 0 0 0
+    scale = 0.72 3.12 0.72
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 12.1244 3.96 -7
+    rotation = 0 88.6012 0
+    scale = 3.12 2.4 3.12
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 4
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Saffron"
+  Transform3D
+    position = 0 0 -2
+    rotation = 0 180 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/saffron.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+
+entity
+  Name
+    text = "Ending"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/ending.bs"
+
+entity
+  Name
+    text = "grass 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/ending/grass_0_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

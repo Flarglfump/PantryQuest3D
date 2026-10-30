@@ -182,7 +182,51 @@ entity
     friction = 0.8
   Script
     file = "scripts/blocker.bs"
-    vars = "until = \"never\""
+    vars = "until = \"rainbow\""
+
+entity
+  Name
+    text = "Rainbow Bridge"
+  Transform3D
+    position = 0 3.2 -39
+    rotation = 0 0 0
+    scale = 3.4 0.2 4
+  Mesh
+    shape = cube
+    color = #ffe0a0c0
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/appear.bs"
+    vars = "when = \"rainbow\""
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 5 -39.1
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 5 4 1.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"spire\", at = \"start\", needs = \"rainbow\""
+
+entity
+  Name
+    text = "spawn_spire"
+  Transform3D
+    position = 0 2.3222 -34
+    rotation = 0 180 0
+    scale = 1 1 1
 
 entity
   Name

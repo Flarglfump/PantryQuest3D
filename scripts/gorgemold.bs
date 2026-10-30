@@ -1,0 +1,126 @@
+@strict @3d
+# gorgemold.bs - Gorgemold, the Rotting Beast: what Mildew becomes in the castle's ruins,
+# swollen with the Ember of Power. It stomps after Sprig swinging its arms. Its weak spot
+# is its tail, behind it. Now and then Saffron holds it still with light: run round and
+# strike the tail (three times a hold). Three holds... and then it's time to end it.
+
+var hp: int = 9
+var max_hp: int = 9
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait walk swing held dead
+var st_t: number = 0
+var flash: number = 0
+var yaw: number = 0
+var hold_dmg: int = 0
+var hold_t: number = 7
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    yaw = self.rotation.y
+    if game.flag("gorgemold_beaten") { destroy(self) }
+}
+
+func fwd() -> vec3 { return vec3(-sin(yaw), 0, -cos(yaw)) }
+func tail() -> vec3 { return self.position - fwd() * 2.6 + vec3(0, 1.0, 0) }
+func focus_point() -> vec3 {
+    if st == "held" { return tail() }
+    return self.position + vec3(0, 4, 0)
+}
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "held" and hold_dmg < 3 and distance(from, tail()) < 3.2 {
+        hp -= 1
+        hold_dmg += 1
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.4)
+        play_sound("sfx/boss_roar.wav", 0.6, 1.3)
+        if hp <= 0 {
+            set_state("dead")
+            stop_music(2)
+            play_sound("sfx/boss_roar.wav", 1.0, 0.4)
+            shake_camera(4, 2.5)
+        } elif hold_dmg >= 3 {
+            set_state("walk")
+        }
+        return
+    }
+    if st != "dead" { play_sound("sfx/block.wav", 0.5, 0.5) }
+}
+
+func face(p: vec3, rate: number, dt: number) -> void {
+    var to: vec3 = p - self.position
+    to.y = 0
+    if length(to) < 0.1 { return }
+    var want: number = atan2(-to.x, -to.z)
+    var d: number = ((want - yaw + 540) % 360) - 180
+    yaw += clamp(d, -rate * dt, rate * dt)
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    if st == "wait" {
+        if d < 16 {
+            set_state("walk")
+            play_music("music/boss.wav", 0.8, 0.4)
+            hud.show_boss(self, "GORGEMOLD")
+            game.talk("gorgemold_title", "")
+        }
+        return
+    }
+    if st == "walk" {
+        face(sprig.position, 60, dt)
+        if d > 4 { move_and_slide(self, fwd() * 2.2 + vec3(0, -5, 0)) }
+        play_animation(self, "walk", 0.6, true)
+        hold_t -= dt
+        if d < 4.5 and st_t > 1.5 {
+            set_state("swing")
+            play_animation(self, "wave", 1.2, false)
+            play_sound("sfx/swing.wav", 0.9, 0.4)
+        }
+        if hold_t <= 0 {
+            hold_t = 9
+            hold_dmg = 0
+            set_state("held")
+            game.talk("saffron_holds", "")
+            play_sound("sfx/secret.wav", 0.8, 0.7)
+        }
+    } elif st == "swing" {
+        if st_t > 0.6 and st_t - dt <= 0.6 {
+            shake_camera(2, 0.3)
+            if d < 5 and dot(normalize(to), fwd()) > 0.3 { sprig.hurt(6, self.position, "touch") }
+        }
+        if st_t > 1.4 { set_state("walk") }
+    } elif st == "held" {
+        play_animation(self, "hurt", 0.2, true)
+        if st_t > 7 { set_state("walk") }
+    } elif st == "dead" {
+        dead_t += dt
+        if floor(dead_t * 5) != floor((dead_t - dt) * 5) { spawn("prefabs/blast.scene", self.position + vec3(random(-2, 2), random(1, 5), random(-2, 2))) }
+        self.scale = self.scale * (1 - dt * 0.2)
+        if dead_t > 3.5 {
+            game.set_flag("gorgemold_beaten")
+            game.talk("gorgemold_end", "ending")
+            destroy(self)
+            return
+        }
+    }
+    self.rotation = vec3(0, yaw, 0)
+    at = self.position
+    if st == "held" { self.Mesh.color = "#ffffc0ff" } elif flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff8080ff" } else { self.Mesh.color = "#506040ff" }
+}

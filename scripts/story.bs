@@ -668,6 +668,54 @@ func talk(id: string) -> list {
                 p("CARAMEL", "Here. My medallion. That makes six, kid. Go back to the Temple of the First Hearth. Cinder's waiting.")]
     }
 
+
+    # ---- the finale
+    if id == "saffron_reveal" {
+        return [p("CINDER", "Six Keepers awake. Six flavours, Hero. You have done what I could not."),
+                p("CINDER", "Then it is time you knew the truth. I am not one of the Sootfolk. There are no Sootfolk."),
+                p("SAFFRON", "It's me, Sprig. Saffron. I hid for seven years behind this mask, holding the Ember of Wisdom where the Duke couldn't find it."),
+                p("SAFFRON", "With it, and the six Keepers, we can finally -"),
+                p("DUKE MILDEW", "Finally WHAT, little princess? Thank you both. I've been looking for that Ember for SEVEN YEARS."),
+                p("", "A crystal of mould closed round Saffron, and Duke Mildew's laugh faded away..."),
+                p("FLICKER", "He's taken her to his Spire! Sprig - the Keepers... I can hear them. They're building a bridge across the rot. To the castle!")]
+    }
+    if id == "rainbow" { return [p("FLICKER", "A bridge of six flavours across the rot! The Moldering Spire... Saffron's up there, Sprig. Let's go!")] }
+    if id == "spire_enter" {
+        return [p("FLICKER", "The Moldering Spire. Every floor of it is rotten through. Mildew's at the very top."),
+                p("FLICKER", "Everything you've learned, Sprig. You'll need all of it.")]
+    }
+    if id == "spire_stairs" { return [p("FLICKER", "Stairs up! Each floor's guarded somehow...")] }
+    if id == "mildew_top" {
+        return [p("DUKE MILDEW", "Ah. The little sprout. All grown up. Seven years of rising, and you come to me sour and stale."),
+                p("DUKE MILDEW", "Everything rots, boy. Bread. Kingdoms. Princesses. HEROES. Let me show you!")]
+    }
+    if id == "mildew_falls" {
+        return [p("DUKE MILDEW", "Impossible... beaten by a... by a SPROUT...!"),
+                p("SAFFRON", "Sprig! The crystal's gone - I'm free! But the tower... it's coming down! RUN!")]
+    }
+    if id == "escape_fail" { return [p("FLICKER", "The tower came down on us... Sprig! Wake up! We're back at the top. RUN, faster!")] }
+    if id == "escape_out" { return [p("FLICKER", "We made it out! The Spire's gone... but what's that, in the ruins?")] }
+    if id == "gorgemold_title" { return [p("", "GORGEMOLD|The Rotting Beast")] }
+    if id == "saffron_holds" { return [p("SAFFRON", "I've got it, Sprig! Its TAIL - strike its tail!")] }
+    if id == "gorgemold_end" {
+        return [p("SAFFRON", "Now, Sprig! With the Cleaver of Dawn!"),
+                p("", "Saffron's light held the beast fast, and Sprig brought the Cleaver of Dawn down..."),
+                p("", "The six Keepers' voices rose together, and the Rotting Beast was sealed away in the compost of the Void."),
+                p("SAFFRON", "It's over. It's really over, Sprig."),
+                p("SAFFRON", "You lost seven years for us. I can't give them back... but the Kettle Whistle can send you home. To the years you lost."),
+                p("SAFFRON", "Goodbye, Sprig. ...No. Not goodbye. See you again. In the garden.")]
+    }
+    if id == "ending_garden" {
+        return [p("", "Seven years before, in the castle garden..."),
+                p("SAFFRON", "Who are you? How did you get past the guards? ...You have a pilot light! Are you from the Thicket?"),
+                p("FLICKER", "(Sprig... she doesn't remember. But we do. Shall we say hello?)")]
+    }
+    if id == "ending_starter" {
+        return [p("", "And in Sprouthollow, in the old grove, in the cracked and empty crock..."),
+                p("", "...a single small green bubble rose, and popped. Mother Starter was starting again.")]
+    }
+    if id == "the_end" { return [p("", "THE END|Thank you for playing Pantry Quest 3D!")] }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -875,6 +923,18 @@ func after(what: string, choice: int) -> void {
     } elif what == "med_sweet" {
         game.set_flag("keeper_sweet")
         game.give("med_sweet", "")
+    } elif what == "reveal" {
+        game.set_flag("saffron_taken")
+        game.set_flag("rainbow")
+    } elif what == "escape" {
+        set_global("escape_left", 150)
+        game.set_flag("escaping")
+    } elif what == "ending" {
+        game.clear_flag("escaping")
+        game.set_flag("game_done")
+        game.era = "fresh"
+        game.commit()
+        game.go("ending", "start")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -936,6 +996,15 @@ func area_started(area: string) -> void {
     if area == "idoltemple" and not game.flag("si_entered") {
         game.set_flag("si_entered")
         game.talk("si_enter", "")
+    }
+    if area == "spire" and not game.flag("spire_entered") {
+        game.set_flag("spire_entered")
+        game.talk("spire_enter", "")
+    }
+    if area == "ruins" and not game.flag("ruins_entered") {
+        game.set_flag("ruins_entered")
+        game.clear_flag("escaping")
+        game.talk("escape_out", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -1026,7 +1095,10 @@ func hint() -> string {
         return "The Salt Idol, with the Silver Platter: heave that block of rock salt aside!"
     }
     if not game.flag("keeper_sweet") { return "Caramel is waiting in the Chamber of Keepers." }
-    return "Six Keepers! Caramel said Cinder's waiting at the Temple of the First Hearth."
+    if not game.flag("saffron_taken") { return "Six Keepers! Caramel said Cinder's waiting at the Temple of the First Hearth." }
+    if game.flag("escaping") { return "The tower's coming down! Get out - the way down is at the edge of the top floor!" }
+    if not game.flag("mildew_beaten") { return "The Moldering Spire, where the castle was - over the Keepers' bridge at the top of Larder Town. Saffron's up there!" }
+    return "Gorgemold! Its tail is its weak spot. When Saffron holds it still, run round behind it and strike!"
 }
 
 func idol_hint() -> string {

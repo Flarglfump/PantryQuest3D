@@ -117,6 +117,12 @@ a jump attack.
   her). Grown: heave the rock salt aside, the Boss Key, and **Saccharine & Sodium** —
   catch a witch's bolt on the shield and it flies at her sister. Caramel wakes as the
   Keeper of Sweet.
+- **The finale**: with six medallions, Cinder unmasks as Saffron — and Mildew takes her.
+  The Keepers bridge the rot to **the Moldering Spire** (four floors: rot-things, a lash
+  crossing, a hall of lies, and **Duke Mildew** at the top: bat his balls of rot back at
+  him). The tower comes down — run for it before the countdown ends — and in the ruins
+  **Gorgemold** rises: when Saffron holds it with her light, strike its tail. Then the
+  ending, back in the castle garden, seven years before.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

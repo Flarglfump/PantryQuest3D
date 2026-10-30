@@ -54,4 +54,5 @@ def build():
                                                         size_start=0.12, size_end=0, color_start='#ffffffff', color_end='#a0c0ff00', blend='add'))
     a.point_light(0, 4, bz, '#c0d8ffff', 1.4, 8)
     a.spawn_point('block', 0, 0.1, bz + 2.4, 0)
+    a.npc('cinder', 3.5, 0, 4, -120, needs='keeper_sweet', until='saffron_taken', reach=2.6)
     a.save()

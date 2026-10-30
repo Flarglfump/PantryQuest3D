@@ -1,0 +1,31 @@
+@strict @3d
+# ending.bs - the ending (the castle garden, the Fresh era): the last pages, then the title.
+
+var game: entity
+var step: int = 0
+var t: number = 0
+
+func start() -> void { game = find("Game") }
+
+func update(dt: number) -> void {
+    t += dt
+    if game.state != "play" { return }
+    if step == 0 and t > 1.5 {
+        step = 1
+        game.talk("ending_garden", "")
+    } elif step == 1 and t > 2 {
+        step = 2
+        game.talk("ending_starter", "")
+    } elif step == 2 and t > 2.5 {
+        step = 3
+        game.talk("the_end", "")
+    } elif step == 3 {
+        step = 4
+        game.area = "temple"                # (a journey loaded after the ending carries on, grown, at the temple)
+        game.spawn = "start"
+        game.era = "risen"
+        game.commit()
+        game.save_journey()
+        load_scene("title.scene")
+    }
+}
