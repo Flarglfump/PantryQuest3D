@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(HERE, 'lib'))
 sys.path.insert(0, os.path.join(HERE, 'areas'))
 os.chdir(os.path.join(HERE, '..'))
 
-AREAS = ['sprouthollow', 'crock', 'fields', 'town', 'castle', 'peppermill', 'fondue', 'hardtack', 'hardcaves', 'gorge', 'fizzdomain', 'fountain', 'lake', 'gulp', 'temple', 'vault', 'thicket', 'thymetemple', 'forge', 'chamber', 'title']
+AREAS = ['sprouthollow', 'crock', 'fields', 'town', 'castle', 'peppermill', 'fondue', 'hardtack', 'hardcaves', 'gorge', 'fizzdomain', 'fountain', 'lake', 'gulp', 'temple', 'vault', 'thicket', 'thymetemple', 'forge', 'freezer', 'brinetemple', 'chamber', 'title']
 
 
 def main(what):

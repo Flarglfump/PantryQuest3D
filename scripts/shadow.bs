@@ -1,0 +1,101 @@
+@strict @3d
+# shadow.bs - Shadow Sprig: Sprig's own reflection, gone mouldy, in the Fizzwater Temple. It
+# keeps close, blocks what it sees coming (from the front), and slashes back.
+
+var hp: int = 10
+var game: entity
+var sprig: entity
+var st: string = "wait"            # wait fight slash hurt dead
+var st_t: number = 0
+var yaw: number = 0
+var flash: number = 0
+var swing_t: number = 1.2
+var hit_done: bool = false
+var home: vec3
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    home = self.position
+    if game.flag("clear:bt_shadow") { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 1.0, 0) }
+func fwd() -> vec3 { return vec3(-sin(yaw), 0, -cos(yaw)) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "dead" or st == "wait" { return }
+    var to: vec3 = from - self.position
+    to.y = 0
+    if st != "slash" and st != "hurt" and length(to) > 0.01 and dot(normalize(to), fwd()) > 0.5 and random() < 0.6 {
+        play_sound("sfx/block.wav", 0.7)           # it saw that coming
+        return
+    }
+    hp -= amount
+    flash = 0.3
+    play_sound("sfx/hit.wav", 0.8, 0.8)
+    st = "hurt"
+    st_t = 0
+    if hp <= 0 {
+        st = "dead"
+        st_t = 0
+        remove_tag(self, "focusable")
+    }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    var move := vec3(0, 0, 0)
+    if st == "wait" {
+        if d < 9 {
+            st = "fight"
+            st_t = 0
+            game.talk("shadow_title", "")
+        }
+        play_animation(self, "idle", 1, true)
+    } elif st == "fight" {
+        if d > 0.01 { yaw = atan2(-to.x, -to.z) }
+        if d > 1.7 { move = normalize(to) * 3.4 } elif d < 1.1 { move = normalize(to) * -2.5 } else { move = vec3(to.z, 0, -to.x) * (0.9 / max(d, 0.1)) }
+        swing_t -= dt
+        if swing_t <= 0 and d < 2.2 {
+            st = "slash"
+            st_t = 0
+            hit_done = false
+            play_animation(self, "slash", 1, false)
+            play_sound("sfx/swing.wav", 0.6, 0.8)
+        }
+        if length(move) > 0.1 { play_animation(self, "run", 1, true) } else { play_animation(self, "shield", 1, true) }
+    } elif st == "slash" {
+        if not hit_done and st_t > 0.15 {
+            hit_done = true
+            if d < 1.8 and dot(normalize(to), fwd()) > 0.5 { sprig.hurt(4, self.position, "touch") }
+        }
+        if st_t > 0.4 {
+            st = "fight"
+            swing_t = 1.0 + random() * 0.8
+        }
+    } elif st == "hurt" {
+        move = fwd() * -4 * max(0, 1 - st_t * 3)
+        if st_t > 0.35 { st = "fight" }
+        play_animation(self, "hurt", 1, false)
+    } elif st == "dead" {
+        self.Mesh.visible = floor(st_t * 16) % 2 == 0
+        if st_t > 1.2 {
+            game.set_flag("clear:bt_shadow")
+            spawn("prefabs/poof.scene", self.position + vec3(0, 0.6, 0))
+            game.talk("shadow_beaten", "")
+            destroy(self)
+        }
+        return
+    }
+    var v: vec3 = move_and_slide(self, vec3(move.x, -6, move.z))
+    self.rotation = vec3(0, yaw, 0)
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = "#303848ff" }
+}

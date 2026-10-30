@@ -1,0 +1,38 @@
+@strict @3d
+# redice.bs - red ice, from Mildew's cold rot: no blade or fire chips it. Only blue fire
+# (carried in a jar from the Freezer Caves) melts it, for good (the flag `id`).
+
+var id: string = ""
+var game: entity
+var melting: number = -1
+var scale0: vec3
+
+func start() -> void {
+    game = find("Game")
+    scale0 = self.scale
+    if game.flag(id) { gone() }
+}
+
+func gone() -> void {
+    add_tag(self, "hidden")
+    remove_tag(self, "redice")
+    destroy(self)
+    broadcast("ice_melted", id)
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func melt() -> void {
+    game.set_flag(id)
+    melting = 0
+    play_sound("sfx/sizzle.wav", 0.9)
+    play_sound("sfx/secret.wav", 0.7)
+}
+
+func update(dt: number) -> void {
+    if melting < 0 { return }
+    melting += dt
+    self.scale = scale0 * max(0.01, 1 - melting / 1.2)
+    if floor(melting * 10) != floor((melting - dt) * 10) { spawn("prefabs/poof.scene", self.position + vec3(random(-1, 1), random(0, 1), random(-1, 1))) }
+    if melting > 1.2 { gone() }
+}

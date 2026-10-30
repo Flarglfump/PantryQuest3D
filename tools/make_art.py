@@ -182,6 +182,14 @@ def sand(x, y):
     return mix((200, 180, 130), (232, 214, 168), n)
 
 
+def ice(x, y):              # pale blue ice with white cracks
+    n = fbm(x, y, 8, 37, 32)
+    c = mix((170, 210, 235), (225, 245, 255), n)
+    if abs(vnoise(x, y, 5, 38, wrap=6) - 0.5) < 0.03:
+        return (250, 255, 255)
+    return c
+
+
 def painting(x, y):        # a gloomy landscape in a gilt frame
     if x < 3 or y < 3 or x > 28 or y > 28:
         return (200, 160, 60) if (x + y) % 3 else (150, 110, 40)
@@ -205,7 +213,7 @@ def flowers(x, y):
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
          'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss',
-         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter', 'hammer', 'apron', 'med_spice']
+         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter', 'hammer', 'apron', 'med_spice', 'boots', 'snorkel', 'med_salt', 'jar_fire', 'longlash']
 
 
 def icon_pixel(name, x, y):
@@ -350,6 +358,26 @@ def icon_pixel(name, x, y):
         if abs(cx - 2.5) < 0.5 and abs(cy) < 6.5:
             return (240, 240, 230, 255)
         return (0, 0, 0, 0)
+    if name == 'boots':
+        if (-6 < cy < 5 and -3 < cx < 1) or (2 < cy < 6 and -3 < cx < 5):
+            return (90, 90, 100, 255) if cy < 5 else (60, 60, 70, 255)
+        return (0, 0, 0, 0)
+    if name == 'snorkel':
+        a = icon_pixel('apron', x, y)
+        return (60, 130, 220, 255) if a[3] and (x + y) % 4 else ((40, 90, 180, 255) if a[3] else a)
+    if name == 'med_salt':
+        d = math.hypot(cx, cy)
+        if d > 6:
+            return (0, 0, 0, 0)
+        return (90, 160, 240, 255) if d < 4.5 else (180, 150, 60, 255)
+    if name == 'jar_fire':
+        j = icon_pixel('jar', x, y)
+        if j[3] and abs(cx) < 2.5 and -1 < cy < 5:
+            return (90, 160, 255, 255)
+        return j
+    if name == 'longlash':
+        l = icon_pixel('lash', x, y)
+        return (230, 120, 40, 255) if l[3] else l
     if name == 'hammer':
         if abs(cx) < 1 and -2 < cy < 7:
             return (150, 100, 60, 255)
@@ -384,7 +412,7 @@ def main():
                            ('crock', crock, 32), ('dough', dough, 32), ('crust', crust, 32), ('mould', mould, 32),
                            ('clay', clay, 16), ('sack', sack, 16), ('chest', chest, 32), ('rot', rot, 32),
                            ('flowers', flowers, 32), ('cobble', cobble, 32), ('crack', crack, 32), ('lavacheese', lavacheese, 32),
-                           ('flesh', flesh, 32), ('fizzrock', fizzrock, 32), ('sand', sand, 32), ('painting', painting, 32)]:
+                           ('flesh', flesh, 32), ('fizzrock', fizzrock, 32), ('sand', sand, 32), ('painting', painting, 32), ('ice', ice, 32)]:
         tex(name, size, fn)
     tex('water', 32, water, alpha=True)
     tex('web', 32, web, alpha=True)

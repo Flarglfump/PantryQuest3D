@@ -1,0 +1,25 @@
+@strict @3d
+# crest.bs - a royal crest in the Fizzwater Temple's floor: Saffron's Lullaby played on it
+# drains the temple, or fills it again (the flag "bt_low").
+
+var prompt: string = "Look"
+var reach: number = 2.4
+var game: entity
+var sprig: entity
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.3, 0) }
+func can_use(p: vec3) -> bool { return true }
+func interact(who: entity) -> void { game.talk("bt_plate", "") }
+
+func song_played(name: string) -> void {
+    if name != "lullaby" or distance(vec3(sprig.x, 0, sprig.z), vec3(self.x, 0, self.z)) > 4 { return }
+    if game.flag("bt_low") { game.clear_flag("bt_low") } else { game.set_flag("bt_low") }
+    play_sound("sfx/rumble.wav", 0.8)
+    play_sound("sfx/secret.wav", 0.7)
+    shake_camera(1, 1.5)
+}

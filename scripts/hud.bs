@@ -72,6 +72,12 @@ func draw() -> void {
         draw_rect(vec2(140, 18), vec2(40, 13), [80, 20, 0, 200])
         draw_text(hs, vec2(160 - text_size(hs).x / 2, 21), hc)
     }
+    # breath, under water without the Snorkel Apron
+    if sprig.under and not game.has_item("snorkel") {
+        var w2: number = 60 * sprig.air / 8
+        draw_rect(vec2(130, 34), vec2(60, 6), [10, 30, 60, 200])
+        draw_rect(vec2(130, 34), vec2(w2, 6), [120, 200, 255, 255])
+    }
     # small keys
     if game.dungeon != "" {
         var keys: int = game.count("keys_" + game.dungeon)
@@ -107,7 +113,9 @@ func draw() -> void {
             if it == "jar1" {
                 ic = "jar"
                 if game.flag("jar1_fish") { ic = "jar_fish" }
+                if game.flag("jar1_fire") { ic = "jar_fire" }
             }
+            if it == "boots" and game.flag("boots_on") { draw_circle(c, 9, [255, 255, 255, 200], false) }
             draw_image("art/icons/" + ic + ".png", c)
             if it == "bombs" {
                 var bc2: list = [255, 255, 255]

@@ -96,6 +96,13 @@ a jump attack.
   switches and cracked rock), a bridge over molten cheese, and **Gratinox**, a dragon who
   rises out of the holes in its lair — knock its head as it comes up. Big Biscotti wakes
   as the Keeper of Spice; Cinder teaches the Bolero of Embers.
+- **The frozen lake** and **the Fizzwater Temple** (dungeon 6): the Fizzling Domain and
+  fountain frozen solid; the Freezer Caves (catch blue fire in a jar to melt red ice; the
+  **Cast-Iron Boots**, to sink and walk the bottom); King Carbonarius thawed (the Snorkel
+  Apron, to breathe under water); the temple under Lake Brine, flooded — a royal crest
+  drains and fills it to Saffron's Lullaby; Shadow Sprig and the **Long Licorice**; a
+  chasm only it crosses; and **the Living Brine**: lash its core out of the water and
+  strike it on the floor. Fizzy wakes as the Keeper of Salt; Cinder's Serenade of Brine.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

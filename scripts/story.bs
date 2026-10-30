@@ -554,6 +554,43 @@ func talk(id: string) -> list {
                 p("CINDER", "Three Keepers sleep still. The lake has frozen, Hero. The Fizzlings need you.")]
     }
 
+
+    # ---- the frozen lake arc
+    if id == "sign_freezer" { return [p("", "THE FREEZER CAVES.|Cold enough to keep anything forever. Even a grudge.")] }
+    if id == "freezer_sign" { return [p("FLICKER", "Brr! That fire's BLUE. And cold! I bet you could carry some in a jar...")] }
+    if id == "got_bluefire" { return [p("", "You caught some blue fire in your jar!|Use it on something that needs melting.")] }
+    if id == "carb_frozen" { return [p("FLICKER", "King Carbonarius... frozen solid in red ice! Fire won't touch that... unless it's BLUE fire.")] }
+    if id == "carb_thawed" {
+        return [p("KING CARBONARIUS", "*gurgle* ...Brrr. Who - who thawed me? A grown Sprout? ...SPRIG? Is that you?"),
+                p("KING CARBONARIUS", "The Duke's cold rot froze the whole domain. My people fled... and Effervescia went to the temple under Lake Brine to stop it."),
+                p("KING CARBONARIUS", "Take this, my boy. The royal SNORKEL APRON. With it you can breathe under water as long as you like. Find my daughter!")]
+    }
+    if id == "carb_risen" { return [p("KING CARBONARIUS", "The Fizzwater Temple is under Lake Brine, Sprig. Effervescia is in there. *shiver*")] }
+    if id == "cinder_serenade" {
+        return [p("CINDER", "The Cast-Iron Boots. Heavy... but the bottom of the lake is a long way down."),
+                p("CINDER", "Learn the SERENADE OF BRINE. It will carry you to Lake Brine, to the island above the temple."),
+                p("CINDER", "The Fizzlings' princess fights alone down there. Hurry, Hero.")]
+    }
+    if id == "lake_temple_door" { return [p("FLICKER", "The temple's down there... we'll need to sink to the bottom. Those iron boots!")] }
+    if id == "bt_enter" {
+        return [p("FLICKER", "The Fizzwater Temple... it's all water and echoes. Use the boots to sink, and take them off to float up."),
+                p("FLICKER", "Fizzy must be in here somewhere!")]
+    }
+    if id == "bt_plate" {
+        if game.flag("bt_low") { return [p("", "A ROYAL CREST, WORN BY WATER.|The water has drained away. Play Saffron's Lullaby again to fill the temple.")] }
+        return [p("", "A ROYAL CREST, WORN BY WATER.|\"The royal song calls the tide.\"")]
+    }
+    if id == "shadow_title" { return [p("", "SHADOW SPRIG|Your Reflection, Gone Mouldy")] }
+    if id == "shadow_beaten" { return [p("FLICKER", "It... melted away. Like it was never there. Brr. There's a chest!")] }
+    if id == "brine_title" { return [p("", "THE LIVING BRINE|Giant Aquatic Mould")] }
+    if id == "brine_beaten" { return [p("FLICKER", "The water's clear again! Lake Brine is saved! Into the light, Sprig!")] }
+    if id == "fizzy_keeper" {
+        if game.flag("keeper_salt") { return [p("FIZZY", "Go on, my betrothed! Save the world! And then come back - you promised!")] }
+        return [p("FIZZY", "SPRIG! You came! And you're... um. Taller. And... hmm. Quite handsome, actually."),
+                p("FIZZY", "I'm the Keeper of SALT, it turns out. The sea, the tears, the brine in the pickle jar. Very important."),
+                p("FIZZY", "You remember our engagement, I hope? A Fizzling never forgets. Take my medallion. It's practically a ring.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -735,6 +772,14 @@ func after(what: string, choice: int) -> void {
     } elif what == "bolero" {
         play_sound("sfx/secret.wav", 0.8)
         game.give("song_bolero", "")
+    } elif what == "snorkel" {
+        game.give("snorkel", "")
+    } elif what == "serenade" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_serenade", "")
+    } elif what == "med_salt" {
+        game.set_flag("keeper_salt")
+        game.give("med_salt", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -780,6 +825,10 @@ func area_started(area: string) -> void {
     if area == "forge" and not game.flag("forge_entered") {
         game.set_flag("forge_entered")
         game.talk("forge_enter", "")
+    }
+    if area == "brinetemple" and not game.flag("bt_entered") {
+        game.set_flag("bt_entered")
+        game.talk("bt_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -844,7 +893,19 @@ func hint() -> string {
     if not game.flag("forge_done") { return "The Fondue Forge! Up the Mount Fondue trail, past Peppermill, into the crater." }
     if not game.flag("keeper_spice") { return "Big Biscotti is waiting in the Chamber of Keepers." }
     if not game.has_item("song_bolero") { return "Cinder's waiting at the crater's edge." }
-    return "The lake has frozen, Cinder said. The Fizzwater Temple is under Lake Brine. (It isn't built yet!)"
+    if game.dungeon == "brinetemple" { return brine_hint() }
+    if not game.has_item("boots") { return "The Fizzling Domain has frozen over. Go through it to the fountain - there's a cave across the ice. Something heavy might be in there." }
+    if not game.has_item("snorkel") { return "King Carbonarius is frozen in red ice in his domain. Blue fire from the Freezer Caves would melt it! Carry some in a jar." }
+    if not game.flag("brinetemple_done") { return "The Fizzwater Temple is under Lake Brine, below the island. Put on the Cast-Iron Boots and sink!" }
+    if not game.flag("keeper_salt") { return "Fizzy is waiting in the Chamber of Keepers." }
+    return "Two Keepers sleep still: one under Peppermill's graveyard, one in the Sugar Dunes far to the west. (Not built yet!)"
+}
+
+func brine_hint() -> string {
+    if not game.flag("bt_low") and not game.has_item("longlash") { return "Find the royal crest in the middle of the temple and play Saffron's Lullaby to lower the water!" }
+    if not game.has_item("longlash") { return "With the water down, the lower rooms are open. Something waits in the west room..." }
+    if not game.has_item("bosskey_brinetemple") { return "The Long Licorice reaches twice as far. That high target in the east room!" }
+    return "The boss is through the big door, north. When its core shows, lash it out of the water!"
 }
 
 func forge_hint() -> string {
@@ -907,6 +968,14 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "boots" { return "You got the CAST-IRON BOOTS!|Put them on a button. On, you sink in water and walk the bottom; press again to take them off." }
+    if kind == "snorkel" { return "You got the SNORKEL APRON!|The royal Fizzling apron. Now you can breathe under water as long as you like." }
+    if kind == "song_serenade" { return "You learned the SERENADE OF BRINE!|Play it anywhere outside a dungeon to warp to Lake Brine." }
+    if kind == "longlash" { return "You got the LONG LICORICE!|Your Licorice Lash now reaches twice as far!" }
+    if kind == "med_salt" { return "You got the SALT MEDALLION!|Fizzy, Keeper of Salt, has woken." }
+    if kind == "map_brinetemple" { return "You found the DUNGEON MAP!|See every room of the Fizzwater Temple in the pause menu." }
+    if kind == "compass_brinetemple" { return "You found the COMPASS!|Now the map shows the treasure and the master." }
+    if kind == "bosskey_brinetemple" { return "You got the BOSS KEY!|It opens the door to the Living Brine." }
     if kind == "apron" { return "You got the OVEN APRON!|Big Biscotti's spare. Now the worst heat can't hurt you." }
     if kind == "hammer" { return "You got the MEAT TENDERIZER!|Put it on a button and SMASH: rusty switches, cracked rock, and the odd dragon." }
     if kind == "med_spice" { return "You got the SPICE MEDALLION!|Big Biscotti, Keeper of Spice, has woken." }

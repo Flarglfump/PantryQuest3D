@@ -191,7 +191,8 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
-    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" { put_on_button(name) }
+    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" or name == "boots" { put_on_button(name) }
+    if name == "longlash" { put_on_button("lash") }
     if name == "bow" {
         add_count("arrows", 30 - count("arrows"))
         put_on_button(name)
@@ -326,9 +327,13 @@ func on_resume() -> void {
             play_sound("sfx/warp.wav", 0.8)
             go("thicket", "glade")
         }
-        if song == "bolero" and dungeon == "" {           # ...and to Mount Fondue's crater
+        if song == "bolero" and dungeon == "" {           # ...to Mount Fondue's crater...
             play_sound("sfx/warp.wav", 0.8)
             go("fondue", "forge")
+        }
+        if song == "serenade" and dungeon == "" {         # ...and to Lake Brine's island
+            play_sound("sfx/warp.wav", 0.8)
+            go("lake", "island")
         }
     } elif state == "paused" {
         load_state()
@@ -393,7 +398,7 @@ func go(to: string, at: string) -> void {
 }
 
 # The scene for an area: some areas have a Risen-era version (areas/<id>_risen.scene).
-const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket", "hardtack", "fondue"]
+const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket", "hardtack", "fondue", "fizzdomain", "fountain", "lake"]
 func scene_for(a: string) -> string {
     if era == "risen" and contains(RISEN_AREAS, a) { return "areas/" + a + "_risen.scene" }
     return "areas/" + a + ".scene"

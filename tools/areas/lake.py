@@ -34,10 +34,11 @@ def height(x, z):
     return h + 0.3 * math.sin(x * 0.3) * math.cos(z * 0.25) * smooth((r - 46) / 4)
 
 
-def build():
+def build(era='fresh'):
     random.seed(53)
-    a = Area('lake', 'Lake Brine', music='music/brine.wav', kill_y=-20, sky='#b8e0f8ff', fog=(34, 80),
-             ambient=('#8898b8ff', 0.55), chunk=28)
+    risen = era == 'risen'
+    a = Area('lake', 'Lake Brine', music='music/brine.wav', kill_y=-20, sky='#b8e0f8ff' if not risen else '#a0b0c0ff', fog=(34, 80),
+             ambient=('#8898b8ff', 0.55), chunk=28, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-70, 70, 14):
         for cx in range(-70, 70, 14):
@@ -59,14 +60,27 @@ def build():
             a.geo('bark', xx, z).box((xx - 0.08, 1.35, z - 2.5), (xx + 0.08, 2.0, z + 2.5), uvs=0.5)
     # the island and its sunken door
     a.geo('stone', CX, CZ).cylinder((CX, 1.4, CZ), 3.0, 0.4, 12, uvs=0.4)
-    a.entity('Temple Door', t3((CX, 1.0, CZ - 2.6), (0, 0, 0), (2.2, 1.6, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
-             collider('box'), tags('interact'), script('scripts/sign.bs', say='tbc_lake_temple', prompt='Look', reach=2.4))
+    a.spawn_point('island', CX, 1.9, CZ + 1.5, 180)
+    if risen:      # the temple's door, down on the lake bed north of the island
+        tz = CZ - 15
+        ty = height(CX, tz)
+        a.geo('stone', CX, tz).box((CX - 3, ty - 0.5, tz - 2), (CX + 3, ty + 5, tz - 1), uvs=0.3)
+        a.entity('Temple Door', t3((CX, ty + 1.6, tz - 0.95), (0, 0, 0), (2.6, 3.0, 0.1)), mesh('cube', '#0a1828ff', lit=False))
+        a.loadzone(CX, ty, tz - 0.6, 2.4, 3, 0.6, to='brinetemple', at='start')
+        a.spawn_point('brinetemple', CX, ty + 0.1, tz + 2, 180)
+        a.entity('Temple Door Sign', t3((CX, 1.0, CZ - 2.6), (0, 0, 0), (2.2, 1.6, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
+                 collider('box'), tags('interact'), script('scripts/sign.bs', say='lake_temple_door', prompt='Look', reach=2.4))
+    else:
+        a.entity('Temple Door', t3((CX, 1.0, CZ - 2.6), (0, 0, 0), (2.2, 1.6, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
+                 collider('box'), tags('interact'), script('scripts/sign.bs', say='tbc_lake_temple', prompt='Look', reach=2.4))
     a.tree(CX + 4, height(CX + 4, CZ + 3), CZ + 3, 1.4, 'heart')
     # what glints on the lake bed: a jar with a letter in it
     jx, jz = 14.0, CZ - 12.0
-    a.entity('Sunken Jar', t3((jx, height(jx, jz) + 0.3, jz)), mesh('model', '#c8e8ffd0', file='models/jar.obj', lit=False),
+    if not risen:
+      a.entity('Sunken Jar', t3((jx, height(jx, jz) + 0.3, jz)), mesh('model', '#c8e8ffd0', file='models/jar.obj', lit=False),
              script('scripts/sunken.bs', item='jar1', id='lake_jar', then='fizzy_letter_read'))
-    a.entity('Glint', t3((jx, height(jx, jz) + 0.6, jz)), particles(rate=3, max=8, lifetime=1.0, speed=0.3, spread=40, area=(0.4, 0.4),
+    if not risen:
+      a.entity('Glint', t3((jx, height(jx, jz) + 0.6, jz)), particles(rate=3, max=8, lifetime=1.0, speed=0.3, spread=40, area=(0.4, 0.4),
                                                                      size_start=0.25, size_end=0, color_start='#ffffffff', color_end='#a0e0ff00', blend='add'))
     # Professor Brineworth's lab (east shore)
     lx, lz = 52, 10
@@ -90,3 +104,7 @@ def build():
         a.grass(x, height(x, z), z)
         n += 1
     a.save()
+
+
+def build_risen():
+    build('risen')

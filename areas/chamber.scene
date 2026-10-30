@@ -310,6 +310,37 @@ entity
 
 entity
   Name
+    text = "Fizzy_keeper"
+  Transform3D
+    position = 0 0.6 -6.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fizzy.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"fizzy_keeper\", reach = 3, needs = \"brinetemple_done\", until = \"left_salt\""
+
+entity
+  Name
     text = "spawn_start"
   Transform3D
     position = 0 0.1 2
@@ -375,6 +406,36 @@ entity
   Script
     file = "scripts/warp.bs"
     vars = "to = \"fondue\", at = \"forge\", when = \"keeper_spice\", until = \"left_spice\", sets = \"left_spice\""
+
+entity
+  Name
+    text = "Blue Light"
+  Transform3D
+    position = 0 1.5 5.5
+    rotation = 0 0 0
+    scale = 1.6 3 1.6
+  Mesh
+    shape = cylinder
+    color = #80c0ff60
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Particles
+    rate = 20
+    max = 40
+    lifetime = 1.5
+    speed = 1.2
+    spread = 10
+    area = 1.6 1.6
+    size_start = 0.15
+    size_end = 0
+    color_start = #c0e0ffff
+    color_end = #4080ff00
+    blend = add
+  Script
+    file = "scripts/warp.bs"
+    vars = "to = \"lake\", at = \"island\", when = \"keeper_salt\", until = \"left_salt\", sets = \"left_salt\""
 
 entity
   Name

@@ -1,0 +1,31 @@
+@strict @3d
+# tide.bs - the Fizzwater Temple's water (a water.bs body that can move). High, or drained
+# low while the flag "bt_low" is set (the royal crest: crest.bs). The drawn surface is the
+# child "Tide Surface".
+
+var surface: number = 5.2
+var high: number = 5.2
+var low: number = -0.6
+var depth: number = 14
+var game: entity
+var surf: entity
+
+func start() -> void {
+    game = find("Game")
+    surf = find("Tide Surface")
+    if game.flag("bt_low") { surface = low } else { surface = high }
+    place()
+}
+
+func place() -> void {
+    self.y = surface - depth / 2
+    if surf != nil { surf.y = surface }
+}
+
+func update(dt: number) -> void {
+    var want: number = high
+    if game.flag("bt_low") { want = low }
+    if surface < want { surface = min(want, surface + dt * 2.0) }
+    if surface > want { surface = max(want, surface - dt * 2.0) }
+    place()
+}

@@ -1,0 +1,122 @@
+@strict @3d
+# brine.bs - the Living Brine, master of the Fizzwater Temple: a mould that lives in water,
+# with one red core. The core swims about its pool; now and then it rises in a column of
+# water that lashes at Sprig. While it's up, the Licorice Lash can yank the core out onto
+# the floor, where it flops about, open to the Cleaver. Then it hops back in.
+
+var hp: int = 10
+var max_hp: int = 10
+var game: entity
+var sprig: entity
+var hud: entity
+var column: entity
+var st: string = "wait"            # wait swim rise beached dead
+var st_t: number = 0
+var flash: number = 0
+var centre: vec3
+var goal: vec3
+var beach: vec3
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    column = find("Brine Column")
+    centre = self.position
+    goal = centre
+    if game.flag("bt_boss") {
+        if column != nil { destroy(column) }
+        destroy(self)
+        return
+    }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "rise" and how == "lash" {
+        var to: vec3 = sprig.position - self.position
+        to.y = 0
+        beach = sprig.position - normalize(to) * 1.3
+        beach.y = sprig.y + 0.45
+        set_state("beached")
+        play_sound("sfx/splash.wav", 0.9)
+        return
+    }
+    if st == "beached" and how != "lash" and how != "arrow" {
+        hp -= amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.7)
+        if hp <= 0 {
+            set_state("dead")
+            stop_music(1.5)
+            play_sound("sfx/screech.wav", 0.9, 0.6)
+        }
+    }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    if st == "wait" {
+        if distance(sprig.position, centre) < 12 {
+            set_state("swim")
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "THE LIVING BRINE")
+            game.talk("brine_title", "")
+        }
+        return
+    }
+    if column != nil {
+        var ch: number = 0
+        if st == "rise" { ch = min(1, st_t * 2) }
+        column.position = vec3(self.x, centre.y - 1.5 + ch * 2.0, self.z)
+        column.scale = vec3(1.6, 0.2 + ch * 4.8, 1.6)
+    }
+    if st == "swim" {
+        if distance(self.position, goal) < 0.4 {
+            var a: number = random() * 360
+            var r: number = random() * 5.5
+            goal = centre + vec3(cos(a) * r, -2.2, sin(a) * r)
+        }
+        var d: vec3 = goal - self.position
+        self.position = self.position + d * (min(length(d), 3 * dt) / max(length(d), 0.001))
+        if st_t > 3 { set_state("rise") }
+    } elif st == "rise" {
+        self.position = lerp(self.position, vec3(self.x, centre.y + 3.0, self.z), min(1, dt * 3))
+        # the column leans after Sprig
+        var to2: vec3 = sprig.position - self.position
+        to2.y = 0
+        var off: vec3 = vec3(self.x - centre.x, 0, self.z - centre.z)
+        if length(to2) > 0.5 and length(off) < 7 { self.position = self.position + normalize(to2) * 1.2 * dt }
+        if length(to2) < 1.6 and abs(sprig.y - centre.y) < 2.5 { sprig.hurt(4, self.position, "touch") }
+        if st_t > 4 { set_state("swim") }
+    } elif st == "beached" {
+        self.position = lerp(self.position, beach + vec3(0, abs(sin(st_t * 500)) * 0.3, 0), min(1, dt * 8))
+        if st_t > 3.5 {
+            set_state("swim")
+            goal = centre + vec3(0, -2.2, 0)
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        self.scale = vec3(1, 1, 1) * max(0.05, 1 - dead_t / 2.4)
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) { spawn("prefabs/poof.scene", self.position) }
+        if dead_t > 2.5 {
+            game.set_flag("bt_boss")
+            game.talk("brine_beaten", "")
+            if column != nil { destroy(column) }
+            destroy(self)
+            return
+        }
+    }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = "#ff3040ff" }
+}

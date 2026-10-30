@@ -198,289 +198,6 @@ entity
 
 entity
   Name
-    text = "Lord Gulp"
-  Transform3D
-    position = 0 -2.8 -21.5
-    rotation = 0 180 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/gulp.obj"
-    texture = "art/fizzrock.png"
-    color = #a0b4c8ff
-    uv_scale = 1 1
-  Collider3D
-    shape = sphere
-    size = 1 1 1
-    radius = 4
-    friction = 0.8
-    offset = 0 3.2 1.5
-  Tags
-    list = "interact, focusable, fishfeed"
-  Script
-    file = "scripts/gulpaltar.bs"
-    vars = "reach = 9"
-
-entity
-  Name
-    text = "Jaw"
-  Transform3D
-    position = 0 2.5 -4
-    rotation = 0 0 0
-    scale = 3 0.6 2
-  Mesh
-    shape = cube
-    texture = "art/stone.png"
-    color = #6a7890ff
-    uv_scale = 1 1
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Eye"
-  Transform3D
-    position = -2.9 4.2 -1.4
-    rotation = 0 0 0
-    scale = 0.9 0.9 0.9
-  Mesh
-    shape = sphere
-    color = #f0f0e0ff
-    uv_scale = 1 1
-    lit = false
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Pupil"
-  Transform3D
-    position = -3.25 4.2 -1.7
-    rotation = 0 0 0
-    scale = 0.3 0.12 0.3
-  Mesh
-    shape = sphere
-    color = #101018ff
-    uv_scale = 1 1
-    lit = false
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Eye"
-  Transform3D
-    position = 2.9 4.2 -1.4
-    rotation = 0 0 0
-    scale = 0.9 0.9 0.9
-  Mesh
-    shape = sphere
-    color = #f0f0e0ff
-    uv_scale = 1 1
-    lit = false
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Pupil"
-  Transform3D
-    position = 3.25 4.2 -1.7
-    rotation = 0 0 0
-    scale = 0.3 0.12 0.3
-  Mesh
-    shape = sphere
-    color = #101018ff
-    uv_scale = 1 1
-    lit = false
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Fin"
-  Transform3D
-    position = 0 6.4 1.5
-    rotation = 20 0 0
-    scale = 0.3 1.6 3
-  Mesh
-    shape = cube
-    texture = "art/stone.png"
-    color = #6a7890ff
-    uv_scale = 1 1
-  Parent
-    entity = 13
-
-entity
-  Name
-    text = "Gulp Bubbles"
-  Transform3D
-    position = 0 -0.3 -17
-    rotation = 0 0 0
-    scale = 1 1 1
-  Particles
-    rate = 3
-    max = 10
-    lifetime = 1.5
-    speed = 0.8
-    spread = 20
-    area = 1 1
-    gravity = -0.5
-    size_start = 0.3
-    size_end = 0.6
-    color_start = #ffffffa0
-    color_end = #ffffff00
-
-entity
-  Name
-    text = "spawn_gulp"
-  Transform3D
-    position = 0 0.4 -11.5
-    rotation = 0 180 0
-    scale = 1 1 1
-
-entity
-  Name
-    text = "Fish"
-  Transform3D
-    position = -9 -0.5 7
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/fish.obj"
-    color = #f0a040ff
-    uv_scale = 1 1
-  Tags
-    list = "fish"
-  Script
-    file = "scripts/fish.bs"
-
-entity
-  Name
-    text = "Fish"
-  Transform3D
-    position = -7 -0.5 9
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/fish.obj"
-    color = #f0a040ff
-    uv_scale = 1 1
-  Tags
-    list = "fish"
-  Script
-    file = "scripts/fish.bs"
-
-entity
-  Name
-    text = "Fish"
-  Transform3D
-    position = -11 -0.5 9.5
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/fish.obj"
-    color = #f0a040ff
-    uv_scale = 1 1
-  Tags
-    list = "fish"
-  Script
-    file = "scripts/fish.bs"
-
-entity
-  Name
-    text = "Fish"
-  Transform3D
-    position = -8.5 -0.5 5.5
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/fish.obj"
-    color = #f0a040ff
-    uv_scale = 1 1
-  Tags
-    list = "fish"
-  Script
-    file = "scripts/fish.bs"
-
-entity
-  Name
-    text = "Sign"
-  Transform3D
-    position = -4 0.45 13
-    rotation = 0 90 0
-    scale = 0.1 0.9 0.1
-  Mesh
-    shape = cube
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-  Collider3D
-    shape = box
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.8
-
-entity
-  Name
-    text = "Sign Board"
-  Transform3D
-    position = -4 0.85 13
-    rotation = 0 90 0
-    scale = 0.8 0.5 0.08
-  Mesh
-    shape = cube
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-  Collider3D
-    shape = box
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.8
-  Tags
-    list = "interact, focusable"
-  Script
-    file = "scripts/sign.bs"
-    vars = "say = \"gulp_look\""
-
-entity
-  Name
-    text = "Fizzy"
-  Transform3D
-    position = 3 0 4
-    rotation = 0 200 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/fizzy.glb"
-    color = #ffffffff
-    uv_scale = 1 1
-    shadow = true
-  Animator
-    clip = "idle"
-    speed = 1
-    loop = true
-    playing = true
-    blend = 0.2
-  Collider3D
-    shape = capsule
-    size = 1 1.1 1
-    radius = 0.3
-    friction = 0.8
-    offset = 0 0.55 0
-  Tags
-    list = "npc, interact, focusable"
-  Script
-    file = "scripts/npc.bs"
-    vars = "who = \"fizzy\", reach = 2.4, needs = \"gulp_done\""
-
-entity
-  Name
     text = "Tree"
   Transform3D
     position = 18 1.4486 8
@@ -911,6 +628,289 @@ entity
   Script
     file = "scripts/cuttable.bs"
     vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Lord Gulp"
+  Transform3D
+    position = 0 -2.8 -21.5
+    rotation = 0 180 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/gulp.obj"
+    texture = "art/fizzrock.png"
+    color = #a0b4c8ff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 4
+    friction = 0.8
+    offset = 0 3.2 1.5
+  Tags
+    list = "interact, focusable, fishfeed"
+  Script
+    file = "scripts/gulpaltar.bs"
+    vars = "reach = 9"
+
+entity
+  Name
+    text = "Jaw"
+  Transform3D
+    position = 0 2.5 -4
+    rotation = 0 0 0
+    scale = 3 0.6 2
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #6a7890ff
+    uv_scale = 1 1
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Eye"
+  Transform3D
+    position = -2.9 4.2 -1.4
+    rotation = 0 0 0
+    scale = 0.9 0.9 0.9
+  Mesh
+    shape = sphere
+    color = #f0f0e0ff
+    uv_scale = 1 1
+    lit = false
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Pupil"
+  Transform3D
+    position = -3.25 4.2 -1.7
+    rotation = 0 0 0
+    scale = 0.3 0.12 0.3
+  Mesh
+    shape = sphere
+    color = #101018ff
+    uv_scale = 1 1
+    lit = false
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Eye"
+  Transform3D
+    position = 2.9 4.2 -1.4
+    rotation = 0 0 0
+    scale = 0.9 0.9 0.9
+  Mesh
+    shape = sphere
+    color = #f0f0e0ff
+    uv_scale = 1 1
+    lit = false
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Pupil"
+  Transform3D
+    position = 3.25 4.2 -1.7
+    rotation = 0 0 0
+    scale = 0.3 0.12 0.3
+  Mesh
+    shape = sphere
+    color = #101018ff
+    uv_scale = 1 1
+    lit = false
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Fin"
+  Transform3D
+    position = 0 6.4 1.5
+    rotation = 20 0 0
+    scale = 0.3 1.6 3
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #6a7890ff
+    uv_scale = 1 1
+  Parent
+    entity = 33
+
+entity
+  Name
+    text = "Gulp Bubbles"
+  Transform3D
+    position = 0 -0.3 -17
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 3
+    max = 10
+    lifetime = 1.5
+    speed = 0.8
+    spread = 20
+    area = 1 1
+    gravity = -0.5
+    size_start = 0.3
+    size_end = 0.6
+    color_start = #ffffffa0
+    color_end = #ffffff00
+
+entity
+  Name
+    text = "spawn_gulp"
+  Transform3D
+    position = 0 0.4 -11.5
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Fish"
+  Transform3D
+    position = -9 -0.5 7
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fish.obj"
+    color = #f0a040ff
+    uv_scale = 1 1
+  Tags
+    list = "fish"
+  Script
+    file = "scripts/fish.bs"
+
+entity
+  Name
+    text = "Fish"
+  Transform3D
+    position = -7 -0.5 9
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fish.obj"
+    color = #f0a040ff
+    uv_scale = 1 1
+  Tags
+    list = "fish"
+  Script
+    file = "scripts/fish.bs"
+
+entity
+  Name
+    text = "Fish"
+  Transform3D
+    position = -11 -0.5 9.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fish.obj"
+    color = #f0a040ff
+    uv_scale = 1 1
+  Tags
+    list = "fish"
+  Script
+    file = "scripts/fish.bs"
+
+entity
+  Name
+    text = "Fish"
+  Transform3D
+    position = -8.5 -0.5 5.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fish.obj"
+    color = #f0a040ff
+    uv_scale = 1 1
+  Tags
+    list = "fish"
+  Script
+    file = "scripts/fish.bs"
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = -4 0.45 13
+    rotation = 0 90 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = -4 0.85 13
+    rotation = 0 90 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"gulp_look\""
+
+entity
+  Name
+    text = "Fizzy"
+  Transform3D
+    position = 3 0 4
+    rotation = 0 200 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fizzy.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"fizzy\", reach = 2.4, needs = \"gulp_done\""
 
 entity
   Name

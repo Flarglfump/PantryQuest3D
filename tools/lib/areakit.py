@@ -34,6 +34,7 @@ MATERIALS = {
     'flesh': ('art/flesh.png', '#ffffffff', True, False, True, True),
     'fizzrock': ('art/fizzrock.png', '#ffffffff', True, True, True, True),
     'sand': ('art/sand.png', '#ffffffff', True, False, True, True),
+    'ice': ('art/ice.png', '#ffffffff', True, False, True, True),
     'crock': ('art/crock.png', '#ffffffff', True, True, True, True),
     'dough': ('art/dough.png', '#ffffffff', True, False, True, True),
     'dough_wall': ('art/dough.png', '#e8d8c0ff', True, False, True, True),
@@ -265,6 +266,16 @@ class Area:
                     collider('box'), tags('hookable', 'focusable'), script('scripts/target.bs'))
         self.entity('Bullseye', t3((x - math.sin(math.radians(yaw)) * 0.14, y, z - math.cos(math.radians(yaw)) * 0.14), (90, yaw, 0), (0.45, 0.02, 0.45)),
                     mesh('cylinder', '#d03030ff', lit=False))
+
+    def redice(self, x, y, z, size, id):
+        self.entity('Red Ice', t3((x, y + size[1] / 2, z), (0, 0, 0), size), mesh('cube', '#ff6070c0', 'art/ice.png', uv=(size[0], size[1]), cull=False),
+                    collider('box'), tags('redice', 'focusable'), script('scripts/redice.bs', id=id))
+
+    def bluefire(self, x, y, z):
+        self.geo('stone', x, z).cylinder((x, y, z), 0.6, 1.0, 8, uvs=0.5)
+        self.entity('Blue Fire', t3((x, y + 1.1, z)), particles(rate=24, max=40, lifetime=0.8, speed=0.8, spread=20, area=(0.5, 0.5), gravity=-1.2,
+                                                               size_start=0.45, size_end=0, color_start='#60a0ffff', color_end='#2040ff00', blend='add'),
+                    light('point', '#6090ffff', 1.2, range=6), tags('bluefire'))
 
     def hammerswitch(self, x, y, z, id):
         self.entity('Rusty Switch', t3((x, y, z)), mesh('model', '#a07050ff', file='models/switch.obj'), collider('box', (1.4, 0.3, 1.4), offset=(0, 0.0, 0)),

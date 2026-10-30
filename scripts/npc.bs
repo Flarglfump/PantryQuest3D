@@ -119,6 +119,9 @@ func interact(who_by: entity) -> void {
     if id == "cinder" { then = "prelude" }
     if id == "cinder_minuet" { then = "minuet" }
     if id == "cinder_bolero" { then = "bolero" }
+    if id == "cinder_serenade" { then = "serenade" }
+    if id == "carb_thawed" { then = "snorkel" }
+    if id == "fizzy_keeper" and not game.flag("keeper_salt") { then = "med_salt" }
     if who == "little_biscotti" and not game.has_item("apron") { then = "apron" }
     if id == "biscotti_keeper" and not game.flag("keeper_spice") { then = "med_spice" }
     if id == "fennel_keeper" and not game.flag("keeper_bitter") { then = "med_bitter" }
@@ -165,6 +168,11 @@ func talk_for() -> string {
         if game.has_item("bracelet") { return "hardtack_2" }
         return "hardtack_1"
     }
+    if who == "carbonarius" and game.era == "risen" {
+        if not game.flag("ice_king") { return "carb_frozen" }
+        if not game.has_item("snorkel") { return "carb_thawed" }
+        return "carb_risen"
+    }
     if who == "carbonarius" {
         if game.flag("gulp_done") { return "carb_thanks" }
         if game.flag("carb_moved") { return "carb_moved" }
@@ -174,6 +182,10 @@ func talk_for() -> string {
     }
     if who == "mozz" { return "mozz_2" }
     if who == "cinder" {
+        if game.area == "freezer" {
+            if game.has_item("song_serenade") { return "cinder_after" }
+            return "cinder_serenade"
+        }
         if game.flag("keeper_spice") and game.area == "fondue" {
             if game.has_item("song_bolero") { return "cinder_after" }
             return "cinder_bolero"
