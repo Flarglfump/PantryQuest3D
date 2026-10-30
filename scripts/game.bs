@@ -406,7 +406,7 @@ func go(to: string, at: string) -> void {
 }
 
 # The scene for an area: some areas have a Risen-era version (areas/<id>_risen.scene).
-const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket", "hardtack", "fondue", "fizzdomain", "fountain", "lake"]
+const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket", "hardtack", "fondue", "fizzdomain", "fountain", "lake", "dairy"]
 func scene_for(a: string) -> string {
     if era == "risen" and contains(RISEN_AREAS, a) { return "areas/" + a + "_risen.scene" }
     return "areas/" + a + ".scene"

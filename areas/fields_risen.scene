@@ -270,7 +270,15 @@ entity
     list = "loadzone"
   Script
     file = "scripts/loadzone.bs"
-    vars = "to = \"\", at = \"start\", say = \"tbc_dairy\""
+    vars = "to = \"dairy\", at = \"fields\""
+
+entity
+  Name
+    text = "spawn_dairy"
+  Transform3D
+    position = 31.5 3.1723 4
+    rotation = 0 90 0
+    scale = 1 1 1
 
 entity
   Name

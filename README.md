@@ -123,6 +123,8 @@ a jump attack.
   him). The tower comes down — run for it before the countdown ends — and in the ruins
   **Gorgemold** rises: when Saffron holds it with her light, strike its tail. Then the
   ending, back in the castle garden, seven years before.
+- **Buttercup Dairy** (on the fields' hill): Crème teaches Custard's Song; seven years
+  later Grubb wants Custard for the Duke — play her song and she's yours (and a Pie Slice).
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

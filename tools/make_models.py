@@ -591,6 +591,8 @@ if __name__ == '__main__':
     blob('nut', '#7a4a1a', size=0.2, eye='#7a4a1a', pupil='#7a4a1a')
     scrub()
     queen()
+    blob('custard', '#f8e0a0', size=0.6, legs=4, eye='#ffffff', pupil='#302010')
+    blob('cow', '#f4f4f4', size=0.7, legs=4, eye='#ffffff', pupil='#101010')
     blob('jelly', '#e8f0a0', size=0.55, eye='#ffffff', pupil='#4060a0')
     blob('frog', '#5aa040', size=0.4, legs=4, eye='#ffffe0', pupil='#101010')
     blob('crustling', '#c08a40', size=0.7, legs=4, eye='#ffe060', pupil='#301000')

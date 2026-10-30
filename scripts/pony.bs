@@ -1,0 +1,50 @@
+@strict @3d
+# pony.bs - Custard the pudding-pony, in Buttercup Dairy's paddock. She trots about; play
+# Custard's Song near her and she comes to Sprig (in the Risen era, that wins her back
+# from Grubb, and Crème's thanks: the flag "custard").
+
+var game: entity
+var sprig: entity
+var goal: vec3
+var home: vec3
+var t: number = 0
+var called: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    home = self.position
+    goal = home
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.8, 0) }
+
+func song_played(name: string) -> void {
+    if name != "custard" or distance(sprig.position, self.position) > 16 { return }
+    called = 6
+    play_sound("sfx/secret.wav", 0.6)
+    if game.era == "risen" and not game.flag("custard") {
+        game.set_flag("custard")
+        game.talk("custard_won", "custard_slice")
+    }
+}
+
+func update(dt: number) -> void {
+    t += dt
+    called = max(0, called - dt)
+    if called > 0 {
+        goal = sprig.position
+    } elif distance(self.position, goal) < 0.4 {
+        var a: number = random() * 360
+        goal = home + vec3(cos(a) * 5, 0, sin(a) * 5)
+    }
+    var d: vec3 = goal - self.position
+    d.y = 0
+    if length(d) > 1.2 {
+        self.position = self.position + normalize(d) * min(length(d), 2.5 * dt)
+        self.rotation = vec3(0, atan2(-d.x, -d.z), 0)
+        play_animation(self, "hop", 1.2, true)
+    } else {
+        play_animation(self, "idle", 1, true)
+    }
+}

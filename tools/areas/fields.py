@@ -117,7 +117,8 @@ def build(era='fresh'):
     # the barn's roof over the hill (the dairy itself is its own place, later)
     a.geo('planks', hx + 4, hz).box((hx + 1, height(hx, hz), hz - 4), (hx + 8, height(hx, hz) + 4, hz + 4), uvs=0.3)
     a.geo('thatch', hx + 4, hz).cylinder((hx + 4.5, height(hx, hz) + 4, hz), 5.0, 0.2, 4, top=False, radius_top=0.5, uvs=0.3)
-    a.loadzone(hx - 2, height(hx - 2, hz), hz, 2.5, 3, 4, to='', say='tbc_dairy')
+    a.loadzone(hx - 2, height(hx - 2, hz), hz, 2.5, 3, 4, to='dairy', at='fields')
+    a.spawn_point('dairy', hx - hr - 4, height(hx - hr - 4, hz) + 0.1, hz, 90)
 
     # ---- the other roads out ----
     a.loadzone(-HALF + 0.5, height(-HALF + 2, 60), 60, 1.5, 4, 12, to='gorge', at='fields')

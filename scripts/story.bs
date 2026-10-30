@@ -716,6 +716,26 @@ func talk(id: string) -> list {
     }
     if id == "the_end" { return [p("", "THE END|Thank you for playing Pantry Quest 3D!")] }
 
+
+    # ---- Buttercup Dairy
+    if id == "sign_dairy2" { return [p("", "BUTTERCUP DAIRY|The creamiest custard in the kingdom.")] }
+    if id == "creme" {
+        if game.has_item("song_custard") { return [p("CRÈME", "Custard loves that song! Sing it to her any time, fairy boy.")] }
+        return [p("CRÈME", "Hi! I'm Crème. You've got a fairy! ...A pilot light? Oh. Same thing."),
+                p("CRÈME", "That's Custard, our pudding-pony. She's shy. But she always comes running for Mum's song... want to learn it?")]
+    }
+    if id == "grubb_lazy" { return [p("GRUBB", "Zzz... Wha? Work? Later. Zzzz...")] }
+    if id == "creme_risen" {
+        if game.flag("custard") { return [p("CRÈME", "You knew Mum's song! Custard remembered it... and you. Grubb's furious! Hee hee.")] }
+        return [p("CRÈME", "Grubb runs the dairy now. He sucks up to the Duke, and he wants Custard for him."),
+                p("CRÈME", "But she won't let anyone near her. Not since... well. If only someone knew Mum's song.")]
+    }
+    if id == "grubb" { return [p("GRUBB", "That pony's the Duke's, you hear? Paid for! ...Well, promised for. Hands off!")] }
+    if id == "custard_won" {
+        return [p("", "Custard came trotting up and nuzzled Sprig."),
+                p("CRÈME", "She remembers you! She's yours, Sprig - she'd never go to the Duke now. Here, take this, for Custard's sake!")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -935,6 +955,11 @@ func after(what: string, choice: int) -> void {
         game.era = "fresh"
         game.commit()
         game.go("ending", "start")
+    } elif what == "custard_song" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_custard", "")
+    } elif what == "custard_slice" {
+        game.give("slice", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -1182,6 +1207,7 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "song_custard" { return "You learned CUSTARD'S SONG!|A gentle farm song. Custard the pudding-pony always comes running for it." }
     if kind == "song_requiem" { return "You learned the REQUIEM OF SUGAR!|Play it anywhere outside a dungeon - in either era - to warp to the Salt Idol." }
     if kind == "platter" { return "You got the SILVER PLATTER!|Strong enough to heave the heaviest block of rock salt. It's yours for good." }
     if kind == "med_sweet" { return "You got the SWEET MEDALLION!|Caramel, Keeper of Sweet, has woken. Six medallions!" }
