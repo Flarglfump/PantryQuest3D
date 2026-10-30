@@ -1,0 +1,81 @@
+@strict @3d
+# guard.bs - a castle guard on patrol, between the points of `path`, waiting at each and
+# looking round. Anyone in his sight (the pale cone on the ground: `sight` units ahead,
+# `fov` degrees either side, nothing in between) is caught and sent back out.
+
+var path: list = []
+var speed: number = 1.6
+var wait: number = 1.6
+var sight: number = 6.5
+var fov: number = 36
+var game: entity
+var sprig: entity
+var cone: entity
+var at: int = 0
+var hold: number = 0
+var yaw: number = 0
+var look: number = 0
+var caught: bool = false
+var t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    yaw = self.rotation.y
+    cone = spawn("prefabs/sight.scene", vec3(0, 0.08, -sight / 2), self)
+    cone.scale = vec3(2 * sight * sin(fov) / cos(fov), sight, 0.02)
+    if len(path) > 0 { self.position = path[0] }
+}
+
+func fwd() -> vec3 { return vec3(-sin(yaw + look), 0, -cos(yaw + look)) }
+func focus_point() -> vec3 { return self.position + vec3(0, 1.3, 0) }
+
+func update(dt: number) -> void {
+    if game.state != "play" {
+        play_animation(self, "idle", 1, true)
+        return
+    }
+    t += dt
+    if len(path) > 1 {
+        if hold > 0 {
+            hold -= dt
+            look = sin(t * 120) * 40                     # (looking round)
+            play_animation(self, "idle", 1, true)
+        } else {
+            look = 0
+            var goal: vec3 = path[(at + 1) % len(path)]
+            var d: vec3 = goal - self.position
+            d.y = 0
+            var l: number = length(d)
+            if l < 0.1 {
+                at = (at + 1) % len(path)
+                hold = wait
+            } else {
+                var want: number = atan2(-d.x, -d.z)
+                var dy: number = ((want - yaw + 540) % 360) - 180
+                yaw += clamp(dy, -240 * dt, 240 * dt)
+                if abs(dy) < 30 { self.position = self.position + d * (min(l, speed * dt) / l) }
+                play_animation(self, "walk", 1, true)
+            }
+        }
+    }
+    self.rotation = vec3(0, yaw, 0)
+    cone.rotation = vec3(90, look, 0)
+    cone.position = vec3(-sin(look) * sight / 2, 0.08, -cos(look) * sight / 2)
+    if not caught and sees(sprig) {
+        caught = true
+        play_sound("sfx/screech.wav", 0.7, 1.5)
+        game.talk("guard_caught", "caught")
+    }
+}
+
+func sees(e: entity) -> bool {
+    var to: vec3 = e.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    if d > sight or d < 0.01 { return false }
+    if dot(normalize(to), fwd()) < cos(fov) { return false }
+    var eye: vec3 = self.position + vec3(0, 1.4, 0)
+    var hit: any = raycast(eye, e.position + vec3(0, 0.6, 0), self)
+    return hit == nil or hit[0] == e
+}

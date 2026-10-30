@@ -142,6 +142,14 @@ def rot(x, y):            # the dungeon's spoiled floor
     return mix((70, 66, 50), (110, 104, 74), n)
 
 
+def cobble(x, y):          # town cobbles: rounded stones in warm grey
+    cx, cy = (x + (y // 8 % 2) * 4) % 8, y % 8
+    edge = cx == 0 or cy == 0
+    n = hash2((x + (y // 8 % 2) * 4) // 8, y // 8, 23)
+    base = mix((150, 138, 120), (190, 176, 150), n)
+    return mix(base, (100, 92, 80), 0.6) if edge else mix(base, (210, 200, 180), fbm(x, y, 4, 24, 32) * 0.25)
+
+
 def flowers(x, y):
     g = grass(x, y)
     h = hash2(x // 2, y // 2, 22)
@@ -255,7 +263,7 @@ def main():
                            ('thatch', thatch, 32), ('leaves', leaves, 32), ('hedge', hedge, 32), ('stone', stone, 32),
                            ('crock', crock, 32), ('dough', dough, 32), ('crust', crust, 32), ('mould', mould, 32),
                            ('clay', clay, 16), ('sack', sack, 16), ('chest', chest, 32), ('rot', rot, 32),
-                           ('flowers', flowers, 32)]:
+                           ('flowers', flowers, 32), ('cobble', cobble, 32)]:
         tex(name, size, fn)
     tex('water', 32, water, alpha=True)
     tex('web', 32, web, alpha=True)

@@ -1,0 +1,18 @@
+# A guard's sight: a pale cone on the ground (guard.bs places it).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Sight"
+  Transform3D
+    position = 0 0 0
+    rotation = 90 0 0
+    scale = 1 1 1
+  Mesh
+    shape = cone
+    color = #fff0a040
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false

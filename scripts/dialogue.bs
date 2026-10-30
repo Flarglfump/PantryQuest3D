@@ -149,7 +149,7 @@ func update(dt: number) -> void {
 
 func icon_file(item: string) -> string {
     var map: list = [["map_crock", "map"], ["compass_crock", "compass"], ["bosskey_crock", "bosskey"], ["heartpie", "pie"],
-                     ["ember_courage", "ember"], ["pipe", "whistle"], ["bean20", "bean"], ["bean50", "bean"]]
+                     ["ember_courage", "ember"], ["pipe", "whistle"], ["letter", "map"], ["song_lullaby", "whistle"], ["bean20", "bean"], ["bean50", "bean"]]
     for m in map {
         if m[0] == item { return "art/icons/" + m[1] + ".png" }
     }

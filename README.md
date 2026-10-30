@@ -54,7 +54,13 @@ a jump attack.
   nuts back in the right order); the web only fire burns; **Queen Mildewmite**.
 - **Breadbasket Fields** (the hub): day and night, Stalebies rising at night, Sir
   Hootenanny the owl, Basil's travelling kitchen, the dairy hill, the town gate (shut at
-  night) and the roads out. The areas beyond are next.
+  night) and the roads out.
+- **Larder Town**: the market square, townsfolk, Pip at the Royal Kitchens, the sealed
+  Temple of the First Hearth, and the castle road.
+- **The castle garden**: sneak through the hedges past patrolling guards (their sight is
+  the pale cone on the ground; caught, you're marched back to the gate) to meet Princess
+  Saffron, get her letter, and learn Saffron's Lullaby from Nanny Kimchi.
+  Peppermill, Mount Fondue and Hardtack Caverns (dungeon 2) are next.
 - Core systems: lock-on combat (combos, spin attack, side-hops, jump attack, shield),
   rolling, the automatic hop off ledges, climbing, moving platforms, talking and shops,
   chests, keys and locked doors, grass and pots, pickups, the pause menu, three saved
@@ -73,7 +79,7 @@ a jump attack.
 ```
 project.bronto        the project (main scene: title.scene; 320 x 240; strict typing)
 title.scene           the title (made from Sprouthollow's scenery)       scripts/title.bs
-areas/*.scene         the areas: sprouthollow, crock, fields (made by tools/areas/*.py)
+areas/*.scene         the areas: sprouthollow, crock, fields, town, castle (tools/areas/*.py)
 dialogue.scene        the text box                                         scripts/dialogue.bs
 pause.scene           the pause menu                                       scripts/pause.bs
 gameover.scene        game over                                            scripts/gameover.bs

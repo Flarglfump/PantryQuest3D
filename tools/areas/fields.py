@@ -96,7 +96,7 @@ def build():
     a.geo('stone', 0, wz).box((-6, 7.4, wz - 1), (6, 9.5, wz + 1), uvs=0.25)
     a.entity('Town Gate', t3((0, 3.7, wz), (0, 0, 0), (12, 7.4, 0.4)), mesh('cube', '#9a8a70ff', 'art/planks.png', uv=(6, 4)),
              collider('box'), ('RigidBody3D', [('type', 'kinematic')]), script('scripts/gate.bs'))
-    a.loadzone(0, height(0, -HALF + 1), -HALF + 0.5, 10, 4, 1.5, to='', say='tbc_town')
+    a.loadzone(0, height(0, -HALF + 1), -HALF + 0.5, 10, 4, 1.5, to='town', at='fields')
     a.sign(-5, height(-5, wz + 8), wz + 8, 180, 'gate_shut')
 
     # ---- Buttercup Dairy's hill: a fence round the top, the gate on the west ----

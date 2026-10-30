@@ -154,6 +154,60 @@ func talk(id: string) -> list {
     if id == "tbc_lake" { return [p("FLICKER", "The road to Lake Brine. Not finished yet - let's head north to the castle!")] }
     if id == "tbc_peppermill" { return [p("FLICKER", "Peppermill Village is this way, under the mountain. It isn't built yet!")] }
     if id == "tbc_thicket" { return [p("FLICKER", "The Thicket of Thyme is through there. Fennel says it's easy to get lost... Not today!")] }
+    # ---- Larder Town
+    if id == "sign_town" { return [p("", "LARDER TOWN|Royal capital of the Pantry Kingdom. Castle Larder: north.")] }
+    if id == "sign_castle" { return [p("", "CASTLE LARDER|Visitors by appointment only. Trespassers will be peeled.")] }
+    if id == "sign_kitchens" { return [p("", "THE ROYAL KITCHENS|Head Chef: Pip. Please knock. Please don't knock too hard.")] }
+    if id == "temple_door" {
+        if game.flag("met_saffron") { return [p("", "The Temple of the First Hearth. A great door, carved with three flames and a kettle. It won't move.")] }
+        return [p("", "The Temple of the First Hearth. The door is sealed with three empty hollows, each shaped like a flame.")]
+    }
+    if id == "pip_1" {
+        return [p("PIP", "Well now! A Sprout, out of the hollow? I haven't seen one of you in years."),
+                p("PIP", "I'm Pip, head chef of the castle. When I was your size I chased Baron Gorge across the whole kingdom with a wooden spoon. Just like that one!"),
+                p("PIP", "Want to see the princess? Ha! The guards won't let a dog in, let alone a Sprout. Though... they do walk the garden in very regular lines."),
+                p("PIP", "Stay out of their sight and you might just make it. You didn't hear it from me.")]
+    }
+    if id == "pip_2" {
+        return [p("PIP", "Saffron's Lullaby? Then the princess trusts you. So do I."),
+                p("PIP", "Peppermill Village is north-east of the field, under Mount Fondue. Mind the Hardtack - they hug hard.")]
+    }
+    if id == "guard_1" { return [p("GUARD", "Halt! The castle is closed to Sprouts, children, and Sprout children. Move along.")] }
+    if id == "guard_2" { return [p("GUARD", "You again! How did you... never mind. Move along.")] }
+    if id == "baker" {
+        return [p("BAKER", "Fresh loaves! Fresh... ah, it's no use. Everything I bake goes stale by noon now."),
+                p("BAKER", "Ever since that grey Duke came to see the king. Mildew, they call him. Brrr.")]
+    }
+    if id == "townswoman" { return [p("GREENGROCER", "The finest pears in the kingdom! Well... they were. They keep going soft. Strange times.")] }
+    if id == "townsman" {
+        return [p("TOWNSMAN", "Did you see the Duke's carriage? All grey, with mushrooms growing on the wheels."),
+                p("TOWNSMAN", "And the King just smiled and served him soup. The King serves everyone soup.")]
+    }
+    if id == "gossip" { return [p("GOSSIP", "They say the princess dreams things before they happen. They say she dreamed of a boy in green. Hmm! Green like YOU.")] }
+    if id == "child" { return [p("TOWN KID", "Is that a real pilot light? Can I touch it? Ow! It's HOT!"), p("FLICKER", "Serves you right.")] }
+
+    # ---- the castle garden
+    if id == "guard_caught" {
+        return [p("GUARD", "HEY! You there! How did a Sprout get into the royal garden?"),
+                p("GUARD", "Out you go, and stay out!")]
+    }
+    if id == "saffron_meet" {
+        return [p("???", "Who... who are you? How did you get past the guards?"),
+                p("???", "A pilot light! Then... you come from the hollow. From the great sourdough!"),
+                p("SAFFRON", "I'm Saffron, princess of the Pantry Kingdom. Every night I dream the same dream..."),
+                p("SAFFRON", "Grey clouds cover the land. Then a boy in green comes out of the forest, holding a flame. That's you, isn't it?"),
+                p("SAFFRON", "Look through the window - the man in grey, bowing to my father. That's Duke Mildew, from the Rotlands."),
+                p("SAFFRON", "He wants the HEARTHFLAME: the three Embers of the First Hearth. Whoever holds all three can cook the whole world into anything they wish."),
+                p("SAFFRON", "You have the Ember of Courage. We must find the other two before he does: the Ember of Power, kept by the Hardtack Clan on Mount Fondue..."),
+                p("SAFFRON", "...and the Ember of Wisdom, kept by the Fizzlings of Fizzwater Falls. Then we can open the Door of Seasons, and keep the Hearthflame safe."),
+                p("SAFFRON", "Take this letter. It will get you past anyone who serves my family. Please, Sprig... I'm counting on you.")]
+    }
+    if id == "kimchi_song" {
+        return [p("NANNY KIMCHI", "So. You're the boy from Her Highness's dreams. Small, aren't you."),
+                p("NANNY KIMCHI", "I am Kimchi, her nurse. I have sung her to sleep since she was a baby, with a song the royal family has always known."),
+                p("NANNY KIMCHI", "Listen well. It is called SAFFRON'S LULLABY. Royal doors and old magic will answer it."),
+                p("NANNY KIMCHI", "Now come. I'll see you out before the guards see you in.")]
+    }
     if id == "to_be_continued" {
         return [p("FLICKER", "Breadbasket Fields is out there... but the rest of the kingdom isn't finished yet!"),
                 p("FLICKER", "(Thanks for playing this much of Pantry Quest 3D. More of the world is on its way.)")]
@@ -249,6 +303,19 @@ func after(what: string, choice: int) -> void {
         } else {
             game.talk("basil_bye", "")
         }
+    } elif what == "saffron_done" {
+        game.set_flag("met_saffron_talk")
+        game.give("letter", "kimchi")
+    } elif what == "kimchi" {
+        game.talk("kimchi_song", "lullaby")
+    } elif what == "lullaby" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_lullaby", "escort")
+    } elif what == "escort" {
+        game.set_flag("met_saffron")
+        game.go("town", "castle")
+    } elif what == "caught" {
+        game.go(game.area, "start")
     } elif what == "owl_leaves" {
         for o in find_all("Owl") { send(o, "fly_away") }
     } elif what == "crock_warp" {
@@ -286,6 +353,12 @@ func hint() -> string {
     if not game.flag("crock_done") { return "Mother Starter's mouth is open. We have to go inside and break the curse!" }
     if not game.has_item("ember_courage") { return "Talk to Mother Starter, Sprig." }
     if not game.has_item("pipe") { return "Fennel... I think she's waiting for you, by the bridge south of the village." }
+    if not game.flag("met_saffron") {
+        if game.area == "castle" { return "Sneak through the garden to the princess! Stay out of the guards' sight - see the pale light in front of them? Wait behind the shrubs till they turn." }
+        if game.area == "town" { return "The castle road leaves the north side of town. The princess is somewhere in the castle garden!" }
+    } else {
+        return "The Ember of Power is with the Hardtack Clan on Mount Fondue, past Peppermill Village (north-east of the field). That part of the kingdom is still being built!"
+    }
     if game.area == "sprouthollow" { return "The bridge to the south leads out of Sprouthollow, to Breadbasket Fields and Castle Larder beyond." }
     return "Castle Larder is north, across the field. Mother Starter said to find the princess there!"
 }
@@ -303,7 +376,7 @@ func item_name(kind: string) -> string {
     var names: list = [["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"], ["shooter", "PEA SHOOTER"],
                        ["map_crock", "DUNGEON MAP"], ["compass_crock", "COMPASS"], ["bosskey_crock", "BOSS KEY"],
                        ["key", "SMALL KEY"], ["heartpie", "HEART PIE"], ["ember_courage", "EMBER OF COURAGE"],
-                       ["pipe", "FENNEL'S PIPE"], ["slice", "PIE SLICE"], ["bean20", "RED BEAN"], ["bean50", "PURPLE BEAN"]]
+                       ["pipe", "FENNEL'S PIPE"], ["slice", "PIE SLICE"], ["letter", "SAFFRON'S LETTER"], ["song_lullaby", "SAFFRON'S LULLABY"], ["bean20", "RED BEAN"], ["bean50", "PURPLE BEAN"]]
     for n in names {
         if n[0] == kind { return n[1] }
     }
@@ -321,6 +394,8 @@ func item_text(kind: string) -> string {
     if kind == "heartpie" { return "You got a HEART PIE!|Your life energy has grown by one heart!" }
     if kind == "ember_courage" { return "You got the EMBER OF COURAGE!|The ember that makes things rise. Mother Starter kept it for four hundred years." }
     if kind == "pipe" { return "You got FENNEL'S PIPE!|A reed pipe that sounds like the grove. Its songs will come later..." }
+    if kind == "letter" { return "You got SAFFRON'S LETTER!|Signed by the princess herself. Show it to anyone who serves the royal family." }
+    if kind == "song_lullaby" { return "You learned SAFFRON'S LULLABY!|A gentle royal song. Royal doors and old magic answer it." }
     if kind == "slice" { return "You found a PIE SLICE!|Collect four to make a whole new heart." }
     if kind == "bean20" { return "You got a RED BEAN!|It's worth 20 beans!" }
     if kind == "bean50" { return "You got a PURPLE BEAN!|It's worth 50 beans!" }

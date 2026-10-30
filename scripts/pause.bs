@@ -210,6 +210,8 @@ func draw_gear() -> void {
         draw_image("art/icons/whistle.png", vec2(188, 168))
         draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
     }
+    if has("song_lullaby") { draw_text("Song: Saffron's Lullaby", vec2(40, 186), [255, 200, 230]) }
+    if has("letter") { draw_text("Saffron's Letter", vec2(40, 198), [255, 255, 255]) }
 }
 
 func draw_map() -> void {

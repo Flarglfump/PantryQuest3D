@@ -53,6 +53,8 @@ def main():
             ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
             collider('capsule', (1, 0.5, 1), 0.25, offset=(0, 0.25, 0)), kinematic(), tags('enemy', 'focusable', 'larva'),
             script('scripts/enemy.bs', brain='larva', hp=1, damage=1)))
+    prefab('sight', "A guard's sight: a pale cone on the ground (guard.bs places it).",
+           ('Sight', t3((0, 0, 0), (90, 0, 0)), mesh('cone', '#fff0a040', lit=False, cull=False, cast=False)))
     prefab('poof', "A puff of smoke (an enemy beaten, something appearing).",
            ('Poof', t3((0, 0, 0)), burst('#f0f0e0e0', '#a0a09000', 30, 2.5, 0.3, 0.7, -1.0)))
     prefab('spark', "Sparks where a shot hits.",

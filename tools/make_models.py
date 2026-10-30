@@ -81,6 +81,14 @@ def figure(s=1.0, skin='#f2c9a0', shirt='#5fa04a', trousers='#7a5a3a', shoes='#5
             m.box(S(-0.02, top + 0.05, -0.05), S(0.02, top + 0.16, -0.01), head, C('#4a7a2a'))          # its stalk
         elif hat_kind == 'tall':        # a chef's hat
             m.box(S(-0.13 * hs, top, -0.13 * hs), S(0.13 * hs, top + 0.22, 0.13 * hs), head, C(hat))
+        elif hat_kind == 'helmet':      # a guard's steel cap with a crest
+            m.box(S(-0.16 * hs, top - 0.1, -0.16 * hs), S(0.16 * hs, top + 0.08, 0.16 * hs), head, C(hat))
+            m.box(S(-0.025, top + 0.05, -0.12), S(0.025, top + 0.2, 0.14), head, C('#c03030'))
+        elif hat_kind == 'tiara':       # a princess's gold band
+            m.box(S(-0.155 * hs, top - 0.06, -0.155 * hs), S(0.155 * hs, top - 0.01, 0.155 * hs), head, C(hat))
+            m.box(S(-0.03, top - 0.01, -0.16 * hs), S(0.03, top + 0.06, -0.14 * hs), head, C('#e04060'))
+        elif hat_kind == 'bun':         # an old nanny's grey bun
+            m.box(S(-0.08, top - 0.02, 0.02), S(0.08, top + 0.12, 0.18), head, C(hat))
         elif hat_kind == 'spiky':       # Chive's red sprout
             for k in range(4):
                 a = k * math.pi / 2 + 0.4
@@ -325,6 +333,23 @@ def people():
     fig, fb = figure(1.35, shirt='#e8e0d0', trousers='#4a5a7a', hair='#5a3a1a', hat='#f4f4f4', hat_kind='tall', apron='#c84a3a', skin='#e8b890')
     standard_anims(fig, fb, 1.35)
     fig.save_glb(path('models', 'basil.glb'))
+    # Larder Town and the castle
+    adults = {
+        'pip': dict(shirt='#f4f0e8', trousers='#3a3a4a', hair='#c08040', hat='#ffffff', hat_kind='tall', apron='#ffffff', belly=0.03),
+        'guard': dict(shirt='#3a5aa0', trousers='#2a2a3a', hair='#3a2a1a', hat='#b8b8c8', hat_kind='helmet', apron='#c8c8d8', shoes='#2a2020'),
+        'kimchi': dict(shirt='#8a3a4a', trousers='#4a2a30', hair='#c8c8c8', hat='#c8c8c8', hat_kind='bun', skin='#e0b898', apron='#d8c8a0', girl=True, belly=0.02),
+        'baker': dict(shirt='#e0c890', trousers='#6a4a2a', hair='#3a2a1a', hat='#f4f4f4', hat_kind='tall', apron='#f0e8d8', belly=0.05),
+        'townsman': dict(shirt='#6a8a4a', trousers='#5a4a3a', hair='#2a1a10', skin='#c89070'),
+        'townswoman': dict(shirt='#c08a4a', trousers='#7a3a3a', hair='#7a3a1a', girl=True),
+        'king': dict(shirt='#a02a3a', trousers='#5a1a2a', hair='#e8e0d0', hat='#f0c040', hat_kind='tiara', belly=0.08),
+    }
+    for name, kw in adults.items():
+        fig, fb = figure(1.4 if name != 'kimchi' else 1.25, **kw)
+        standard_anims(fig, fb, 1.4)
+        fig.save_glb(path('models', name + '.glb'))
+    fig, fb = figure(1.0, shirt='#e8a83a', trousers='#c8603a', hair='#e8c050', hat='#f0d040', hat_kind='tiara', girl=True, apron='#f4e0a0')
+    standard_anims(fig, fb, 1.0)
+    fig.save_glb(path('models', 'saffron.glb'))
     # a Stalebie: a loaf gone stale and walking, that rises from the field at night
     fig, fb = figure(1.2, shirt='#9a7a4a', trousers='#7a5a34', hair='#5a4020', skin='#c8a870', shoes='#4a3018', eyes='#ff3020', belly=0.03)
     standard_anims(fig, fb, 1.2, hero=True)

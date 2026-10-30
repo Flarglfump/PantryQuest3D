@@ -19,6 +19,7 @@ MATERIALS = {
     'grass': ('art/grass.png', '#ffffffff', True, False, True, True),
     'flowers': ('art/flowers.png', '#ffffffff', True, False, True, True),
     'dirt': ('art/dirt.png', '#ffffffff', True, False, True, True),
+    'cobble': ('art/cobble.png', '#ffffffff', True, False, True, True),
     'cliff': ('art/stone.png', '#c8d0b8ff', True, False, True, True),
     'stone': ('art/stone.png', '#ffffffff', True, True, True, True),
     'bark': ('art/bark.png', '#ffffffff', True, True, True, True),
@@ -126,7 +127,7 @@ class Area:
         self.entity('Sign Board', t3((x, y + 0.85, z), (0, yaw, 0), (0.8, 0.5, 0.08)), mesh('cube', '#ffffffff', 'art/planks.png'),
                     collider('box'), tags('interact', 'focusable'), script('scripts/sign.bs', say=say))
 
-    def npc(self, who, x, y, z, yaw=0, needs='', until='', reach=None):
+    def npc(self, who, x, y, z, yaw=0, needs='', until='', reach=None, model=None):
         kw = {'who': who}
         if reach:
             kw['reach'] = reach
@@ -134,7 +135,7 @@ class Area:
             kw['needs'] = needs
         if until:
             kw['until'] = until
-        self.entity(who.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % who, shadow=True),
+        self.entity(who.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % (model or who), shadow=True),
                     ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
                     collider('capsule', (1, 1.1, 1), 0.3, offset=(0, 0.55, 0)), tags('npc', 'interact', 'focusable'),
                     script('scripts/npc.bs', **kw))
@@ -353,3 +354,41 @@ def tunnel(o_floor, o_wall, x0, z0, x1, z1, y, w=2.4, h=2.8, uvs=0.35, ceiling=T
         if (q[1][0] - q[0][0]) * (q[2][2] - q[0][2]) - (q[1][2] - q[0][2]) * (q[2][0] - q[0][0]) < 0:
             q = q[::-1]
         o_wall.quad(*q, *[(v[0] * uvs, v[2] * uvs) for v in q])
+
+
+def town_house(a, x, z, w, d, h, ground_y, wall='planks', roof='thatch', door_side='s', roof_h=None):
+    """A box house (w along x, d along z) with a pitched roof (ridge along x) and a door on
+    one side ('n', 's', 'e', 'w')."""
+    y = ground_y - 0.3
+    x0, x1, z0, z1 = x - w / 2, x + w / 2, z - d / 2, z + d / 2
+    a.geo(wall, x, z).box((x0, y, z0), (x1, y + h + 0.3, z1), uvs=0.4, sides=('px', 'nx', 'pz', 'nz'))
+    rh = roof_h if roof_h else d * 0.45
+    top = y + h + 0.3
+    o = a.geo(roof, x, z)
+    e = 0.4                      # the eaves
+    A, B = (x0 - e, top - 0.2, z0 - e), (x1 + e, top - 0.2, z0 - e)
+    C, D = (x1 + e, top - 0.2, z1 + e), (x0 - e, top - 0.2, z1 + e)
+    R0, R1 = (x0 - e, top + rh, z), (x1 + e, top + rh, z)
+    s = 0.35
+    o.quad(A, R0, R1, B, (0, 0), (0, rh * s * 2), (w * s, rh * s * 2), (w * s, 0))          # north slope (faces -z, up)
+    o.quad(C, R1, R0, D, (0, 0), (0, rh * s * 2), (w * s, rh * s * 2), (w * s, 0))          # south slope
+    g = a.geo(wall, x, z)
+    g.tri((x0, top, z0), (x0, top, z1), (x0, top + rh - 0.1, z))                              # gables
+    g.tri((x1, top, z1), (x1, top, z0), (x1, top + rh - 0.1, z))
+    door_at = {'s': (x, z1 + 0.03, 180), 'n': (x, z0 - 0.03, 0), 'e': (x1 + 0.03, z, -90), 'w': (x0 - 0.03, z, 90)}[door_side]
+    a.entity('Door', t3((door_at[0], y + 0.3 + 0.9, door_at[1]), (0, door_at[2], 0), (1.1, 1.8, 0.08)), mesh('cube', '#5a3a20ff', 'art/planks.png'))
+    for side in (-1, 1):
+        if door_side in 'ns':
+            wx, wz = x + side * w * 0.3, door_at[1]
+        else:
+            wx, wz = door_at[0], z + side * d * 0.3
+        a.entity('Window', t3((wx, y + 0.3 + 1.6, wz), (0, door_at[2], 0), (0.7, 0.6, 0.06)), mesh('cube', '#f8e8a0ff', lit=False, cast=False))
+
+
+def stall(a, x, z, ground_y, color, yaw=0):
+    """A market stall: a counter and a striped awning."""
+    y = ground_y
+    a.entity('Stall', t3((x, y + 0.5, z), (0, yaw, 0), (2.6, 1.0, 0.9)), mesh('cube', '#ffffffff', 'art/planks.png'), collider('box'))
+    a.entity('Awning', t3((x, y + 2.4, z + (0.4 if yaw == 0 else -0.4)), (-14 if yaw == 0 else 14, yaw, 0), (3.0, 0.1, 2.0)), mesh('cube', color, 'art/thatch.png'))
+    for dx in (-1.3, 1.3):
+        a.entity('Pole', t3((x + dx, y + 1.2, z), (0, 0, 0), (0.1, 2.4, 0.1)), mesh('cylinder', '#ffffffff', 'art/bark.png'))
