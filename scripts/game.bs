@@ -191,7 +191,7 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
-    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" or name == "boots" { put_on_button(name) }
+    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" or name == "boots" or name == "hover" or name == "lens" { put_on_button(name) }
     if name == "longlash" { put_on_button("lash") }
     if name == "bow" {
         add_count("arrows", 30 - count("arrows"))
@@ -330,6 +330,10 @@ func on_resume() -> void {
         if song == "bolero" and dungeon == "" {           # ...to Mount Fondue's crater...
             play_sound("sfx/warp.wav", 0.8)
             go("fondue", "forge")
+        }
+        if song == "nocturne" and dungeon == "" and area != "peppermill" {     # ...to Peppermill's graveyard...
+            play_sound("sfx/warp.wav", 0.8)
+            go("peppermill", "graveyard")
         }
         if song == "serenade" and dungeon == "" {         # ...and to Lake Brine's island
             play_sound("sfx/warp.wav", 0.8)

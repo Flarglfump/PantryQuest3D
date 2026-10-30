@@ -1,0 +1,26 @@
+# One of the Maw of Rot's hands (mawhand.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Maw Hand"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1.6 0.6 1.8
+  Mesh
+    shape = sphere
+    texture = "art/rot.png"
+    color = #8a6a5aff
+    uv_scale = 1 1
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "enemy, focusable, shootable"
+  Script
+    file = "scripts/mawhand.bs"

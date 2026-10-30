@@ -1,0 +1,72 @@
+@strict @3d
+# mawhand.bs - one of the Maw of Rot's hands (maw.bs): it hovers, then slams down where
+# Sprig stands. Struck just after a slam, it goes limp for a while.
+
+var maw: entity
+var side: int = 0
+var limp: number = 0
+var sprig: entity
+var st: string = "hover"
+var st_t: number = 0
+var goal: vec3
+var radius: number = 1.2
+var passthrough: bool = false
+
+func start() -> void {
+    sprig = find("Sprig")
+    st_t = side * 1.6
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "down" and limp <= 0 {
+        limp = 6
+        play_sound("sfx/hit.wav", 0.8, 0.8)
+        play_sound("sfx/screech.wav", 0.5, 1.2)
+    }
+}
+
+func update(dt: number) -> void {
+    if maw == nil or not maw.alive {
+        destroy(self)
+        return
+    }
+    st_t += dt
+    if limp > 0 {
+        limp -= dt
+        self.position = lerp(self.position, vec3(self.x, 0.35, self.z), min(1, dt * 6))
+        self.rotation = vec3(0, 0, 25 * (side * 2 - 1))
+        return
+    }
+    self.rotation = vec3(0, 0, 0)
+    var home: vec3 = maw.position + vec3(side * 5 - 2.5, 0.5, 0)
+    if st == "hover" {
+        self.position = lerp(self.position, home, min(1, dt * 3))
+        if st_t > 2.6 {
+            st = "aim"
+            st_t = 0
+            goal = vec3(sprig.x, 0.35, sprig.z)
+        }
+    } elif st == "aim" {
+        self.position = lerp(self.position, goal + vec3(0, 3.5, 0), min(1, dt * 5))
+        if st_t > 0.8 {
+            st = "slam"
+            st_t = 0
+        }
+    } elif st == "slam" {
+        self.position = lerp(self.position, goal, min(1, dt * 14))
+        if st_t > 0.15 {
+            st = "down"
+            st_t = 0
+            shake_camera(1.5, 0.2)
+            play_sound("sfx/land.wav", 0.9, 0.6)
+            if distance(vec3(sprig.x, 0, sprig.z), vec3(self.x, 0, self.z)) < 1.6 { sprig.hurt(4, self.position, "unblockable") }
+        }
+    } elif st == "down" {
+        if st_t > 1.4 {
+            st = "hover"
+            st_t = 0
+        }
+    }
+}

@@ -16,7 +16,8 @@ const SONGS: list = [["fennel", "FENNEL'S TUNE", "drldrl"], ["lullaby", "SAFFRON
                      ["rising", "SONG OF RISING", "radrad"], ["prelude", "PRELUDE OF THE HEARTH", "ururlu"],
                      ["minuet", "MINUET OF THYME", "aulrlr"],
                      ["bolero", "BOLERO OF EMBERS", "dadrdr"],
-                     ["serenade", "SERENADE OF BRINE", "adrrlr"]]
+                     ["serenade", "SERENADE OF BRINE", "adrrlr"],
+                     ["boiling", "BOILING SONG", "aduadu"], ["nocturne", "NOCTURNE OF ROT", "rlldru"]]
 
 func start() -> void {
     var s: list = global("save", [])

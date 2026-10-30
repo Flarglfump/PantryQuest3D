@@ -213,7 +213,7 @@ def flowers(x, y):
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
          'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss',
-         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter', 'hammer', 'apron', 'med_spice', 'boots', 'snorkel', 'med_salt', 'jar_fire', 'longlash']
+         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter', 'hammer', 'apron', 'med_spice', 'boots', 'snorkel', 'med_salt', 'jar_fire', 'longlash', 'lens', 'hover', 'med_sour']
 
 
 def icon_pixel(name, x, y):
@@ -358,6 +358,21 @@ def icon_pixel(name, x, y):
         if abs(cx - 2.5) < 0.5 and abs(cy) < 6.5:
             return (240, 240, 230, 255)
         return (0, 0, 0, 0)
+    if name == 'lens':
+        d = math.hypot(cx, cy + 1)
+        if d < 5.5:
+            return (200, 140, 220, 220) if d < 4 else (140, 80, 160, 255)
+        if abs(cx) < 1 and -7 < cy < -5:
+            return (90, 170, 60, 255)
+        return (0, 0, 0, 0)
+    if name == 'hover':
+        b = icon_pixel('boots', x, y)
+        return (250, 245, 230, 255) if b[3] else b
+    if name == 'med_sour':
+        d = math.hypot(cx, cy)
+        if d > 6:
+            return (0, 0, 0, 0)
+        return (170, 90, 200, 255) if d < 4.5 else (180, 150, 60, 255)
     if name == 'boots':
         if (-6 < cy < 5 and -3 < cx < 1) or (2 < cy < 6 and -3 < cx < 5):
             return (90, 90, 100, 255) if cy < 5 else (60, 60, 70, 255)

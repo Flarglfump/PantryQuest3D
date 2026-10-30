@@ -23,8 +23,9 @@ def build():
     a.npc('fennel_keeper', 0, 0.6, -6.5, 0, model='fennel', reach=3.0, needs='thymetemple_done', until='left_bitter')
     a.npc('biscotti_keeper', 0, 0.6, -6.5, 0, model='biscotti', reach=3.4, needs='forge_done', until='left_spice')
     a.npc('fizzy_keeper', 0, 0.6, -6.5, 0, model='fizzy', reach=3.0, needs='brinetemple_done', until='left_salt')
+    a.npc('kimchi_keeper', 0, 0.6, -6.5, 0, model='kimchi', reach=3.0, needs='crypt_done', until='left_sour')
     a.spawn_point('start', 0, 0.1, 2, 0)
-    for to, at, keeper in [('thicket', 'glade', 'bitter'), ('fondue', 'forge', 'spice'), ('lake', 'island', 'salt')]:
+    for to, at, keeper in [('thicket', 'glade', 'bitter'), ('fondue', 'forge', 'spice'), ('lake', 'island', 'salt'), ('peppermill', 'graveyard', 'sour')]:
         a.entity('Blue Light', t3((0, 1.5, 5.5), (0, 0, 0), (1.6, 3.0, 1.6)), mesh('cylinder', '#80c0ff60', lit=False, cull=False, cast=False),
                  particles(rate=20, max=40, lifetime=1.5, speed=1.2, spread=10, area=(1.6, 1.6), size_start=0.15, size_end=0,
                            color_start='#c0e0ffff', color_end='#4080ff00', blend='add'),

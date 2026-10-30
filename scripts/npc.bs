@@ -120,6 +120,9 @@ func interact(who_by: entity) -> void {
     if id == "cinder_minuet" { then = "minuet" }
     if id == "cinder_bolero" { then = "bolero" }
     if id == "cinder_serenade" { then = "serenade" }
+    if id == "cinder_nocturne" { then = "nocturne" }
+    if who == "risen_miller" and not game.has_item("song_boiling") { then = "boiling" }
+    if id == "kimchi_keeper" and not game.flag("keeper_sour") { then = "med_sour" }
     if id == "carb_thawed" { then = "snorkel" }
     if id == "fizzy_keeper" and not game.flag("keeper_salt") { then = "med_salt" }
     if who == "little_biscotti" and not game.has_item("apron") { then = "apron" }
@@ -181,7 +184,12 @@ func talk_for() -> string {
         return "carb_1"
     }
     if who == "mozz" { return "mozz_2" }
+    if who == "risen_miller" { return "risen_miller2" }
     if who == "cinder" {
+        if game.area == "peppermill" {
+            if game.has_item("song_nocturne") { return "cinder_after" }
+            return "cinder_nocturne"
+        }
         if game.area == "freezer" {
             if game.has_item("song_serenade") { return "cinder_after" }
             return "cinder_serenade"

@@ -80,7 +80,14 @@ def build(era='fresh'):
     a.geo('stone', 6, 6).cylinder((6, height(6, 6) - 0.3, 6), 1.4, 1.2, 12, top=False, uvs=0.6)
     a.geo('stone', 6, 6).cylinder((6, height(6, 6) - 0.3, 6), 1.1, 1.18, 12, top=False, uvs=0.6, inside=True)
     a.entity('Well Ring', t3((6, height(6, 6) + 0.45, 6)), collider('capsule', (1, 1, 1), 1.4), tags('seethrough'))
-    a.entity('Well', t3((6, height(6, 6) + 0.6, 6)), tags('interact', 'focusable'), script('scripts/sign.bs', say='sign_well', prompt='Look', reach=2.4))
+    if risen:      # the Boiling Song dries it up: a way down
+        a.entity('Well', t3((6, height(6, 6) + 0.6, 6)), tags('interact', 'focusable'),
+                 script('scripts/climbdown.bs', to='well', at='start', needs='well_drained', say='well_look'))
+        a.entity('Well Water', t3((6, height(6, 6) + 0.5, 6), (0, 0, 0), (2.1, 0.05, 2.1)), mesh('cylinder', '#304860ff', lit=False),
+                 script('scripts/songdoor.bs', song='boiling', id='well_drained', say='well_look', reach=0.1))
+        a.spawn_point('well', 6, height(6, 9) + 0.1, 9, 180)
+    else:
+        a.entity('Well', t3((6, height(6, 6) + 0.6, 6)), tags('interact', 'focusable'), script('scripts/sign.bs', say='sign_well', prompt='Look', reach=2.4))
     # houses
     for x, z, w, d, side in [(-24, 6, 7, 6, 'e'), (-26, -16, 7, 6, 'e'), (14, 20, 7, 6, 'n'), (-10, 24, 6, 6, 'n'), (18, -20, 7, 6, 's')]:
         town_house(a, x, z, w, d, 3.8, height(x, z), wall='planks', roof='thatch', door_side=side)
@@ -95,6 +102,16 @@ def build(era='fresh'):
     for x0, z0, x1, z1 in [(gx - 7, gz - 9, gx + 7, gz - 9), (gx - 7, gz + 7, gx - 2, gz + 7), (gx + 2, gz + 7, gx + 7, gz + 7),
                            (gx + 7, gz - 9, gx + 7, gz + 7), (gx - 7, gz - 9, gx - 7, gz + 7)]:
         box_wall(a, 'stone', x0, z0, x1, z1, height(x0, z0) - 0.3, height(x0, z0) + 0.9, thick=0.5)
+    if risen:      # the Compost Crypt's door, at the back of the graveyard; Cinder, once the lens is found
+        a.geo('stone', gx, gz - 10).box((gx - 3, height(gx, gz - 10) - 0.5, gz - 11.5), (gx + 3, height(gx, gz - 10) + 4.5, gz - 10.5), uvs=0.3)
+        cy0 = height(gx, gz - 10)
+        a.entity('Crypt Door', t3((gx, cy0 + 1.5, gz - 10.4), (0, 0, 0), (2.4, 3.0, 0.2)), mesh('cube', '#3a2a3aff', 'art/stone.png'),
+                 collider('box'), tags('interact', 'focusable'), script('scripts/songdoor.bs', song='nocturne', id='door:crypt', say='crypt_door', reach=3.0))
+        a.entity('Crypt Dark', t3((gx, cy0 + 1.5, gz - 10.45), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#08040aff', lit=False))
+        a.loadzone(gx, cy0, gz - 10.2, 2.2, 3, 0.5, to='crypt', at='start', needs='door:crypt')
+        a.spawn_point('crypt', gx, cy0 + 0.1, gz - 8.2, 180)
+        a.spawn_point('graveyard', gx, height(gx, gz + 9) + 0.1, gz + 9, 180)
+        a.npc('cinder', gx + 3, height(gx + 3, gz + 9.5), gz + 9.5, 200, needs='chest:well_lens', reach=2.4)
     if risen:      # the old gravekeeper's ghost, who races
         a.entity('Ghost', t3((gx, height(gx, gz + 4.8) + 0.2, gz + 4.8), (0, 180, 0)), mesh('model', '#c0e0ffa0', file='models/gravekeeper.glb'),
                  ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),

@@ -56,6 +56,7 @@ func button(c: vec2, r: number, col: list, label: string) -> void {
 
 func draw() -> void {
     if game.state == "paused" or game.fade >= 1 { return }
+    if game.flag("lens_on") { draw_rect(vec2(0, 0), vec2(320, 240), [160, 60, 200, 40]) }      # the Onion Lens
     if sprig.st == "dive" { draw_rect(vec2(0, 0), vec2(320, 240), [30, 90, 170, 80]) }      # under water
     hearts()
     # beans
@@ -115,7 +116,7 @@ func draw() -> void {
                 if game.flag("jar1_fish") { ic = "jar_fish" }
                 if game.flag("jar1_fire") { ic = "jar_fire" }
             }
-            if it == "boots" and game.flag("boots_on") { draw_circle(c, 9, [255, 255, 255, 200], false) }
+            if (it == "boots" and game.flag("boots_on")) or (it == "hover" and game.flag("hover_on")) or (it == "lens" and game.flag("lens_on")) { draw_circle(c, 9, [255, 255, 255, 200], false) }
             draw_image("art/icons/" + ic + ".png", c)
             if it == "bombs" {
                 var bc2: list = [255, 255, 255]

@@ -89,6 +89,9 @@ def main():
     prefab('dragonseg', "A piece of Gratinox's body (gratinox.bs moves it).",
            ('Dragon Body', t3((0, 0, 0), scale=1.1), mesh('sphere', '#d06030ff', 'art/crust.png', cast=False),
             particles(rate=6, max=10, lifetime=0.6, speed=0.5, spread=60, size_start=0.4, size_end=0, color_start='#ffb040c0', color_end='#ff400000', blend='add')))
+    prefab('mawhand', "One of the Maw of Rot's hands (mawhand.bs).",
+           ('Maw Hand', t3((0, 0, 0), scale=(1.6, 0.6, 1.8)), mesh('sphere', '#8a6a5aff', 'art/rot.png'), collider('sphere', radius=0.6, trigger=True),
+            tags('enemy', 'focusable', 'shootable'), script('scripts/mawhand.bs')))
     prefab('bigfire', "A great fire (the castle burning: storm.bs).",
            ('Big Fire', t3((0, 0, 0)), particles(rate=40, max=80, lifetime=1.4, speed=2.5, spread=20, area=(6, 2), gravity=-2,
                                                  size_start=2.4, size_end=0.3, color_start='#ffb040ff', color_end='#c0200000', blend='add'),

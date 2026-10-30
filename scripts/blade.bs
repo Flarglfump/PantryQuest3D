@@ -1,0 +1,27 @@
+@strict @3d
+# blade.bs - a guillotine in the Compost Crypt: it drops, waits, and hauls itself up again.
+
+var period: number = 2.4
+var offset: number = 0
+var top: number = 3.2
+var t: number = 0
+var sprig: entity
+var base: vec3
+
+func start() -> void {
+    sprig = find("Sprig")
+    base = self.position
+    t = offset
+}
+
+func update(dt: number) -> void {
+    t += dt
+    var p: number = (t % period) / period
+    var h: number = top
+    if p < 0.12 { h = top * (1 - p / 0.12) } elif p < 0.45 { h = 0 } else { h = top * min(1, (p - 0.45) / 0.4) }
+    self.position = base + vec3(0, h, 0)
+    if h < 0.3 and p < 0.45 and p > 0.1 {
+        if abs(sprig.x - self.x) < self.scale.x / 2 + 0.3 and abs(sprig.z - self.z) < self.scale.z / 2 + 0.3 { sprig.hurt(4, self.position, "unblockable") }
+    }
+    if p > 0.11 and p - dt / period <= 0.11 { play_sound("sfx/thunk.wav", 0.6, 0.7) }
+}

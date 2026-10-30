@@ -1,0 +1,28 @@
+@strict @3d
+# climbdown.bs - a way down (the dried-up well): once the flag `needs` is set, A climbs
+# down to `to` (at `at`); before that, reading it says `say`.
+
+var to: string = ""
+var at: string = "start"
+var needs: string = ""
+var say: string = ""
+var prompt: string = "Look"
+var reach: number = 2.4
+var game: entity
+
+func start() -> void { game = find("Game") }
+
+func focus_point() -> vec3 { return self.position }
+func can_use(p: vec3) -> bool {
+    if game.flag(needs) { prompt = "Climb down" } else { prompt = "Look" }
+    return true
+}
+
+func interact(who: entity) -> void {
+    if game.flag(needs) {
+        play_sound("sfx/door.wav", 0.6)
+        game.go(to, at)
+        return
+    }
+    game.talk(say, "")
+}

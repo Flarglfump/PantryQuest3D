@@ -56,6 +56,7 @@ var lash_t: number = 0
 var dive_t: number = 0
 var under: bool = false            # his head under the water (the Cast-Iron Boots, or a dive)
 var air: number = 8                # seconds of breath left under water (no Snorkel Apron)
+var hover_t: number = 0            # time spent walking on air (the Meringue Boots)
 var zone: entity                   # the way out he's standing in (it may wait for a story flag)
 var action_label: string = ""      # what A does now (the HUD shows it)
 var action_target: entity
@@ -302,8 +303,24 @@ func use_item(name: string) -> void {
         return
     }
     if name == "boots" {
-        if game.flag("boots_on") { game.clear_flag("boots_on") } else { game.set_flag("boots_on") }
+        if game.flag("boots_on") { game.clear_flag("boots_on") } else {
+            game.set_flag("boots_on")
+            game.clear_flag("hover_on")
+        }
         play_sound("sfx/thunk.wav", 0.8, 0.6)
+        return
+    }
+    if name == "hover" {
+        if game.flag("hover_on") { game.clear_flag("hover_on") } else {
+            game.set_flag("hover_on")
+            game.clear_flag("boots_on")
+        }
+        play_sound("sfx/bubble.wav", 0.8, 0.8)
+        return
+    }
+    if name == "lens" {
+        if game.flag("lens_on") { game.clear_flag("lens_on") } else { game.set_flag("lens_on") }
+        play_sound("sfx/secret.wav", 0.4, 1.5)
         return
     }
     if name == "hammer" {
@@ -648,14 +665,18 @@ func update(dt: number) -> void {
             vel.y -= GRAVITY * 0.5 * dt                  # sinking slowly in the boots
             vel.x = vel.x * 0.6
             vel.z = vel.z * 0.6
+        } elif game.flag("hover_on") and not on_floor and hover_t < 0.9 and st == "free" and vel.y <= 0.5 {
+            hover_t += dt                                 # the Meringue Boots: a moment's walk on air
+            vel.y = 0
         } else {
             vel.y -= GRAVITY * dt
         }
+        if on_floor { hover_t = 0 }
         if on_floor and vel.y < -2 { vel.y = -2 }
         carry_on_platform()
         vel = move_and_slide(self, vel)
         var now_floor: bool = is_on_floor(self)
-        if was_floor and not now_floor and vel.y <= 0.5 and st == "free" and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() {
+        if was_floor and not now_floor and vel.y <= 0.5 and st == "free" and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() and not game.flag("hover_on") {
             vel.y = HOP                                 # off a ledge at a run: a hop
             play_sound("sfx/hop.wav", 0.5)
             play_animation(body, "jump", 1, false)

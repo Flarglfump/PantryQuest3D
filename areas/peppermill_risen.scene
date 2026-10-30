@@ -301,8 +301,32 @@ entity
   Tags
     list = "interact, focusable"
   Script
-    file = "scripts/sign.bs"
-    vars = "say = \"sign_well\", prompt = \"Look\", reach = 2.4"
+    file = "scripts/climbdown.bs"
+    vars = "to = \"well\", at = \"start\", needs = \"well_drained\", say = \"well_look\""
+
+entity
+  Name
+    text = "Well Water"
+  Transform3D
+    position = 6 0.8265 6
+    rotation = 0 0 0
+    scale = 2.1 0.05 2.1
+  Mesh
+    shape = cylinder
+    color = #304860ff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/songdoor.bs"
+    vars = "song = \"boiling\", id = \"well_drained\", say = \"well_look\", reach = 0.1"
+
+entity
+  Name
+    text = "spawn_well"
+  Transform3D
+    position = 6 0.3459 9
+    rotation = 0 180 0
+    scale = 1 1 1
 
 entity
   Name
@@ -756,6 +780,108 @@ entity
   Script
     file = "scripts/sign.bs"
     vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Crypt Door"
+  Transform3D
+    position = 30 1.5078 -16.4
+    rotation = 0 0 0
+    scale = 2.4 3 0.2
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #3a2a3aff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/songdoor.bs"
+    vars = "song = \"nocturne\", id = \"door:crypt\", say = \"crypt_door\", reach = 3"
+
+entity
+  Name
+    text = "Crypt Dark"
+  Transform3D
+    position = 30 1.5078 -16.45
+    rotation = 0 0 0
+    scale = 2.4 3 0.1
+  Mesh
+    shape = cube
+    color = #08040aff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 30 1.5078 -16.2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.2 3 0.5
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"crypt\", at = \"start\", needs = \"door:crypt\""
+
+entity
+  Name
+    text = "spawn_crypt"
+  Transform3D
+    position = 30 0.1078 -14.2
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_graveyard"
+  Transform3D
+    position = 30 -0.1537 3
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Cinder"
+  Transform3D
+    position = 33 -0.4115 3.5
+    rotation = 0 200 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/cinder.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"cinder\", reach = 2.4, needs = \"chest:well_lens\""
 
 entity
   Name

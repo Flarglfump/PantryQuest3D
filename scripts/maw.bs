@@ -1,0 +1,117 @@
+@strict @3d
+# maw.bs - the Maw of Rot, master of the Compost Crypt: a great unseen thing of compost with
+# two hands (seen) and one eye (seen only through the Onion Lens). The hands slam down at
+# Sprig; strike a hand just after it slams and it goes limp for a while. With both limp,
+# the Maw sinks down, eye open: strike the eye (no more than 4 a time).
+
+var hp: int = 12
+var max_hp: int = 12
+var game: entity
+var sprig: entity
+var hud: entity
+var hands: list = []
+var st: string = "wait"            # wait fight open dead
+var st_t: number = 0
+var flash: number = 0
+var centre: vec3
+var t: number = 0
+var down_dmg: int = 0
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    centre = self.position
+    if game.flag("cc_boss") {
+        destroy(self)
+        return
+    }
+    for k in 2 {
+        var h: entity = spawn("prefabs/mawhand.scene", centre + vec3(k * 4 - 2, 3, 0))
+        h.maw = self
+        h.side = k
+        push(hands, h)
+    }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func limp_count() -> int {
+    var n: int = 0
+    for h in hands {
+        if h.limp > 0 { n += 1 }
+    }
+    return n
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st != "open" or how == "lash" or down_dmg >= 4 { return }
+    if not game.flag("lens_on") and how != "arrow" {
+        play_sound("sfx/block.wav", 0.4, 0.6)
+        return
+    }
+    hp -= amount
+    down_dmg += amount
+    flash = 0.3
+    play_sound("sfx/hit.wav", 0.9, 0.6)
+    if down_dmg >= 4 { st_t = max(st_t, 3.5) }
+    if hp <= 0 {
+        set_state("dead")
+        remove_tag(self, "focusable")
+        for h in hands { destroy(h) }
+        stop_music(1.5)
+        play_sound("sfx/boss_roar.wav", 0.9, 0.5)
+    }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    t += dt
+    st_t += dt
+    flash = max(0, flash - dt)
+    self.Mesh.visible = game.flag("lens_on") or st == "dead"
+    if st == "wait" {
+        if distance(vec3(sprig.x, 0, sprig.z), vec3(centre.x, 0, centre.z)) < 12 {
+            set_state("fight")
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "THE MAW OF ROT")
+            game.talk("maw_title", "")
+        }
+        return
+    }
+    if st == "fight" {
+        self.position = lerp(self.position, centre + vec3(sin(t * 40) * 2, 3.5, cos(t * 30) * 2), min(1, dt * 2))
+        remove_tag(self, "focusable")
+        if limp_count() >= 2 {
+            set_state("open")
+            down_dmg = 0
+            add_tag(self, "focusable")
+            play_sound("sfx/screech.wav", 0.8, 0.6)
+        }
+    } elif st == "open" {
+        self.position = lerp(self.position, vec3(centre.x, 1.0, centre.z), min(1, dt * 3))
+        if st_t > 5 or limp_count() < 2 {
+            set_state("fight")
+            for h in hands { h.limp = 0 }
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        self.scale = vec3(1, 1, 1) * max(0.05, 1 - dead_t / 2.5)
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) { spawn("prefabs/poof.scene", self.position + vec3(random(-1, 1), random(-1, 1), random(-1, 1))) }
+        if dead_t > 2.6 {
+            game.set_flag("cc_boss")
+            game.talk("maw_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = "#a04060ff" }
+}

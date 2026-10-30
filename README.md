@@ -103,6 +103,12 @@ a jump attack.
   drains and fills it to Saffron's Lullaby; Shadow Sprig and the **Long Licorice**; a
   chasm only it crosses; and **the Living Brine**: lash its core out of the water and
   strike it on the floor. Fizzy wakes as the Keeper of Salt; Cinder's Serenade of Brine.
+- **The Compost Crypt** (dungeon 7): Peppermill's miller teaches the Boiling Song, which
+  dries the well; at the bottom, the **Onion Lens** (see hidden floors, see through false
+  walls). Cinder's Nocturne of Rot opens the crypt under the graveyard: an unseen bridge,
+  guillotines, the **Meringue Boots** (a moment's walk on air), and **the Maw of Rot** —
+  strike its hands after they slam, then its eye, seen only through the lens. Nanny Kimchi
+  wakes as the Keeper of Sour.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

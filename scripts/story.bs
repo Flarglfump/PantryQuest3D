@@ -591,6 +591,38 @@ func talk(id: string) -> list {
                 p("FIZZY", "You remember our engagement, I hope? A Fizzling never forgets. Take my medallion. It's practically a ring.")]
     }
 
+
+    # ---- the Compost Crypt arc
+    if id == "risen_miller2" {
+        if game.has_item("song_boiling") { return [p("MILLER", "Round and round, wrong way round... Play that song by the well if you're thirsty. Hah!")] }
+        return [p("MILLER", "Seven years without a drop of rain! I'll tell you why: there was a boy, years back, who played a song in here and the well dried right up. Or did it fill...?"),
+                p("MILLER", "It went like this. Listen... the BOILING SONG. It makes the clouds boil over!")]
+    }
+    if id == "well_look" {
+        if game.flag("well_drained") { return [p("FLICKER", "The well's dried up! There's a way down...")] }
+        return [p("", "THE PEPPERMILL WELL.|Full to the brim with dark, still water.")]
+    }
+    if id == "well_enter" { return [p("FLICKER", "The bottom of the well... It's dark and it smells like old graves. Something's down here.")] }
+    if id == "lens_hint" { return [p("FLICKER", "Things here aren't what they seem. That wall looks... wobbly?")] }
+    if id == "cinder_nocturne" {
+        return [p("CINDER", "The Onion Lens. It peels the lies from the world. You'll need it, below."),
+                p("CINDER", "Learn the NOCTURNE OF ROT. It brings you here, among the graves... and it opens the Compost Crypt."),
+                p("CINDER", "Your old nanny's... I mean, the Keeper of Sour sleeps down there, Hero.")]
+    }
+    if id == "crypt_door" { return [p("", "THE COMPOST CRYPT.|\"What rots is not lost. Sing the night's song, and enter.\"")] }
+    if id == "cc_enter" {
+        return [p("FLICKER", "The Compost Crypt... everything forgotten ends up here. Even ghosts."),
+                p("FLICKER", "Keep the Onion Lens handy. Nothing down here is what it looks like.")]
+    }
+    if id == "maw_title" { return [p("", "THE MAW OF ROT|Unseen Eater of the Forgotten")] }
+    if id == "maw_beaten" { return [p("FLICKER", "The Maw's gone... the crypt is just a crypt again. Into the light!")] }
+    if id == "kimchi_keeper" {
+        if game.flag("keeper_sour") { return [p("NANNY KIMCHI", "Go on, then. There's one more Keeper. And then... and then we'll see about the princess.")] }
+        return [p("NANNY KIMCHI", "Well, well. The little Sprout who sneaked into the castle garden. Look at you now."),
+                p("NANNY KIMCHI", "I am the Keeper of SOUR. Ferment, brine, the patience of a pickle jar. Seven years I waited down there."),
+                p("NANNY KIMCHI", "Take my medallion. And Sprig... the princess is closer than you think. Trust the one who teaches you songs.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -780,6 +812,15 @@ func after(what: string, choice: int) -> void {
     } elif what == "med_salt" {
         game.set_flag("keeper_salt")
         game.give("med_salt", "")
+    } elif what == "boiling" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_boiling", "")
+    } elif what == "nocturne" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_nocturne", "")
+    } elif what == "med_sour" {
+        game.set_flag("keeper_sour")
+        game.give("med_sour", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -829,6 +870,14 @@ func area_started(area: string) -> void {
     if area == "brinetemple" and not game.flag("bt_entered") {
         game.set_flag("bt_entered")
         game.talk("bt_enter", "")
+    }
+    if area == "well" and not game.flag("well_entered") {
+        game.set_flag("well_entered")
+        game.talk("well_enter", "")
+    }
+    if area == "crypt" and not game.flag("cc_entered") {
+        game.set_flag("cc_entered")
+        game.talk("cc_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -898,7 +947,23 @@ func hint() -> string {
     if not game.has_item("snorkel") { return "King Carbonarius is frozen in red ice in his domain. Blue fire from the Freezer Caves would melt it! Carry some in a jar." }
     if not game.flag("brinetemple_done") { return "The Fizzwater Temple is under Lake Brine, below the island. Put on the Cast-Iron Boots and sink!" }
     if not game.flag("keeper_salt") { return "Fizzy is waiting in the Chamber of Keepers." }
-    return "Two Keepers sleep still: one under Peppermill's graveyard, one in the Sugar Dunes far to the west. (Not built yet!)"
+    if game.dungeon == "crypt" { return crypt_hint() }
+    if not game.has_item("lens") {
+        if not game.has_item("song_boiling") { return "Peppermill's miller says the well dried up when someone played a song in the windmill. Ask him about it!" }
+        if not game.flag("well_drained") { return "Play the Boiling Song beside Peppermill's well!" }
+        return "Climb down into the dried-up well. Something's down there..."
+    }
+    if not game.has_item("song_nocturne") { return "Cinder's waiting in Peppermill's graveyard." }
+    if not game.flag("crypt_done") { return "The Compost Crypt is under the graveyard. Play the Nocturne of Rot at the crypt door, at the back!" }
+    if not game.flag("keeper_sour") { return "Nanny Kimchi is waiting in the Chamber of Keepers." }
+    return "One Keeper sleeps still, in the Salt Idol, out in the Sugar Dunes far to the west. (Not built yet!)"
+}
+
+func crypt_hint() -> string {
+    if not game.flag("door:cc_key") { return "Use the Onion Lens! There are walls that aren't walls, and floors you can't see." }
+    if not game.has_item("hover") { return "The room past the blades... beat everything in there." }
+    if not game.has_item("bosskey_crypt") { return "With the Meringue Boots you can walk on air for a moment. That gap in the north room!" }
+    return "The Maw of Rot waits past the big door. Strike its hands after they slam down; then look at it through the Onion Lens!"
 }
 
 func brine_hint() -> string {
@@ -968,6 +1033,14 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "song_boiling" { return "You learned the BOILING SONG!|A stormy song that makes the clouds boil over. Rain follows it." }
+    if kind == "lens" { return "You got the ONION LENS!|Put it on a button and peel back the world: see what's hidden, and see through what's false." }
+    if kind == "song_nocturne" { return "You learned the NOCTURNE OF ROT!|Play it to warp to Peppermill's graveyard. It also opens the Compost Crypt." }
+    if kind == "hover" { return "You got the MERINGUE BOOTS!|So light you can walk on air for a moment. Put them on a button; press again to take them off." }
+    if kind == "med_sour" { return "You got the SOUR MEDALLION!|Nanny Kimchi, Keeper of Sour, has woken." }
+    if kind == "map_crypt" { return "You found the DUNGEON MAP!|See every room of the Compost Crypt in the pause menu." }
+    if kind == "compass_crypt" { return "You found the COMPASS!|Now the map shows the treasure and the master." }
+    if kind == "bosskey_crypt" { return "You got the BOSS KEY!|It opens the door to the Maw of Rot." }
     if kind == "boots" { return "You got the CAST-IRON BOOTS!|Put them on a button. On, you sink in water and walk the bottom; press again to take them off." }
     if kind == "snorkel" { return "You got the SNORKEL APRON!|The royal Fizzling apron. Now you can breathe under water as long as you like." }
     if kind == "song_serenade" { return "You learned the SERENADE OF BRINE!|Play it anywhere outside a dungeon to warp to Lake Brine." }
