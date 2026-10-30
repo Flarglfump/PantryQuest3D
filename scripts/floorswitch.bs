@@ -1,0 +1,34 @@
+@strict @3d
+# floorswitch.bs - a switch in the floor, held down by Sprig standing on it or by something
+# heavy (tagged "weight": Princess Fizzy, set down on it). While it's down the flag `id` is
+# set (doors watching it open: switchdoor.bs).
+
+var id: string = ""
+var game: entity
+var sprig: entity
+var down: bool = false
+var base_y: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    base_y = self.y
+}
+
+func pressed() -> bool {
+    if distance(vec3(sprig.x, 0, sprig.z), vec3(self.x, 0, self.z)) < 0.9 and abs(sprig.y - base_y) < 0.6 { return true }
+    for w in find_tagged("weight") {
+        if not w.carried and distance(vec3(w.x, 0, w.z), vec3(self.x, 0, self.z)) < 0.9 and abs(w.y - base_y) < 0.8 { return true }
+    }
+    return false
+}
+
+func update(dt: number) -> void {
+    var now: bool = pressed()
+    if now != down {
+        down = now
+        play_sound("sfx/switch.wav", 0.6, 0.8)
+        if down { game.set_flag(id) } else { game.clear_flag(id) }
+    }
+    if down { self.y = base_y - 0.08 } else { self.y = base_y }
+}

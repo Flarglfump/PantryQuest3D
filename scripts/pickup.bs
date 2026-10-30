@@ -76,7 +76,7 @@ func update(dt: number) -> void {
 
 # A boomerang or a sword can knock it to him (later); for now a slash just collects it.
 func hit(amount: int, kind_of: string, from: vec3) -> void {
-    if sprig != nil and distance(sprig.position, self.position) < 2.2 {
+    if kind_of == "boomerang" or (sprig != nil and distance(sprig.position, self.position) < 2.2) {
         game.collect(kind)
         if id != "" { game.set_flag("got:" + id) }
         destroy(self)

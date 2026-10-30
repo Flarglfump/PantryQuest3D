@@ -1,0 +1,58 @@
+@strict @3d
+# divegame.bs - the Fizzlings' diving game. Talk to the diver (story: "dive_go") and five
+# fizz-stones drop to the bottom of the pool; bring them all up in 50 seconds for the Fizz
+# Bubble. The stones lie at `spots` (offsets from here).
+
+var draw_layer: int = 72
+var game: entity
+var on: bool = false
+var left: number = 0
+var got: int = 0
+var spots: list = [vec3(-3, 0, -2), vec3(2.5, 0, -3), vec3(4, 0, 1.5), vec3(-1, 0, 3.5), vec3(0.5, 0, -0.5)]
+var stones: list = []
+
+func start() -> void { game = find("Game") }
+
+func begin() -> void {
+    for s in stones {
+        if s.alive { destroy(s) }
+    }
+    stones = []
+    for p in spots {
+        var s2: entity = spawn("prefabs/fizzstone.scene", self.position + p)
+        push(stones, s2)
+    }
+    got = 0
+    left = 50
+    on = true
+    play_sound("sfx/splash.wav", 0.7)
+}
+
+func picked(s: entity) -> void {
+    if not on { return }
+    got += 1
+    play_sound("sfx/bubble.wav", 0.7)
+    if got >= len(spots) {
+        on = false
+        if game.has_item("fizzbubble") { game.talk("dive_again", "") } else { game.talk("dive_won", "fizzbubble") }
+    }
+}
+
+func update(dt: number) -> void {
+    if not on or game.state != "play" { return }
+    left -= dt
+    if left <= 0 {
+        on = false
+        for s in stones {
+            if s.alive { destroy(s) }
+        }
+        game.talk("dive_lost", "")
+    }
+}
+
+func draw() -> void {
+    if not on { return }
+    var txt: string = str(ceil(left)) + "s   " + got + "/" + len(spots)
+    draw_rect(vec2(130, 30), vec2(60, 13), [10, 40, 80, 200])
+    draw_text(txt, vec2(160 - text_size(txt).x / 2, 33), [200, 240, 255])
+}

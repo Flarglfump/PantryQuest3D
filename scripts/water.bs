@@ -1,0 +1,4 @@
+@strict @3d
+# water.bs - a body of water (a trigger under its surface). Sprig swims in it (sprig.bs).
+
+var surface: number = 0

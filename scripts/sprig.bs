@@ -10,6 +10,7 @@
 
 const RUN: number = 5.2
 const GRAVITY: number = 24
+const SWIM_Y: number = 0.9         # how far under the surface he floats (his feet)
 const HOP: number = 5.6            # the automatic hop off a ledge while running
 
 var game: entity
@@ -45,6 +46,9 @@ var plat_last: vec3
 
 var vine: entity
 var carrying: entity                # a bomb held over his head
+var boomerang: entity               # the boomerang, while it's out
+var water: entity                  # the water he's in (water.bs)
+var dive_t: number = 0
 var zone: entity                   # the way out he's standing in (it may wait for a story flag)
 var action_label: string = ""      # what A does now (the HUD shows it)
 var action_target: entity
@@ -249,6 +253,52 @@ func use_item(name: string) -> void {
         game.play_pipe()
         return
     }
+    if name == "jar1" {
+        if game.flag("jar1_fish") {
+            for g in find_tagged("fishfeed") {                   # (Lord Gulp's altar, in reach)
+                if distance(g.global_position, self.position) < g.reach {
+                    g.fed(self)
+                    return
+                }
+            }
+            game.clear_flag("jar1_fish")                          # let it go
+            var f2: entity = spawn("prefabs/fish.scene", self.position + forward_of(facing) * 0.8 + vec3(0, 0.1, 0))
+            play_sound("sfx/splash.wav", 0.5)
+            return
+        }
+        st = "shoot"
+        st_t = 0
+        play_animation(body, "slash", 1.4, false)
+        play_sound("sfx/swing.wav", 0.6, 0.8)
+        var at2: vec3 = self.position + forward_of(facing) * 0.8
+        for f in find_tagged("fish") {
+            if distance(vec3(f.x, 0, f.z), vec3(at2.x, 0, at2.z)) < 1.0 and abs(f.y - self.y) < 1.2 {
+                destroy(f)
+                game.set_flag("jar1_fish")
+                game.talk("got_fish", "")
+                return
+            }
+        }
+        return
+    }
+    if name == "boomerang" {
+        if boomerang != nil and boomerang.alive { return }
+        var from: vec3 = self.position + vec3(0, 0.8, 0) + forward_of(facing) * 0.4
+        var b: entity = spawn("prefabs/boomerang.scene", from)
+        b.owner = self
+        if target != nil {
+            b.goal = target_point()
+            b.aim = target
+        } else {
+            b.goal = from + forward_of(facing) * 9
+        }
+        boomerang = b
+        play_sound("sfx/swing.wav", 0.7, 1.2)
+        st = "shoot"
+        st_t = 0
+        play_animation(body, "slash", 1.2, false)
+        return
+    }
     if name == "shooter" {
         if game.peas <= 0 {
             play_sound("sfx/empty.wav", 0.6)
@@ -303,9 +353,27 @@ func update(dt: number) -> void {
         st = "free"
     }
 
+    # into deep water: swimming
+    var wet: bool = water != nil and water.alive and self.y < water.surface - SWIM_Y - 0.05
+    if wet and st != "swim" and st != "dive" and st != "dead" and st != "climb" and st != "hold" and st != "talk" {
+        st = "swim"
+        st_t = 0
+        pitch = 0
+        spin_angle = 0
+        drawn = 0
+        play_sound("sfx/splash.wav", 0.6)
+        spawn("prefabs/poof.scene", vec3(self.x, water.surface, self.z))
+        if carrying != nil and carrying.alive {
+            carrying.put_down(self.position + vec3(0, 0.3, 0))
+            carrying = nil
+        }
+    }
+
     if st == "free" {
         update_free(dt, mv, dir, on_floor)
         want = vel_want(dir, mv)
+    } elif st == "swim" or st == "dive" {
+        want = update_swim(dt, mv, dir, on_floor)
     } elif st == "slash" or st == "slash2" or st == "thrust" {
         want = forward_of(facing) * max(0, 2 - st_t * 8)
         if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
@@ -419,7 +487,11 @@ func update(dt: number) -> void {
             vel.x = want.x
             vel.z = want.z
         }
-        vel.y -= GRAVITY * dt
+        if (st == "swim" or st == "dive" or ((st == "hold" or st == "talk" or st == "hurt") and wet)) and water != nil and water.alive {
+            if st != "dive" { vel.y = clamp((water.surface - SWIM_Y - self.y) * 4, -3, 4) }
+        } else {
+            vel.y -= GRAVITY * dt
+        }
         if on_floor and vel.y < -2 { vel.y = -2 }
         carry_on_platform()
         vel = move_and_slide(self, vel)
@@ -443,7 +515,9 @@ func update(dt: number) -> void {
 
     at = self.position
     if carrying != nil and carrying.alive and carrying.carried {
-        carrying.position = self.position + vec3(0, 1.35, 0) + forward_of(facing) * 0.05
+        var lift: number = 1.35
+        if has_tag(carrying, "weight") { lift = 1.1 }
+        carrying.position = self.position + vec3(0, lift, 0) + forward_of(facing) * 0.05
         if st == "hurt" or st == "dead" or st == "climb" {
             carrying.put_down(self.position + vec3(0, 0.3, 0))
             carrying = nil
@@ -547,6 +621,64 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
     }
 }
 
+# Swimming: slow strokes at the surface; A dives (hold it to go deeper, as deep as he can:
+# deeper with the Fizz Bubble). Swim into a low bank or ledge and he climbs out.
+func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
+    if water == nil or not water.alive {
+        st = "free"
+        pitch = 0
+        return vec3(0, 0, 0)
+    }
+    if move_amount > 0.1 { turn_to(yaw_of(dir), 300, dt) }
+    var deepest: number = 3.0
+    if game.has_item("fizzbubble") { deepest = 8.5 }
+    if st == "swim" {
+        pitch = -20 * move_amount
+        if on_floor and self.y > water.surface - SWIM_Y - 0.4 {
+            st = "free"                      # walked out into the shallows
+            pitch = 0
+            return vec3(0, 0, 0)
+        }
+        if action_pressed("action") and game.state == "play" {
+            st = "dive"
+            dive_t = 0
+            vel.y = -4.5
+            play_sound("sfx/dive.wav", 0.6)
+            return forward_of(facing) * 1.5
+        }
+        if move_amount > 0.3 and is_on_wall(self) {
+            var from: vec3 = self.position + forward_of(facing) * 0.7 + vec3(0, SWIM_Y + 1.6, 0)
+            var bank: any = raycast(from, vec3(from.x, water.surface - 0.6, from.z), self)
+            if bank != nil and bank[1].y - water.surface < 1.5 and bank[1].y > water.surface - 0.5 {
+                self.position = bank[1] + vec3(0, 0.1, 0)
+                st = "free"
+                pitch = 0
+                vel = vec3(0, 0, 0)
+                play_sound("sfx/hop.wav", 0.5)
+                return vec3(0, 0, 0)
+            }
+        }
+        if move_amount > 0.1 { play_animation(body, "run", 0.5, true) } else { play_animation(body, "idle", 0.6, true) }
+        return dir * 3.2 * move_amount
+    }
+    # diving
+    dive_t += dt
+    pitch = -70
+    play_animation(body, "jump", 1, true)
+    var depth: number = water.surface - SWIM_Y - self.y
+    if action_down("action") and depth < deepest and dive_t < 3.5 and not on_floor {
+        vel.y = -4.5
+    } else {
+        vel.y = min(vel.y + 12 * dt, 3.5)
+        if depth <= 0.05 {
+            st = "swim"
+            pitch = 0
+            play_sound("sfx/bubble.wav", 0.5)
+        }
+    }
+    return dir * 2.4 * move_amount
+}
+
 func update_climb(dt: number, mv: vec2) -> void {
     if vine == nil {
         st = "free"
@@ -622,16 +754,22 @@ func on_trigger(other: entity) -> void {
     if has_tag(other, "pit") and st != "dead" { fell() }
     if has_tag(other, "lava") and st != "dead" { burned() }
     if has_tag(other, "loadzone") { zone = other }
+    if has_tag(other, "water") { water = other }
 }
 func on_trigger_exit(other: entity) -> void {
     if other == vine { vine = nil }
     if other == zone { zone = nil }
+    if other == water { water = nil }
 }
 
 # What A would do: talk to someone, read a sign, open a chest...
 func update_context() -> void {
     action_target = nil
     action_label = ""
+    if st == "swim" {
+        action_label = "Dive"
+        return
+    }
     if st != "free" { return }
     var best: number = 99
     var fwd: vec3 = forward_of(facing)

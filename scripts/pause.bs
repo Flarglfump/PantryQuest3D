@@ -220,24 +220,53 @@ func draw_map() -> void {
     draw_text(name, vec2(160 - text_size(name).x / 2, 70), [255, 255, 255])
     var dun: string = global("dungeon", "")
     if dun == "" {
-        draw_text("SPROUTHOLLOW", vec2(118, 100), [140, 220, 120])
-        draw_text("The village of the Sprouts,", vec2(54, 120), [200, 190, 160])
-        draw_text("hidden in the Thicket.", vec2(54, 132), [200, 190, 160])
-        draw_text("North: Mother Starter's grove", vec2(54, 152), [200, 190, 160])
-        draw_text("South: the bridge", vec2(54, 164), [200, 190, 160])
+        # the kingdom: a box for each region, the one Sprig is in lit up
+        var here: string = global("area", "")
+        var regions: list = [["FIZZLINGS", 30, 92, ["fizzdomain", "fountain"]], ["VALLEY", 30, 112, ["gorge"]], ["LAKE", 30, 132, ["lake"]],
+                             ["CASTLE", 117, 92, ["town", "castle"]], ["FIELDS", 117, 112, ["fields"]], ["SPROUTS", 117, 132, ["sprouthollow", "crock"]],
+                             ["MOUNTAIN", 204, 92, ["fondue", "hardtack", "hardcaves"]], ["PEPPERMILL", 204, 112, ["peppermill"]], ["THICKET", 204, 132, ["thicket"]]]
+        for r in regions {
+            var lit: bool = contains(r[3], here)
+            var c: list = [60, 70, 60, 255]
+            if lit { c = [90, 150, 80, 255] }
+            draw_rect(vec2(r[1], r[2]), vec2(84, 14), c)
+            var tc: list = [200, 190, 160]
+            if lit { tc = [255, 255, 200] }
+            var lab: string = r[0]
+            draw_text(lab, vec2(r[1] + 42 - text_size(lab).x / 2, r[2] + 3), tc)
+        }
+        draw_text("Embers:", vec2(60, 162), [255, 220, 130])
+        var em: list = ["ember_courage", "ember_power", "ember_wisdom"]
+        var ic: list = ["ember", "ember2", "ember3"]
+        for i in 3 {
+            if has(em[i]) { draw_image("art/icons/" + ic[i] + ".png", vec2(130 + i * 20, 166)) } else { draw_circle(vec2(130 + i * 20, 166), 5, [80, 80, 80, 200], false) }
+        }
         return
     }
     var hm: bool = has("map_" + dun)
     var hc: bool = has("compass_" + dun)
-    draw_text("FLOORS", vec2(40, 92), [255, 220, 130])
-    var floors: list = ["3F", "2F", "1F", "B1"]
-    for i in 4 {
-        draw_rect(vec2(40, 104 + i * 20), vec2(40, 16), [60, 50, 70, 255])
-        draw_text(floors[i], vec2(52, 108 + i * 20), [255, 255, 255])
+    var names: list = [["crock", "THE GREAT CROCK", "The Queen lurks on 3F,", "past the web below."],
+                       ["hardcaves", "HARDTACK CAVERNS", "King Crustodon waits", "beyond the north cave."],
+                       ["gulp", "INSIDE LORD GULP", "Something knotted lurks", "past the north chamber."]]
+    var title: string = dun
+    var b1: string = ""
+    var b2: string = ""
+    for n in names {
+        if n[0] == dun {
+            title = n[1]
+            b1 = n[2]
+            b2 = n[3]
+        }
     }
-    if hm { draw_text("You have the map.", vec2(110, 104), [140, 220, 120]) } else { draw_text("Find the DUNGEON MAP!", vec2(110, 104), [200, 190, 160]) }
-    if hc { draw_text("The Queen lurks on 3F,", vec2(110, 124), [255, 140, 120]); draw_text("past the web below.", vec2(110, 136), [255, 140, 120]) }
-    if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(118, 160)); draw_text("Boss Key", vec2(130, 157), [255, 255, 255]) }
+    draw_text(title, vec2(160 - text_size(title).x / 2, 88), [255, 220, 130])
+    if hm { draw_text("You have the map.", vec2(70, 110), [140, 220, 120]) } else { draw_text("Find the DUNGEON MAP!", vec2(70, 110), [200, 190, 160]) }
+    if hc { draw_text(b1, vec2(70, 130), [255, 140, 120]); draw_text(b2, vec2(70, 142), [255, 140, 120]) } else { draw_text("Find the COMPASS!", vec2(70, 130), [200, 190, 160]) }
+    var keys: int = 0
+    for c in s[7] {
+        if c[0] == "keys_" + dun { keys = c[1] }
+    }
+    draw_image("art/icons/key.png", vec2(78, 168)); draw_text("x" + keys, vec2(90, 165), [255, 255, 255])
+    if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(138, 168)); draw_text("Boss Key", vec2(150, 165), [255, 255, 255]) }
 }
 
 func draw_system() -> void {

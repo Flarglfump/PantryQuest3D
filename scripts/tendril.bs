@@ -1,0 +1,39 @@
+@strict @3d
+# tendril.bs - a gristly tendril hanging in Lord Gulp's gut. Only the Spatula Boomerang
+# cuts it (the flag `id`). When the `count` tendrils of a set are all cut, the flag `set`
+# is set too.
+
+var id: string = ""
+var set: string = ""
+var count: int = 3
+var game: entity
+var t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(id) { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, -1.2, 0) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if how != "boomerang" {
+        play_sound("sfx/block.wav", 0.5, 1.4)
+        return
+    }
+    game.set_flag(id)
+    var n: int = 0
+    for k in count {
+        if game.flag(set + str(k)) { n += 1 }
+    }
+    if n >= count { game.set_flag(set) }
+    spawn("prefabs/poof.scene", self.position)
+    play_sound("sfx/cut.wav", 0.8, 0.6)
+    play_sound("sfx/secret.wav", 0.5)
+    destroy(self)
+}
+
+func update(dt: number) -> void {
+    t += dt
+    self.rotation = vec3(sin(t * 90) * 8, 0, cos(t * 70) * 8)
+}

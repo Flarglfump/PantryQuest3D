@@ -403,6 +403,14 @@ def people():
         fig.animation('roll', rotations={fb['spine']: [(0, R(x=80)), (1, R(x=80))], fb['head']: [(0, R(x=40)), (1, R(x=40))]},
                       translations={fb['hips']: [(0, (0, -0.25 * sc, 0)), (1, (0, -0.25 * sc, 0))]})
         fig.save_glb(path('models', name + '.glb'))
+    # the Fizzlings: sleek blue soda-folk with big round heads
+    for name, sc, kw in [('fizzling', 1.3, dict(shirt='#6ab8e0', trousers='#3a7ab0', hair='#c0f0ff', skin='#8ad0f0', hat='#c0f0ff', hat_kind='spiky')),
+                         ('fizzy', 1.0, dict(shirt='#9ae0f8', trousers='#5aa8d8', hair='#e0fcff', skin='#a8e0f8', hat='#f0d040', hat_kind='tiara', girl=True)),
+                         ('carbonarius', 2.4, dict(shirt='#5aa0d0', trousers='#3a70a0', hair='#e8f8ff', skin='#7ac0e8', hat='#f0c040', hat_kind='tiara', belly=0.35, big_head=1.1)),
+                         ('professor', 1.35, dict(shirt='#f0f0f0', trousers='#4a4a5a', hair='#d8d8d8', skin='#e8c0a0', apron='#f8f8f8', belly=0.04))]:
+        fig, fb = figure(sc, eyes='#101828', **kw)
+        standard_anims(fig, fb, sc)
+        fig.save_glb(path('models', name + '.glb'))
     # Peppermill
     for name, kw in {'miller': dict(shirt='#d8d0b8', trousers='#6a5a3a', hair='#e0e0e0', hat='#c8b890', hat_kind='tall', belly=0.05),
                      'gravekeeper': dict(shirt='#4a4a5a', trousers='#2a2a32', hair='#8a8a8a', skin='#c8b8a8', belly=0.0)}.items():
@@ -496,6 +504,39 @@ def statics():
         o.box((-0.1, -0.1, -0.1), (0.1, 0.1, 0.1))
     o.cylinder((0, 0, -0.3), 0.4, 0.5, 8)
     o.save(path('models', 'sails.obj'))
+    o = Obj('the spatula boomerang: a flat blade bent round a handle, in the x-z plane')
+    o.box((-0.06, -0.02, -0.45), (0.06, 0.02, 0.0), uvs=4)
+    o.box((-0.18, -0.025, -0.75), (0.18, 0.025, -0.42), uvs=4)
+    o.box((0.0, -0.02, -0.06), (0.4, 0.02, 0.06), uvs=4)
+    o.save(path('models', 'spatula.obj'))
+    o = Obj('a floor switch')
+    o.cylinder((0, -0.02, 0), 0.7, 0.1, 12, uvs=1)
+    o.save(path('models', 'switch.obj'))
+    o = Obj('Lord Gulp: a vast sturgeon, his mouth (front, -z) open as a doorway')
+    o.sphere((0, 3.2, 1.5), 4.5, 14, 8, squash=0.75, uvs=2)
+    o.cone((0, 3.2, 9), 2.5, 4.0, 10)
+    o.save(path('models', 'gulp.obj'))
+    o = Obj('a gristly tendril: a knobbly rope hanging down from its top (y = 0)')
+    for k in range(5):
+        o.sphere((0, -0.35 - k * 0.5, 0), 0.24 - k * 0.025, 6, 4, squash=1.3)
+    o.save(path('models', 'tendril.obj'))
+    o = Obj('the Gristle Knot: a tangled ball of gristle')
+    o.sphere((0, 0, 0), 1.2, 12, 8)
+    for k in range(7):
+        a = 2 * math.pi * k / 7
+        o.sphere((math.cos(a) * 1.0, math.sin(a * 2) * 0.6, math.sin(a) * 1.0), 0.5, 8, 5)
+    o.save(path('models', 'knot.obj'))
+    o = Obj('a fish')
+    o.sphere((0, 0, 0), 0.18, 8, 5, squash=0.6)
+    o.cone((0, 0, 0.15), 0.1, 0.2, 5)
+    o.save(path('models', 'fish.obj'))
+    o = Obj('a fizz-stone: a bright round pebble')
+    o.sphere((0, 0.12, 0), 0.16, 8, 5)
+    o.save(path('models', 'fizzstone.obj'))
+    o = Obj('a jar')
+    o.cylinder((0, 0, 0), 0.15, 0.3, 8, top=False, uvs=1)
+    o.cylinder((0, 0.3, 0), 0.08, 0.1, 8, top=True, uvs=1)
+    o.save(path('models', 'jar.obj'))
     o = Obj('a key')
     o.box((-0.03, 0, -0.02), (0.03, 0.3, 0.02), uvs=4)
     o.box((-0.08, 0.3, -0.02), (0.08, 0.42, 0.02), uvs=4)
@@ -513,6 +554,8 @@ if __name__ == '__main__':
     blob('nut', '#7a4a1a', size=0.2, eye='#7a4a1a', pupil='#7a4a1a')
     scrub()
     queen()
+    blob('jelly', '#e8f0a0', size=0.55, eye='#ffffff', pupil='#4060a0')
+    blob('frog', '#5aa040', size=0.4, legs=4, eye='#ffffe0', pupil='#101010')
     blob('crustling', '#c08a40', size=0.7, legs=4, eye='#ffe060', pupil='#301000')
     statics()
     print('models written')

@@ -1,0 +1,151 @@
+@strict @3d
+# gristle.bs - the Gristle Knot, the thing Lord Gulp swallowed: a floating tangle of gristle
+# guarded by three tendrils (knotarm.bs) that swing round it. The spoon bounces off. Cut
+# all three tendrils with the boomerang and the knot drops, stunned: strike it then (no
+# more than 4 a time). The tendrils grow back.
+
+var hp: int = 12
+var max_hp: int = 12
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait float down dead
+var st_t: number = 0
+var flash: number = 0
+var arms: list = []
+var spin: number = 0
+var spit_t: number = 3
+var down_dmg: int = 0
+var dead_t: number = 0
+var home: vec3
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    home = self.position
+    if game.flag("gulp_boss") {
+        destroy(self)
+        return
+    }
+    for k in 3 {
+        var a: entity = spawn("prefabs/knotarm.scene", self.position)
+        a.knot = self
+        a.slot = k
+        push(arms, a)
+    }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func arms_left() -> int {
+    var n: int = 0
+    for a in arms {
+        if not a.cut { n += 1 }
+    }
+    return n
+}
+
+func arm_cut() -> void {
+    if arms_left() == 0 and st == "float" {
+        st = "down"
+        st_t = 0
+        down_dmg = 0
+        play_sound("sfx/screech.wav", 0.8, 0.7)
+        add_tag(self, "focusable")
+    }
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "dead" or st == "wait" { return }
+    if st == "down" and how != "boomerang" and how != "pea" and down_dmg < 4 {
+        hp -= amount
+        down_dmg += amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.5)
+        shake_camera(1.5, 0.15)
+        if down_dmg >= 4 { st_t = max(st_t, 4.0) }
+        if hp <= 0 { die() }
+        return
+    }
+    play_sound("sfx/block.wav", 0.6, 1.2)
+}
+
+func die() -> void {
+    st = "dead"
+    st_t = 0
+    remove_tag(self, "focusable")
+    for a in arms {
+        if a.alive { destroy(a) }
+    }
+    play_sound("sfx/screech.wav", 0.9, 0.5)
+    stop_music(1.5)
+    shake_camera(3, 1.5)
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    var d: number = length(to)
+    if st == "wait" {
+        if d < 12 {
+            st = "float"
+            st_t = 0
+            play_sound("sfx/screech.wav", 0.9)
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "THE GRISTLE KNOT")
+            game.talk("knot_title", "")
+        }
+    } elif st == "float" {
+        spin += dt * (70 + (max_hp - hp) * 6)
+        # drift after Sprig, keeping to the room
+        var want: vec3 = vec3(sprig.x, home.y + sin(st_t * 70) * 0.4, sprig.z)
+        var fl: vec3 = want - self.position
+        if length(fl) > 0.05 { self.position = self.position + normalize(fl) * min(length(fl), 1.6 * dt) }
+        var off: vec3 = self.position - home
+        off.y = 0
+        if length(off) > 8 { self.position = vec3(home.x, self.y, home.z) + normalize(off) * 8 }
+        spit_t -= dt
+        if spit_t <= 0 and d < 14 {
+            spit_t = 2.6 + random() * 1.5
+            var from: vec3 = self.position + vec3(0, -0.6, 0)
+            var s: entity = spawn("prefabs/nut.scene", from)
+            s.dir = normalize(sprig.position + vec3(0, 0.6, 0) - from)
+            s.owner = self
+            s.speed = 10
+            play_sound("sfx/spit.wav", 0.7, 0.6)
+        }
+        if d < 1.6 and abs(sprig.y - (self.y - 1.5)) < 1.5 { sprig.hurt(4, self.position, "touch") }
+    } elif st == "down" {
+        var low: number = home.y - 2.6
+        self.y = max(low, self.y - 6 * dt)
+        self.rotation = vec3(sin(st_t * 600) * 6, self.rotation.y, 0)
+        if st_t > 5 {
+            st = "float"
+            st_t = 0
+            remove_tag(self, "focusable")
+            for a in arms { a.grow() }
+            play_sound("sfx/grow.wav", 0.8, 0.6)
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        self.scale = vec3(1, 1, 1) * max(0.05, 1 - dead_t / 2.5)
+        if floor(dead_t * 6) != floor((dead_t - dt) * 6) and dead_t < 2.4 {
+            spawn("prefabs/poof.scene", self.position + vec3(random(-1, 1), random(-1, 1), random(-1, 1)))
+            play_sound("sfx/smash.wav", 0.5, 0.6 + random() * 0.4)
+        }
+        if dead_t > 2.6 {
+            game.set_flag("gulp_boss")
+            game.talk("knot_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    if st == "float" { self.rotation = vec3(0, spin, 0) }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff9090ff" } else { self.Mesh.color = "#ffffffff" }
+}

@@ -1,0 +1,16 @@
+@strict @3d
+# divestone.bs - a fizz-stone on the bottom of the pool, for the diving game.
+
+var sprig: entity
+var t: number = 0
+
+func start() -> void { sprig = find("Sprig") }
+
+func update(dt: number) -> void {
+    t += dt
+    self.rotation = vec3(0, t * 90, 0)
+    if distance(sprig.position + vec3(0, 0.4, 0), self.position) < 1.0 {
+        send(find("Dive Game"), "picked", self)
+        destroy(self)
+    }
+}

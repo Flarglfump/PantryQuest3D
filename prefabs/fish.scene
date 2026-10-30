@@ -1,0 +1,20 @@
+# A little fish in the shallows (fish.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Fish"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fish.obj"
+    color = #f0a040ff
+    uv_scale = 1 1
+  Tags
+    list = "fish"
+  Script
+    file = "scripts/fish.bs"

@@ -56,6 +56,7 @@ func button(c: vec2, r: number, col: list, label: string) -> void {
 
 func draw() -> void {
     if game.state == "paused" or game.fade >= 1 { return }
+    if sprig.st == "dive" { draw_rect(vec2(0, 0), vec2(320, 240), [30, 90, 170, 80]) }      # under water
     hearts()
     # beans
     draw_image("art/icons/bean.png", vec2(18, 224))
@@ -95,6 +96,10 @@ func draw() -> void {
             var ic: string = it
             if it == "pipe" { ic = "whistle" }
             if it == "bombs" { ic = "bomb" }
+            if it == "jar1" {
+                ic = "jar"
+                if game.flag("jar1_fish") { ic = "jar_fish" }
+            }
             draw_image("art/icons/" + ic + ".png", c)
             if it == "bombs" {
                 var bc2: list = [255, 255, 255]

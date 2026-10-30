@@ -276,6 +276,117 @@ func talk(id: string) -> list {
                 p("FLICKER", "(Thanks for playing this much of Pantry Quest 3D. More of the world is on its way.)")]
     }
 
+
+    # ---- Brine Valley
+    if id == "sign_brine" { return [p("", "BRINE VALLEY|North: Fizzwater Falls, home of the Fizzlings. South: Lake Brine.")] }
+    if id == "falls_seal" {
+        return [p("", "THE ROYAL SEAL OF THE FIZZLINGS.|The falls part for a song of the royal family."),
+                p("FLICKER", "A song of the royal family... Sprig! Saffron's Lullaby!")]
+    }
+    if id == "frog" {
+        if game.flag("gulp_done") { return [p("FROG", "Brrrup! You smell of sturgeon. Brrrup! Respect.")] }
+        return [p("FROG", "Brrrup. We are the Brine Valley choir. Brrrup."),
+                p("FROG", "Our conductor ran off to the lake. Brrrup. Ah well. Brrrup.")]
+    }
+    if id == "tbc_lake_temple" { return [p("FLICKER", "There's a door down there under the water... but it's shut tight. Maybe one day.")] }
+
+    # ---- the Fizzling Domain
+    if id == "fizz_enter" {
+        return [p("FLICKER", "Wow... it's all bubbles! The Fizzlings live in here, behind the falls."),
+                p("FLICKER", "Let's find the king. The Ember of Wisdom must be somewhere around here.")]
+    }
+    if id == "fizzling" {
+        if game.flag("gulp_done") { return [p("FIZZLING", "The princess is back! Pop pop hooray! ...Ahem. Welcome, honoured guest.")] }
+        return [p("FIZZLING", "Ssshh! The king is in a terrible mood. Princess Effervescia has gone missing!"),
+                p("FIZZLING", "She was last seen at Lake Brine, swimming with her pet minnow. She's a fizzy one, our princess.")]
+    }
+    if id == "fizzling2" {
+        return [p("FIZZLING", "Lord Gulp, the great sturgeon, guards our fountain. Lately he's been coughing up bubbles. Nasty ones."),
+                p("FIZZLING", "He only eats fresh fish, you know. Served in a jar. He's very particular.")]
+    }
+    if id == "diver" {
+        if game.has_item("fizzbubble") {
+            return [ask("DIVER", "Again? Five stones, fifty seconds. For the fun of it!", ["Let's go", "No thanks"])]
+        }
+        return [p("DIVER", "You! Land-sprout! Can you dive? Bet you can't!"),
+                ask("DIVER", "I'll drop five fizz-stones in the pool. Bring them all up in fifty seconds and you'll get a prize. Ready?", ["Let's go", "No thanks"])]
+    }
+    if id == "dive_won" {
+        return [p("DIVER", "Wha-! All five! Not bad for a land-sprout!"),
+                p("DIVER", "Here - the FIZZ BUBBLE. Hold it in your mouth and you'll go twice as deep.")]
+    }
+    if id == "dive_again" { return [p("DIVER", "All five again! You're half Fizzling, you are.")] }
+    if id == "dive_lost" { return [p("DIVER", "Time's up! Bubble-brained! Talk to me if you want another go.")] }
+    if id == "carb_1" {
+        return [p("KING CARBONARIUS", "Hrmmph. A Sprout? With a pilot light? What does a Sprout want with the King of the Fizzlings?"),
+                p("KING CARBONARIUS", "The Ember of Wisdom?! Do you think I care about embers when my daughter, my little Effervescia, is LOST?!"),
+                p("KING CARBONARIUS", "She went out to Lake Brine and never came back. Find her, and maybe we'll talk. Now leave me to my sorrow. *gurgle*")]
+    }
+    if id == "carb_2" { return [p("KING CARBONARIUS", "*sniff* Effervescia... she loved Lake Brine so. South of the valley, Sprout. Find her! *gurgle*")] }
+    if id == "carb_letter" {
+        return [p("KING CARBONARIUS", "What's that? A letter... in a jar? That's Effervescia's writing!"),
+                p("", "\"HELP! I'm inside Lord Gulp's tummy! Don't tell Daddy! --Fizzy\""),
+                p("KING CARBONARIUS", "INSIDE LORD GULP?! The guardian has been acting strange since that Duke came round with a present for him..."),
+                p("KING CARBONARIUS", "Go through to the fountain, Sprout. Lord Gulp eats only fish, served in a jar. Keep the jar. Find my daughter!"),
+                p("", "King Carbonarius shuffled aside, very slowly.")]
+    }
+    if id == "carb_moved" { return [p("KING CARBONARIUS", "The fountain is through there. Lord Gulp eats fish, in a jar. Hurry, Sprout! *gurgle*")] }
+    if id == "carb_thanks" {
+        return [p("KING CARBONARIUS", "Effervescia is home! Sprout, you have the thanks of every Fizzling. *happy gurgle*"),
+                p("KING CARBONARIUS", "...She says you're engaged now? Hrmmph. We'll talk about that later.")]
+    }
+
+    # ---- Lake Brine
+    if id == "sign_lake" { return [p("", "LAKE BRINE|The great salt lake. Bathing at your own risk.")] }
+    if id == "professor" {
+        if game.flag("got:lake_jar") { return [p("PROFESSOR BRINEWORTH", "A letter in a jar! How marvellous! The currents bring all sorts of things to rest by the island.")] }
+        return [p("PROFESSOR BRINEWORTH", "Hello there! I study the waters of Lake Brine. Fascinating stuff."),
+                p("PROFESSOR BRINEWORTH", "I saw something glinting at the bottom near the island the other day. Too deep for me - I can't dive more than a whisker."),
+                p("PROFESSOR BRINEWORTH", "The Fizzlings can dive ever so deep, of course. They have a trick with bubbles.")]
+    }
+    if id == "sign_fishing" { return [p("", "FISHING POND|Closed for repairs. Back soon! --The Pond Man")] }
+    if id == "fizzy_letter" {
+        return [p("", "There's a letter inside the jar. It smells of soda.|\"HELP! I'm inside Lord Gulp's tummy! Don't tell Daddy! --Fizzy\""),
+                p("FLICKER", "Fizzy... Princess Effervescia! We should show this to King Carbonarius!")]
+    }
+
+    # ---- Fizzwater Fountain
+    if id == "fountain_enter" { return [p("FLICKER", "The fountain! And that big shape out in the water... that must be Lord Gulp. He's HUGE.")] }
+    if id == "gulp_look" {
+        if game.flag("carb_moved") and not game.has_item("jar1") { return [p("FLICKER", "Lord Gulp is fast asleep... and his tummy is gurgling. Bad.")] }
+        if game.flag("jar1_fish") { return [p("FLICKER", "Lord Gulp is snoring. Sprig, the fish! Use the jar on the altar, by Lord Gulp!")] }
+        return [p("FLICKER", "Lord Gulp is snoring. The king said he eats fish from a jar... Catch one of the fish in the shallows! Swing the jar at it.")]
+    }
+    if id == "got_fish" { return [p("", "You caught a fish in your jar!|Use it again to let it go, or feed it to someone hungry.")] }
+    if id == "gulp_fed" {
+        return [p("", "SLUUURP!"),
+                p("FLICKER", "He ate it! And he's... opening wide... SPRIG! He's going to-")]
+    }
+    if id == "fizzy_ember" {
+        return [p("FIZZY", "There you are! My knight in shining... apron. Hmph. You took your time."),
+                p("FIZZY", "You carried me all the way through Lord Gulp. Do you know what that means, among Fizzlings?"),
+                p("FIZZY", "...It means we're ENGAGED. Don't argue. It's tradition."),
+                p("FIZZY", "And a Fizzling princess gives her betrothed her most precious treasure. Here. The EMBER OF WISDOM. Mother gave it to me.")]
+    }
+    if id == "fizzy_after" { return [p("FIZZY", "Go on then, save the kingdom. And then come back. We have a wedding to plan!")] }
+
+    # ---- inside Lord Gulp
+    if id == "gulp_enter" {
+        return [p("FLICKER", "Eww eww EWW! We're inside a FISH! It's all squishy!"),
+                p("FLICKER", "The princess must be in here somewhere. And whatever's making Lord Gulp sick...")]
+    }
+    if id == "fizzy_meet" {
+        return [p("PRINCESS FIZZY", "Who are YOU? Did Daddy send you? I TOLD him not to worry!"),
+                p("PRINCESS FIZZY", "I'm not lost. I'm looking for my mother's stone, the one she gave me. Lord Gulp swallowed it when the Duke made him sick."),
+                p("PRINCESS FIZZY", "You can help me look. But I am NOT walking on this squishy floor. You'll have to carry me."),
+                p("FLICKER", "Press {action} near her to lift her up, and {action} or {attack} to set her down. She looks heavy enough to hold down a switch...")]
+    }
+    if id == "fizzy_wait" { return [p("PRINCESS FIZZY", "I'll wait here. Do hurry up, it smells in there.")] }
+    if id == "gulp_sw_tip" { return [p("FLICKER", "A switch in the floor. The door only stays open while something's pressing it down...")] }
+    if id == "gulp_tendril" { return [p("FLICKER", "That tendril is holding something up. A spoon won't reach that far... but something you could throw might.")] }
+    if id == "knot_title" { return [p("", "THE GRISTLE KNOT|Indigestible Tangled Parasite")] }
+    if id == "knot_beaten" { return [p("FLICKER", "Gross, but you did it! Lord Gulp's going to feel MUCH better. Step into the light!")] }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -387,6 +498,20 @@ func after(what: string, choice: int) -> void {
         game.go(game.area, "start")
     } elif what == "owl_leaves" {
         for o in find_all("Owl") { send(o, "fly_away") }
+    } elif what == "dive_go" {
+        if choice == 0 { find("Dive Game").begin() }
+    } elif what == "fizzbubble" {
+        game.give("fizzbubble", "")
+    } elif what == "carb_moved" {
+        game.set_flag("carb_moved")
+    } elif what == "fizzy_letter_read" {
+        game.give("letter_fizzy", "fizzy_letter_talk")
+    } elif what == "fizzy_letter_talk" {
+        game.talk("fizzy_letter", "")
+    } elif what == "gulp_in" {
+        game.go("gulp", "start")
+    } elif what == "ember_wisdom" {
+        game.give("ember_wisdom", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -403,6 +528,18 @@ func area_started(area: string) -> void {
     if area == "hardcaves" and not game.flag("hc_entered") {
         game.set_flag("hc_entered")
         game.talk("hc_enter", "")
+    }
+    if area == "fizzdomain" and not game.flag("fizz_entered") {
+        game.set_flag("fizz_entered")
+        game.talk("fizz_enter", "")
+    }
+    if area == "fountain" and not game.flag("fountain_entered") {
+        game.set_flag("fountain_entered")
+        game.talk("fountain_enter", "")
+    }
+    if area == "gulp" and not game.flag("gulp_entered") {
+        game.set_flag("gulp_entered")
+        game.talk("gulp_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -439,7 +576,27 @@ func hint() -> string {
     if not game.flag("caves_boulder") { return "Pull a bomb flower with the Gum Bracelet and blow up the boulder at Hardtack Caverns, further up the trail!" }
     if not game.flag("hardcaves_done") { return "Into Hardtack Caverns! Find out what the Duke put in there." }
     if not game.has_item("ember_power") { return "Big Biscotti is waiting outside the caverns!" }
-    return "Two Embers! The last, the Ember of Wisdom, is with the Fizzlings at Fizzwater Falls, east of the field. (Not built yet!)"
+    if game.dungeon == "gulp" { return gulp_hint() }
+    if not game.flag("door:falls") { return "The last Ember is with the Fizzlings. Take the west road from the field into Brine Valley, and follow the river up to Fizzwater Falls!" }
+    if not game.flag("talked_carb") { return "King Carbonarius must be at the back of the Fizzling Domain. Let's talk to him!" }
+    if not game.has_item("fizzbubble") { return "The princess was last seen at Lake Brine... but we may need to dive deep. The Fizzling by the pool has a diving game - win it!" }
+    if not game.has_item("letter_fizzy") { return "Lake Brine is south down Brine Valley. Something was glinting at the bottom, near the island. Dive for it!" }
+    if not game.flag("carb_moved") { return "Show Fizzy's letter to King Carbonarius!" }
+    if not game.flag("gulp_open") { return "Lord Gulp eats fish from a jar. Catch a fish in the fountain's shallows with your jar, then use the jar at the altar beside him." }
+    if not game.flag("gulp_done") { return "Lord Gulp opened wide for us. In we go... Fizzy's in there somewhere!" }
+    if not game.has_item("ember_wisdom") { return "Fizzy's waiting at Fizzwater Fountain!" }
+    return "All three Embers! We should go back to Castle Larder and tell Saffron. (The rest of the story isn't built yet!)"
+}
+
+func gulp_hint() -> string {
+    if not game.flag("ga_sw") { return "Stand on the switch in the floor and see what opens!" }
+    if not game.flag("met_fizzy") { return "Princess Fizzy must be further in. Keep going north!" }
+    if not game.has_item("boomerang") { return "The west door needs its switch held down. Carry Fizzy over and set her down on it ({attack})! Then deal with what's inside." }
+    if not game.flag("gd_bridge") { return "In the east room, a tendril holds up a bridge. Focus on it with {focus} and throw the boomerang!" }
+    if not game.flag("door:gulp_north") { return "Use the small key on the north door of the round room!" }
+    if not game.has_item("bosskey_gulp") { return "There's a door in the north room that needs a switch held down. Bring Fizzy!" }
+    if not game.flag("ge_knot") { return "Three tendrils in the north room guard the way to the boss. Cut them all with the boomerang!" }
+    return "The boss is through the big door. Its tendrils protect it - cut them with the boomerang, and it'll drop!"
 }
 
 func hardcaves_hint() -> string {
@@ -473,6 +630,14 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "fizzbubble" { return "You got the FIZZ BUBBLE!|Now you can dive much deeper. Press {action} while swimming, and hold it to go down." }
+    if kind == "jar1" { return "You got a JAR!|Put it on a button. Swing it to catch things... like fish." }
+    if kind == "letter_fizzy" { return "You got FIZZY'S LETTER!|A soggy letter from Princess Effervescia. Her father should see this." }
+    if kind == "boomerang" { return "You got the SPATULA BOOMERANG!|Press its button to throw it. Focus with {focus} first to aim. It stuns, cuts, and fetches things." }
+    if kind == "ember_wisdom" { return "You got the EMBER OF WISDOM!|The ember that preserves. All three Embers are yours!" }
+    if kind == "map_gulp" { return "You found the DUNGEON MAP!|See every room inside Lord Gulp in the pause menu." }
+    if kind == "compass_gulp" { return "You found the COMPASS!|Now the map shows the treasure and the boss." }
+    if kind == "bosskey_gulp" { return "You got the BOSS KEY!|It opens the way to what's making Lord Gulp sick." }
     if kind == "spoon" { return "You got the WOODEN SPOON!|Swing it with {attack}. Hold {attack} and let go for a spin attack!" }
     if kind == "potlid" { return "You got the POT-LID SHIELD!|Hold {shield} to raise it. It blocks attacks from the front." }
     if kind == "shooter" { return "You got the PEA SHOOTER!|It's on a C button: press it to fire. Focus with {focus} first to aim at what Flicker marks." }

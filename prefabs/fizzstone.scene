@@ -1,0 +1,19 @@
+# A fizz-stone for the diving game (divestone.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Fizz Stone"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/fizzstone.obj"
+    color = #a0f0ffff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/divestone.bs"

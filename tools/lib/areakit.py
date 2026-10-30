@@ -31,6 +31,9 @@ MATERIALS = {
     'hedge': ('art/hedge.png', '#ffffffff', True, True, True, True),
     'canopy': ('art/leaves.png', '#b8d8a8ff', False, False, True, False),
     'water': ('art/water.png', '#ffffffc8', False, False, False, False),
+    'flesh': ('art/flesh.png', '#ffffffff', True, False, True, True),
+    'fizzrock': ('art/fizzrock.png', '#ffffffff', True, True, True, True),
+    'sand': ('art/sand.png', '#ffffffff', True, False, True, True),
     'crock': ('art/crock.png', '#ffffffff', True, True, True, True),
     'dough': ('art/dough.png', '#ffffffff', True, False, True, True),
     'dough_wall': ('art/dough.png', '#e8d8c0ff', True, False, True, True),
@@ -154,12 +157,12 @@ class Area:
                     ('Parent', [('entity', i)]))
 
     def enemy(self, brain, x, y, z, yaw=0, hp=2, damage=2, group='', model=None, **more):
-        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub', 'stalebie': 'stalebie', 'crustling': 'crustling', 'roller': 'hardtack_kid'}[brain]
+        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub', 'stalebie': 'stalebie', 'crustling': 'crustling', 'roller': 'hardtack_kid', 'jelly': 'jelly'}[brain]
         kw = {'brain': brain, 'hp': hp, 'damage': damage}
         if group:
             kw['group'] = group
         kw.update(more)
-        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7), 'stalebie': (0.32, 1.3), 'crustling': (0.4, 0.8), 'roller': (0.45, 1.0)}[brain]
+        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7), 'stalebie': (0.32, 1.3), 'crustling': (0.4, 0.8), 'roller': (0.45, 1.0), 'jelly': (0.4, 0.8)}[brain]
         self.entity(brain.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % model, shadow=True),
                     ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
                     collider('capsule', (1, h, 1), r, offset=(0, h / 2, 0)), kinematic(),
@@ -223,6 +226,34 @@ class Area:
         tex = {'planks': 'art/planks.png', 'web': 'art/web.png', 'hedge': 'art/hedge.png'}[material]
         self.entity('Blocker', t3((x, y + size[1] / 2, z), (0, yaw, 0), size), mesh('cube', color, tex, uv=(size[0], size[1]), cull=material != 'web'),
                     collider('box'), script('scripts/blocker.bs', until=until))
+
+    def water(self, x0, z0, x1, z1, surface, depth=3.0, round_=False):
+        """A body of water: the surface drawn, a trigger under it (sprig.bs swims in it).
+        The ground under it is the area's job. round_: a disc inscribed in the rectangle."""
+        cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+        if round_:
+            self.geo('water', cx, cz).cylinder((cx, surface, cz), (x1 - x0) / 2, 0.0, 20, top=True, uvs=0.15)
+        else:
+            self.geo('water', cx, cz).quad((x0, surface, z1), (x1, surface, z1), (x1, surface, z0), (x0, surface, z0),
+                                           (x0 / 4, z1 / 4), (x1 / 4, z1 / 4), (x1 / 4, z0 / 4), (x0 / 4, z0 / 4))
+        self.entity('Water', t3((cx, surface - depth / 2, cz)), collider('box', (x1 - x0, depth, z1 - z0), trigger=True),
+                    tags('water'), script('scripts/water.bs', surface=surface))
+
+    def floorswitch(self, x, y, z, id):
+        self.entity('Floor Switch', t3((x, y, z)), mesh('model', '#d8b040ff', file='models/switch.obj'),
+                    script('scripts/floorswitch.bs', id=id))
+
+    def switchdoor(self, x, y, z, size, when, stay=False, yaw=0, material='flesh', color='#c86070ff'):
+        tex = {'flesh': 'art/flesh.png', 'planks': 'art/planks.png', 'stone': 'art/stone.png'}[material]
+        kw = {'when': when}
+        if stay:
+            kw['stay'] = True
+        self.entity('Switch Door', t3((x, y + size[1] / 2, z), (0, yaw, 0), size), mesh('cube', color, tex, uv=(size[0], size[1])),
+                    collider('box'), ('RigidBody3D', [('type', 'kinematic')]), script('scripts/switchdoor.bs', **kw))
+
+    def tendril(self, x, y, z, id, set_='', count=3):
+        self.entity('Tendril', t3((x, y, z)), mesh('model', '#e8d0b0ff', file='models/tendril.obj'), collider('capsule', (1, 2.4, 1), 0.25, offset=(0, -1.2, 0)),
+                    tags('focusable'), script('scripts/tendril.bs', id=id, set=set_, count=count))
 
     def point_light(self, x, y, z, color, intensity, range_):
         self.entity('Lamp', t3((x, y, z)), light('point', color, intensity, range=range_))

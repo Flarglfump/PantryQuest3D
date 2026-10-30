@@ -1,0 +1,51 @@
+@strict @3d
+# knotarm.bs - one of the Gristle Knot's three tendrils, swinging round it (gristle.bs).
+# The boomerang cuts it; it grows back when the knot rises again. Touching it stings.
+
+var knot: entity
+var slot: int = 0
+var cut: bool = false
+var radius: number = 1.4
+var sprig: entity
+
+func start() -> void { sprig = find("Sprig") }
+
+func focus_point() -> vec3 { return self.position + vec3(0, -1.0, 0) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if cut { return }
+    if how != "boomerang" {
+        play_sound("sfx/block.wav", 0.5, 1.4)
+        return
+    }
+    cut = true
+    self.Mesh.visible = false
+    remove_tag(self, "focusable")
+    remove_tag(self, "shootable")
+    spawn("prefabs/poof.scene", self.position + vec3(0, -1, 0))
+    play_sound("sfx/cut.wav", 0.8, 0.6)
+    knot.arm_cut()
+}
+
+func grow() -> void {
+    cut = false
+    self.Mesh.visible = true
+    add_tag(self, "focusable")
+    add_tag(self, "shootable")
+}
+
+func update(dt: number) -> void {
+    if knot == nil or not knot.alive {
+        destroy(self)
+        return
+    }
+    var a: number = knot.spin + slot * 120
+    self.position = knot.position + vec3(cos(a) * 2.3, -0.2, sin(a) * 2.3)
+    self.rotation = vec3(0, -a, sin(a * 3) * 15)
+    if not cut and knot.st == "float" {
+        var tip: vec3 = self.position + vec3(0, -1.8, 0)
+        if distance(vec3(tip.x, 0, tip.z), vec3(sprig.x, 0, sprig.z)) < 0.8 and abs(sprig.y + 0.6 - tip.y) < 1.4 {
+            sprig.hurt(2, self.position, "touch")
+        }
+    }
+}

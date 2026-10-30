@@ -1,0 +1,26 @@
+@strict @3d
+# sunken.bs - something lying on the bottom of the lake that Sprig takes by diving down to
+# it (the jar with Fizzy's letter). Gives `item`, then the talk `then`.
+
+var item: string = ""
+var id: string = ""
+var then: string = ""
+var game: entity
+var sprig: entity
+var t: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    if game.flag("got:" + id) { destroy(self) }
+}
+
+func update(dt: number) -> void {
+    t += dt
+    self.rotation = vec3(sin(t * 60) * 10, t * 20, 0)
+    if game.state == "play" and distance(sprig.position + vec3(0, 0.4, 0), self.position) < 1.2 {
+        game.set_flag("got:" + id)
+        game.give(item, then)
+        destroy(self)
+    }
+}

@@ -1,0 +1,68 @@
+@strict @3d
+# fizzy.bs - Princess Effervescia ("Fizzy") of the Fizzlings, lost inside Lord Gulp. She
+# won't walk ("my royal feet!"), so Sprig carries her: A picks her up, A or B sets her down.
+# She's heavy enough to hold a floor switch down.
+
+var prompt: string = "Lift"
+var reach: number = 1.8
+var game: entity
+var sprig: entity
+var carried: bool = false
+var met: bool = false
+var vy: number = 0
+var flying: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    if game.flag("gulp_done") { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.8, 0) }
+func can_use(p: vec3) -> bool { return not carried and sprig.carrying == nil }
+
+func interact(who: entity) -> void {
+    if not game.flag("met_fizzy") {
+        game.set_flag("met_fizzy")
+        game.talk("fizzy_meet", "")
+        return
+    }
+    who.carry(self)
+    play_animation(self, "hold", 1, true)
+    play_sound("sfx/hop.wav", 0.5, 1.3)
+}
+
+func throw(v: vec3) -> void { put_down(self.position + vec3(v.x, 0, v.z) * 0.15) }
+
+func put_down(p: vec3) -> void {
+    carried = false
+    flying = true
+    vy = 0
+    self.position = p
+    play_animation(self, "idle", 1, true)
+}
+
+func update(dt: number) -> void {
+    if carried {
+        self.rotation = vec3(0, sprig.facing, 0)
+        return
+    }
+    if flying {
+        vy -= 20 * dt
+        var next: number = self.y + vy * dt
+        var hit: any = raycast(self.position + vec3(0, 0.3, 0), vec3(self.x, next - 0.05, self.z), self)
+        if hit != nil and vy < 0 {
+            self.y = hit[1].y
+            flying = false
+        } else {
+            self.y = next
+        }
+        if self.y < -1.5 {
+            self.position = sprig.safe_pos + vec3(0, 0.5, 0)
+            vy = 0
+        }
+    }
+    var to: vec3 = sprig.position - self.position
+    if length(to) < 6 { self.rotation = vec3(0, atan2(-to.x, -to.z), 0) }
+    play_animation(self, "idle", 1, true)
+}

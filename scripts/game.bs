@@ -119,6 +119,19 @@ func set_flag(name: string) -> void {
         broadcast("flags_changed")
     }
 }
+func clear_flag(name: string) -> void {
+    var i: int = 0
+    while i < len(flags) {
+        if flags[i] == name {
+            remove(flags, i)
+            commit()
+            broadcast("flags_changed")
+            return
+        }
+        i += 1
+    }
+}
+
 func has_item(name: string) -> bool { return contains(items, name) }
 
 func count(name: string) -> int {
@@ -176,6 +189,7 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
+    if name == "boomerang" or name == "jar1" { put_on_button(name) }
     if name == "pipe" {
         if not contains(items, "song_fennel") { push(items, "song_fennel") }
         put_on_button(name)
@@ -327,6 +341,7 @@ func pause() -> void {
     commit()
     set_global("area_name", area_name)
     set_global("dungeon", dungeon)
+    set_global("area", area)
     state = "paused"
     play_sound("sfx/menu.wav", 0.6)
     push_scene("pause.scene", true, false)

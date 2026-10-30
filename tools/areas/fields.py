@@ -119,7 +119,8 @@ def build():
     a.loadzone(hx - 2, height(hx - 2, hz), hz, 2.5, 3, 4, to='', say='tbc_dairy')
 
     # ---- the other roads out ----
-    a.loadzone(-HALF + 0.5, height(-HALF + 2, 60), 60, 1.5, 4, 12, to='', say='tbc_lake')
+    a.loadzone(-HALF + 0.5, height(-HALF + 2, 60), 60, 1.5, 4, 12, to='gorge', at='fields')
+    a.spawn_point('gorge', -86, height(-86, 60) + 0.1, 60, -90)
     a.loadzone(78, height(78, -HALF + 2), -HALF + 0.5, 12, 4, 1.5, to='peppermill', at='fields')
     a.spawn_point('peppermill', 74, height(74, -84) + 0.1, -84, 150)
     a.loadzone(HALF - 0.5, height(HALF - 2, 40), 40, 1.5, 4, 12, to='', say='tbc_thicket')

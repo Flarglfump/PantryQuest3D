@@ -47,7 +47,7 @@ def main():
              'popcorn': ('models/bomb.obj', '#fff4d0ff', 0.6)}
     for kind, (file, color, s) in looks.items():
         prefab('pickup_' + kind, 'A pickup: ' + kind + ' (pickup.bs).',
-               ('Pickup', t3((0, 0, 0), scale=s), mesh('model', color, file=file, lit=False, cast=False, shadow=True),
+               ('Pickup', t3((0, 0, 0), scale=s), mesh('model', color, file=file, lit=False, cast=False, shadow=True), tags('pickup'),
                 script('scripts/pickup.bs', kind=kind)))
     prefab('larva', "A mite larva, laid by Queen Mildewmite (enemy.bs).",
            ('Larva', t3((0, 0, 0)), mesh('model', file='models/larva.glb', shadow=True),
@@ -66,6 +66,14 @@ def main():
             particles(rate=50, max=40, lifetime=0.4, speed=0.6, spread=180, size_start=0.3, size_end=0, color_start='#ffe080ff',
                       color_end='#ff200000', blend='add'),
             script('scripts/shot.bs', kind='fire', life=2.0)))
+    prefab('boomerang', "The Spatula Boomerang in flight (boomerang.bs).",
+           ('Boomerang', t3((0, 0, 0)), mesh('model', '#d0c0a0ff', file='models/spatula.obj', cast=False, cull=False), script('scripts/boomerang.bs')))
+    prefab('knotarm', "One of the Gristle Knot's tendrils (knotarm.bs).",
+           ('Knot Arm', t3((0, 0, 0)), mesh('model', '#e8d0b0ff', file='models/tendril.obj'), tags('focusable', 'shootable'), script('scripts/knotarm.bs')))
+    prefab('fizzstone', "A fizz-stone for the diving game (divestone.bs).",
+           ('Fizz Stone', t3((0, 0, 0)), mesh('model', '#a0f0ffff', file='models/fizzstone.obj', lit=False), script('scripts/divestone.bs')))
+    prefab('fish', "A little fish in the shallows (fish.bs).",
+           ('Fish', t3((0, 0, 0)), mesh('model', '#f0a040ff', file='models/fish.obj'), tags('fish'), script('scripts/fish.bs')))
     prefab('blast', "A bomb going off.",
            ('Blast', t3((0, 0, 0)), burst('#fff0b0ff', '#ff401000', 60, 6.0, 0.5, 0.6, -2.0, blend='add')))
     prefab('poof', "A puff of smoke (an enemy beaten, something appearing).",

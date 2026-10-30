@@ -1,0 +1,62 @@
+@strict @3d
+# boomerang.bs - the Spatula Boomerang: flies out to what Flicker has focused (or straight
+# ahead), hitting what it passes (it stuns enemies, cuts tendrils, flips switches, fetches
+# pickups), and comes back to Sprig's hand.
+
+var owner: entity
+var aim: entity                    # what it's thrown at (it follows it)
+var goal: vec3
+var speed: number = 15
+var back: bool = false
+var hit_list: list = []
+var t: number = 0
+var spin: number = 0
+
+func update(dt: number) -> void {
+    t += dt
+    spin += 1440 * dt
+    self.rotation = vec3(0, spin, 0)
+    var hand: vec3 = owner.position + vec3(0, 0.8, 0)
+    if not back and aim != nil and aim.alive { goal = aim.focus_point() }
+    var to: vec3 = goal
+    if back { to = hand }
+    var d: vec3 = to - self.position
+    var l: number = length(d)
+    var step: number = speed * dt
+    if not back and (l <= step or t > 0.9) {
+        back = true
+        hit_list = []
+    }
+    if back and l <= max(step, 0.6) {
+        owner.boomerang = nil
+        destroy(self)
+        return
+    }
+    var next: vec3 = self.position + d * (min(step, l) / max(l, 0.0001))
+    if not back {
+        var wall: any = raycast(self.position, next, owner)
+        if wall != nil {
+            send(wall[0], "hit", 1, "boomerang", self.position)
+            spawn("prefabs/spark.scene", wall[1])
+            play_sound("sfx/tick.wav", 0.6)
+            back = true
+            next = self.position
+        }
+    }
+    self.position = next
+    for e in overlap_sphere(self.position, 0.6) {
+        if e == owner or contains(hit_list, e) { continue }
+        push(hit_list, e)
+        send(e, "hit", 1, "boomerang", self.position)
+    }
+    for s2 in find_tagged("shootable") {
+        if not contains(hit_list, s2) and distance(s2.global_position, self.position) < s2.radius {
+            push(hit_list, s2)
+            s2.hit(1, "boomerang", self.position)
+        }
+    }
+    for p in find_tagged("pickup") {
+        if distance(p.position, self.position) < 0.8 { p.position = self.position }
+    }
+    if floor(t * 8) != floor((t - dt) * 8) { play_sound("sfx/swing.wav", 0.3, 1.6) }
+}

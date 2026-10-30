@@ -17,6 +17,8 @@ entity
     shadow = true
     lit = false
     cast_shadow = false
+  Tags
+    list = "pickup"
   Script
     file = "scripts/pickup.bs"
     vars = "kind = \"heart\""

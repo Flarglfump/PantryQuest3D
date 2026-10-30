@@ -82,6 +82,23 @@ func hit(amount: int, how: string, from: vec3) -> void {
         play_sound("sfx/thunk.wav", 0.6)
         return
     }
+    if how == "boomerang" and brain != "jelly" {
+        stun = 3                             # the boomerang stuns; it doesn't hurt
+        flash = 0.2
+        play_sound("sfx/hit.wav", 0.5, 1.4)
+        return
+    }
+    if brain == "jelly" and (how == "boomerang" or how == "pea") {
+        stun = 3                             # stunned, it stops crackling
+        flash = 0.2
+        play_sound("sfx/hit.wav", 0.5, 1.4)
+        return
+    }
+    if brain == "jelly" and stun <= 0 and how != "bomb" {
+        sprig.hurt(2, self.position, "unblockable")     # (striking it charged: a shock)
+        play_sound("sfx/zap.wav", 0.7)
+        return
+    }
     if stun <= 0 and how == "pea" and brain == "fuzzball" {
         stun = 2.5                           # a pea stuns; it doesn't hurt much
     }
@@ -179,6 +196,8 @@ func update(dt: number) -> void {
         move = fuzzball(dt, to, d) * 0.8
     } elif brain == "roller" {
         move = roller(dt, to, d)
+    } elif brain == "jelly" {
+        move = jelly(dt, to, d)
     }
     if brain == "stalebie" and (st == "under" or st == "rising" or st == "sinking") {
         self.rotation = vec3(0, yaw, 0)
@@ -194,7 +213,13 @@ func update(dt: number) -> void {
         if self.y < game.kill_y { die() }
     }
     self.rotation = vec3(0, yaw, 0)
-    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff8080ff" } else { self.Mesh.color = "#ffffffff" }
+    if flash > 0 and floor(flash * 30) % 2 == 0 {
+        self.Mesh.color = "#ff8080ff"
+    } elif brain == "jelly" and stun <= 0 and floor(st_t * 10) % 3 == 0 {
+        self.Mesh.color = "#ffff80ff"
+    } else {
+        self.Mesh.color = "#ffffffff"
+    }
     # touching Sprig hurts him (not while stunned, or for a scrub)
     if brain != "scrub" and brain != "stalebie" and stun <= 0 and st != "hurt" and d < 0.75 and abs(sprig.y - self.y) < 1.2 {
         var r: string = sprig.hurt(damage, self.position, "touch")
@@ -306,6 +331,15 @@ func roller(dt: number, to: vec3, d: number) -> vec3 {
         }
         return roll_dir * 5.5
     }
+    return vec3(0, 0, 0)
+}
+
+# A shock jelly: drifts after Sprig, crackling. A blade on it gives him a shock - stun it
+# with the boomerang first, then it's soft.
+func jelly(dt: number, to: vec3, d: number) -> vec3 {
+    face(sprig.position, 120, dt)
+    play_animation(self, "hop", 0.6, true)
+    if d < 8 { return fwd() * 1.1 }
     return vec3(0, 0, 0)
 }
 

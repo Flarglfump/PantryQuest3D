@@ -1,0 +1,57 @@
+@strict @3d
+# gulpaltar.bs - Lord Gulp, the Fizzlings' guardian sturgeon, dozing beside his altar. He
+# eats only fish in jars: use the jar with a fish in it near him and he opens wide... and
+# swallows Sprig. Afterwards A goes back in.
+
+var prompt: string = "Look"
+var reach: number = 6
+var game: entity
+var sprig: entity
+var t: number = 0
+var open: number = 0
+var eating: number = -1
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    if game.flag("gulp_open") {
+        open = 1
+        prompt = "Enter"
+    }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 3, 0) }
+func can_use(p: vec3) -> bool { return eating < 0 }
+
+func interact(who: entity) -> void {
+    if game.flag("gulp_open") {
+        play_sound("sfx/gulp.wav", 0.8)
+        game.go("gulp", "start")
+        return
+    }
+    game.talk("gulp_look", "")
+}
+
+func fed(who: entity) -> void {
+    game.clear_flag("jar1_fish")
+    game.set_flag("gulp_open")
+    prompt = "Enter"
+    eating = 0
+    play_sound("sfx/splash.wav", 0.8)
+}
+
+func update(dt: number) -> void {
+    t += dt
+    self.y = self.y + sin(t * 40) * 0.003
+    if eating >= 0 {
+        eating += dt
+        open = min(1, eating / 1.2)
+        if eating > 1.4 and game.state == "play" {
+            eating = -1
+            play_sound("sfx/gulp.wav", 0.9)
+            game.talk("gulp_fed", "gulp_in")
+        }
+    }
+    var mouth: entity = child(self, "Jaw")
+    if mouth != nil { mouth.rotation = vec3(open * 35, 0, 0) }
+}

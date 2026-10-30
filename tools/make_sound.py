@@ -85,6 +85,10 @@ def main():
     sfx('crumble', 0.5, [(0, tone(R, 700, 0.48, 'noise', vol=0.4, f1=120, decay=0.15))])
     sfx('sizzle', 0.4, [(0, tone(R, 5000, 0.38, 'noise', vol=0.25, decay=0.15))])
     sfx('song', 0.1, [(0, tone(R, 'A5', 0.08, wave='triangle', vol=0.2))])
+    sfx('zap', 0.35, [(0, tone(R, 1200, 0.33, duty=0.125, vol=0.18, f1=300, vibrato=30, vib_delay=0)), (0, tone(R, 4000, 0.3, 'noise', vol=0.15, decay=0.1))])
+    sfx('dive', 0.4, [(0, tone(R, 900, 0.38, 'noise', vol=0.25, f1=200, decay=0.15)), (0, tone(R, 400, 0.3, wave='triangle', vol=0.15, f1=150))])
+    sfx('bubble', 0.15, seq([('C6', 1), ('G6', 1)], 0.05, wave='triangle', vol=0.18))
+    sfx('gulp', 1.2, [(0, tone(R, 90, 1.1, wave='triangle', vol=0.5, f1=40, vibrato=4, vib_delay=0)), (0.3, tone(R, 400, 0.8, 'noise', vol=0.25, f1=120, decay=0.3))])
     print('sounds written')
 
 

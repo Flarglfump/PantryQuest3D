@@ -112,6 +112,10 @@ func interact(who_by: entity) -> void {
     if who == "saffron" or who == "kimchi" { then = "saffron_done" }
     if id == "mtguard_letter" { then = "mountain_open" }
     if id == "biscotti_ember" { then = "ember_power" }
+    if who == "diver" and id == "diver" { then = "dive_go" }
+    if id == "carb_letter" { then = "carb_moved" }
+    if id == "carb_1" { game.set_flag("talked_carb") }
+    if id == "fizzy_ember" { then = "ember_wisdom" }
     if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
     if id == "fennel_1" { game.set_flag("talked_fennel") }
     game.talk(id, then)
@@ -154,6 +158,17 @@ func talk_for() -> string {
     if who == "hardtack" {
         if game.has_item("bracelet") { return "hardtack_2" }
         return "hardtack_1"
+    }
+    if who == "carbonarius" {
+        if game.flag("gulp_done") { return "carb_thanks" }
+        if game.flag("carb_moved") { return "carb_moved" }
+        if game.has_item("letter_fizzy") { return "carb_letter" }
+        if game.flag("talked_carb") { return "carb_2" }
+        return "carb_1"
+    }
+    if who == "fizzy" {
+        if game.has_item("ember_wisdom") { return "fizzy_after" }
+        return "fizzy_ember"
     }
     if who == "guard" {
         if game.flag("met_saffron") { return "guard_2" }

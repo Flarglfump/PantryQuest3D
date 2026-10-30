@@ -159,6 +159,24 @@ def main():
             'E5:0.5 F5:0.5 G5:1 r:0.5 F5:0.5 E5:1 D5:0.5 E5:0.5 F5:1 E5:2')
     bass = ' '.join(['E2:0.5 r:0.5 E2:0.5 F2:0.5'] * 4 + ['D2:0.5 r:0.5 D2:0.5 E2:0.5'] * 2 + ['E2:0.5 r:0.5 E2:0.5 F2:0.5'] * 2)
     song('caverns', 120, [(lead, 'square', 0.25, 0.11, LEAD), (bass, 'triangle', 0.5, 0.34, {})], drums='k . h k s . h . k . h k s . h h', echo=0.3)
+    # ---- the Fizzling Domain: bubbly and bright, in D major with a lilt ----
+    lead = ('F#5:0.5 A5:0.5 D6:0.5 A5:0.5 B5:1 A5:1 G5:0.5 F#5:0.5 E5:0.5 F#5:0.5 A5:2 '
+            'G5:0.5 B5:0.5 E6:0.5 B5:0.5 C#6:1 B5:1 A5:0.5 G5:0.5 F#5:0.5 E5:0.5 D5:2 '
+            'B4:0.5 D5:0.5 F#5:0.5 D5:0.5 G5:1 F#5:1 E5:0.5 F#5:0.5 G5:0.5 A5:0.5 B5:2 '
+            'A5:0.5 G5:0.5 F#5:0.5 E5:0.5 F#5:1 E5:1 D5:4')
+    bass = ' '.join(['D3:0.5 A3:0.5'] * 4 + ['E3:0.5 B3:0.5'] * 4 + ['G2:0.5 D3:0.5'] * 4 + ['A2:0.5 E3:0.5', 'A2:0.5 E3:0.5', 'D3:0.5 A3:0.5', 'D3:0.5 A3:0.5'])
+    song('fizz', 108, [(lead, 'triangle', 0.5, 0.2, LEAD), (bass, 'square', 0.5, 0.1, {})], drums='k . h h s . h . k . h h s . h h', echo=0.35)
+    # ---- Brine Valley and the lake: an open, flowing tune in G ----
+    lead = ('D5:1 G5:1 B5:1.5 A5:0.5 G5:1 E5:1 D5:2 C5:1 E5:1 G5:1.5 F#5:0.5 E5:1 F#5:1 D5:2 '
+            'D5:1 G5:1 B5:1.5 C6:0.5 D6:1 B5:1 G5:2 A5:1 C6:1 B5:1 A5:1 G5:4')
+    bass = 'G2:2 D3:2 E3:2 B2:2 C3:2 G2:2 D3:2 D3:2 G2:2 D3:2 E3:2 B2:2 C3:2 D3:2 G2:4'
+    song('brine', 116, [(lead, 'square', 0.25, 0.13, LEAD), (bass, 'triangle', 0.5, 0.3, {})], drums='k . h . s . h . k . h k s . h .')
+    # ---- inside Lord Gulp: gurgling and odd, in A minor with a slow pulse ----
+    lead = ('A4:1 r:0.5 C5:0.5 B4:1 r:1 E5:0.5 D5:0.5 C5:0.5 B4:0.5 A4:2 '
+            'G#4:1 r:0.5 B4:0.5 D5:1 r:1 F5:0.5 E5:0.5 D5:0.5 C5:0.5 B4:2 '
+            'A4:1 r:0.5 C5:0.5 E5:1 r:1 A5:0.5 G5:0.5 F5:0.5 E5:0.5 D5:2 C5:0.5 B4:0.5 G#4:1 A4:4')
+    bass = ' '.join(['A2:1 r:0.5 A2:0.5'] * 4 + ['E2:1 r:0.5 E2:0.5'] * 4 + ['A2:1 r:0.5 A2:0.5'] * 2 + ['F2:1 r:0.5 F2:0.5', 'E2:1 r:0.5 E2:0.5'] + ['A2:1 r:0.5 A2:0.5'] * 2)
+    song('gulp', 92, [(lead, 'triangle', 0.5, 0.18, LEAD), (bass, 'square', 0.5, 0.12, {})], drums='k . . h k . s . k . . h k . s h', echo=0.4)
     # ---- game over ----
     song('gameover', 70, [('E5:1 D5:1 C5:1 B4:1 A4:2 C5:2 B4:4 r:4', 'square', 0.25, 0.14, LEAD),
                           ('A3:4 F3:4 E3:4 r:4', 'triangle', 0.5, 0.3, {})], loop=False, echo=0.3)

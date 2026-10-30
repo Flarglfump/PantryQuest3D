@@ -1,0 +1,30 @@
+@strict @3d
+# switchdoor.bs - a door (bars, a fleshy curtain) that slides up while the flag `when` is
+# set and comes down again when it isn't (a floor switch held down). With `stay`, once open
+# it stays open.
+
+var when: string = ""
+var stay: bool = false
+var game: entity
+var base_y: number = 0
+var up: number = 0
+var latched: bool = false
+
+func start() -> void {
+    game = find("Game")
+    base_y = self.y
+    if stay and game.flag(when) {
+        latched = true
+        up = 1
+    }
+    self.y = base_y + up * 3
+}
+
+func update(dt: number) -> void {
+    var want: number = 0
+    if latched or game.flag(when) { want = 1 }
+    if stay and game.flag(when) { latched = true }
+    if up < want { up = min(1, up + dt * 1.5) }
+    if up > want { up = max(0, up - dt * 1.5) }
+    self.y = base_y + up * 3
+}

@@ -1,0 +1,41 @@
+@strict @3d
+# fish.bs - a little fish darting about in the shallows, round where it started. A jar
+# swung at it catches it (sprig.bs: use_item "jar1").
+
+var home: vec3
+var t: number = 0
+var goal: vec3
+var wait: number = 0
+var sprig: entity
+
+func start() -> void {
+    home = self.position
+    goal = home
+    sprig = find("Sprig")
+}
+
+func update(dt: number) -> void {
+    t += dt
+    wait -= dt
+    var d: vec3 = goal - self.position
+    d.y = 0
+    var scared: bool = distance(sprig.position, self.position) < 1.6 and sprig.move_amount > 0.7
+    if wait <= 0 or length(d) < 0.2 or scared {
+        var a: number = random() * 360
+        var r: number = random() * 2.2
+        goal = home + vec3(cos(a) * r, 0, sin(a) * r)
+        if scared {
+            var away: vec3 = self.position - sprig.position
+            away.y = 0
+            if length(away) > 0.01 { goal = self.position + normalize(away) * 2 }
+        }
+        wait = 1 + random() * 2
+    }
+    if length(d) > 0.05 {
+        var sp: number = 1.2
+        if scared { sp = 3 }
+        self.position = self.position + normalize(d) * min(length(d), sp * dt)
+        self.rotation = vec3(0, atan2(-d.x, -d.z) + 180, sin(t * 900) * 10)
+    }
+    self.y = home.y + sin(t * 200) * 0.04
+}

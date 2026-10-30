@@ -163,6 +163,25 @@ def lavacheese(x, y):      # bubbling molten cheese
     return mix(c, (255, 250, 200), 0.6) if b else c
 
 
+def flesh(x, y):           # the inside of a giant fish: pink, wet, veined
+    n = fbm(x, y, 8, 31, 32)
+    v = abs(vnoise(x, y, 6, 32, wrap=5) - 0.5) < 0.04
+    c = mix((200, 90, 100), (240, 140, 140), n)
+    return mix(c, (150, 40, 70), 0.6) if v else c
+
+
+def fizzrock(x, y):        # pale blue water-worn stone with bubbles of light
+    n = fbm(x, y, 8, 33, 32)
+    b = hash2(x // 2, y // 2, 34) > 0.97
+    c = mix((110, 150, 180), (170, 205, 225), n)
+    return (230, 245, 255) if b else c
+
+
+def sand(x, y):
+    n = fbm(x, y, 4, 35, 32)
+    return mix((200, 180, 130), (232, 214, 168), n)
+
+
 def flowers(x, y):
     g = grass(x, y)
     h = hash2(x // 2, y // 2, 22)
@@ -175,7 +194,8 @@ def flowers(x, y):
 
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
-         'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss']
+         'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss',
+         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3']
 
 
 def icon_pixel(name, x, y):
@@ -281,6 +301,32 @@ def icon_pixel(name, x, y):
     if name == 'ember2':
         e = icon_pixel('ember', x, y)
         return (255, 90, 60, 255) if e[3] and e[1] < 200 else e
+    if name in ('jar1', 'jar2'):
+        return icon_pixel('jar', x, y)
+    if name == 'jar_fish':
+        j = icon_pixel('jar', x, y)
+        if j[3] and (cx / 3) ** 2 + ((cy - 2) / 1.6) ** 2 < 1:
+            return (240, 140, 50, 255)
+        return j
+    if name == 'boomerang':
+        if abs(cx) < 1.3 and -1 < cy < 7:
+            return (170, 120, 70, 255)
+        if abs(cx) < 4 and -7 < cy < -1:
+            return (220, 210, 190, 255) if abs(cx) < 3 else (150, 150, 150, 255)
+        return (0, 0, 0, 0)
+    if name == 'fizzbubble':
+        d = math.hypot(cx, cy)
+        if d > 6.5:
+            return (0, 0, 0, 0)
+        if math.hypot(cx + 2, cy + 2) < 1.5:
+            return (255, 255, 255, 255)
+        return (120, 200, 250, 200) if d < 5.5 else (60, 130, 220, 255)
+    if name == 'letter_fizzy':
+        l = icon_pixel('letter', x, y)
+        return (60, 140, 230, 255) if l[3] and l[0] == 200 else l
+    if name == 'ember3':
+        e = icon_pixel('ember', x, y)
+        return (90, 170, 255, 255) if e[3] and e[1] < 200 else e
     if name == 'letter':
         if abs(cx) < 6 and abs(cy) < 4:
             return (200, 60, 60, 255) if abs(cx) < 1.5 and abs(cy) < 1.5 else (240, 230, 200, 255)
@@ -293,7 +339,8 @@ def main():
                            ('thatch', thatch, 32), ('leaves', leaves, 32), ('hedge', hedge, 32), ('stone', stone, 32),
                            ('crock', crock, 32), ('dough', dough, 32), ('crust', crust, 32), ('mould', mould, 32),
                            ('clay', clay, 16), ('sack', sack, 16), ('chest', chest, 32), ('rot', rot, 32),
-                           ('flowers', flowers, 32), ('cobble', cobble, 32), ('crack', crack, 32), ('lavacheese', lavacheese, 32)]:
+                           ('flowers', flowers, 32), ('cobble', cobble, 32), ('crack', crack, 32), ('lavacheese', lavacheese, 32),
+                           ('flesh', flesh, 32), ('fizzrock', fizzrock, 32), ('sand', sand, 32)]:
         tex(name, size, fn)
     tex('water', 32, water, alpha=True)
     tex('web', 32, web, alpha=True)
