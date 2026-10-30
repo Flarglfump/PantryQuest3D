@@ -21,9 +21,11 @@ func update(dt: number) -> void {
     if used { return }
     if when != "" and not game.flag(when) {
         self.scale = vec3(0.001, 0.001, 0.001)
+        if has(self, "Particles") { self.Particles.emitting = false }
         return
     }
     self.scale = scale0
+    if has(self, "Particles") { self.Particles.emitting = true }
     self.rotation = vec3(0, t * 60, 0)
     var sprig: entity = find("Sprig")
     var d: vec3 = sprig.position - self.position

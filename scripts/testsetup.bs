@@ -6,6 +6,7 @@ var items: list = []
 var flags: list = []
 var spawn: string = ""
 var clock: number = -1
+var era: string = ""
 
 func start() -> void {
     var s: list = global("save", [])
@@ -38,6 +39,7 @@ func start() -> void {
         }
     }
     if spawn != "" { s[9] = spawn }
+    if era != "" { s[11] = era }
     set_global("save", s)
     if clock >= 0 { set_global("clock", clock) }
 }

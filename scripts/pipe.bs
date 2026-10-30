@@ -12,7 +12,8 @@ var song: string = ""
 var known: list = []
 
 # [id, name, notes] (a, l, u, r, d: A, left, up, right, down)
-const SONGS: list = [["fennel", "FENNEL'S TUNE", "drldrl"], ["lullaby", "SAFFRON'S LULLABY", "lurlur"]]
+const SONGS: list = [["fennel", "FENNEL'S TUNE", "drldrl"], ["lullaby", "SAFFRON'S LULLABY", "lurlur"],
+                     ["rising", "SONG OF RISING", "radrad"], ["prelude", "PRELUDE OF THE HEARTH", "ururlu"]]
 
 func start() -> void {
     var s: list = global("save", [])

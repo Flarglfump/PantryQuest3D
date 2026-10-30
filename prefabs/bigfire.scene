@@ -1,0 +1,29 @@
+# A great fire (the castle burning: storm.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Big Fire"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 40
+    max = 80
+    lifetime = 1.4
+    speed = 2.5
+    spread = 20
+    area = 6 2
+    gravity = -2
+    size_start = 2.4
+    size_end = 0.3
+    color_start = #ffb040ff
+    color_end = #c0200000
+    blend = add
+  Light
+    kind = point
+    color = #ff7030ff
+    intensity = 2
+    range = 22

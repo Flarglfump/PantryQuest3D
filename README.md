@@ -74,6 +74,14 @@ a jump attack.
   fish in the jar and feed it to Lord Gulp) and **Inside Lord Gulp** (dungeon 3: carry
   Princess Fizzy and set her on floor switches, shock jellies, the Spatula Boomerang,
   tendrils only it can cut, and **the Gristle Knot**). Fizzy gives the Ember of Wisdom.
+- **The storm and the Temple of the First Hearth**: with all three Embers, Larder Town
+  is caught in a storm, the castle burns, Saffron and Kimchi flee past and Duke Mildew
+  follows; Saffron's Kettle Whistle lies in the moat (dive for it; her voice teaches the
+  Song of Rising). In the temple the song opens the Door of Seasons; pulling the Cleaver
+  of Dawn moves the story **seven years on**: Sprig wakes, grown, in the Proofing Vault
+  with Old Mozz (the Umami Medallion), and outside the temple Larder Town has rotted
+  under the Moldering Spire. Cinder waits on the steps with the Prelude of the Hearth (a
+  warp song). Putting the Cleaver back, or pulling it again, moves between the eras.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

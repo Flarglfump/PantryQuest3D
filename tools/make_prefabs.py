@@ -9,7 +9,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, 'lib'))
-from kit import Scene, t3, t2, mesh, collider, kinematic, tags, script, particles, q  # noqa: E402
+from kit import Scene, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q  # noqa: E402
 
 
 def prefab(name, comment, *entities):
@@ -68,6 +68,15 @@ def main():
             script('scripts/shot.bs', kind='fire', life=2.0)))
     prefab('boomerang', "The Spatula Boomerang in flight (boomerang.bs).",
            ('Boomerang', t3((0, 0, 0)), mesh('model', '#d0c0a0ff', file='models/spatula.obj', cast=False, cull=False), script('scripts/boomerang.bs')))
+    prefab('cleaver', "The Cleaver of Dawn in Sprig's hand (placed by sprig.bs).",
+           ('Cleaver', t3((0, 0, 0)), mesh('model', '#e0e8f0ff', file='models/cleaver.obj', cast=False)))
+    prefab('bigfire', "A great fire (the castle burning: storm.bs).",
+           ('Big Fire', t3((0, 0, 0)), particles(rate=40, max=80, lifetime=1.4, speed=2.5, spread=20, area=(6, 2), gravity=-2,
+                                                 size_start=2.4, size_end=0.3, color_start='#ffb040ff', color_end='#c0200000', blend='add'),
+            light('point', '#ff7030ff', 2.0, range=22)))
+    prefab('rain', "Rain round Sprig in the storm (storm.bs).",
+           ('Rain', t3((0, 6, 0)), particles(rate=160, max=300, lifetime=0.6, speed=6, spread=5, angle=90, area=(18, 18), gravity=30,
+                                             size_start=0.09, size_end=0.07, color_start='#d0e0ffe0', color_end='#c0d0f080')))
     prefab('knotarm', "One of the Gristle Knot's tendrils (knotarm.bs).",
            ('Knot Arm', t3((0, 0, 0)), mesh('model', '#e8d0b0ff', file='models/tendril.obj'), tags('focusable', 'shootable'), script('scripts/knotarm.bs')))
     prefab('fizzstone', "A fizz-stone for the diving game (divestone.bs).",

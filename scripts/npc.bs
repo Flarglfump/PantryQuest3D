@@ -116,6 +116,7 @@ func interact(who_by: entity) -> void {
     if id == "carb_letter" { then = "carb_moved" }
     if id == "carb_1" { game.set_flag("talked_carb") }
     if id == "fizzy_ember" { then = "ember_wisdom" }
+    if id == "cinder" { then = "prelude" }
     if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
     if id == "fennel_1" { game.set_flag("talked_fennel") }
     game.talk(id, then)
@@ -165,6 +166,11 @@ func talk_for() -> string {
         if game.has_item("letter_fizzy") { return "carb_letter" }
         if game.flag("talked_carb") { return "carb_2" }
         return "carb_1"
+    }
+    if who == "mozz" { return "mozz_2" }
+    if who == "cinder" {
+        if game.has_item("song_prelude") { return "cinder_after" }
+        return "cinder"
     }
     if who == "fizzy" {
         if game.has_item("ember_wisdom") { return "fizzy_after" }

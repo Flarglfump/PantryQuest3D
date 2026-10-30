@@ -149,7 +149,7 @@ func update(dt: number) -> void {
 
 func icon_file(item: string) -> string {
     var map: list = [["map_crock", "map"], ["compass_crock", "compass"], ["bosskey_crock", "bosskey"], ["heartpie", "pie"],
-                     ["ember_courage", "ember"], ["pipe", "whistle"], ["letter", "letter"], ["bombs", "bomb"], ["bracelet", "bracelet"], ["ember_power", "ember2"], ["song_fennel", "whistle"], ["bosskey_hardcaves", "bosskey"], ["map_hardcaves", "map"], ["compass_hardcaves", "compass"], ["song_lullaby", "whistle"], ["bean20", "bean"], ["bean50", "bean"], ["ember_wisdom", "ember3"], ["map_gulp", "map"], ["compass_gulp", "compass"], ["bosskey_gulp", "bosskey"]]
+                     ["ember_courage", "ember"], ["pipe", "whistle"], ["letter", "letter"], ["bombs", "bomb"], ["bracelet", "bracelet"], ["ember_power", "ember2"], ["song_fennel", "whistle"], ["bosskey_hardcaves", "bosskey"], ["map_hardcaves", "map"], ["compass_hardcaves", "compass"], ["song_lullaby", "whistle"], ["bean20", "bean"], ["bean50", "bean"], ["ember_wisdom", "ember3"], ["map_gulp", "map"], ["compass_gulp", "compass"], ["bosskey_gulp", "bosskey"], ["song_rising", "whistle"], ["song_prelude", "whistle"], ["med_umami", "ember"]]
     for m in map {
         if m[0] == item { return "art/icons/" + m[1] + ".png" }
     }

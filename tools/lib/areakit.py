@@ -48,8 +48,9 @@ MATERIALS = {
 
 class Area:
     def __init__(self, id, name, music='', dungeon='', kill_y=-20.0, sky='#a8d8f0ff', fog=(22, 60), fog_color=None,
-                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0):
+                 ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0, variant=''):
         self.id, self.name = id, name
+        self.file_id = id + ('_' + variant if variant else '')     # (the Risen era's version: areas/<id>_risen.scene)
         self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
         self.chunks = Chunked(chunk)
         self.kill_y = kill_y
@@ -83,7 +84,7 @@ class Area:
             if obj.empty():
                 continue
             texture, color, solid, cast, lit, cull = MATERIALS[material]
-            file = 'models/areas/%s/%s_%d_%d.obj' % (self.id, material, cx, cz)
+            file = 'models/areas/%s/%s_%d_%d.obj' % (self.file_id, material, cx, cz)
             obj.save(file)
             comps = [t3((0, 0, 0)), mesh('model', color, texture, file=file, cast=cast, lit=lit, cull=cull)]
             if solid:
@@ -93,8 +94,8 @@ class Area:
             self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
             n += 1
             tris += obj.tri_count()
-        self.scene.save(os.path.join('areas', self.id + '.scene'))
-        print('  %s: %d entities, %d level meshes, %d level triangles' % (self.id, self.scene.count, n, tris))
+        self.scene.save(os.path.join('areas', self.file_id + '.scene'))
+        print('  %s: %d entities, %d level meshes, %d level triangles' % (self.file_id, self.scene.count, n, tris))
 
     # ---- things ----
     def spawn_point(self, name, x, y, z, yaw=0):

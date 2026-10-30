@@ -387,6 +387,90 @@ func talk(id: string) -> list {
     if id == "knot_title" { return [p("", "THE GRISTLE KNOT|Indigestible Tangled Parasite")] }
     if id == "knot_beaten" { return [p("FLICKER", "Gross, but you did it! Lord Gulp's going to feel MUCH better. Step into the light!")] }
 
+
+    # ---- the storm (Larder Town, three Embers)
+    if id == "storm_1" {
+        return [p("FLICKER", "Sprig... the sky's gone dark. And look - up the hill. The CASTLE is on FIRE!"),
+                p("FLICKER", "Someone's coming down the castle road. Fast!")]
+    }
+    if id == "storm_saffron" {
+        return [p("SAFFRON", "SPRIG! It's the Duke - he's taken the castle!"),
+                p("SAFFRON", "I threw it in the moat - he mustn't have it! Find it, Sprig! Keep it safe!")]
+    }
+    if id == "storm_mildew" {
+        return [p("???", "Hmm. A little sprout, out in the rain. With a pilot light, no less."),
+                p("DUKE MILDEW", "Did you see a girl run by, little sprout? A girl with something that belongs to me?"),
+                p("DUKE MILDEW", "...No? No matter. Everything rots in the end. Even princesses."),
+                p("DUKE MILDEW", "Be a good sprout and stay out of the way. The Hearthflame will be mine either way.")]
+    }
+    if id == "storm_after" {
+        return [p("FLICKER", "That was HIM. The Duke. The Mould... I've never felt so cold."),
+                p("FLICKER", "Sprig - Saffron said she threw something into the moat. By the bridge, on the castle road. Dive for it!")]
+    }
+    if id == "saffron_vision" {
+        return [p("", "As you hold the whistle, you hear the princess's voice..."),
+                p("SAFFRON", "Sprig... If you hear this, I couldn't wait for you. The Duke came for the Embers."),
+                p("SAFFRON", "Take the KETTLE WHISTLE to the Temple of the First Hearth. Stand before the Door of Seasons with the three Embers..."),
+                p("SAFFRON", "...and play this song. The song of the royal family's time. Please, Sprig. Hurry.")]
+    }
+    if id == "temple_shut" { return [p("", "THE TEMPLE OF THE FIRST HEARTH|Its doors are always open to the hungry.")] }
+
+    # ---- the Temple of the First Hearth
+    if id == "temple_enter" {
+        return [p("FLICKER", "So this is the Temple of the First Hearth... It's so quiet. Like a kitchen before dawn."),
+                p("FLICKER", "That must be the Door of Seasons, behind the altar.")]
+    }
+    if id == "altar" {
+        return [p("", "THE ALTAR OF EMBERS|\"Courage that makes it rise, Power that transforms, Wisdom that preserves.\""),
+                p("", "\"Bring the three, and the song of time, and the Door of Seasons opens on the Pantry of Ages.\"")]
+    }
+    if id == "seasons_door" {
+        if not (game.has_item("ember_courage") and game.has_item("ember_power") and game.has_item("ember_wisdom")) {
+            return [p("", "THE DOOR OF SEASONS.|It is sealed fast. Three empty hollows wait beside it.")]
+        }
+        if not game.has_item("song_rising") { return [p("", "THE DOOR OF SEASONS.|The three Embers glow beside it. It seems to be waiting for a song.")] }
+        return [p("FLICKER", "The Embers are glowing! Play the SONG OF RISING, Sprig!")]
+    }
+    if id == "cleaver_pull" {
+        return [p("", "THE CLEAVER OF DAWN.|It rests in an ancient butcher's block, as if it was waiting for you."),
+                ask("", "Pull the Cleaver of Dawn from the block?", ["Pull it", "Not yet"])]
+    }
+    if id == "mildew_thanks" {
+        return [p("DUKE MILDEW", "Ahh. Thank you, little sprout. I could never have opened that door myself."),
+                p("DUKE MILDEW", "The Pantry of Ages... and the Hearthflame, at last. Sleep well, little sprout."),
+                p("FLICKER", "SPRIG! Sprig, what's happening to you?! SPRIG!")]
+    }
+    if id == "cleaver_again" { return [ask("", "Pull the Cleaver of Dawn, and rise seven years?", ["Pull it", "Not yet"])] }
+    if id == "cleaver_return" { return [ask("", "Put the Cleaver of Dawn back, and return to your younger days?", ["Put it back", "Not yet"])] }
+
+    # ---- the Proofing Vault
+    if id == "mozz_1" {
+        return [p("OLD MOZZ", "Ah. Awake at last. Don't try to stand too quickly, young man. You've been proofing a long while."),
+                p("OLD MOZZ", "I am Mozz. Once a butler, in a castle of cheese, long ago. Now I keep the Vault, and the flavour of Umami."),
+                p("OLD MOZZ", "The Cleaver of Dawn chose you, Sprig. But a child cannot carry it. So the Vault sealed you away... to rise."),
+                p("OLD MOZZ", "Seven years, my boy. You have been asleep for SEVEN YEARS."),
+                p("FLICKER", "Seven...?! Sprig! You're... you're so TALL!"),
+                p("OLD MOZZ", "And while you slept, the Duke walked through the door you opened, and took the Hearthflame."),
+                p("OLD MOZZ", "But it split in his hands. He kept only the Ember of Power. Courage stayed with you. And Wisdom... went elsewhere."),
+                p("OLD MOZZ", "Mildew rules the kingdom now. Everything rots. To stand against him you must wake the five other Keepers of Flavour."),
+                p("OLD MOZZ", "Take this. The UMAMI MEDALLION, my own. It will remind the others what they are.")]
+    }
+    if id == "mozz_2" { return [p("OLD MOZZ", "Five Keepers, in five temples, Sprig. Step into the light. The world outside has changed... be ready.")] }
+    if id == "cinder" {
+        return [p("???", "So. The Hero of Rising wakes at last."),
+                p("CINDER", "I am Cinder. The last of the Sootfolk. I have waited a long time on these steps."),
+                p("CINDER", "The first of the Keepers sleeps in the Thyme Temple, deep in the Thicket. A friend of yours, I think."),
+                p("CINDER", "Learn this song. If you are ever lost, play it, and it will bring you back here, to the hearth."),
+                p("", "Cinder played a warm, rising melody...")]
+    }
+    if id == "cinder_after" { return [p("CINDER", "The Thicket of Thyme, Hero. The forest remembers you. Go.")] }
+    if id == "spire" { return [p("FLICKER", "That... that's where the castle was. It's all mould now. A tower of it.")] }
+    if id == "tbc_risen" {
+        return [p("FLICKER", "The Thicket of Thyme is that way... but the rest of the Risen world isn't finished yet!"),
+                p("FLICKER", "(Thanks for playing this far! Seven years, the Cleaver of Dawn... the five temples are on their way.)")]
+    }
+    if id == "risen_townsfolk" { return [p("FLICKER", "Everyone's gone. The houses are all cold.")] }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -512,6 +596,44 @@ func after(what: string, choice: int) -> void {
         game.go("gulp", "start")
     } elif what == "ember_wisdom" {
         game.give("ember_wisdom", "")
+    } elif what == "whistle_vision" {
+        game.talk("saffron_vision", "song_rising")
+    } elif what == "song_rising" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_rising", "")
+    } elif what == "risen_first" {
+        if choice == 0 {
+            play_sound("sfx/rumble.wav", 0.9)
+            shake_camera(3, 1.2)
+            game.talk("mildew_thanks", "risen_sleep")
+        }
+    } elif what == "risen_sleep" {
+        game.set_flag("risen_once")
+        game.clear_flag("storm_now")
+        game.add_item("cleaver")
+        game.era = "risen"
+        game.commit()
+        game.go("vault", "start")
+    } elif what == "era_risen" {
+        if choice == 0 {
+            game.era = "risen"
+            game.commit()
+            play_sound("sfx/warp.wav", 0.8)
+            game.go("temple", "block")
+        }
+    } elif what == "era_fresh" {
+        if choice == 0 {
+            game.era = "fresh"
+            game.commit()
+            play_sound("sfx/warp.wav", 0.8)
+            game.go("temple", "block")
+        }
+    } elif what == "umami" {
+        game.set_flag("met_mozz")
+        game.give("med_umami", "")
+    } elif what == "prelude" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_prelude", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -540,6 +662,15 @@ func area_started(area: string) -> void {
     if area == "gulp" and not game.flag("gulp_entered") {
         game.set_flag("gulp_entered")
         game.talk("gulp_enter", "")
+    }
+    if area == "temple" and not game.flag("temple_entered") {
+        game.set_flag("temple_entered")
+        game.talk("temple_enter", "")
+    }
+    if area == "vault" and not game.flag("met_mozz") { game.talk("mozz_1", "umami") }
+    if area == "town" and game.era == "risen" and not game.flag("spire_seen") {
+        game.set_flag("spire_seen")
+        game.talk("spire", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -585,7 +716,13 @@ func hint() -> string {
     if not game.flag("gulp_open") { return "Lord Gulp eats fish from a jar. Catch a fish in the fountain's shallows with your jar, then use the jar at the altar beside him." }
     if not game.flag("gulp_done") { return "Lord Gulp opened wide for us. In we go... Fizzy's in there somewhere!" }
     if not game.has_item("ember_wisdom") { return "Fizzy's waiting at Fizzwater Fountain!" }
-    return "All three Embers! We should go back to Castle Larder and tell Saffron. (The rest of the story isn't built yet!)"
+    if not game.flag("storm_seen") { return "All three Embers! Let's go back to Larder Town and tell Saffron." }
+    if not game.has_item("whistle") { return "Saffron threw something into the moat, by the castle road's bridge. Dive in and find it!" }
+    if not game.flag("door:seasons") { return "Saffron said: take the Embers to the Door of Seasons, in the Temple of the First Hearth (east side of town), and play the SONG OF RISING." }
+    if not game.flag("risen_once") { return "The Cleaver of Dawn is in the Pantry of Ages, past the Door of Seasons." }
+    if not game.flag("met_mozz") { return "Talk to Old Mozz." }
+    if not game.has_item("song_prelude") { return "Someone's waiting on the temple steps, outside." }
+    return "Cinder said the first Keeper sleeps in the Thyme Temple, in the Thicket of Thyme (east of the field). (The Risen world isn't built yet!)"
 }
 
 func gulp_hint() -> string {
@@ -630,6 +767,10 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "whistle" { return "You got the KETTLE WHISTLE!|The royal family's treasure. It plays every song the pipe did, only sweeter." }
+    if kind == "song_rising" { return "You learned the SONG OF RISING!|A song of time itself. Play it before the Door of Seasons." }
+    if kind == "med_umami" { return "You got the UMAMI MEDALLION!|Old Mozz's own. It holds the deep, savoury flavour of the Keeper of Umami." }
+    if kind == "song_prelude" { return "You learned the PRELUDE OF THE HEARTH!|Play it anywhere outside a dungeon to warp back to the Temple of the First Hearth." }
     if kind == "fizzbubble" { return "You got the FIZZ BUBBLE!|Now you can dive much deeper. Press {action} while swimming, and hold it to go down." }
     if kind == "jar1" { return "You got a JAR!|Put it on a button. Swing it to catch things... like fish." }
     if kind == "letter_fizzy" { return "You got FIZZY'S LETTER!|A soggy letter from Princess Effervescia. Her father should see this." }

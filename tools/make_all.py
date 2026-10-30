@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(HERE, 'lib'))
 sys.path.insert(0, os.path.join(HERE, 'areas'))
 os.chdir(os.path.join(HERE, '..'))
 
-AREAS = ['sprouthollow', 'crock', 'fields', 'town', 'castle', 'peppermill', 'fondue', 'hardtack', 'hardcaves', 'gorge', 'fizzdomain', 'fountain', 'lake', 'gulp', 'title']
+AREAS = ['sprouthollow', 'crock', 'fields', 'town', 'castle', 'peppermill', 'fondue', 'hardtack', 'hardcaves', 'gorge', 'fizzdomain', 'fountain', 'lake', 'gulp', 'temple', 'vault', 'title']
 
 
 def main(what):
@@ -32,6 +32,8 @@ def main(what):
             if os.path.exists(os.path.join(HERE, 'areas', name + '.py')):
                 mod = __import__(name)
                 mod.build()
+                if hasattr(mod, 'build_risen'):      # its Risen-era version (areas/<name>_risen.scene)
+                    mod.build_risen()
 
 
 if __name__ == '__main__':

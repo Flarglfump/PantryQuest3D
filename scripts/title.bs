@@ -71,6 +71,10 @@ func begin() -> void {
     var area: string = s[8]
     if area == "crock" { s[9] = "start" } elif area == "sprouthollow" and s[9] == "bed" { s[9] = "bed" } else { s[9] = "start" }
     set_global("save", s)
+    if s[11] == "risen" and area == "town" {
+        load_scene("areas/town_risen.scene")
+        return
+    }
     load_scene("areas/" + area + ".scene")
 }
 

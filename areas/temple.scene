@@ -1,0 +1,495 @@
+# Temple of the First Hearth - an area of Pantry Quest 3D.
+# Made by tools/areas/temple.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"temple\", area_name = \"Temple of the First Hearth\", music = \"\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -75 20 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #ffe0a0ff
+    intensity = 0.5
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #c0a880ff
+    intensity = 0.6
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 42
+    clear_color = #100c08ff
+    fog = true
+    fog_color = #1a140cff
+    fog_start = 16
+    fog_end = 40
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Light Beam"
+  Transform3D
+    position = 0 4.5 -4
+    rotation = 25 0 0
+    scale = 2.4 9 0.6
+  Mesh
+    shape = cube
+    color = #ffe8a018
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Light Beam"
+  Transform3D
+    position = 0 4.5 4
+    rotation = 25 0 0
+    scale = 2.4 9 0.6
+  Mesh
+    shape = cube
+    color = #ffe8a018
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Motes"
+  Transform3D
+    position = 0 3 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 4
+    max = 30
+    lifetime = 5
+    speed = 0.2
+    spread = 180
+    area = 10 20
+    gravity = -0.05
+    size_start = 0.06
+    size_end = 0
+    color_start = #fff0c0c0
+    color_end = #ffe08000
+    blend = add
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 14.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 3 3 0.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"town\", at = \"temple\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 11.5
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Altar"
+  Transform3D
+    position = 0 0.6 1.25
+    rotation = 0 0 0
+    scale = 1 1 1
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"altar\", prompt = \"Read\", reach = 2.4"
+
+entity
+  Name
+    text = "Ember Flame"
+  Transform3D
+    position = -2 1.3 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 16
+    max = 30
+    lifetime = 0.7
+    speed = 0.6
+    spread = 20
+    area = 0.2 0.2
+    gravity = -1
+    size_start = 0.25
+    size_end = 0
+    color_start = #60ff80ff
+    color_end = #ffffff00
+    blend = add
+  Script
+    file = "scripts/pedestal.bs"
+    vars = "item = \"ember_courage\""
+
+entity
+  Name
+    text = "Ember Flame"
+  Transform3D
+    position = 0 1.3 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 16
+    max = 30
+    lifetime = 0.7
+    speed = 0.6
+    spread = 20
+    area = 0.2 0.2
+    gravity = -1
+    size_start = 0.25
+    size_end = 0
+    color_start = #ff6040ff
+    color_end = #ffffff00
+    blend = add
+  Script
+    file = "scripts/pedestal.bs"
+    vars = "item = \"ember_power\""
+
+entity
+  Name
+    text = "Ember Flame"
+  Transform3D
+    position = 2 1.3 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 16
+    max = 30
+    lifetime = 0.7
+    speed = 0.6
+    spread = 20
+    area = 0.2 0.2
+    gravity = -1
+    size_start = 0.25
+    size_end = 0
+    color_start = #60a0ffff
+    color_end = #ffffff00
+    blend = add
+  Script
+    file = "scripts/pedestal.bs"
+    vars = "item = \"ember_wisdom\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.2
+    range = 14
+
+entity
+  Name
+    text = "Door of Seasons"
+  Transform3D
+    position = 0 2.5 -10
+    rotation = 0 0 0
+    scale = 4.8 5 0.5
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #d8b860ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/songdoor.bs"
+    vars = "song = \"rising\", id = \"door:seasons\", say = \"seasons_door\", need = \"embers\", reach = 3"
+
+entity
+  Name
+    text = "Block"
+  Transform3D
+    position = 0 0 -13.4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/block.obj"
+    texture = "art/bark.png"
+    color = #a07850ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1.4 1 1.4
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.5 0
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/cleaver.bs"
+
+entity
+  Name
+    text = "Block Cleaver"
+  Transform3D
+    position = 0 1.8 -13.4
+    rotation = -90 0 0
+    scale = 1.4 1.4 1.4
+  Mesh
+    shape = model
+    file = "models/cleaver.obj"
+    color = #f0f4ffff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Cleaver Glow"
+  Transform3D
+    position = 0 1.6 -13.4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 10
+    max = 30
+    lifetime = 1.2
+    speed = 0.4
+    spread = 180
+    area = 0.6 0.6
+    gravity = -0.3
+    size_start = 0.12
+    size_end = 0
+    color_start = #ffffffff
+    color_end = #a0c0ff00
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 4 -13.4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #c0d8ffff
+    intensity = 1.4
+    range = 8
+
+entity
+  Name
+    text = "spawn_block"
+  Transform3D
+    position = 0 0.1 -11
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "planks 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/temple/planks_0_0.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/temple/stone_-1_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/temple/stone_-1_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/temple/stone_0_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/temple/stone_0_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

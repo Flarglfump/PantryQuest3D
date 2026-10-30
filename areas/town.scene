@@ -133,6 +133,25 @@ entity
 
 entity
   Name
+    text = "Water"
+  Transform3D
+    position = 0 -2 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 74 3 5.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "water"
+  Script
+    file = "scripts/water.bs"
+    vars = "surface = -0.5"
+
+entity
+  Name
     text = "Load Zone"
   Transform3D
     position = 0 2 39.1
@@ -191,7 +210,7 @@ entity
     list = "loadzone"
   Script
     file = "scripts/loadzone.bs"
-    vars = "to = \"castle\", at = \"start\""
+    vars = "to = \"castle\", at = \"start\", until = \"storm_now\""
 
 entity
   Name
@@ -222,7 +241,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"guard\""
+    vars = "who = \"guard\", until = \"storm_now\""
 
 entity
   Name
@@ -264,6 +283,93 @@ entity
   Script
     file = "scripts/sign.bs"
     vars = "say = \"sign_castle\""
+
+entity
+  Name
+    text = "Storm"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/storm.bs"
+
+entity
+  Name
+    text = "Saffron Runner"
+  Transform3D
+    position = 0 -50 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/saffron.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+
+entity
+  Name
+    text = "Kimchi Runner"
+  Transform3D
+    position = 0 -50 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/kimchi.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+
+entity
+  Name
+    text = "Mildew"
+  Transform3D
+    position = 0 -50 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/mildew.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+
+entity
+  Name
+    text = "Kettle Whistle"
+  Transform3D
+    position = 6 -2.9 -24
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/jar.obj"
+    color = #c0c8e0ff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/sunken.bs"
+    vars = "item = \"whistle\", id = \"moat_whistle\", then = \"whistle_vision\", when = \"whistle_thrown\""
 
 entity
   Name
@@ -707,7 +813,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"baker\""
+    vars = "who = \"baker\", until = \"storm_now\""
 
 entity
   Name
@@ -738,7 +844,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"townswoman\""
+    vars = "who = \"townswoman\", until = \"storm_now\""
 
 entity
   Name
@@ -769,7 +875,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"townsman\""
+    vars = "who = \"townsman\", until = \"storm_now\""
 
 entity
   Name
@@ -800,7 +906,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"gossip\""
+    vars = "who = \"gossip\", until = \"storm_now\""
 
 entity
   Name
@@ -831,7 +937,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"child\""
+    vars = "who = \"child\", until = \"storm_now\""
 
 entity
   Name
@@ -1373,7 +1479,7 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"pip\""
+    vars = "who = \"pip\", until = \"storm_now\""
 
 entity
   Name
@@ -1425,14 +1531,36 @@ entity
     scale = 2.4 3.6 0.1
   Mesh
     shape = cube
-    texture = "art/planks.png"
-    color = #c8a050ff
+    color = #201810ff
     uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 19.5 1.9 -4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 0.8 3 2.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
   Tags
-    list = "interact, focusable"
+    list = "loadzone"
   Script
-    file = "scripts/sign.bs"
-    vars = "say = \"temple_door\", prompt = \"Check\", reach = 2.4"
+    file = "scripts/loadzone.bs"
+    vars = "to = \"temple\", at = \"start\""
+
+entity
+  Name
+    text = "spawn_temple"
+  Transform3D
+    position = 17 0.5 -4
+    rotation = 0 90 0
+    scale = 1 1 1
 
 entity
   Name
@@ -2291,6 +2419,25 @@ entity
 
 entity
   Name
+    text = "planks -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_-1_-2.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
     text = "planks -1 -1"
   Transform3D
     position = 0 0 0
@@ -2318,6 +2465,25 @@ entity
   Mesh
     shape = model
     file = "models/areas/town/planks_-1_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_0_-2.obj"
     texture = "art/planks.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -2858,3 +3024,22 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "water 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/water_0_-2.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"

@@ -1,0 +1,30 @@
+@strict @3d
+# cleaver.bs - the butcher's block in the Pantry of Ages, with the Cleaver of Dawn in it.
+# Pulling it the first time is the end of Sprig's childhood (story: "risen_first"); after
+# that, pulling it or putting it back moves him between the Fresh and Risen eras.
+
+var prompt: string = "Pull"
+var reach: number = 2.2
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if game.era == "risen" {
+        prompt = "Return"
+        var blade: entity = find("Block Cleaver")
+        if blade != nil { blade.Mesh.visible = false }
+    }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 1.4, 0) }
+func can_use(p: vec3) -> bool { return true }
+
+func interact(who: entity) -> void {
+    if game.era == "risen" {
+        game.talk("cleaver_return", "era_fresh")
+    } elif game.flag("risen_once") {
+        game.talk("cleaver_again", "era_risen")
+    } else {
+        game.talk("cleaver_pull", "risen_first")
+    }
+}

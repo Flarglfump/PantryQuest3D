@@ -1,0 +1,11 @@
+@strict @3d
+# pedestal.bs - one of the three pedestals on the Altar of Embers: it burns when Sprig
+# holds its Ember (`item`).
+
+var item: string = ""
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if not game.has_item(item) { destroy(self) }
+}

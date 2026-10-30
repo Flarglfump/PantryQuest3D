@@ -5,6 +5,7 @@
 var item: string = ""
 var id: string = ""
 var then: string = ""
+var when: string = ""                 # (only there once this flag is set)
 var game: entity
 var sprig: entity
 var t: number = 0
@@ -17,6 +18,8 @@ func start() -> void {
 
 func update(dt: number) -> void {
     t += dt
+    self.Mesh.visible = when == "" or game.flag(when)
+    if not self.Mesh.visible { return }
     self.rotation = vec3(sin(t * 60) * 10, t * 20, 0)
     if game.state == "play" and distance(sprig.position + vec3(0, 0.4, 0), self.position) < 1.2 {
         game.set_flag("got:" + id)

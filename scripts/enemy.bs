@@ -10,6 +10,7 @@
 var brain: string = "fuzzball"
 var hp: int = 2
 var damage: int = 2                     # quarter hearts, on touching Sprig
+var always: bool = false             # (a Stalebie that's up by day too: the Risen town)
 var group: string = ""
 var order: int = 0                      # (scrub brothers: which one this is)
 var trio: bool = false
@@ -238,6 +239,7 @@ func ground_ahead(move: vec3) -> bool {
 }
 
 func is_night() -> bool {
+    if always { return true }
     var c: number = global("clock", 0.3)
     return c < 0.22 or c > 0.8
 }

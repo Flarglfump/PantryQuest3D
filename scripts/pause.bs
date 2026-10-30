@@ -207,12 +207,21 @@ func draw_gear() -> void {
     var pad: string = ""
     if sec < 10 { pad = "0" }
     draw_text(str(floor(m / 60)) + ":" + (m % 60) + ":" + pad + sec, vec2(180, 138), [255, 255, 255])
-    if has("pipe") {
+    if has("whistle") {
+        draw_image("art/icons/whistle.png", vec2(188, 168))
+        draw_text("Kettle Whistle", vec2(200, 165), [255, 255, 255])
+    } elif has("pipe") {
         draw_image("art/icons/whistle.png", vec2(188, 168))
         draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
     }
-    if has("song_lullaby") { draw_text("Song: Saffron's Lullaby", vec2(40, 186), [255, 200, 230]) }
-    if has("letter") { draw_text("Saffron's Letter", vec2(40, 198), [255, 255, 255]) }
+    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"]]
+    var sy: number = 180
+    for sg in songs {
+        if has(sg[0]) {
+            draw_text(sg[1], vec2(40, sy), [255, 200, 230])
+            sy += 10
+        }
+    }
 }
 
 func draw_map() -> void {

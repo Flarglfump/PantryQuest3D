@@ -411,6 +411,13 @@ def people():
         fig, fb = figure(sc, eyes='#101828', **kw)
         standard_anims(fig, fb, sc)
         fig.save_glb(path('models', name + '.glb'))
+    # the Duke and the Keepers
+    for name, sc, kw in [('mildew', 1.6, dict(shirt='#2a3a2a', trousers='#1a221a', hair='#9ab08a', skin='#b8c8a8', hat='#3a4a2a', hat_kind='tall', apron='#4a6a3a', eyes='#e0ff60')),
+                         ('mozz', 1.3, dict(shirt='#f0e0a0', trousers='#e8c870', hair='#fff4c0', skin='#f8e8b0', apron='#ffffff', belly=0.08, hat='#f0d880', hat_kind='bun')),
+                         ('cinder', 1.35, dict(shirt='#6a6a72', trousers='#4a4a52', hair='#d8d8e0', skin='#c8c0b8', hat='#8a8a92', hat_kind='helmet', apron='#5a5a62', eyes='#e04030'))]:
+        fig, fb = figure(sc, **kw)
+        standard_anims(fig, fb, sc)
+        fig.save_glb(path('models', name + '.glb'))
     # Peppermill
     for name, kw in {'miller': dict(shirt='#d8d0b8', trousers='#6a5a3a', hair='#e0e0e0', hat='#c8b890', hat_kind='tall', belly=0.05),
                      'gravekeeper': dict(shirt='#4a4a5a', trousers='#2a2a32', hair='#8a8a8a', skin='#c8b8a8', belly=0.0)}.items():
@@ -537,6 +544,22 @@ def statics():
     o.cylinder((0, 0, 0), 0.15, 0.3, 8, top=False, uvs=1)
     o.cylinder((0, 0.3, 0), 0.08, 0.1, 8, top=True, uvs=1)
     o.save(path('models', 'jar.obj'))
+    o = Obj('the Cleaver of Dawn: a broad bright blade along -z from the hand')
+    o.box((-0.025, -0.025, -0.18), (0.025, 0.025, 0.0), uvs=4)
+    o.box((-0.03, -0.1, -0.68), (0.03, 0.1, -0.16), uvs=4)
+    o.box((-0.035, 0.07, -0.68), (0.035, 0.11, -0.18), uvs=4)
+    o.save(path('models', 'cleaver.obj'))
+    o = Obj('a butcher\'s block')
+    o.box((-0.7, 0, -0.7), (0.7, 1.0, 0.7), uvs=1)
+    o.save(path('models', 'block.obj'))
+    o = Obj('the Moldering Spire: a great rotten mushroom tower')
+    o.cylinder((0, 0, 0), 5.0, 40, 10, top=False, radius_top=3.0, uvs=0.2)
+    o.sphere((0, 42, 0), 12, 12, 6, squash=0.45, uvs=0.3)
+    o.cylinder((7, 10, 2), 2.0, 14, 8, top=False, radius_top=1.2, uvs=0.3)
+    o.sphere((7, 24, 2), 5, 10, 5, squash=0.45, uvs=0.3)
+    o.cylinder((-6, 6, -3), 1.6, 12, 8, top=False, radius_top=1.0, uvs=0.3)
+    o.sphere((-6, 18, -3), 4, 10, 5, squash=0.45, uvs=0.3)
+    o.save(path('models', 'spire.obj'))
     o = Obj('a key')
     o.box((-0.03, 0, -0.02), (0.03, 0.3, 0.02), uvs=4)
     o.box((-0.08, 0.3, -0.02), (0.08, 0.42, 0.02), uvs=4)

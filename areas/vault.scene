@@ -1,0 +1,282 @@
+# The Proofing Vault - an area of Pantry Quest 3D.
+# Made by tools/areas/vault.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"vault\", area_name = \"The Proofing Vault\", music = \"music/title.wav\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -80 0 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #ffd0a0ff
+    intensity = 0.4
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #e0b080ff
+    intensity = 0.6
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 32
+    clear_color = #140a04ff
+    fog = true
+    fog_color = #2a1608ff
+    fog_start = 10
+    fog_end = 30
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.5 0
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Mozz"
+  Transform3D
+    position = 0 0 -4.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/mozz.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"mozz\", reach = 2.6"
+
+entity
+  Name
+    text = "Hearth"
+  Transform3D
+    position = 0 0.3 -7.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 24
+    max = 40
+    lifetime = 0.8
+    speed = 0.8
+    spread = 20
+    area = 1.4 0.4
+    gravity = -1.4
+    size_start = 0.35
+    size_end = 0.02
+    color_start = #ffd070ff
+    color_end = #ff300000
+    blend = add
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 2 -7
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffb060ff
+    intensity = 1.6
+    range = 12
+
+entity
+  Name
+    text = "Blue Light"
+  Transform3D
+    position = 0 1.5 4.5
+    rotation = 0 0 0
+    scale = 1.6 3 1.6
+  Mesh
+    shape = cylinder
+    color = #80c0ff60
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Particles
+    rate = 20
+    max = 40
+    lifetime = 1.5
+    speed = 1.2
+    spread = 10
+    area = 1.6 1.6
+    size_start = 0.15
+    size_end = 0
+    color_start = #c0e0ffff
+    color_end = #4080ff00
+    blend = add
+  Script
+    file = "scripts/warp.bs"
+    vars = "to = \"temple\", at = \"block\", when = \"met_mozz\""
+
+entity
+  Name
+    text = "crust 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/vault/crust_0_0.obj"
+    texture = "art/crust.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dough 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/vault/dough_0_0.obj"
+    texture = "art/dough.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/vault/stone_0_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

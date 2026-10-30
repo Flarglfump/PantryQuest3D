@@ -1,0 +1,125 @@
+@strict @3d
+# storm.bs - the night the castle burns (Larder Town, the Fresh era). With all three Embers,
+# Sprig comes into town in a storm: Princess Saffron and Nanny Kimchi run past from the
+# castle road and Saffron throws something into the moat; Duke Mildew strolls after them.
+# The Kettle Whistle lies in the moat (sunken.bs, `when` "whistle_thrown"). The storm goes
+# on (rain, fire on the castle) until Sprig pulls the Cleaver of Dawn.
+
+var game: entity
+var sprig: entity
+var saffron: entity
+var kimchi: entity
+var mildew: entity
+var phase: int = -1
+var t: number = 0
+var rain: entity
+var thrown: bool = false
+var shouted: bool = false
+var runners: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    saffron = find("Saffron Runner")
+    kimchi = find("Kimchi Runner")
+    mildew = find("Mildew")
+    var embers: bool = game.has_item("ember_courage") and game.has_item("ember_power") and game.has_item("ember_wisdom")
+    if game.era == "fresh" and embers and not game.flag("storm_seen") { phase = 0 }
+    if game.flag("storm_now") { weather() }
+}
+
+func weather() -> void {
+    set_global("clock", 0.79)
+    var sky: entity = find("Sky")
+    if sky != nil { sky.runs = false }
+    rain = spawn("prefabs/rain.scene", sprig.position)
+    for p in [vec3(-6, 8, -38), vec3(5, 10, -39), vec3(0, 12, -40), vec3(-12, 7, -39), vec3(12, 7, -39)] {
+        spawn("prefabs/bigfire.scene", p)
+    }
+    play_music("music/castle.wav", 0.5, 1.0)
+}
+
+func walk(e: entity, to: vec3, speed: number, dt: number) -> bool {
+    var d: vec3 = to - e.position
+    d.y = 0
+    if length(d) < 0.2 { return true }
+    var step: vec3 = normalize(d) * min(length(d), speed * dt)
+    e.position = vec3(e.x + step.x, to.y, e.z + step.z)
+    e.rotation = vec3(0, atan2(-d.x, -d.z), 0)
+    return false
+}
+
+func update(dt: number) -> void {
+    if rain != nil and rain.alive { rain.position = sprig.position + vec3(0, 6, 0) }
+    if phase < 0 or game.state != "play" { return }
+    t += dt
+    if runners {
+        var gx: number = sprig.x + 3.5
+        var a: bool = walk(saffron, vec3(gx - 0.8, 0, 46), 9.5, dt)
+        walk(kimchi, vec3(gx + 0.8, 0, 47), 9.5, dt)
+        saffron.y = max(0, 3.0 * min(1, (-26 - saffron.z) / 12))
+        kimchi.y = max(0, 3.0 * min(1, (-26 - kimchi.z) / 12))
+        if a or saffron.z > 40 {
+            saffron.position = vec3(0, -50, 0)
+            kimchi.position = vec3(0, -50, 0)
+            runners = false
+        }
+    }
+    if phase == 0 {
+        if sprig.z < 30 {
+            phase = 1
+            t = 0
+            game.set_flag("storm_seen")
+            game.set_flag("storm_now")
+            weather()
+            play_sound("sfx/rumble.wav", 0.9)
+            shake_camera(2, 0.8)
+            game.talk("storm_1", "")
+        }
+    } elif phase == 1 {
+        # they run from the castle road down past him, out of the south gate
+        if t < 0.1 {
+            saffron.position = vec3(-0.8, 3.0, -38)
+            kimchi.position = vec3(0.8, 3.0, -37)
+            play_animation(saffron, "run", 1.4, true)
+            play_animation(kimchi, "run", 1.4, true)
+            runners = true
+        }
+        if not thrown and saffron.z > -24 {
+            thrown = true
+            game.set_flag("whistle_thrown")
+            play_sound("sfx/splash.wav", 0.9)
+            spawn("prefabs/poof.scene", vec3(6, -0.4, -24))
+        }
+        if thrown and not shouted and distance(saffron.position, sprig.position) < 5 {
+            shouted = true
+            game.talk("storm_saffron", "")
+            mildew.position = vec3(0, 1.0, -26)          # and here comes the Duke
+            play_animation(mildew, "walk", 1, true)
+            phase = 2
+            t = 0
+        }
+    } elif phase == 2 {
+        var to: vec3 = sprig.position - mildew.position
+        to.y = 0
+        mildew.y = max(0, 3.0 * min(1, (-26 - mildew.z) / 12))
+        if length(to) > 5 {
+            walk(mildew, vec3(sprig.x, 0, sprig.z), 6.0, dt)
+            mildew.y = max(0, 3.0 * min(1, (-26 - mildew.z) / 12))
+        } else {
+            mildew.rotation = vec3(0, atan2(-to.x, -to.z), 0)
+            play_animation(mildew, "talk", 1, true)
+            phase = 3
+            play_sound("sfx/boss_roar.wav", 0.6, 1.4)
+            game.talk("storm_mildew", "")
+        }
+    } elif phase == 3 {
+        play_animation(mildew, "walk", 1, true)
+        if walk(mildew, vec3(0, 0, -40), 3.0, dt) or t > 9 {
+            mildew.position = vec3(0, -50, 0)
+            phase = 4
+            game.talk("storm_after", "")
+        }
+        mildew.y = max(0, 3.0 * min(1, (-26 - mildew.z) / 12))
+    }
+}

@@ -146,7 +146,7 @@ def goto(g, x, z, near=0.6, max_frames=900, step=3):
     return done
 
 
-def test_scene(area, items=(), flags=(), spawn=None, clock=None):
+def test_scene(area, items=(), flags=(), spawn=None, clock=None, era=None):
     """A copy of an area for a test, starting with these items and flags (and at a spawn
     point). Returns its path (relative to the project) for Game(test_scene=...)."""
     src = open(os.path.join(ROOT, 'areas', area + '.scene')).read()
@@ -163,6 +163,8 @@ def test_scene(area, items=(), flags=(), spawn=None, clock=None):
         ent('spawn = \\"%s\\"' % spawn)
     if clock is not None:
         ent('clock = %s' % clock)
+    if era:
+        ent('era = \\"%s\\"' % era)
     n = len(ents)                      # (parents are written as file positions: move them along)
     src = re.sub(r'(  Parent\n    entity = )(\d+)', lambda m: m.group(1) + str(int(m.group(2)) + n), src)
     src = src.replace('bronto_scene 1\n', 'bronto_scene 1\n\n' + '\n'.join(ents) + '\n', 1)
