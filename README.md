@@ -13,8 +13,8 @@ made by the Python tools in `tools/`.
 
 ## Playing it
 
-You need a copy of Bronto beside this folder (`../bronto`), with the engine fixes from
-its `pq3d-engine-fixes` branch (steep slopes and mesh edges for characters, view culling).
+You need a copy of Bronto beside this folder (`../bronto`), at commit `de7ad92` or later
+(it has the fixes this game needs: steep slopes and mesh edges for characters, view culling).
 
 ```sh
 cd ../bronto
