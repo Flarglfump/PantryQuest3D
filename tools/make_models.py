@@ -414,6 +414,7 @@ def people():
     # the Duke and the Keepers
     for name, sc, kw in [('mildew', 1.6, dict(shirt='#2a3a2a', trousers='#1a221a', hair='#9ab08a', skin='#b8c8a8', hat='#3a4a2a', hat_kind='tall', apron='#4a6a3a', eyes='#e0ff60')),
                          ('mozz', 1.3, dict(shirt='#f0e0a0', trousers='#e8c870', hair='#fff4c0', skin='#f8e8b0', apron='#ffffff', belly=0.08, hat='#f0d880', hat_kind='bun')),
+                         ('sister', 1.2, dict(shirt='#e0e0f0', trousers='#c0c0d8', hair='#f0f0ff', skin='#e8e8f8', hat='#d0d0e8', hat_kind='bun', girl=True, apron='#b0b0d0', eyes='#ffffff')),
                          ('cinder', 1.35, dict(shirt='#6a6a72', trousers='#4a4a52', hair='#d8d8e0', skin='#c8c0b8', hat='#8a8a92', hat_kind='helmet', apron='#5a5a62', eyes='#e04030'))]:
         fig, fb = figure(sc, **kw)
         standard_anims(fig, fb, sc)

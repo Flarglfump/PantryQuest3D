@@ -189,7 +189,11 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
-    if name == "boomerang" or name == "jar1" { put_on_button(name) }
+    if name == "boomerang" or name == "jar1" or name == "lash" { put_on_button(name) }
+    if name == "bow" {
+        add_count("arrows", 30 - count("arrows"))
+        put_on_button(name)
+    }
     if name == "pipe" {
         if not contains(items, "song_fennel") { push(items, "song_fennel") }
         put_on_button(name)
@@ -246,6 +250,9 @@ func collect(kind: string) -> void {
     } elif kind == "key" {
         add_count("keys_" + dungeon, 1)
         play_sound("sfx/secret.wav", 0.7)
+    } elif kind == "arrows" {
+        add_count("arrows", min(5, 30 - count("arrows")))
+        play_sound("sfx/bean.wav", 0.5, 0.9)
     } elif kind == "popcorn" {
         add_count("bombs", min(5, 20 - count("bombs")))
         play_sound("sfx/bean.wav", 0.5, 0.7)
@@ -259,10 +266,12 @@ func roll_drop(at: vec3, chance: number) -> void {
     var kind: string = "bean1"
     if hp < max_hp and r < 0.3 {
         kind = "heart"
-    } elif has_item("shooter") and peas < max_peas() and r < 0.5 {
+    } elif era == "fresh" and has_item("shooter") and peas < max_peas() and r < 0.5 {
         kind = "peas"
     } elif has_item("bombs") and count("bombs") < 20 and r < 0.62 {
         kind = "popcorn"
+    } elif era == "risen" and has_item("bow") and count("arrows") < 30 and r < 0.72 {
+        kind = "arrows"
     } elif r > 0.93 {
         kind = "bean5"
     }
@@ -307,9 +316,13 @@ func on_resume() -> void {
         state = "play"
         var song: string = global("song_played", "")
         if song != "" { broadcast("song_played", song) }
-        if song == "prelude" and dungeon == "" {          # a warp song: back to the Temple of the First Hearth
+        if song == "prelude" and dungeon == "" {          # warp songs: back to the Temple of the First Hearth...
             play_sound("sfx/warp.wav", 0.8)
             go("temple", "start")
+        }
+        if song == "minuet" and dungeon == "" {           # ...and to the Glade in the Thicket
+            play_sound("sfx/warp.wav", 0.8)
+            go("thicket", "glade")
         }
     } elif state == "paused" {
         load_state()
@@ -374,7 +387,7 @@ func go(to: string, at: string) -> void {
 }
 
 # The scene for an area: some areas have a Risen-era version (areas/<id>_risen.scene).
-const RISEN_AREAS: list = ["town"]
+const RISEN_AREAS: list = ["town", "fields", "peppermill", "thicket"]
 func scene_for(a: string) -> string {
     if era == "risen" and contains(RISEN_AREAS, a) { return "areas/" + a + "_risen.scene" }
     return "areas/" + a + ".scene"

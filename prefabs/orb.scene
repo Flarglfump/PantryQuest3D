@@ -1,0 +1,36 @@
+# A ball of mould-light the Hollow Duke throws (orb.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Orb"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.45 0.45 0.45
+  Mesh
+    shape = sphere
+    color = #c0ff80ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    trigger = true
+  Particles
+    rate = 30
+    max = 40
+    lifetime = 0.4
+    speed = 0.4
+    spread = 180
+    size_start = 0.3
+    size_end = 0
+    color_start = #e0ffa0ff
+    color_end = #60a02000
+    blend = add
+  Script
+    file = "scripts/orb.bs"

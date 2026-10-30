@@ -1,0 +1,12 @@
+@strict @3d
+# painting.bs - one of the four paintings in the Hollow Duke's gallery (hollowduke.bs):
+# it tells the Duke when something hits it.
+
+var slot: int = 0
+
+func focus_point() -> vec3 { return self.position }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    var duke: entity = find("Hollow Duke")
+    if duke != nil { duke.painting_hit(slot, how) }
+}

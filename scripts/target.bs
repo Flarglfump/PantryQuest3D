@@ -1,0 +1,4 @@
+@strict @3d
+# target.bs - a wooden target: the Licorice Lash bites into it (tag "hookable").
+
+func focus_point() -> vec3 { return self.position }

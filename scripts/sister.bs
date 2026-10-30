@@ -1,0 +1,129 @@
+@strict @3d
+# sister.bs - one of the Lantern Sisters, the ghosts who stole the Thyme Temple's flames.
+# She fades in near Sprig, drifts at him swinging her lantern, fades out, and comes back
+# somewhere else. Strike her while she's there (`arrow_only`: only a skewer reaches her,
+# up near the ceiling). Beaten, her flame goes back to its brazier (the flag `flame`).
+
+var flame: string = ""
+var hp: int = 6
+var arrow_only: bool = false
+var float_h: number = 0.3
+var speed: number = 1.6
+var game: entity
+var sprig: entity
+var home: vec3
+var st: string = "wait"            # wait appear show vanish gone dead
+var st_t: number = 0
+var flash: number = 0
+var hurt_cool: number = 0
+var t: number = 0
+var at: vec3                       # (for the play-test bots)
+var radius: number = 1.3           # (skewers find her by distance: shot.bs)
+var passthrough: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    home = self.position
+    if game.flag(flame) {
+        destroy(self)
+        return
+    }
+    self.Mesh.visible = false
+    remove_tag(self, "focusable")
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.8, 0) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st != "show" and st != "appear" { return }
+    if arrow_only and how != "arrow" {
+        play_sound("sfx/block.wav", 0.5, 1.5)
+        return
+    }
+    hp -= amount
+    flash = 0.3
+    play_sound("sfx/hit.wav", 0.8, 1.3)
+    play_sound("sfx/screech.wav", 0.5, 1.8)
+    if hp <= 0 {
+        st = "dead"
+        st_t = 0
+        remove_tag(self, "focusable")
+        return
+    }
+    st = "vanish"                      # struck, she flees
+    st_t = 0
+}
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    t += dt
+    st_t += dt
+    flash = max(0, flash - dt)
+    hurt_cool = max(0, hurt_cool - dt)
+    var to: vec3 = sprig.position - self.position
+    to.y = 0
+    if st == "wait" {
+        if distance(vec3(sprig.x, 0, sprig.z), vec3(home.x, 0, home.z)) < 9 {
+            set_state("appear")
+            play_sound("sfx/screech.wav", 0.6, 1.5)
+        }
+        return
+    }
+    if st == "appear" {
+        self.Mesh.visible = floor(st_t * 20) % 2 == 0
+        if st_t > 0.5 {
+            set_state("show")
+            add_tag(self, "focusable")
+        }
+    } elif st == "show" {
+        self.Mesh.visible = true
+        if length(to) > 0.8 { self.position = self.position + normalize(to) * speed * dt }
+        if st_t > 2.6 { set_state("vanish") }
+        if length(to) < 1.0 and hurt_cool <= 0 and not arrow_only {
+            sprig.hurt(4, self.position, "touch")
+            hurt_cool = 1
+        }
+    } elif st == "vanish" {
+        self.Mesh.visible = floor(st_t * 20) % 2 == 0
+        remove_tag(self, "focusable")
+        if st_t > 0.5 {
+            set_state("gone")
+            self.Mesh.visible = false
+        }
+    } elif st == "gone" {
+        if st_t > 1.4 {
+            var a: number = random() * 360
+            var r: number = 2 + random() * 3.5
+            self.position = vec3(home.x + cos(a) * r, home.y, home.z + sin(a) * r)
+            set_state("appear")
+        }
+    } elif st == "dead" {
+        self.Mesh.visible = floor(st_t * 20) % 2 == 0
+        self.y = self.y + dt * 1.5
+        if st_t > 1.4 {
+            game.set_flag(flame)
+            spawn("prefabs/poof.scene", self.position + vec3(0, 0.6, 0))
+            play_sound("sfx/secret.wav", 0.7)
+            game.talk("sister_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    if st != "dead" { self.y = home.y + float_h + sin(t * 140) * 0.15 }
+    if length(to) > 0.1 { self.rotation = vec3(0, atan2(-to.x, -to.z), 0) }
+    play_animation(self, "idle", 1, true)
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = color_of() }
+}
+
+func color_of() -> string {
+    if flame == "tt_flame1" { return "#d090ffc0" }
+    if flame == "tt_flame2" { return "#ff8080c0" }
+    return "#80ffa0c0"
+}

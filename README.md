@@ -82,6 +82,14 @@ a jump attack.
   with Old Mozz (the Umami Medallion), and outside the temple Larder Town has rotted
   under the Moldering Spire. Cinder waits on the steps with the Prelude of the Hearth (a
   warp song). Putting the Cleaver back, or pulling it again, moves between the eras.
+- **The Risen world, part one**: the rotted Breadbasket Fields, Peppermill (race the old
+  gravekeeper's ghost round the village for the **Licorice Lash**, a grappling line that
+  bites into wooden targets), the **Thicket of Thyme** (hedge paths to the Glade and the
+  temple's crumbled stair) and the **Thyme Temple** (dungeon 4: lash across pits, the
+  **Skewer Bow**, three Lantern Sisters who stole the braziers' flames — one floats where
+  only a skewer reaches — and **the Hollow Duke**, who rides out of paintings: skewer the
+  one that glows, then bat his balls of light back at him). Fennel wakes as the Keeper of
+  Bitter; Cinder teaches the Minuet of Thyme.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

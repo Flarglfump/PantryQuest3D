@@ -1865,7 +1865,7 @@ entity
     list = "loadzone"
   Script
     file = "scripts/loadzone.bs"
-    vars = "to = \"\", at = \"start\", say = \"tbc_risen\""
+    vars = "to = \"fields\", at = \"town\""
 
 entity
   Name

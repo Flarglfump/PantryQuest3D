@@ -1,0 +1,49 @@
+@strict @3d
+# orb.bs - a ball of mould-light the Hollow Duke throws. A swing of the Cleaver sends it
+# back at him; he may send it back again...
+
+var duke: entity
+var sprig: entity
+var back: bool = false
+var speed: number = 7
+var t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void { sprig = find("Sprig") }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if back or how == "arrow" or how == "lash" { return }
+    back = true
+    speed = min(16, speed + 1.5)
+    play_sound("sfx/block.wav", 0.8, 1.6)
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if duke == nil or not duke.alive {
+        destroy(self)
+        return
+    }
+    var goal: vec3 = sprig.position + vec3(0, 0.9, 0)
+    if back { goal = duke.position + vec3(0, 1.0, 0) }
+    var d: vec3 = goal - self.position
+    var l: number = length(d)
+    self.position = self.position + d * (min(l, speed * dt) / max(l, 0.001))
+    self.scale = vec3(1, 1, 1) * (0.45 + sin(t * 900) * 0.06)
+    if l < 0.5 {
+        if back {
+            if duke.orb_back(self) {
+                back = false                       # returned!
+                speed = min(16, speed + 1.5)
+                play_sound("sfx/zap.wav", 0.6, 1.4)
+            } else {
+                destroy(self)
+            }
+        } else {
+            sprig.hurt(4, self.position, "unblockable")
+            destroy(self)
+        }
+    }
+    at = self.position
+    if t > 12 { destroy(self) }
+}

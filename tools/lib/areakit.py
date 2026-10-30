@@ -256,6 +256,13 @@ class Area:
         self.entity('Tendril', t3((x, y, z)), mesh('model', '#e8d0b0ff', file='models/tendril.obj'), collider('capsule', (1, 2.4, 1), 0.25, offset=(0, -1.2, 0)),
                     tags('focusable'), script('scripts/tendril.bs', id=id, set=set_, count=count))
 
+    def target(self, x, y, z, yaw=0):
+        """A wooden target the Licorice Lash bites into (on a post or a wall)."""
+        self.entity('Lash Target', t3((x, y, z), (0, yaw, 0), (0.8, 0.8, 0.25)), mesh('cube', '#c89058ff', 'art/planks.png'),
+                    collider('box'), tags('hookable', 'focusable'), script('scripts/target.bs'))
+        self.entity('Bullseye', t3((x - math.sin(math.radians(yaw)) * 0.14, y, z - math.cos(math.radians(yaw)) * 0.14), (90, yaw, 0), (0.45, 0.02, 0.45)),
+                    mesh('cylinder', '#d03030ff', lit=False))
+
     def point_light(self, x, y, z, color, intensity, range_):
         self.entity('Lamp', t3((x, y, z)), light('point', color, intensity, range=range_))
 

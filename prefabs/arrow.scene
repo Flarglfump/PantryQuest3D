@@ -1,0 +1,31 @@
+# A skewer from the Skewer Bow (shot.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Arrow"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.05 0.05 0.7
+  Mesh
+    shape = cube
+    color = #e0c890ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Particles
+    rate = 40
+    max = 30
+    lifetime = 0.3
+    speed = 0.3
+    spread = 180
+    size_start = 0.12
+    size_end = 0
+    color_start = #ffd040ff
+    color_end = #ff400000
+    blend = add
+    emitting = false
+  Script
+    file = "scripts/shot.bs"
+    vars = "kind = \"arrow\""

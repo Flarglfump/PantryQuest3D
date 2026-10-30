@@ -28,10 +28,11 @@ def height(x, z):
     return h
 
 
-def build():
+def build(era='fresh'):
     random.seed(17)
+    risen = era == 'risen'
     a = Area('peppermill', 'Peppermill Village', music='music/peppermill.wav', kill_y=-20, sky='#b0dcf0ff', fog=(28, 58),
-             ambient=('#8898b8ff', 0.55), chunk=22)
+             ambient=('#8898b8ff', 0.55), chunk=22, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-48, 48, 12):
         for cx in range(-48, 48, 12):
@@ -71,7 +72,10 @@ def build():
     a.entity('Door', t3((wx, wy + 1.0, wz + 3.35), (0, 0, 0), (1.2, 2.0, 0.1)), mesh('cube', '#5a3a20ff', 'art/planks.png'))
     a.entity('Sails', t3((wx, wy + 8.0, wz + 2.9), (0, 0, 0), (1, 1, 1)), mesh('model', '#e8e0c8ff', 'art/thatch.png', file='models/sails.obj', cull=False),
              script('scripts/spinner.bs', speed=40))
-    a.npc('miller', wx + 3.2, wy, wz + 4.5, 160)
+    if risen:
+        a.npc('risen_miller', wx + 3.2, wy, wz + 4.5, 160, model='miller')
+    else:
+        a.npc('miller', wx + 3.2, wy, wz + 4.5, 160)
     # the well
     a.geo('stone', 6, 6).cylinder((6, height(6, 6) - 0.3, 6), 1.4, 1.2, 12, top=False, uvs=0.6)
     a.geo('stone', 6, 6).cylinder((6, height(6, 6) - 0.3, 6), 1.1, 1.18, 12, top=False, uvs=0.6, inside=True)
@@ -91,14 +95,20 @@ def build():
     for x0, z0, x1, z1 in [(gx - 7, gz - 9, gx + 7, gz - 9), (gx - 7, gz + 7, gx - 2, gz + 7), (gx + 2, gz + 7, gx + 7, gz + 7),
                            (gx + 7, gz - 9, gx + 7, gz + 7), (gx - 7, gz - 9, gx - 7, gz + 7)]:
         box_wall(a, 'stone', x0, z0, x1, z1, height(x0, z0) - 0.3, height(x0, z0) + 0.9, thick=0.5)
-    a.npc('gravekeeper', gx, height(gx, gz + 9), gz + 9, 180)
+    if risen:      # the old gravekeeper's ghost, who races
+        a.entity('Ghost', t3((gx, height(gx, gz + 4.8) + 0.2, gz + 4.8), (0, 180, 0)), mesh('model', '#c0e0ffa0', file='models/gravekeeper.glb'),
+                 ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
+                 tags('interact', 'focusable'), script('scripts/racer.bs'))
+    else:
+        a.npc('gravekeeper', gx, height(gx, gz + 9), gz + 9, 180)
     a.sign(gx - 3, height(gx - 3, gz + 9), gz + 9, 180, 'sign_grave')
     # the mountain gate
     gz2 = -30
     for xx in (-4.5, 4.5):
         a.geo('stone', xx, gz2).box((xx - 1.2, height(xx, gz2) - 1, gz2 - 1.2), (xx + 1.2, height(xx, gz2) + 5, gz2 + 1.2), uvs=0.3)
-    a.blocker(0, height(0, gz2 + 0.5), gz2 + 0.5, (6.4, 1.6, 0.25), 'mountain_open')
-    a.npc('mtguard', 2.0, height(2, gz2 + 2.4), gz2 + 2.4, 170, model='guard')
+    if not risen:
+        a.blocker(0, height(0, gz2 + 0.5), gz2 + 0.5, (6.4, 1.6, 0.25), 'mountain_open')
+        a.npc('mtguard', 2.0, height(2, gz2 + 2.4), gz2 + 2.4, 170, model='guard')
     a.loadzone(0, height(0, -HALF + 1), -HALF + 0.8, 6, 4, 1.2, to='fondue', at='start')
     # trees, pots, grass
     for x, z in [(-34, 18), (-36, -4), (32, 24), (34, 12), (-14, -26), (12, 32), (-38, 30)]:
@@ -113,3 +123,7 @@ def build():
         a.grass(x, height(x, z), z)
         n += 1
     a.save()
+
+
+def build_risen():
+    build('risen')

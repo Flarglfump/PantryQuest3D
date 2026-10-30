@@ -182,6 +182,16 @@ def sand(x, y):
     return mix((200, 180, 130), (232, 214, 168), n)
 
 
+def painting(x, y):        # a gloomy landscape in a gilt frame
+    if x < 3 or y < 3 or x > 28 or y > 28:
+        return (200, 160, 60) if (x + y) % 3 else (150, 110, 40)
+    sky = mix((60, 70, 90), (120, 110, 130), y / 32)
+    hill = 18 + 4 * math.sin(x * 0.3)
+    if y > hill:
+        return mix((50, 70, 40), (30, 40, 30), (y - hill) / 10)
+    return sky
+
+
 def flowers(x, y):
     g = grass(x, y)
     h = hash2(x // 2, y // 2, 22)
@@ -195,7 +205,7 @@ def flowers(x, y):
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
          'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss',
-         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3']
+         'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter']
 
 
 def icon_pixel(name, x, y):
@@ -327,6 +337,25 @@ def icon_pixel(name, x, y):
     if name == 'ember3':
         e = icon_pixel('ember', x, y)
         return (90, 170, 255, 255) if e[3] and e[1] < 200 else e
+    if name == 'lash':
+        d = math.hypot(cx, cy)
+        if 3 < d < 5.5 and not (cx > 0 and cy > 0):
+            return (200, 40, 60, 255)
+        if abs(cx - cy) < 1.2 and cx > 0 and cy > 0 and cx < 7:
+            return (200, 40, 60, 255)
+        return (0, 0, 0, 0)
+    if name == 'bow':
+        if abs(math.hypot(cx + 4, cy) - 8) < 1.1 and cx > -1:
+            return (170, 110, 60, 255)
+        if abs(cx - 2.5) < 0.5 and abs(cy) < 6.5:
+            return (240, 240, 230, 255)
+        return (0, 0, 0, 0)
+    if name in ('med_umami', 'med_bitter'):
+        d = math.hypot(cx, cy)
+        if d > 6:
+            return (0, 0, 0, 0)
+        c = (240, 200, 80, 255) if name == 'med_umami' else (90, 190, 80, 255)
+        return c if d < 4.5 else (180, 150, 60, 255)
     if name == 'letter':
         if abs(cx) < 6 and abs(cy) < 4:
             return (200, 60, 60, 255) if abs(cx) < 1.5 and abs(cy) < 1.5 else (240, 230, 200, 255)
@@ -340,7 +369,7 @@ def main():
                            ('crock', crock, 32), ('dough', dough, 32), ('crust', crust, 32), ('mould', mould, 32),
                            ('clay', clay, 16), ('sack', sack, 16), ('chest', chest, 32), ('rot', rot, 32),
                            ('flowers', flowers, 32), ('cobble', cobble, 32), ('crack', crack, 32), ('lavacheese', lavacheese, 32),
-                           ('flesh', flesh, 32), ('fizzrock', fizzrock, 32), ('sand', sand, 32)]:
+                           ('flesh', flesh, 32), ('fizzrock', fizzrock, 32), ('sand', sand, 32), ('painting', painting, 32)]:
         tex(name, size, fn)
     tex('water', 32, water, alpha=True)
     tex('web', 32, web, alpha=True)

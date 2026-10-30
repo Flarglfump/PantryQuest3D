@@ -14,7 +14,7 @@ var msg_t: number = 0
 var closing: bool = false
 
 const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
-const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "lens", "beans", "jar1", "jar2"]
+const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "bow", "lash", "lens", "beans", "jar1", "jar2"]
 
 func start() -> void { s = global("save", []) }
 
@@ -28,11 +28,12 @@ func item_shown(name: string) -> bool {
 func icon(name: string) -> string {
     if name == "pipe" { return "art/icons/whistle.png" }
     if name == "bombs" { return "art/icons/bomb.png" }
+    if name == "jar1" and contains(s[0], "jar1_fish") { return "art/icons/jar_fish.png" }
     return "art/icons/" + name + ".png"
 }
 
 func label(name: string) -> string {
-    var names: list = [["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
+    var names: list = [["bow", "SKEWER BOW"], ["lash", "LICORICE LASH"], ["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
                        ["pipe", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
                        ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"],
                        ["ember_courage", "EMBER OF COURAGE"], ["ember_power", "EMBER OF POWER"], ["ember_wisdom", "EMBER OF WISDOM"]]
@@ -157,12 +158,12 @@ func draw() -> void {
 
 func draw_items() -> void {
     for i in len(ITEM_GRID) {
-        var c: vec2 = vec2(88 + (i % 4) * 48, 88 + floor(i / 4) * 40)
-        draw_rect(c - vec2(14, 14), vec2(28, 28), [60, 50, 70, 255])
+        var c: vec2 = vec2(88 + (i % 4) * 48, 86 + floor(i / 4) * 30)
+        draw_rect(c - vec2(13, 13), vec2(26, 26), [60, 50, 70, 255])
         if item_shown(ITEM_GRID[i]) { draw_image(icon(ITEM_GRID[i]), c) }
         if i == cur {
             var o: number = floor(t * 4) % 2
-            draw_rect(c - vec2(16 + o, 16 + o), vec2(32 + o * 2, 32 + o * 2), [255, 220, 90, 255], false)
+            draw_rect(c - vec2(15 + o, 15 + o), vec2(30 + o * 2, 30 + o * 2), [255, 220, 90, 255], false)
         }
         var slots: list = s[6]
         for j in 3 {
@@ -171,7 +172,7 @@ func draw_items() -> void {
     }
     var it: string = ITEM_GRID[cur]
     if item_shown(it) {
-        draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 170), [255, 255, 255])
+        draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 174), [255, 255, 255])
         if true { draw_text("U / I / O: put it on that button", vec2(36, 186), [190, 180, 150]) }
     }
 }
@@ -214,7 +215,7 @@ func draw_gear() -> void {
         draw_image("art/icons/whistle.png", vec2(188, 168))
         draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
     }
-    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"]]
+    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"]]
     var sy: number = 180
     for sg in songs {
         if has(sg[0]) {
@@ -256,7 +257,8 @@ func draw_map() -> void {
     var hc: bool = has("compass_" + dun)
     var names: list = [["crock", "THE GREAT CROCK", "The Queen lurks on 3F,", "past the web below."],
                        ["hardcaves", "HARDTACK CAVERNS", "King Crustodon waits", "beyond the north cave."],
-                       ["gulp", "INSIDE LORD GULP", "Something knotted lurks", "past the north chamber."]]
+                       ["gulp", "INSIDE LORD GULP", "Something knotted lurks", "past the north chamber."],
+                       ["thymetemple", "THYME TEMPLE", "The master waits below,", "down the lift in the hall."]]
     var title: string = dun
     var b1: string = ""
     var b2: string = ""

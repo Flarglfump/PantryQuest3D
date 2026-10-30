@@ -16,6 +16,7 @@ var at: vec3
 func start() -> void {
     if kind == "nut" { speed = 7 }
     if kind == "fire" { speed = 9 }
+    if kind == "arrow" { speed = 30 }
 }
 
 func update(dt: number) -> void {
@@ -26,7 +27,7 @@ func update(dt: number) -> void {
     }
     var from: vec3 = self.position
     var to: vec3 = from + dir * speed * dt
-    if kind == "pea" and not fire {
+    if (kind == "pea" or kind == "arrow") and not fire {
         for t in find_tagged("torch") {
             if t.lit and distance(t.flame_point(), to) < 0.45 {
                 fire = true
@@ -60,7 +61,9 @@ func update(dt: number) -> void {
         if e.name != "Sprig" {
             var how: string = kind
             if fire { how = "fire" }
-            send(e, "hit", 1, how, from)
+            var amt: int = 1
+            if kind == "arrow" { amt = 2 }
+            send(e, "hit", amt, how, from)
             spawn("prefabs/spark.scene", hit[1])
             play_sound("sfx/tick.wav", 0.5)
         }
@@ -83,7 +86,9 @@ func update(dt: number) -> void {
         if distance(w.global_position, to) < w.radius {
             var how2: string = kind
             if fire { how2 = "fire" }
-            w.hit(1, how2, from)
+            var amt2: int = 1
+            if kind == "arrow" { amt2 = 2 }
+            w.hit(amt2, how2, from)
             if not w.passthrough {
                 destroy(self)
                 return

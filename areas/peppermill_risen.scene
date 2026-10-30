@@ -1,0 +1,2728 @@
+# Peppermill Village - an area of Pantry Quest 3D.
+# Made by tools/areas/peppermill.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"peppermill\", area_name = \"Peppermill Village\", music = \"music/peppermill.wav\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -55 -35 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #fff2dcff
+    intensity = 0.95
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #8898b8ff
+    intensity = 0.55
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 60
+    clear_color = #b0dcf0ff
+    fog = true
+    fog_color = #b0dcf0ff
+    fog_start = 28
+    fog_end = 58
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Sky"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/sky.bs"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = -30 1.8936 43.5
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 8 4 1.4
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"fields\", at = \"peppermill\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = -28 -0.0166 36
+    rotation = 0 20 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_fields"
+  Transform3D
+    position = -28 -0.0166 36
+    rotation = 0 20 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_fondue"
+  Transform3D
+    position = 0 0.1 -32
+    rotation = 0 180 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = -24 0.6 34
+    rotation = 0 200 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = -24 1 34
+    rotation = 0 200 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_pepper\""
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = -6 0.6735 -2.65
+    rotation = 0 0 0
+    scale = 1.2 2 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Sails"
+  Transform3D
+    position = -6 7.6735 -3.1
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/sails.obj"
+    texture = "art/thatch.png"
+    color = #e8e0c8ff
+    uv_scale = 1 1
+    cull = false
+  Script
+    file = "scripts/spinner.bs"
+    vars = "speed = 40"
+
+entity
+  Name
+    text = "Risen_miller"
+  Transform3D
+    position = -2.8 -0.3265 -1.5
+    rotation = 0 160 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/miller.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"risen_miller\""
+
+entity
+  Name
+    text = "Well Ring"
+  Transform3D
+    position = 6 0.7765 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 1.4
+    friction = 0.8
+  Tags
+    list = "seethrough"
+
+entity
+  Name
+    text = "Well"
+  Transform3D
+    position = 6 0.9265 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_well\", prompt = \"Look\", reach = 2.4"
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = -20.47 0.7719 6
+    rotation = 0 -90 0
+    scale = 1.1 1.8 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -20.47 1.4719 4.2
+    rotation = 0 -90 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -20.47 1.4719 7.8
+    rotation = 0 -90 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = -22.47 0.9004 -16
+    rotation = 0 -90 0
+    scale = 1.1 1.8 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -22.47 1.6004 -17.8
+    rotation = 0 -90 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -22.47 1.6004 -14.2
+    rotation = 0 -90 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = 14 0.6518 16.97
+    rotation = 0 0 0
+    scale = 1.1 1.8 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = 11.9 1.3518 16.97
+    rotation = 0 0 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = 16.1 1.3518 16.97
+    rotation = 0 0 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = -10 1.3124 20.97
+    rotation = 0 0 0
+    scale = 1.1 1.8 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -11.8 2.0124 20.97
+    rotation = 0 0 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = -8.2 2.0124 20.97
+    rotation = 0 0 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Door"
+  Transform3D
+    position = 18 0.6924 -16.97
+    rotation = 0 180 0
+    scale = 1.1 1.8 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #5a3a20ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = 15.9 1.3924 -16.97
+    rotation = 0 180 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Window"
+  Transform3D
+    position = 20.1 1.3924 -16.97
+    rotation = 0 180 0
+    scale = 0.7 0.6 0.06
+  Mesh
+    shape = cube
+    color = #f8e8a0ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 18 0.4255 -16.2
+    rotation = 0 0 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 18 0.8255 -16.2
+    rotation = 0 0 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_potions\""
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 26 0.5047 -12
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 26 0.509 -8
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 26 0.5119 -4
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 30 0.4038 -12
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 30 0.315 -8
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 30 0.2554 -4
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 34 0.3246 -12
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 34 0.1628 -8
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Grave"
+  Transform3D
+    position = 34 0.0542 -4
+    rotation = 0 0 0
+    scale = 0.9 1 0.25
+  Mesh
+    shape = cube
+    texture = "art/stone.png"
+    color = #a8a8b0ff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"grave\", reach = 1.6"
+
+entity
+  Name
+    text = "Ghost"
+  Transform3D
+    position = 30 -0.0636 -1.2
+    rotation = 0 180 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/gravekeeper.glb"
+    color = #c0e0ffa0
+    uv_scale = 1 1
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/racer.bs"
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 27 0.3937 3
+    rotation = 0 180 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 27 0.7937 3
+    rotation = 0 180 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_grave\""
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 2 -43.2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 6 4 1.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"fondue\", at = \"start\""
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -34 1.4615 18
+    rotation = 0 0 0
+    scale = 0.7253 3.1429 0.7253
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"bean1\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -34 3.8791 18
+    rotation = 0 182 0
+    scale = 3.1429 2.4176 3.1429
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -36 2.3101 -4
+    rotation = 0 0 0
+    scale = 0.8305 3.5989 0.8305
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"bean1\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -36 5.0785 -4
+    rotation = 0 108 0
+    scale = 3.5989 2.7684 3.5989
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 32 1.6753 24
+    rotation = 0 0 0
+    scale = 0.6419 2.7817 0.6419
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"heart\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 32 3.8151 24
+    rotation = 0 104 0
+    scale = 2.7817 2.1398 2.7817
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 34 1.4908 12
+    rotation = 0 0 0
+    scale = 0.769 3.3324 0.769
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"heart\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 34 4.0542 12
+    rotation = 0 178 0
+    scale = 3.3324 2.5634 3.3324
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -14 1.9558 -26
+    rotation = 0 0 0
+    scale = 0.6668 2.8894 0.6668
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -14 4.1784 -26
+    rotation = 0 202 0
+    scale = 2.8894 2.2226 2.8894
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = 12 0.8356 32
+    rotation = 0 0 0
+    scale = 0.6597 2.8589 0.6597
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"heart\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = 12 3.0347 32
+    rotation = 0 84 0
+    scale = 2.8589 2.1991 2.8589
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Tree"
+  Transform3D
+    position = -38 0.9311 30
+    rotation = 0 0 0
+    scale = 0.7007 3.0363 0.7007
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Collider3D
+    shape = capsule
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "tree"
+  Script
+    file = "scripts/tree.bs"
+    vars = "drop = \"heart\""
+
+entity
+  Name
+    text = "Leaves"
+  Transform3D
+    position = -38 3.2667 30
+    rotation = 0 34 0
+    scale = 3.0363 2.3357 3.0363
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = -20 -0.3733 4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = -20.8 -0.3202 4.8
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = 12 -0.1352 18
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = -8 0.2893 22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Pot"
+  Transform3D
+    position = 16 -0.1281 -18
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/pot.obj"
+    texture = "art/clay.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = capsule
+    size = 1 0.5 1
+    radius = 0.28
+    friction = 0.8
+    offset = 0 0.25 0
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"pot\", drops = 0.6"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 22.9804 0.016 14.9936
+    rotation = 0 32.8533 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 14.017 -0.2671 20.3534
+    rotation = 0 8.9116 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -27.5469 0.0588 9.2758
+    rotation = 0 137.7054 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -27.369 -0.0666 24.664
+    rotation = 0 48.731 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -23.0611 0.2184 30.4995
+    rotation = 0 16.2557 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 14.1231 0.5277 -4.8137
+    rotation = 0 306.6935 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -28.614 -0.0687 19.7977
+    rotation = 0 260.0205 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -32.7424 0.4251 0.2192
+    rotation = 0 68.3767 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 10.6533 0.1868 12.3963
+    rotation = 0 55.3641 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 13.8784 0.5972 0.1551
+    rotation = 0 18.1948 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -5.1086 -0.1691 10.589
+    rotation = 0 269.2589 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 30.1628 0.1461 21.2888
+    rotation = 0 160.5394 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -34.1775 0.4416 4.5432
+    rotation = 0 65.8253 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 6.0858 -0.336 -25.6699
+    rotation = 0 246.1613 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -7.1852 0.1258 -18.5063
+    rotation = 0 24.578 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -21.7479 -0.162 -10.0915
+    rotation = 0 115.8045 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 34.7598 0.3142 -22.2808
+    rotation = 0 23.4978 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -33.1179 0.2972 -8.369
+    rotation = 0 262.478 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 18.8117 -0.4202 27.0332
+    rotation = 0 16.5865 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -18.9869 -0.3681 -6.3131
+    rotation = 0 326.3716 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -11.5656 -0.0374 -15.0735
+    rotation = 0 210.7765 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -30.8474 0.1504 10.7944
+    rotation = 0 348.5942 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -34.1524 -0.4053 37.3941
+    rotation = 0 265.6207 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -36.5396 -0.3184 21.6574
+    rotation = 0 231.5742 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -22.93 -0.133 -9.4831
+    rotation = 0 63.4994 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 18.8628 -0.1828 19.7798
+    rotation = 0 255.9856 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 36.3721 0.4906 26.2531
+    rotation = 0 214.0238 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = -24.0702 0.1215 37.7054
+    rotation = 0 85.2701 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 35.0283 0.0822 17.2838
+    rotation = 0 350.325 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
+    position = 30.9607 0.2117 -22.7854
+    rotation = 0 173.5629 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "dirt -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_-2_1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_-2_2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_-1_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_-1_1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_0_-2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_0_-1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_0_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_1_-1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "dirt 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/dirt_1_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-2_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-2_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-2_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-1_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-1_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-1_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_-1_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_0_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_0_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_0_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_0_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_1_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_1_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_1_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/grass_1_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_-2_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_-2_0.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_-1_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_-1_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_0_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/planks_0_0.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/stone_-1_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/stone_0_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/stone_0_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/stone_1_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/stone_1_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_-2_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_-2_0.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_-1_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_-1_1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_0_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill_risen/thatch_0_0.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

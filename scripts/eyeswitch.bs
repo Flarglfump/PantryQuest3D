@@ -25,7 +25,7 @@ func close() -> void {
 
 func hit(amount: int, how: string, from: vec3) -> void {
     if shut { return }
-    if how == "pea" or how == "fire" {
+    if how == "pea" or how == "fire" or how == "arrow" or how == "boomerang" {
         close()
         play_sound("sfx/switch.wav", 0.8)
         play_sound("sfx/secret.wav", 0.7)

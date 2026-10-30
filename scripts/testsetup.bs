@@ -22,8 +22,9 @@ func start() -> void {
         push(it, i)
         if i == "shooter" { s[5] = 30 }
         if i == "bombs" { push(s[7], ["bombs", 20]) }
+        if i == "bow" { push(s[7], ["arrows", 30]) }
         if i == "pipe" { push(it, "song_fennel") }
-        if i == "shooter" or i == "bombs" or i == "pipe" or i == "boomerang" or i == "jar1" {
+        if i == "shooter" or i == "bombs" or i == "pipe" or i == "boomerang" or i == "jar1" or i == "lash" or i == "bow" {
             var slots: list = s[6]
             var placed: bool = false
             for k in 3 {

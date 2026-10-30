@@ -1,0 +1,210 @@
+@strict @3d
+# hollowduke.bs - the Hollow Duke, a mould puppet of Duke Mildew, master of the Thyme
+# Temple. First he rides out of the gallery's four paintings: the one he is about to come
+# out of glows - put a skewer in it first and he tumbles out, stunned. Hurt, he floats up
+# and throws balls of mould-light: swing them back at him (he can swing them back too).
+# Stunned, he can be struck (no more than 4 a time).
+
+var hp: int = 12
+var max_hp: int = 12
+var game: entity
+var sprig: entity
+var hud: entity
+var st: string = "wait"            # wait warn ride down float dead
+var st_t: number = 0
+var flash: number = 0
+var slot: int = 0
+var ride_dir: vec3
+var down_dmg: int = 0
+var throw_t: number = 2
+var volley: int = 0
+var centre: vec3
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    centre = self.position
+    if game.flag("tt_boss") {
+        destroy(self)
+        return
+    }
+    hide()
+}
+
+func hide() -> void {
+    self.Mesh.visible = false
+    self.position = centre + vec3(0, -20, 0)
+    remove_tag(self, "focusable")
+}
+
+func show_at(p: vec3) -> void {
+    self.Mesh.visible = true
+    self.position = p
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 1.2, 0) }
+
+func painting(k: int) -> entity {
+    for e in find_all("Painting") {
+        if e.slot == k { return e }
+    }
+    return nil
+}
+
+func glow(k: int, on: bool) -> void {
+    var p: entity = painting(k)
+    if p == nil { return }
+    if on { p.Mesh.color = "#ffffa0ff" } else { p.Mesh.color = "#ffffffff" }
+}
+
+func set_state(s: string) -> void {
+    st = s
+    st_t = 0
+}
+
+func painting_hit(k: int, how: string) -> void {
+    if st == "warn" and k == slot and how == "arrow" {
+        glow(slot, false)
+        var p: entity = painting(slot)
+        show_at(p.position + p.forward * -1.2 + vec3(0, -1.0, 0))
+        set_state("down")
+        down_dmg = 0
+        add_tag(self, "focusable")
+        play_sound("sfx/screech.wav", 0.9, 0.7)
+        shake_camera(1.5, 0.3)
+        return
+    }
+    play_sound("sfx/tick.wav", 0.5)
+}
+
+func orb_back(o: entity) -> bool {
+    volley += 1
+    if random() < 0.75 - volley * 0.2 {           # he swings it back... at first
+        play_sound("sfx/swing.wav", 0.7, 0.8)
+        return true
+    }
+    set_state("down")                               # struck by his own light
+    down_dmg = 0
+    add_tag(self, "focusable")
+    play_sound("sfx/screech.wav", 0.9, 0.7)
+    shake_camera(1.5, 0.3)
+    return false
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if st == "down" and how != "arrow" and how != "lash" and down_dmg < 4 {
+        hp -= amount
+        down_dmg += amount
+        flash = 0.3
+        play_sound("sfx/hit.wav", 0.9, 0.6)
+        shake_camera(1.5, 0.15)
+        if down_dmg >= 4 { st_t = max(st_t, 3.4) }
+        if hp <= 0 { die() }
+        return
+    }
+    if st != "dead" { play_sound("sfx/block.wav", 0.5, 0.8) }
+}
+
+func die() -> void {
+    set_state("dead")
+    remove_tag(self, "focusable")
+    for o in find_all("Orb") { destroy(o) }
+    play_sound("sfx/boss_roar.wav", 0.9, 0.8)
+    stop_music(1.5)
+    shake_camera(3, 1.5)
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    if st == "wait" {
+        if distance(sprig.position, centre) < 9 {
+            set_state("warn")
+            slot = floor(random() * 4)
+            glow(slot, true)
+            play_music("music/boss.wav", 0.7, 0.5)
+            hud.show_boss(self, "THE HOLLOW DUKE")
+            game.talk("duke_title", "")
+        }
+        return
+    }
+    if st == "warn" {
+        if st_t > 2.6 {
+            glow(slot, false)
+            var p: entity = painting(slot)
+            show_at(p.position + p.forward * -1.0 + vec3(0, -0.8, 0))
+            ride_dir = sprig.position - self.position
+            ride_dir.y = 0
+            ride_dir = normalize(ride_dir)
+            set_state("ride")
+            play_sound("sfx/lunge.wav", 0.8, 0.6)
+        }
+    } elif st == "ride" {
+        self.position = self.position + ride_dir * 11 * dt
+        self.y = max(centre.y, self.y - dt * 2)
+        self.rotation = vec3(-15, atan2(-ride_dir.x, -ride_dir.z), 0)
+        if distance(self.position + vec3(0, 0.8, 0), sprig.position + vec3(0, 0.6, 0)) < 1.3 { sprig.hurt(4, self.position, "touch") }
+        var off: vec3 = self.position - centre
+        off.y = 0
+        if st_t > 0.4 and length(off) > 10 {
+            hide()
+            set_state("warn")
+            var nk: int = floor(random() * 4)
+            if nk == slot { nk = (nk + 1) % 4 }
+            slot = nk
+            glow(slot, true)
+        }
+    } elif st == "down" {
+        self.y = max(centre.y, self.y - dt * 6)
+        self.rotation = vec3(sin(st_t * 700) * 8, self.rotation.y, 70)
+        if st_t > 4 {
+            self.rotation = vec3(0, self.rotation.y, 0)
+            if hp <= max_hp / 2 {
+                set_state("float")
+                volley = 0
+                throw_t = 1.5
+            } else {
+                hide()
+                set_state("warn")
+                slot = floor(random() * 4)
+                glow(slot, true)
+            }
+            remove_tag(self, "focusable")
+        }
+    } elif st == "float" {
+        if not self.Mesh.visible { show_at(centre + vec3(0, 3, 0)) }
+        add_tag(self, "focusable")
+        var want: vec3 = centre + vec3(sin(st_t * 30) * 3, 3 + sin(st_t * 90) * 0.3, cos(st_t * 30) * 3)
+        self.position = lerp(self.position, want, min(1, dt * 2))
+        var to: vec3 = sprig.position - self.position
+        self.rotation = vec3(0, atan2(-to.x, -to.z), 0)
+        if len(find_all("Orb")) == 0 {
+            throw_t -= dt
+            if throw_t <= 0 {
+                throw_t = 2.2
+                volley = 0
+                var o: entity = spawn("prefabs/orb.scene", self.position + vec3(0, 1.0, 0))
+                o.duke = self
+                play_sound("sfx/zap.wav", 0.7, 0.8)
+            }
+        }
+    } elif st == "dead" {
+        dead_t += dt
+        self.Mesh.visible = floor(dead_t * 16) % 2 == 0
+        if floor(dead_t * 5) != floor((dead_t - dt) * 5) and dead_t < 2.4 {
+            spawn("prefabs/poof.scene", self.position + vec3(random(-1, 1), random(0, 2), random(-1, 1)))
+        }
+        if dead_t > 2.6 {
+            game.set_flag("tt_boss")
+            game.talk("duke_beaten", "")
+            destroy(self)
+            return
+        }
+    }
+    at = self.position
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff9090ff" } else { self.Mesh.color = "#a0c8a0ff" }
+}

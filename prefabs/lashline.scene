@@ -1,0 +1,17 @@
+# The Licorice Lash's line (sprig.bs stretches it).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Lash Line"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.06 0.06 0.1
+  Mesh
+    shape = cube
+    color = #c02838ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false

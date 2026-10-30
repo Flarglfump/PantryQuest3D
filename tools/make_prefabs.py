@@ -70,6 +70,20 @@ def main():
            ('Boomerang', t3((0, 0, 0)), mesh('model', '#d0c0a0ff', file='models/spatula.obj', cast=False, cull=False), script('scripts/boomerang.bs')))
     prefab('cleaver', "The Cleaver of Dawn in Sprig's hand (placed by sprig.bs).",
            ('Cleaver', t3((0, 0, 0)), mesh('model', '#e0e8f0ff', file='models/cleaver.obj', cast=False)))
+    prefab('lashline', "The Licorice Lash's line (sprig.bs stretches it).",
+           ('Lash Line', t3((0, 0, 0), scale=(0.06, 0.06, 0.1)), mesh('cube', '#c02838ff', cast=False, lit=False)))
+    prefab('arrow', "A skewer from the Skewer Bow (shot.bs).",
+           ('Arrow', t3((0, 0, 0), scale=(0.05, 0.05, 0.7)), mesh('cube', '#e0c890ff', cast=False),
+            particles(rate=40, max=30, lifetime=0.3, speed=0.3, spread=180, size_start=0.12, size_end=0,
+                      color_start='#ffd040ff', color_end='#ff400000', blend='add', emitting=False),
+            script('scripts/shot.bs', kind='arrow')))
+    prefab('orb', "A ball of mould-light the Hollow Duke throws (orb.bs).",
+           ('Orb', t3((0, 0, 0), scale=0.45), mesh('sphere', '#c0ff80ff', lit=False, cast=False), collider('sphere', radius=0.6, trigger=True),
+            particles(rate=30, max=40, lifetime=0.4, speed=0.4, spread=180, size_start=0.3, size_end=0, color_start='#e0ffa0ff', color_end='#60a02000', blend='add'),
+            script('scripts/orb.bs')))
+    prefab('pickup_arrows', "A bundle of skewers to pick up (pickup.bs).",
+           ('Pickup', t3((0, 0, 0), scale=(0.08, 0.08, 0.6)), mesh('cube', '#e0c890ff', lit=False, cast=False), tags('pickup'),
+            script('scripts/pickup.bs', kind='arrows')))
     prefab('bigfire', "A great fire (the castle burning: storm.bs).",
            ('Big Fire', t3((0, 0, 0)), particles(rate=40, max=80, lifetime=1.4, speed=2.5, spread=20, area=(6, 2), gravity=-2,
                                                  size_start=2.4, size_end=0.3, color_start='#ffb040ff', color_end='#c0200000', blend='add'),

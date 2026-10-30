@@ -1,0 +1,19 @@
+@strict @3d
+# brazier.bs - one of the Thyme Temple's three braziers: it burns when its flame (the flag
+# `when`) is back. When all three burn, the flag "tt_flames" is set (the lift goes down).
+
+var when: string = ""
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    self.Particles.emitting = game.flag(when)
+}
+
+func flags_changed() -> void {
+    self.Particles.emitting = game.flag(when)
+    if game.flag("tt_flame1") and game.flag("tt_flame2") and game.flag("tt_flame3") and not game.flag("tt_flames") {
+        game.set_flag("tt_flames")
+        play_sound("sfx/secret.wav", 0.8)
+    }
+}

@@ -144,7 +144,7 @@ def build(era='fresh'):
     for x, z in [(-20, 22), (20, 22)]:
         a.tree(x, 0, z, 1.0)
     if risen:
-        a.loadzone(0, 0, HALF - 0.9, 5, 4, 1.2, to='', say='tbc_risen')
+        a.loadzone(0, 0, HALF - 0.9, 5, 4, 1.2, to='fields', at='town')
     a.save()
 
 

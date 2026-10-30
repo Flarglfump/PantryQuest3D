@@ -1,0 +1,22 @@
+# A bundle of skewers to pick up (pickup.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Pickup"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.08 0.08 0.6
+  Mesh
+    shape = cube
+    color = #e0c890ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Tags
+    list = "pickup"
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"arrows\""

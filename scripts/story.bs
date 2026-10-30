@@ -471,6 +471,57 @@ func talk(id: string) -> list {
     }
     if id == "risen_townsfolk" { return [p("FLICKER", "Everyone's gone. The houses are all cold.")] }
 
+
+    # ---- the Risen world
+    if id == "ghost_race" {
+        return [p("GRANDPA GRISTLE'S GHOST", "Heh heh heh... A young man, in MY graveyard? Seven years I've waited for a visitor."),
+                p("GRANDPA GRISTLE'S GHOST", "Fancy a race, young man? Keep up with me round the village, and you can have my treasure. Heh heh!"),
+                ask("GRANDPA GRISTLE'S GHOST", "Ready?", ["Go!", "Not now"])]
+    }
+    if id == "ghost_won" {
+        return [p("GRANDPA GRISTLE'S GHOST", "Heh... heh... You're quick, young man. Quicker than I ever was."),
+                p("GRANDPA GRISTLE'S GHOST", "A promise is a promise. Take my LICORICE LASH. I used it to pull myself up out of graves. Heh heh!")]
+    }
+    if id == "ghost_lost" { return [p("GRANDPA GRISTLE'S GHOST", "Heh heh heh! Too slow! Come and find me in the graveyard if you want another go!")] }
+    if id == "ghost_after" { return [p("GRANDPA GRISTLE'S GHOST", "Heh heh. Use that lash well. Wooden things, young man... it bites into wooden things.")] }
+    if id == "risen_miller" {
+        return [p("MILLER", "You don't look like the Duke's sort. Seven years now the windmill's turned the wrong way, and it never rains."),
+                p("MILLER", "They say the old gravekeeper still walks the graveyard at night. Race you, he would, if you asked.")]
+    }
+    if id == "risen_gate" { return [p("FLICKER", "The guard's gone... the trail up the mountain's open. Everything feels so empty.")] }
+    if id == "sign_thicket" { return [p("", "THE THICKET OF THYME|Those who enter without a friend may never find the way out.")] }
+    if id == "thicket_kid" {
+        if game.era == "risen" { return [p("SPROUT", "...A big person? In the Thicket? You look like someone I used to know. He never came back.")] }
+        return [p("SPROUT", "Sprig! You're going out in the world? Don't get lost in the Thicket like the big people do!")]
+    }
+
+
+    if id == "sign_temple_stair" { return [p("", "THE STAIR TO THE THYME TEMPLE.|It crumbled long ago. The Keepers' temple waits on the ledge above.")] }
+    if id == "lash_target" { return [p("FLICKER", "A wooden target... something that bites into wood could pull you right over to it.")] }
+    if id == "tt_enter" {
+        return [p("FLICKER", "The Thyme Temple... It smells like Fennel's hair. Like the whole Thicket at once."),
+                p("FLICKER", "Somewhere in here is the first Keeper. Let's find her.")]
+    }
+    if id == "tt_lift" {
+        if game.flag("tt_flames") { return [p("FLICKER", "All three braziers are burning! Stand in the middle - the floor's going down!")] }
+        return [p("", "THREE BRAZIERS, COLD.|\"When the sisters' lanterns burn here again, the way down will open.\"")]
+    }
+    if id == "sister_beaten" { return [p("FLICKER", "Her flame flew back to the hall! One more brazier burning!")] }
+    if id == "duke_title" { return [p("", "THE HOLLOW DUKE|Mould-Puppet of the Moldering Spire")] }
+    if id == "duke_beaten" { return [p("FLICKER", "It was only a puppet... the real Duke is still out there. But the temple's free! Step into the light!")] }
+    if id == "fennel_keeper" {
+        if game.flag("keeper_bitter") { return [p("FENNEL", "I'll always be here, Sprig. In every leaf of the Thicket. Go on - the other Keepers need you.")] }
+        return [p("FENNEL", "Sprig...? Is that really you? You're so... tall."),
+                p("FENNEL", "I'm a Keeper, Sprig. The Keeper of Bitter, it turns out. Herbs and leaves and the green taste of the Thicket."),
+                p("FENNEL", "I always knew you weren't a Sprout, you know. Sprouts don't grow up. But you'll always be one of us."),
+                p("FENNEL", "Take my medallion. And Sprig... when this is all over, come and play my tune for me. Promise?")]
+    }
+    if id == "cinder_minuet" {
+        return [p("CINDER", "The Keeper of Bitter wakes. The Thicket breathes again."),
+                p("CINDER", "Learn this. The MINUET OF THYME. It will carry you here, to the Glade, from anywhere under the sky."),
+                p("CINDER", "The next Keeper sleeps in fire, under Mount Fondue. Your sworn brother's people need you, Hero.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -634,6 +685,16 @@ func after(what: string, choice: int) -> void {
     } elif what == "prelude" {
         play_sound("sfx/secret.wav", 0.8)
         game.give("song_prelude", "")
+    } elif what == "race_go" {
+        if choice == 0 { find("Ghost").go() }
+    } elif what == "lash" {
+        game.give("lash", "")
+    } elif what == "med_bitter" {
+        game.set_flag("keeper_bitter")
+        game.give("med_bitter", "")
+    } elif what == "minuet" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_minuet", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -671,6 +732,10 @@ func area_started(area: string) -> void {
     if area == "town" and game.era == "risen" and not game.flag("spire_seen") {
         game.set_flag("spire_seen")
         game.talk("spire", "")
+    }
+    if area == "thymetemple" and not game.flag("tt_entered") {
+        game.set_flag("tt_entered")
+        game.talk("tt_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -722,7 +787,25 @@ func hint() -> string {
     if not game.flag("risen_once") { return "The Cleaver of Dawn is in the Pantry of Ages, past the Door of Seasons." }
     if not game.flag("met_mozz") { return "Talk to Old Mozz." }
     if not game.has_item("song_prelude") { return "Someone's waiting on the temple steps, outside." }
-    return "Cinder said the first Keeper sleeps in the Thyme Temple, in the Thicket of Thyme (east of the field). (The Risen world isn't built yet!)"
+    if game.dungeon == "thymetemple" { return thyme_hint() }
+    if not game.has_item("lash") {
+        if game.area == "thicket" { return "The temple's stair is broken. We need something that could pull us across... Peppermill's old gravekeeper had a treasure, they say. His ghost haunts the graveyard." }
+        return "The Thyme Temple is in the Thicket of Thyme, east of the field - but its stair is broken. In Peppermill, the old gravekeeper's ghost is said to race visitors for his treasure."
+    }
+    if not game.flag("thymetemple_done") { return "The Thyme Temple! Through the Thicket, east of the field, up the broken stair in the Glade. Lash yourself across to the target!" }
+    if not game.flag("keeper_bitter") { return "Fennel is waiting in the Chamber of Keepers." }
+    if not game.has_item("song_minuet") { return "Cinder's in the Glade. Go and see what they want." }
+    return "The next Keeper sleeps in fire, under Mount Fondue. (The Fondue Forge isn't built yet!)"
+}
+
+func thyme_hint() -> string {
+    if not game.flag("tt_flame1") and not game.has_item("map_thymetemple") { return "The braziers' flames were stolen by ghosts. The rooms off the hall are haunted... start with the west one." }
+    if not game.has_item("bow") { return "The east room's guarded by Stalebies. Beat them - there must be something good in there." }
+    if not game.flag("door:tt_north") { return "The small key is up on the ledge in the east room. Lash up to the target!" }
+    if not game.flag("tt_flame2") { return "The red sister floats too high for the Cleaver. Skewer her when she shows herself!" }
+    if not game.flag("tt_flame3") { return "One sister left: east of the north room, across the pit. Lash over!" }
+    if not game.flag("tt_flames") { return "Go back to the hall of braziers." }
+    return "All three braziers burn! Stand on the lift in the middle of the hall. And bring skewers..."
 }
 
 func gulp_hint() -> string {
@@ -767,6 +850,13 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "song_minuet" { return "You learned the MINUET OF THYME!|Play it anywhere outside a dungeon to warp to the Glade in the Thicket." }
+    if kind == "map_thymetemple" { return "You found the DUNGEON MAP!|See every room of the Thyme Temple in the pause menu." }
+    if kind == "compass_thymetemple" { return "You found the COMPASS!|Now the map shows the treasure and the master." }
+    if kind == "bosskey_thymetemple" { return "You got the BOSS KEY!|...though this temple's master waits down the lift." }
+    if kind == "lash" { return "You got the LICORICE LASH!|Fire it with its button. It bites into wooden targets and pulls you over to them." }
+    if kind == "bow" { return "You got the SKEWER BOW!|Fire skewers with its button. Focus with {focus} first to aim. Holds 30." }
+    if kind == "med_bitter" { return "You got the BITTER MEDALLION!|Fennel, Keeper of Bitter, has woken." }
     if kind == "whistle" { return "You got the KETTLE WHISTLE!|The royal family's treasure. It plays every song the pipe did, only sweeter." }
     if kind == "song_rising" { return "You learned the SONG OF RISING!|A song of time itself. Play it before the Door of Seasons." }
     if kind == "med_umami" { return "You got the UMAMI MEDALLION!|Old Mozz's own. It holds the deep, savoury flavour of the Keeper of Umami." }

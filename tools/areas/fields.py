@@ -54,10 +54,11 @@ def height(x, z):
     return h
 
 
-def build():
+def build(era='fresh'):
     random.seed(11)
+    risen = era == 'risen'
     a = Area('fields', 'Breadbasket Fields', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(30, 64),
-             ambient=('#8898b8ff', 0.55), chunk=40)
+             ambient=('#8898b8ff', 0.55), chunk=40, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-104, 104, 26):
         for cx in range(-104, 104, 26):
@@ -123,7 +124,8 @@ def build():
     a.spawn_point('gorge', -86, height(-86, 60) + 0.1, 60, -90)
     a.loadzone(78, height(78, -HALF + 2), -HALF + 0.5, 12, 4, 1.5, to='peppermill', at='fields')
     a.spawn_point('peppermill', 74, height(74, -84) + 0.1, -84, 150)
-    a.loadzone(HALF - 0.5, height(HALF - 2, 40), 40, 1.5, 4, 12, to='', say='tbc_thicket')
+    a.loadzone(HALF - 0.5, height(HALF - 2, 40), 40, 1.5, 4, 12, to='thicket', at='fields')
+    a.spawn_point('thicket', 86, height(86, 40) + 0.1, 40, 90)
     a.sign(-84, height(-84, 56), 56, 270, 'sign_lake')
     a.sign(70, height(70, -80), -80, 225, 'sign_peppermill')
     a.sign(4, height(4, 70), 70, 0, 'sign_fields')
@@ -147,14 +149,16 @@ def build():
     a.entity('Pot', t3((cx - 0.6, cy + 1.7, cz), (0, 0, 0), (0.5, 0.4, 0.5)), mesh('cylinder', '#505058ff'))
     a.entity('Steam', t3((cx - 0.6, cy + 2.1, cz)), particles(rate=5, max=20, lifetime=1.6, speed=0.5, spread=20, gravity=-0.3,
                                                               size_start=0.2, size_end=0.5, color_start='#ffffff90', color_end='#ffffff00'))
-    a.npc('basil', cx - 0.3, cy, cz - 1.9, 200, reach=2.6)
+    if not risen:
+        a.npc('basil', cx - 0.3, cy, cz - 1.9, 200, reach=2.6)
 
     # ---- the owl, on a post by the road from Sprouthollow ----
     ox, oz = 3.5, 78
     a.geo('bark', ox, oz).cylinder((ox, height(ox, oz) - 0.2, oz), 0.2, 2.2, 6)
-    a.entity('Owl', t3((ox, height(ox, oz) + 2.0, oz), (0, 160, 0), 0.9), mesh('model', file='models/owl.glb'),
-             ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
-             tags('npc', 'focusable'), script('scripts/npc.bs', who='owl', auto=True, leaves=True))
+    if not risen:
+        a.entity('Owl', t3((ox, height(ox, oz) + 2.0, oz), (0, 160, 0), 0.9), mesh('model', file='models/owl.glb'),
+                 ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
+                 tags('npc', 'focusable'), script('scripts/npc.bs', who='owl', auto=True, leaves=True))
 
     # ---- trees, rocks, grass ----
     def clear(x, z, r):
@@ -191,4 +195,13 @@ def build():
     # ---- Stalebies, waiting under the field for night ----
     for x, z in [(-14, 30), (16, 20), (-20, -10), (12, -30), (-10, -55), (24, -60), (-40, 50), (50, 40)]:
         a.enemy('stalebie', x, height(x, z), z, hp=4, damage=4, model='stalebie')
+    if risen:              # seven years of rot: more of the field is crawling
+        for x, z in [(30, 70), (-60, 20), (60, -20), (-30, -70)]:
+            a.enemy('stalebie', x, height(x, z), z, hp=4, damage=4, model='stalebie')
+        for x, z in [(-30, 30), (40, -50), (-50, -30), (20, 60)]:
+            a.enemy('fuzzball', x, height(x, z) + 0.1, z, hp=3, damage=2)
     a.save()
+
+
+def build_risen():
+    build('risen')
