@@ -623,6 +623,51 @@ func talk(id: string) -> list {
                 p("NANNY KIMCHI", "Take my medallion. And Sprig... the princess is closer than you think. Trust the one who teaches you songs.")]
     }
 
+
+    # ---- the Sugar Dunes and the Salt Idol
+    if id == "sign_fort" { return [p("", "THE RAIDER FORT.|Home of the Paprika Raiders. Visitors will be robbed.")] }
+    if id == "raider_caught" {
+        return [p("RAIDER", "Hey! A man, sneaking in here? OUT you go, sweetie!"),
+                p("", "You were thrown out of the fort.")]
+    }
+    if id == "fort_gate" { return [p("FLICKER", "The gate to the Haunted Flats... there must be a lever inside the fort somewhere.")] }
+    if id == "sign_flats" { return [p("", "THE HAUNTED FLATS.|Follow the posts. Those who stray are lost in the sand.")] }
+    if id == "flats_lost" { return [p("FLICKER", "We're going round in circles! The sand brought us back... Stick to the posts. And maybe the Onion Lens would show the way?")] }
+    if id == "sign_idol" { return [p("", "THE SALT IDOL.|The temple of the twin witches, Saccharine and Sodium.")] }
+    if id == "cinder_requiem" {
+        return [p("CINDER", "The Salt Idol. The last Keeper sleeps within... but this temple is meant for two."),
+                p("CINDER", "Learn the REQUIEM OF SUGAR. It brings you here, in any era... even as a child."),
+                p("CINDER", "Some doors here only open for the small. Return to the Cleaver, and come back young.")]
+    }
+    if id == "caramel_child" {
+        if game.has_item("platter") { return [p("CARAMEL", "Go on, kid! I'll handle the witches. Probably.")] }
+        return [p("CARAMEL", "A KID? In the Idol? Who are you, the Raiders' new mascot? ...Sprig, you say? Cute name."),
+                p("CARAMEL", "I'm Caramel, second of the Paprika Raiders. The witches have a treasure in here - the SILVER PLATTER. I want it to stop them."),
+                p("CARAMEL", "But the way to it is through a hole too small for me. You'd fit! Get it for me... and I'll owe you one, kid.")]
+    }
+    if id == "platter_got" {
+        return [p("CARAMEL", "You got it! Ha HA! Now... AAAH! What's - the witches! LET ME GO, YOU CRONES!"),
+                p("", "Caramel was carried off by two cackling witches on broomsticks..."),
+                p("FLICKER", "They took her! Sprig... you keep the platter. We'll come back for her. When you're bigger.")]
+    }
+    if id == "heavy_no" { return [p("FLICKER", "A block of rock salt... way too heavy to budge. You'd need something really strong.")] }
+    if id == "crawl_hint" { return [p("FLICKER", "A little hole... too small for you now, Sprig. You'd fit when you were younger!")] }
+    if id == "si_enter" {
+        return [p("FLICKER", "The Salt Idol... The witches who raised the Duke live here. Be careful, Sprig.")]
+    }
+    if id == "witch_title" { return [p("", "SACCHARINE & SODIUM|The Twin Witches of Sugar and Salt")] }
+    if id == "witch_beaten" {
+        return [p("SACCHARINE", "Hee hee... we're dead? We're dead! Oh, sister, we've been beaten by a SPROUT!"),
+                p("SODIUM", "Don't worry, sister. Mildew will take care of him. Mildew takes care of everything... eventually."),
+                p("FLICKER", "They're gone! Into the light, Sprig!")]
+    }
+    if id == "caramel_keeper" {
+        if game.flag("keeper_sweet") { return [p("CARAMEL", "Six Keepers, kid! Go - Cinder's waiting at the temple. Something big is about to happen.")] }
+        return [p("CARAMEL", "Hey, kid. ...Or not a kid any more. You came back for me. Nobody comes back for a Raider."),
+                p("CARAMEL", "I'm the Keeper of SWEET, apparently. Guess I'm not just a thief, huh?"),
+                p("CARAMEL", "Here. My medallion. That makes six, kid. Go back to the Temple of the First Hearth. Cinder's waiting.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -821,6 +866,15 @@ func after(what: string, choice: int) -> void {
     } elif what == "med_sour" {
         game.set_flag("keeper_sour")
         game.give("med_sour", "")
+    } elif what == "requiem" {
+        play_sound("sfx/secret.wav", 0.8)
+        game.give("song_requiem", "")
+    } elif what == "platter_after" {
+        game.set_flag("caramel_taken")
+        game.talk("platter_got", "")
+    } elif what == "med_sweet" {
+        game.set_flag("keeper_sweet")
+        game.give("med_sweet", "")
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -878,6 +932,10 @@ func area_started(area: string) -> void {
     if area == "crypt" and not game.flag("cc_entered") {
         game.set_flag("cc_entered")
         game.talk("cc_enter", "")
+    }
+    if area == "idoltemple" and not game.flag("si_entered") {
+        game.set_flag("si_entered")
+        game.talk("si_enter", "")
     }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
@@ -956,7 +1014,26 @@ func hint() -> string {
     if not game.has_item("song_nocturne") { return "Cinder's waiting in Peppermill's graveyard." }
     if not game.flag("crypt_done") { return "The Compost Crypt is under the graveyard. Play the Nocturne of Rot at the crypt door, at the back!" }
     if not game.flag("keeper_sour") { return "Nanny Kimchi is waiting in the Chamber of Keepers." }
-    return "One Keeper sleeps still, in the Salt Idol, out in the Sugar Dunes far to the west. (Not built yet!)"
+    if game.dungeon == "idoltemple" { return idol_hint() }
+    if not game.flag("fort_gate") { return "The last Keeper is in the Salt Idol, beyond the Raider Fort (west from Brine Valley's bridge). Sneak into the fort and find the gate lever!" }
+    if not game.has_item("song_requiem") { return "Cross the Haunted Flats - follow the posts - to the Salt Idol. Someone's waiting there." }
+    if not game.has_item("platter") {
+        if game.era == "risen" { return "Cinder said some doors in the Idol only open for the small. Put the Cleaver back at the temple, then play the Requiem of Sugar!" }
+        return "Play the Requiem of Sugar and crawl through the little hole in the Salt Idol!"
+    }
+    if not game.flag("idol_done") {
+        if game.era == "fresh" { return "You've got the Silver Platter! Now grow up again - pull the Cleaver at the temple - and come back to the Idol." }
+        return "The Salt Idol, with the Silver Platter: heave that block of rock salt aside!"
+    }
+    if not game.flag("keeper_sweet") { return "Caramel is waiting in the Chamber of Keepers." }
+    return "Six Keepers! Caramel said Cinder's waiting at the Temple of the First Hearth."
+}
+
+func idol_hint() -> string {
+    if game.era == "fresh" { return "Crawl through the little hole - Caramel wants the Silver Platter!" }
+    if not game.flag("si_salt") { return "Heave the block of rock salt aside with the Silver Platter." }
+    if not game.has_item("bosskey_idoltemple") { return "The Boss Key's somewhere up the stairs. Cut down what guards it!" }
+    return "The witches! Catch their bolts on your shield - a sugar bolt flies back at the salt witch, and the other way round."
 }
 
 func crypt_hint() -> string {
@@ -1033,6 +1110,12 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "song_requiem" { return "You learned the REQUIEM OF SUGAR!|Play it anywhere outside a dungeon - in either era - to warp to the Salt Idol." }
+    if kind == "platter" { return "You got the SILVER PLATTER!|Strong enough to heave the heaviest block of rock salt. It's yours for good." }
+    if kind == "med_sweet" { return "You got the SWEET MEDALLION!|Caramel, Keeper of Sweet, has woken. Six medallions!" }
+    if kind == "map_idoltemple" { return "You found the DUNGEON MAP!|See every room of the Salt Idol in the pause menu." }
+    if kind == "compass_idoltemple" { return "You found the COMPASS!|Now the map shows the treasure and the witches." }
+    if kind == "bosskey_idoltemple" { return "You got the BOSS KEY!|It opens the way to the twin witches." }
     if kind == "song_boiling" { return "You learned the BOILING SONG!|A stormy song that makes the clouds boil over. Rain follows it." }
     if kind == "lens" { return "You got the ONION LENS!|Put it on a button and peel back the world: see what's hidden, and see through what's false." }
     if kind == "song_nocturne" { return "You learned the NOCTURNE OF ROT!|Play it to warp to Peppermill's graveyard. It also opens the Compost Crypt." }

@@ -1,0 +1,1182 @@
+# Haunted Flats - an area of Pantry Quest 3D.
+# Made by tools/areas/flats.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"flats\", area_name = \"Haunted Flats\", music = \"music/castle.wav\", dungeon = \"\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -55 -35 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #ffe8c0ff
+    intensity = 0.7
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #c0a080ff
+    intensity = 0.65
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 24
+    clear_color = #d8b888ff
+    fog = true
+    fog_color = #d8b888ff
+    fog_start = 6
+    fog_end = 22
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Sandstorm"
+  Transform3D
+    position = 0 3 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 60
+    max = 200
+    lifetime = 2.5
+    speed = 8
+    spread = 10
+    angle = 0
+    area = 90 50
+    gravity = 0
+    size_start = 0.12
+    size_end = 0.08
+    color_start = #f0d8a0a0
+    color_end = #f0d8a000
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 36 -0.9506 0
+    rotation = 0 90 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 40 0.2695 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 1.5 4 8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"fort\", at = \"flats\""
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 34 -0.3275 2.5
+    rotation = 0 90 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 34 0.0725 2.5
+    rotation = 0 90 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_flats\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 37.8 0.5572 0.3
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 36 0.3494 0
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 29.8 2.1195 5.3
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 28 1.9343 5
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 21.8 2.8159 10.3
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 20 2.1698 10
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 16.4667 2.4693 4.9667
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 14.6667 1.7904 4.6667
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 11.1333 3.2802 -0.3667
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 9.3333 2.8311 -0.6667
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 5.8 2.756 -5.7
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = 4 1.7274 -6
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = 0.4667 1.9845 -1.0333
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -1.3333 0.8819 -1.3333
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = -4.8667 1.0668 3.6333
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -6.6667 0.1194 3.3333
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = -10.2 0.8864 8.3
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -12 0.2182 8
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = -17.2 1.4511 1.3
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -19 0.9515 1
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = -24.2 1.0161 -5.7
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -26 0.5908 -6
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Post Flag"
+  Transform3D
+    position = -31.2 1.9058 -0.7
+    rotation = 0 0 0
+    scale = 0.05 0.4 0.6
+  Mesh
+    shape = cube
+    color = #c03030ff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "Ghost Lantern"
+  Transform3D
+    position = -33 1.7669 -1
+    rotation = 0 0 0
+    scale = 0.3 0.3 0.3
+  Mesh
+    shape = sphere
+    color = #c080ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Script
+    file = "scripts/secret.bs"
+    vars = "kind = \"invisible\""
+
+entity
+  Name
+    text = "Lost"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Script
+    file = "scripts/lost.bs"
+    vars = "path = [vec3(36, 0, 0), vec3(20, 0, 10), vec3(4, 0, -6), vec3(-12, 0, 8), vec3(-26, 0, -6), vec3(-40, 0, 4)], width = 7"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = -44 3.6283 4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 1.5 4 8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"idol\", at = \"start\""
+
+entity
+  Name
+    text = "bark -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_-2_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_-1_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_-1_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_0_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_0_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/bark_1_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-3_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-3_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-3_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-3_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-2_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-2_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-2_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-2_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-1_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-1_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_-1_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_0_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_0_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_0_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_0_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_1_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_1_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_1_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_2_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_2_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_2_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/sand_2_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

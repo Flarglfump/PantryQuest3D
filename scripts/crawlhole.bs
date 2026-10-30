@@ -1,0 +1,10 @@
+@strict @3d
+# crawlhole.bs - a low hole only a child can squeeze through: solid in the Risen era, gone in
+# the Fresh. (The Salt Idol's child half.)
+
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if game.era == "fresh" { destroy(self) }
+}

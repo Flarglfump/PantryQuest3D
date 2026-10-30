@@ -217,7 +217,7 @@ func draw_gear() -> void {
         draw_image("art/icons/whistle.png", vec2(188, 168))
         draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
     }
-    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"], ["song_bolero", "Bolero of Embers"], ["song_serenade", "Serenade of Brine"], ["song_boiling", "Boiling Song"], ["song_nocturne", "Nocturne of Rot"]]
+    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"], ["song_bolero", "Bolero of Embers"], ["song_serenade", "Serenade of Brine"], ["song_boiling", "Boiling Song"], ["song_nocturne", "Nocturne of Rot"], ["song_requiem", "Requiem of Sugar"]]
     var sy: number = 180
     for sg in songs {
         if has(sg[0]) {
@@ -263,7 +263,8 @@ func draw_map() -> void {
                        ["thymetemple", "THYME TEMPLE", "The master waits below,", "down the lift in the hall."],
                        ["forge", "FONDUE FORGE", "The dragon sleeps in the cheese,", "past the north room."],
                        ["brinetemple", "FIZZWATER TEMPLE", "The master lurks in the", "pool past the north door."],
-                       ["crypt", "COMPOST CRYPT", "Something unseen waits", "beyond the north room."]]
+                       ["crypt", "COMPOST CRYPT", "Something unseen waits", "beyond the north room."],
+                       ["idoltemple", "SALT IDOL", "The twin witches wait", "at the top of the Idol."]]
     var title: string = dun
     var b1: string = ""
     var b2: string = ""

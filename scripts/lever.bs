@@ -1,0 +1,22 @@
+@strict @3d
+# lever.bs - a lever: A pulls it, and the flag `id` is set for good (a gate watching it opens).
+
+var id: string = ""
+var prompt: string = "Pull"
+var reach: number = 2.4
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(id) { self.rotation = vec3(0, self.rotation.y, -50) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.6, 0) }
+func can_use(p: vec3) -> bool { return not game.flag(id) }
+
+func interact(who: entity) -> void {
+    game.set_flag(id)
+    tween(self, "rotation", vec3(0, self.rotation.y, -50), 0.4, "back_out")
+    play_sound("sfx/switch.wav", 0.8, 0.6)
+    play_sound("sfx/door.wav", 0.7)
+}

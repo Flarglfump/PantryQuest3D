@@ -246,6 +246,74 @@ entity
 
 entity
   Name
+    text = "Load Zone"
+  Transform3D
+    position = -13.5 2 20
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 1.5 4 7
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"fort\", at = \"gorge\""
+
+entity
+  Name
+    text = "spawn_fort"
+  Transform3D
+    position = -9 0.1 20
+    rotation = 0 -90 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = -8.5 0.45 16.5
+    rotation = 0 -90 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = -8.5 0.85 16.5
+    rotation = 0 -90 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_fort\""
+
+entity
+  Name
     text = "Falls"
   Transform3D
     position = 0 3.6 -61.5
@@ -1565,26 +1633,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/gorge/cliff_-1_0.obj"
-    texture = "art/stone.png"
-    color = #c8d0b8ff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "cliff -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gorge/cliff_-1_1.obj"
     texture = "art/stone.png"
     color = #c8d0b8ff
     uv_scale = 1 1

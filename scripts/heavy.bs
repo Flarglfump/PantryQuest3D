@@ -1,0 +1,41 @@
+@strict @3d
+# heavy.bs - a block of rock salt too heavy for anyone without the Silver Platter. With it,
+# A heaves it aside (for good: the flag `id`).
+
+var id: string = ""
+var prompt: string = "Lift"
+var reach: number = 2.2
+var game: entity
+var t: number = -1
+
+func start() -> void {
+    game = find("Game")
+    if game.flag(id) { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.6, 0) }
+func can_use(p: vec3) -> bool { return t < 0 }
+
+func interact(who: entity) -> void {
+    if not game.has_item("platter") {
+        game.talk("heavy_no", "")
+        return
+    }
+    game.set_flag(id)
+    t = 0
+    who.hold_up()
+    play_sound("sfx/grow.wav", 0.8, 0.6)
+}
+
+func update(dt: number) -> void {
+    if t < 0 { return }
+    t += dt
+    self.position = self.position + vec3(0, dt * 3, 0)
+    if t > 0.8 {
+        spawn("prefabs/shards.scene", self.position)
+        play_sound("sfx/crumble.wav", 0.8)
+        var s: entity = find("Sprig")
+        if s != nil { s.talk_ended() }
+        destroy(self)
+    }
+}

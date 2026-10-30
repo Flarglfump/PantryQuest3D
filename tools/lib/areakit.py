@@ -150,9 +150,11 @@ class Area:
                     collider('capsule', (1, 1.1, 1), 0.3, offset=(0, 0.55, 0)), tags('npc', 'interact', 'focusable'),
                     script('scripts/npc.bs', **kw))
 
-    def chest(self, x, y, z, yaw, item, id, appear='', big=False):
+    def chest(self, x, y, z, yaw, item, id, appear='', big=False, then=''):
         s = 1.4 if big else 1.0
         kw = {'item': item, 'id': id}
+        if then:
+            kw['then'] = then
         if appear:
             kw['appear'] = appear
         i = self.entity('Chest', t3((x, y, z), (0, yaw, 0), s), mesh('model', '#ffffffff', 'art/chest.png', file='models/chest_base.obj'),

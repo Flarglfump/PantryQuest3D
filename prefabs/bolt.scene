@@ -1,0 +1,30 @@
+# A witch's bolt (bolt.bs).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Bolt"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 0.4 0.4 0.4
+  Mesh
+    shape = sphere
+    color = #ff6040ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 30
+    max = 40
+    lifetime = 0.4
+    speed = 0.4
+    spread = 180
+    size_start = 0.3
+    size_end = 0
+    color_start = #ffffffc0
+    color_end = #ffffff00
+    blend = add
+  Script
+    file = "scripts/bolt.bs"

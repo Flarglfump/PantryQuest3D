@@ -1,0 +1,112 @@
+@strict @3d
+# witch.bs - Saccharine or Sodium, the twin witches of the Salt Idol (the one who raised
+# Mildew). Each circles the lair on her broom and throws bolts at Sprig - Saccharine's of
+# burning sugar, Sodium's of freezing salt. A bolt caught on the shield flies back - at
+# her SISTER, the only one it can hurt. When both are beaten (`partner`), it's over.
+
+var kind: string = "sugar"         # sugar (Saccharine) or salt (Sodium)
+var hp: int = 4
+var max_hp: int = 4
+var game: entity
+var sprig: entity
+var hud: entity
+var sister: entity
+var st: string = "wait"
+var st_t: number = 0
+var a: number = 0
+var throw_t: number = 2
+var flash: number = 0
+var centre: vec3
+var dead_t: number = 0
+var at: vec3                       # (for the play-test bots)
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    hud = find("HUD")
+    centre = self.position
+    if kind == "salt" { a = 180 }
+    if game.flag("si_boss") {
+        destroy(self)
+        return
+    }
+}
+
+func focus_point() -> vec3 { return self.position + vec3(0, 0.8, 0) }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if how == "bolt_" + kind and st != "dead" {
+        hp -= 1
+        flash = 0.4
+        play_sound("sfx/screech.wav", 0.8, 1.2)
+        play_sound("sfx/hit.wav", 0.8)
+        if hp <= 0 {
+            st = "dead"
+            st_t = 0
+            remove_tag(self, "focusable")
+        }
+        return
+    }
+    if st != "dead" { play_sound("sfx/block.wav", 0.4, 1.4) }
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    st_t += dt
+    flash = max(0, flash - dt)
+    if sister == nil {
+        for w in find_all("Witch") {
+            if w != self { sister = w }
+        }
+    }
+    if st == "wait" {
+        if distance(vec3(sprig.x, 0, sprig.z), vec3(centre.x, 0, centre.z)) < 13 {
+            st = "fight"
+            if kind == "sugar" {
+                play_music("music/boss.wav", 0.7, 0.5)
+                hud.show_boss(self, "SACCHARINE & SODIUM")
+                game.talk("witch_title", "")
+            }
+        }
+        return
+    }
+    if st == "fight" {
+        a += 35 * dt
+        self.position = centre + vec3(cos(a) * 8, 3.5 + sin(st_t * 90) * 0.6, sin(a) * 8)
+        var to: vec3 = sprig.position - self.position
+        self.rotation = vec3(0, atan2(-to.x, -to.z), 0)
+        throw_t -= dt
+        if throw_t <= 0 {
+            throw_t = 2.6 + random() * 1.2
+            var b: entity = spawn("prefabs/bolt.scene", self.position + vec3(0, 0.8, 0))
+            b.kind = kind
+            b.owner = self
+            b.target = sister
+            play_sound("sfx/zap.wav", 0.7, 0.9)
+        }
+    } elif st == "dead" {
+        self.y = self.y - dt * 1.0
+        self.Mesh.visible = floor(st_t * 16) % 2 == 0
+        if st_t > 1.5 {
+            st = "gone"
+            self.position = centre + vec3(0, -30, 0)
+        }
+    } elif st == "gone" {
+        if sister == nil or not sister.alive or sister.st == "gone" {
+            dead_t += dt
+            if dead_t > 0.5 and kind == "sugar" {
+                game.set_flag("si_boss")
+                stop_music(1.5)
+                game.talk("witch_beaten", "")
+                if sister != nil { destroy(sister) }
+                destroy(self)
+            }
+        }
+        return
+    }
+    if self.y < -20 { return }
+    at = self.position
+    var c: string = "#ff80b0ff"
+    if kind == "salt" { c = "#c0e0ffff" }
+    if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ffffffff" } else { self.Mesh.color = c }
+}

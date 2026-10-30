@@ -34,7 +34,7 @@ def height(x, z):
         h = max(h, LEDGE * smooth((-14 - z) / 34))
     # the cliffs either side, with a gap east for the road from the field
     side = abs(x) - 11
-    if side > 0 and not (x > 0 and abs(z - 40) < 4):
+    if side > 0 and not (x > 0 and abs(z - 40) < 4) and not (x < 0 and abs(z - 20) < 4):
         h += 12 * smooth(side / 3)
     # the cliff behind the falls
     if z < -58:
@@ -49,7 +49,7 @@ def build():
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-72, 76, 12):
         for cx in range(-20, 20, 10):
-            mat = 'cliff' if cx in (-20, 10) and not (cx == 10 and 30 <= cz <= 42) else 'grass'
+            mat = 'cliff' if cx in (-20, 10) and not (cx == 10 and 30 <= cz <= 42) and not (cx == -20 and 12 <= cz <= 24) else 'grass'
             fine = 2 if cz < -56 else 1
             a.geo(mat, cx + 5, cz + 6).ground(cx, cz, cx + 10, cz + 12, 5 * fine, 6 * fine, height, uvs=0.25)
     # the river
@@ -61,6 +61,10 @@ def build():
     a.spawn_point('start', 9, height(9, 40) + 0.1, 40, 90)
     a.spawn_point('fields', 9, height(9, 40) + 0.1, 40, 90)
     a.sign(8, height(8, 36.5), 36.5, 90, 'sign_brine')
+    # the way west, to the Raider Fort and the Sugar Dunes
+    a.loadzone(-13.5, height(-13, 20), 20, 1.5, 4, 7, to='fort', at='gorge')
+    a.spawn_point('fort', -9, height(-9, 20) + 0.1, 20, -90)
+    a.sign(-8.5, height(-8.5, 16.5), 16.5, -90, 'sign_fort')
     # the log bridge
     bz = 4.0
     a.geo('planks', 0, bz).box((-7.5, -0.35, bz - 1.4), (7.5, 0.05, bz + 1.4), uvs=0.5)

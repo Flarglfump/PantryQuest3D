@@ -109,6 +109,14 @@ a jump attack.
   guillotines, the **Meringue Boots** (a moment's walk on air), and **the Maw of Rot** —
   strike its hands after they slam, then its eye, seen only through the lens. Nanny Kimchi
   wakes as the Keeper of Sour.
+- **The Sugar Dunes and the Salt Idol** (dungeon 8): west from Brine Valley, the Raider
+  Fort (sneak past the Raiders to the gate lever), the Haunted Flats (follow the posts
+  through the sandstorm, or be turned round; the lens shows ghost lanterns), the Salt
+  Idol and Cinder's Requiem of Sugar (a warp song for either era). As a child: Caramel,
+  a hole only a child fits through, and the **Silver Platter** (then the witches take
+  her). Grown: heave the rock salt aside, the Boss Key, and **Saccharine & Sodium** —
+  catch a witch's bolt on the shield and it flies at her sister. Caramel wakes as the
+  Keeper of Sweet.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

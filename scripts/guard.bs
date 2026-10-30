@@ -8,6 +8,7 @@ var speed: number = 1.6
 var wait: number = 1.6
 var sight: number = 6.5
 var fov: number = 36
+var say: string = "guard_caught"      # what he says, catching Sprig
 var game: entity
 var sprig: entity
 var cone: entity
@@ -65,7 +66,7 @@ func update(dt: number) -> void {
     if not caught and sees(sprig) {
         caught = true
         play_sound("sfx/screech.wav", 0.7, 1.5)
-        game.talk("guard_caught", "caught")
+        game.talk(say, "caught")
     }
 }
 

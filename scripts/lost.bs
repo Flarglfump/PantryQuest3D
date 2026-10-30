@@ -1,0 +1,39 @@
+@strict @3d
+# lost.bs - the Haunted Flats' sandstorm: stray more than `width` from the path of posts
+# (`path`, a list of points) and the sand turns you round, back to the start.
+
+var path: list = []
+var width: number = 7
+var game: entity
+var sprig: entity
+var cool: number = 0
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+}
+
+func dist_to_path(p: vec3) -> number {
+    var best: number = 1000
+    var i: int = 0
+    while i < len(path) - 1 {
+        var a: vec3 = path[i]
+        var b: vec3 = path[i + 1]
+        var ab: vec3 = b - a
+        var t: number = clamp(dot(p - a, ab) / max(dot(ab, ab), 0.001), 0, 1)
+        var q: vec3 = a + ab * t
+        best = min(best, distance(vec3(p.x, 0, p.z), vec3(q.x, 0, q.z)))
+        i += 1
+    }
+    return best
+}
+
+func update(dt: number) -> void {
+    cool = max(0, cool - dt)
+    if cool > 0 or game.state != "play" { return }
+    if dist_to_path(sprig.position) > width {
+        cool = 3
+        game.talk("flats_lost", "")
+        game.go("flats", "start")
+    }
+}

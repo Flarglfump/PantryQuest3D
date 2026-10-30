@@ -415,6 +415,9 @@ def people():
     for name, sc, kw in [('mildew', 1.6, dict(shirt='#2a3a2a', trousers='#1a221a', hair='#9ab08a', skin='#b8c8a8', hat='#3a4a2a', hat_kind='tall', apron='#4a6a3a', eyes='#e0ff60')),
                          ('mozz', 1.3, dict(shirt='#f0e0a0', trousers='#e8c870', hair='#fff4c0', skin='#f8e8b0', apron='#ffffff', belly=0.08, hat='#f0d880', hat_kind='bun')),
                          ('sister', 1.2, dict(shirt='#e0e0f0', trousers='#c0c0d8', hair='#f0f0ff', skin='#e8e8f8', hat='#d0d0e8', hat_kind='bun', girl=True, apron='#b0b0d0', eyes='#ffffff')),
+                         ('raider', 1.4, dict(shirt='#c04030', trousers='#5a3020', hair='#e0a040', skin='#d8a070', hat='#d06040', hat_kind='spiky', girl=True)),
+                         ('caramel', 1.35, dict(shirt='#d89040', trousers='#8a5020', hair='#f0c070', skin='#e0b080', hat='#f0a040', hat_kind='tiara', girl=True)),
+                         ('witch', 1.2, dict(shirt='#6a4a7a', trousers='#3a2a4a', hair='#e0e0e0', skin='#d8c8c0', hat='#3a2a4a', hat_kind='tall', girl=True, belly=0.03)),
                          ('cinder', 1.35, dict(shirt='#6a6a72', trousers='#4a4a52', hair='#d8d8e0', skin='#c8c0b8', hat='#8a8a92', hat_kind='helmet', apron='#5a5a62', eyes='#e04030'))]:
         fig, fb = figure(sc, **kw)
         standard_anims(fig, fb, sc)

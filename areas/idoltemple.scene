@@ -1,0 +1,1080 @@
+# Salt Idol - an area of Pantry Quest 3D.
+# Made by tools/areas/idoltemple.py: change that and run tools/make_all.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Game"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/game.bs"
+    vars = "area = \"idoltemple\", area_name = \"Salt Idol\", music = \"music/castle.wav\", dungeon = \"idoltemple\", kill_y = -20"
+
+entity
+  Name
+    text = "Story"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/story.bs"
+
+entity
+  Name
+    text = "Sun"
+  Transform3D
+    position = 0 30 0
+    rotation = -80 0 0
+    scale = 1 1 1
+  Light
+    kind = directional
+    color = #fff0c0ff
+    intensity = 0.4
+    shadows = false
+    shadow_range = 14
+
+entity
+  Name
+    text = "Sky Light"
+  Transform3D
+    position = 0 30 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = ambient
+    color = #e0c090ff
+    intensity = 0.6
+
+entity
+  Name
+    text = "Camera"
+  Transform3D
+    position = 0 3 6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Camera3D
+    fov = 62
+    near_clip = 0.15
+    far_clip = 36
+    clear_color = #201408ff
+    fog = true
+    fog_color = #302010ff
+    fog_start = 12
+    fog_end = 34
+  Script
+    file = "scripts/camera.bs"
+
+entity
+  Name
+    text = "Sprig"
+  Transform3D
+    position = 0 0.1 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.28
+    friction = 0
+    offset = 0 0.55 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "player"
+  Script
+    file = "scripts/sprig.bs"
+
+entity
+  Name
+    text = "Flicker"
+  Transform3D
+    position = 0 1.5 0
+    rotation = 0 0 0
+    scale = 0.16 0.16 0.16
+  Mesh
+    shape = sphere
+    color = #9ad8ffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+  Particles
+    rate = 14
+    max = 30
+    lifetime = 0.5
+    lifetime_random = 0.3
+    speed = 0.4
+    spread = 180
+    size_start = 0.09
+    size_end = 0
+    color_start = #d0f0ffff
+    color_end = #60a0ff00
+    blend = add
+  Script
+    file = "scripts/flicker.bs"
+
+entity
+  Name
+    text = "HUD"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/hud.bs"
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 9.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 2.6 3 0.8
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"idol\", at = \"temple\""
+
+entity
+  Name
+    text = "spawn_start"
+  Transform3D
+    position = 0 0.1 7
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 2.5 2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.1
+    range = 10
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = -6 0 -27
+    rotation = 0 225 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"map_idoltemple\", id = \"si_map\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 11
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 5 -22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.4
+    range = 14
+
+entity
+  Name
+    text = "Caramel"
+  Transform3D
+    position = -26 0 -20
+    rotation = 0 60 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/caramel.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"caramel\", reach = 2.6, until = \"caramel_taken\""
+
+entity
+  Name
+    text = "Crawl Hole"
+  Transform3D
+    position = -24 0.6 -28.9
+    rotation = 0 0 0
+    scale = 1.6 1.2 0.2
+  Mesh
+    shape = cube
+    color = #100804ff
+    uv_scale = 1 1
+    lit = false
+
+entity
+  Name
+    text = "Too Small"
+  Transform3D
+    position = -24 0.65 -29.6
+    rotation = 0 0 0
+    scale = 1.6 1.3 0.4
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Script
+    file = "scripts/crawlhole.bs"
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = -22.4 0.45 -27.2
+    rotation = 0 0 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = -22.4 0.85 -27.2
+    rotation = 0 0 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"crawl_hint\""
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = -24 0 -42.5
+    rotation = 0 180 0
+    scale = 1.4 1.4 1.4
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"platter\", id = \"si_platter\", then = \"platter_after\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 19
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = -24 4 -22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.1
+    range = 11
+
+entity
+  Name
+    text = "Rock Salt"
+  Transform3D
+    position = 13 1.3 -22
+    rotation = 0 0 0
+    scale = 1.8 2.6 2.4
+  Mesh
+    shape = cube
+    texture = "art/ice.png"
+    color = #f0f0f8ff
+    uv_scale = 2 2
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/heavy.bs"
+    vars = "id = \"si_salt\""
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = 22 0 -25
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"si_d\", always = true"
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = 22 0 -19
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"si_d\", always = true"
+
+entity
+  Name
+    text = "Stalebie"
+  Transform3D
+    position = 26 0 -22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/stalebie.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.1
+  Collider3D
+    shape = capsule
+    size = 1 1.3 1
+    radius = 0.32
+    friction = 0.8
+    offset = 0 0.65 0
+  RigidBody3D
+    type = kinematic
+  Tags
+    list = "enemy, focusable"
+  Script
+    file = "scripts/enemy.bs"
+    vars = "brain = \"stalebie\", hp = 6, damage = 4, group = \"si_d\", always = true"
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = 29 0 -24
+    rotation = 0 90 0
+    scale = 1.4 1.4 1.4
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"bosskey_idoltemple\", id = \"si_bosskey\", appear = \"clear:si_d\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 26
+
+entity
+  Name
+    text = "Chest"
+  Transform3D
+    position = 29 0 -19.5
+    rotation = 0 90 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_base.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1.3 0.7
+    radius = 0.5
+    friction = 0.8
+    offset = 0 0.65 0
+  Tags
+    list = "chest, interact"
+  Script
+    file = "scripts/chest.bs"
+    vars = "item = \"compass_idoltemple\", id = \"si_compass\""
+
+entity
+  Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Parent
+    entity = 28
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 24 4 -22
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.1
+    range = 12
+
+entity
+  Name
+    text = "Boss Door"
+  Transform3D
+    position = 0 1.5 -33.5
+    rotation = 0 0 0
+    scale = 2.6 3 0.4
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #8a6a3aff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact"
+  Script
+    file = "scripts/lockdoor.bs"
+    vars = "id = \"si_boss_door\", boss = true"
+
+entity
+  Name
+    text = "Witch"
+  Transform3D
+    position = 0 3.5 -50
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/witch.glb"
+    color = #ff80b0ff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.2 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.6 0
+    trigger = true
+  Tags
+    list = "enemy, focusable, boss"
+  Script
+    file = "scripts/witch.bs"
+    vars = "kind = \"sugar\""
+
+entity
+  Name
+    text = "Witch"
+  Transform3D
+    position = 0 3.5 -50
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/witch.glb"
+    color = #c0e0ffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.2 1
+    radius = 0.4
+    friction = 0.8
+    offset = 0 0.6 0
+    trigger = true
+  Tags
+    list = "enemy, focusable, boss"
+  Script
+    file = "scripts/witch.bs"
+    vars = "kind = \"salt\""
+
+entity
+  Name
+    text = "Heart Pie"
+  Transform3D
+    position = 0 0.8 -44
+    rotation = 0 0 0
+    scale = 2 2 2
+  Mesh
+    shape = model
+    file = "models/heart.obj"
+    color = #ff3048ff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"heartpie\", id = \"si_pie\", when = \"si_boss\""
+
+entity
+  Name
+    text = "Blue Light"
+  Transform3D
+    position = 0 1.5 -50
+    rotation = 0 0 0
+    scale = 1.6 3 1.6
+  Mesh
+    shape = cylinder
+    color = #80c0ff60
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Particles
+    rate = 20
+    max = 40
+    lifetime = 1.5
+    speed = 1.2
+    spread = 10
+    area = 1.6 1.6
+    size_start = 0.15
+    size_end = 0
+    color_start = #c0e0ffff
+    color_end = #4080ff00
+    blend = add
+  Script
+    file = "scripts/warp.bs"
+    vars = "to = \"chamber\", at = \"start\", sets = \"idol_done\", when = \"si_boss\""
+
+entity
+  Name
+    text = "Lamp"
+  Transform3D
+    position = 0 7 -50
+    rotation = 0 0 0
+    scale = 1 1 1
+  Light
+    kind = point
+    color = #ffd090ff
+    intensity = 1.5
+    range = 20
+
+entity
+  Name
+    text = "spawn_t_b"
+  Transform3D
+    position = 0 0.1 -14
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "spawn_t_boss"
+  Transform3D
+    position = 0 0.1 -39
+    rotation = 0 0 0
+    scale = 1 1 1
+
+entity
+  Name
+    text = "sand -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_-2_-3.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_-2_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_-1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_0_-4.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_0_-3.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_0_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_0_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/sand_1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_-2_-3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_-2_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_-1_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_-1_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_0_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_0_-3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_0_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_0_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/idoltemple/stone_1_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9

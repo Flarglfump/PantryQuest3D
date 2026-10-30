@@ -6,6 +6,7 @@
 var item: string = "bean20"
 var id: string = ""
 var appear: string = ""
+var then: string = ""                 # what happens after (story.bs after())
 var prompt: string = "Open"
 var reach: number = 1.7
 var game: entity
@@ -73,6 +74,6 @@ func update(dt: number) -> void {
     opening += dt
     if opening >= 0.7 {
         opening = -1
-        game.give(item, "")
+        game.give(item, then)
     }
 }

@@ -335,6 +335,10 @@ func on_resume() -> void {
             play_sound("sfx/warp.wav", 0.8)
             go("peppermill", "graveyard")
         }
+        if song == "requiem" and dungeon == "" {          # ...to the Salt Idol (either era)...
+            play_sound("sfx/warp.wav", 0.8)
+            go("idol", "requiem")
+        }
         if song == "serenade" and dungeon == "" {         # ...and to Lake Brine's island
             play_sound("sfx/warp.wav", 0.8)
             go("lake", "island")

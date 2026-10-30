@@ -1,0 +1,44 @@
+@strict @3d
+# bolt.bs - a witch's bolt (witch.bs): sugar fire or salt frost, flying at Sprig. Caught on
+# the shield, it flies at the thrower's sister instead.
+
+var kind: string = "sugar"
+var owner: entity
+var target: entity
+var dir: vec3
+var speed: number = 7
+var back: bool = false
+var sprig: entity
+var t: number = 0
+
+func start() -> void { sprig = find("Sprig") }
+
+func update(dt: number) -> void {
+    t += dt
+    if t > 8 {
+        destroy(self)
+        return
+    }
+    var goal: vec3 = sprig.position + vec3(0, 0.8, 0)
+    if back and target != nil and target.alive { goal = target.focus_point() }
+    dir = normalize(goal - self.position)
+    self.position = self.position + dir * speed * dt
+    if kind == "sugar" { self.Mesh.color = "#ff6040ff" } else { self.Mesh.color = "#80c0ffff" }
+    if back {
+        if target != nil and target.alive and distance(self.position, target.focus_point()) < 1.0 {
+            target.hit(1, "bolt_" + target.kind, self.position)
+            destroy(self)
+        }
+        return
+    }
+    if distance(self.position, sprig.position + vec3(0, 0.8, 0)) < 0.8 {
+        var r: string = sprig.hurt(4, self.position, "magic")
+        if r == "blocked" and target != nil and target.alive {
+            back = true
+            speed = 12
+            play_sound("sfx/block.wav", 0.8, 1.4)
+            return
+        }
+        destroy(self)
+    }
+}

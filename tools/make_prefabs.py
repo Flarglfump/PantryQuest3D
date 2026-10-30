@@ -92,6 +92,10 @@ def main():
     prefab('mawhand', "One of the Maw of Rot's hands (mawhand.bs).",
            ('Maw Hand', t3((0, 0, 0), scale=(1.6, 0.6, 1.8)), mesh('sphere', '#8a6a5aff', 'art/rot.png'), collider('sphere', radius=0.6, trigger=True),
             tags('enemy', 'focusable', 'shootable'), script('scripts/mawhand.bs')))
+    prefab('bolt', "A witch's bolt (bolt.bs).",
+           ('Bolt', t3((0, 0, 0), scale=0.4), mesh('sphere', '#ff6040ff', lit=False, cast=False),
+            particles(rate=30, max=40, lifetime=0.4, speed=0.4, spread=180, size_start=0.3, size_end=0, color_start='#ffffffc0', color_end='#ffffff00', blend='add'),
+            script('scripts/bolt.bs')))
     prefab('bigfire', "A great fire (the castle burning: storm.bs).",
            ('Big Fire', t3((0, 0, 0)), particles(rate=40, max=80, lifetime=1.4, speed=2.5, spread=20, area=(6, 2), gravity=-2,
                                                  size_start=2.4, size_end=0.3, color_start='#ffb040ff', color_end='#c0200000', blend='add'),
