@@ -277,6 +277,37 @@ def queen():
     m.save_glb(path('models', 'queen.glb'))
 
 
+def owl():
+    """Sir Hootenanny: a round crust-owl with a pie-crust brow, who flaps when he talks."""
+    m = Model()
+    root = m.bone('root', (0, 0, 0))
+    bod = m.bone('body', (0, 0.4, 0), root)
+    head = m.bone('head', (0, 0.9, 0), bod)
+    wl = m.bone('wing_l', (0.32, 0.75, 0), bod)
+    wr = m.bone('wing_r', (-0.32, 0.75, 0), bod)
+    C = hexc
+    m.box((-0.3, 0.05, -0.25), (0.3, 0.85, 0.25), bod, C('#b07a40'))
+    m.box((-0.22, 0.15, -0.27), (0.22, 0.7, -0.24), bod, C('#e8c890'))          # his front
+    m.box((-0.28, 0.85, -0.26), (0.28, 1.3, 0.24), head, C('#b07a40'))
+    m.box((-0.3, 1.24, -0.28), (0.3, 1.34, 0.26), head, C('#7a4a20'))           # the crust brow
+    for x in (-1, 1):
+        m.box((x * 0.12 - 0.08, 1.0, -0.28), (x * 0.12 + 0.08, 1.16, -0.26), head, C('#fff4d0'))
+        m.box((x * 0.12 - 0.04, 1.03, -0.29), (x * 0.12 + 0.04, 1.12, -0.28), head, C('#101010'))
+        m.box((x * 0.2 - 0.03, 1.3, -0.05), (x * 0.2 + 0.03, 1.45, 0.05), head, C('#7a4a20'))   # ear tufts
+    m.box((-0.04, 0.92, -0.33), (0.04, 1.0, -0.27), head, C('#e0a020'))         # beak
+    m.box((0.3, 0.2, -0.18), (0.38, 0.8, 0.2), wl, C('#8a5a2a'))
+    m.box((-0.38, 0.2, -0.18), (-0.3, 0.8, 0.2), wr, C('#8a5a2a'))
+    for x in (-1, 1):
+        m.box((x * 0.12 - 0.06, 0.0, -0.12), (x * 0.12 + 0.06, 0.06, 0.04), bod, C('#e0a020'))
+    m.animation('idle', rotations={head: [(0, R()), (1, R(y=15)), (2, R()), (3, R(y=-15)), (4, R())]},
+                translations={bod: [(0, (0, 0, 0)), (2, (0, 0.02, 0)), (4, (0, 0, 0))]})
+    m.animation('talk', rotations={wl: [(0, R()), (0.15, R(z=50)), (0.3, R())], wr: [(0, R()), (0.15, R(z=-50)), (0.3, R())],
+                                   head: [(0, R()), (0.3, R(x=-10)), (0.6, R())]})
+    m.animation('fly', rotations={wl: cycle(4, 0.3, lambda p: R(z=70 * math.sin(2 * math.pi * p))),
+                                  wr: cycle(4, 0.3, lambda p: R(z=-70 * math.sin(2 * math.pi * p)))})
+    m.save_glb(path('models', 'owl.glb'))
+
+
 def people():
     s = 1.0
     sprig, b = figure(s, shirt='#4f9a3e', trousers='#d8c8a0', shoes='#6a4422', hair='#a8642a', hat='#5cb84a', apron='#3a7a2a')
@@ -290,6 +321,14 @@ def people():
         'parsley': dict(shirt='#3a8a5a', trousers='#2a5a3a', hair='#2a4a2a', hat='#4ab86a', big_head=1.15),
         'sage': dict(shirt='#9aa88a', trousers='#5a6a4a', hair='#b0b8a0', hat='#8aa87a', belly=0.04),
     }
+    # grown-ups are taller: Basil (Pantry Quest II's hero, now a travelling cook)
+    fig, fb = figure(1.35, shirt='#e8e0d0', trousers='#4a5a7a', hair='#5a3a1a', hat='#f4f4f4', hat_kind='tall', apron='#c84a3a', skin='#e8b890')
+    standard_anims(fig, fb, 1.35)
+    fig.save_glb(path('models', 'basil.glb'))
+    # a Stalebie: a loaf gone stale and walking, that rises from the field at night
+    fig, fb = figure(1.2, shirt='#9a7a4a', trousers='#7a5a34', hair='#5a4020', skin='#c8a870', shoes='#4a3018', eyes='#ff3020', belly=0.03)
+    standard_anims(fig, fb, 1.2, hero=True)
+    fig.save_glb(path('models', 'stalebie.glb'))
     for name, kw in kinds.items():
         fig, fb = figure(0.95 if name != 'parsley' else 0.9, **kw)
         standard_anims(fig, fb, 0.95)
@@ -358,6 +397,7 @@ def statics():
 
 if __name__ == '__main__':
     people()
+    owl()
     blob('fuzzball', '#7a9a6a', size=0.6, fuzz='#a8c890')
     blob('larva', '#c8d0a0', size=0.35, legs=4)
     blob('nut', '#7a4a1a', size=0.2, eye='#7a4a1a', pupil='#7a4a1a')

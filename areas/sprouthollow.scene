@@ -3624,7 +3624,34 @@ entity
     list = "loadzone"
   Script
     file = "scripts/loadzone.bs"
-    vars = "to = \"\", at = \"start\", say = \"to_be_continued\""
+    vars = "to = \"fields\", at = \"sprouthollow\", needs = \"crock_done\""
+
+entity
+  Name
+    text = "Load Zone"
+  Transform3D
+    position = 0 1.5 44.4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 4 3 1
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/loadzone.bs"
+    vars = "to = \"\", at = \"start\", until = \"crock_done\", say = \"sprout_exit_block\""
+
+entity
+  Name
+    text = "spawn_fields"
+  Transform3D
+    position = 0 0.1 30
+    rotation = 0 0 0
+    scale = 1 1 1
 
 entity
   Name

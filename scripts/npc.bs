@@ -13,13 +13,16 @@ var sprig: entity
 var home_yaw: number = 0
 var yaw: number = 0
 var talking: number = 0
+var auto: bool = false               # talks by itself, once, when Sprig comes near (the owl)
+var leaves: bool = false             # flies off after that
+var flying: number = -1
 
 func start() -> void {
     game = find("Game")
     sprig = find("Sprig")
     home_yaw = self.rotation.y
     yaw = home_yaw
-    if not present() { hide() }
+    if not present() or (leaves and game.flag("talked:" + who)) { hide() }
 }
 
 func present() -> bool {
@@ -30,11 +33,18 @@ func present() -> bool {
 
 func hide() -> void {
     self.Mesh.visible = false
-    self.Collider3D.size = vec3(0.001, 0.001, 0.001)
-    self.Collider3D.radius = 0.001
+    if has(self, "Collider3D") {
+        self.Collider3D.size = vec3(0.001, 0.001, 0.001)
+        self.Collider3D.radius = 0.001
+    }
     add_tag(self, "hidden")
     remove_tag(self, "interact")
     remove_tag(self, "focusable")
+}
+
+func fly_away() -> void {
+    flying = 0
+    play_sound("sfx/hop.wav", 0.6, 0.6)
 }
 
 func flags_changed() -> void {
@@ -45,7 +55,19 @@ func focus_point() -> vec3 { return self.position + vec3(0, 1.0, 0) }
 func can_use(p: vec3) -> bool { return not has_tag(self, "hidden") }
 
 func update(dt: number) -> void {
+    if flying >= 0 {
+        flying += dt
+        self.position = self.position + vec3(0, 3 * dt, -4 * dt)
+        play_animation(self, "fly", 1, true)
+        if flying > 3 { hide() }
+        return
+    }
     if has_tag(self, "hidden") { return }
+    if auto and game.state == "play" and distance(sprig.position, self.position) < 5 and not game.flag("talked:" + who) {
+        game.set_flag("talked:" + who)
+        interact(sprig)
+        return
+    }
     talking = max(0, talking - dt)
     var want: number = home_yaw
     var to: vec3 = sprig.position - self.position
@@ -68,6 +90,8 @@ func interact(who_by: entity) -> void {
     var then: string = ""
     if who == "chive" and id == "chive_move" { then = "chive_moved" }
     if who == "sage" { then = "shop" }
+    if who == "basil" { then = "basil_shop" }
+    if who == "owl" and leaves { then = "owl_leaves" }
     if who == "fennel" and id == "fennel_bridge" { then = "pipe" }
     if id == "fennel_1" { game.set_flag("talked_fennel") }
     game.talk(id, then)
@@ -89,5 +113,7 @@ func talk_for() -> string {
         return "chive_block"
     }
     if who == "sage" { return "sage_shop" }
+    if who == "basil" { return "basil_shop" }
+    if who == "owl" { return "owl_fields" }
     return who
 }

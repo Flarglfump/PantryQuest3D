@@ -1,0 +1,30 @@
+@strict @3d
+# gate.bs - a portcullis that's down at night and up by day (the town gate).
+
+var base_y: number = 0
+var up: number = 0                    # 0 down .. 1 up
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    base_y = self.y
+    if not is_night() { up = 1 }
+    place()
+}
+
+func is_night() -> bool {
+    var c: number = global("clock", 0.3)
+    return c < 0.22 or c > 0.8
+}
+
+func update(dt: number) -> void {
+    var want: number = 1
+    if is_night() { want = 0 }
+    if up < want { up = min(want, up + dt * 0.4) }
+    if up > want { up = max(want, up - dt * 0.4) }
+    place()
+}
+
+func place() -> void {
+    self.y = base_y + up * 3.4
+}

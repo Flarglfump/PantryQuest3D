@@ -1,0 +1,70 @@
+@strict @3d
+# sky.bs - day and night out in the open. The clock (the global "clock": 0 is midnight,
+# 0.25 dawn, 0.5 noon, 0.75 dusk) runs while `runs` is set - a whole day in `day_length`
+# seconds - and the sky, the fog, the sun and the ambient light follow it.
+
+var runs: bool = true
+var day_length: number = 360
+var game: entity
+var cam: entity
+var sun: entity
+var sky_light: entity
+
+# keyframes: [clock, sky, sun colour, sun strength, ambient colour, ambient strength]
+const KEYS: list = [[0.0, [14, 20, 48], [120, 140, 220], 0.15, [60, 76, 120], 0.35],
+                    [0.2, [20, 28, 60], [120, 140, 220], 0.15, [60, 76, 120], 0.35],
+                    [0.25, [232, 160, 120], [255, 190, 130], 0.6, [150, 120, 120], 0.45],
+                    [0.32, [176, 220, 240], [255, 242, 220], 0.95, [136, 152, 184], 0.55],
+                    [0.68, [176, 220, 240], [255, 242, 220], 0.95, [136, 152, 184], 0.55],
+                    [0.76, [224, 120, 90], [255, 160, 110], 0.6, [150, 110, 120], 0.45],
+                    [0.81, [20, 28, 60], [120, 140, 220], 0.15, [60, 76, 120], 0.35],
+                    [1.0, [14, 20, 48], [120, 140, 220], 0.15, [60, 76, 120], 0.35]]
+
+func start() -> void {
+    game = find("Game")
+    cam = find("Camera")
+    sun = find("Sun")
+    sky_light = find("Sky Light")
+    apply()
+}
+
+func mixc(a: list, b: list, t: number) -> list {
+    return [floor(lerp(a[0], b[0], t)), floor(lerp(a[1], b[1], t)), floor(lerp(a[2], b[2], t))]
+}
+
+func update(dt: number) -> void {
+    if runs and game.state == "play" {
+        var c: number = global("clock", 0.3) + dt / day_length
+        if c >= 1 { c -= 1 }
+        set_global("clock", c)
+    }
+    apply()
+}
+
+func apply() -> void {
+    var c: number = global("clock", 0.3)
+    var i: int = 0
+    while i < len(KEYS) - 2 and KEYS[i + 1][0] <= c { i += 1 }
+    var a: list = KEYS[i]
+    var b: list = KEYS[i + 1]
+    var t: number = clamp((c - a[0]) / max(0.0001, b[0] - a[0]), 0, 1)
+    var skyc: list = mixc(a[1], b[1], t)
+    var col: string = rgb(skyc[0], skyc[1], skyc[2])
+    cam.Camera3D.clear_color = col
+    cam.Camera3D.fog_color = col
+    var sc: list = mixc(a[2], b[2], t)
+    sun.Light.color = rgb(sc[0], sc[1], sc[2])
+    sun.Light.intensity = lerp(a[3], b[3], t)
+    var ac: list = mixc(a[4], b[4], t)
+    sky_light.Light.color = rgb(ac[0], ac[1], ac[2])
+    sky_light.Light.intensity = lerp(a[5], b[5], t)
+    # the sun crosses the sky from east to west (the moon at night)
+    var ang: number = (c - 0.25) * 360
+    if c < 0.2 or c > 0.8 { ang = (c - 0.75) * 360 }
+    sun.rotation = vec3(-25 - 40 * abs(sin(ang)), -90 + ang, 0)
+}
+
+func night() -> bool {
+    var c: number = global("clock", 0.3)
+    return c < 0.22 or c > 0.8
+}

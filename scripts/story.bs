@@ -118,6 +118,42 @@ func talk(id: string) -> list {
                 p("FENNEL", "It's okay. We'll always be friends, whatever you are. Here - take my reed pipe."),
                 p("FENNEL", "Play it and think of me, okay?")]
     }
+    if id == "sprout_exit_block" {
+        return [p("FLICKER", "Sprig, wait! Mother Starter wants to see you first. Her grove is at the north end of the village!")]
+    }
+    # ---- Breadbasket Fields
+    if id == "owl_fields" {
+        return [p("???", "Hoo hoot! Sprig... look up here!"),
+                p("SIR HOOTENANNY", "I am Sir Hootenanny, a crust-owl of some distinction. I have been waiting for you, young sprout."),
+                p("SIR HOOTENANNY", "This is BREADBASKET FIELDS, the heart of the Pantry Kingdom. Every road in the land leads through here."),
+                p("SIR HOOTENANNY", "To the NORTH is Larder Town, and Castle Larder above it. The princess lives there... but you knew that, didn't you? Hoo hoo."),
+                p("SIR HOOTENANNY", "Mind the time! When the sun goes down, the town gate closes, and STALEBIES rise out of the field. Nasty, crumbly things."),
+                p("SIR HOOTENANNY", "Did you get all that? I'm sure you did. Hoo hoot! Off you go!")]
+    }
+    if id == "basil_shop" {
+        var options: list = []
+        if not game.flag("bought_slice") { push(options, "Pie Slice - 99 beans") }
+        if game.has_item("shooter") { push(options, "10 peas - 10 beans") }
+        push(options, "Just looking")
+        return [p("BASIL", "Hey there, little sprout! I'm Basil. Once upon a time I saved a whole castle full of cheese, but these days I cook."),
+                p("BASIL", "Basil's Travelling Kitchen! Fresh from my cart, for the hungry adventurer. You have " + game.beans + " beans."),
+                ask("BASIL", "What can I get you?", options)]
+    }
+    if id == "basil_poor" { return [p("BASIL", "Not enough beans, I'm afraid. Pots and grass, little sprout. Pots and grass.")] }
+    if id == "basil_bye" { return [p("BASIL", "Come back hungry!")] }
+    if id == "sign_fields" { return [p("", "BREADBASKET FIELDS|N: Larder Town   E: Buttercup Dairy   S: Sprouthollow")] }
+    if id == "sign_dairy" { return [p("", "BUTTERCUP DAIRY|Fresh milk, cream and Custard the pudding-pony!")] }
+    if id == "sign_lake" { return [p("", "WEST: LAKE BRINE|Fishing and the Fish Lab.")] }
+    if id == "sign_peppermill" { return [p("", "NORTH-EAST: PEPPERMILL VILLAGE|and Mount Fondue beyond.")] }
+    if id == "gate_shut" { return [p("FLICKER", "The gate is shut for the night! We'll have to wait for morning... or go and see what's out in the field.")] }
+    if id == "tbc_town" {
+        return [p("FLICKER", "Larder Town! The castle's up there... but this part of the kingdom is still being built."),
+                p("FLICKER", "(Pantry Quest 3D continues here soon. Thanks for playing!)")]
+    }
+    if id == "tbc_dairy" { return [p("FLICKER", "Buttercup Dairy is up that hill. It isn't open yet... come back in a later version!")] }
+    if id == "tbc_lake" { return [p("FLICKER", "The road to Lake Brine. Not finished yet - let's head north to the castle!")] }
+    if id == "tbc_peppermill" { return [p("FLICKER", "Peppermill Village is this way, under the mountain. It isn't built yet!")] }
+    if id == "tbc_thicket" { return [p("FLICKER", "The Thicket of Thyme is through there. Fennel says it's easy to get lost... Not today!")] }
     if id == "to_be_continued" {
         return [p("FLICKER", "Breadbasket Fields is out there... but the rest of the kingdom isn't finished yet!"),
                 p("FLICKER", "(Thanks for playing this much of Pantry Quest 3D. More of the world is on its way.)")]
@@ -189,6 +225,32 @@ func after(what: string, choice: int) -> void {
         } else {
             game.talk("sage_bye", "")
         }
+    } elif what == "basil_shop" {
+        var opts: list = []
+        if not game.flag("bought_slice") { push(opts, "slice") }
+        if game.has_item("shooter") { push(opts, "peas") }
+        push(opts, "none")
+        if choice < 0 or choice >= len(opts) { return }
+        var pk: string = opts[choice]
+        if pk == "slice" {
+            if game.beans < 99 { game.talk("basil_poor", "") } else {
+                game.add_beans(-99)
+                game.set_flag("bought_slice")
+                game.give("slice", "")
+            }
+        } elif pk == "peas" {
+            if game.beans < 10 { game.talk("basil_poor", "") } else {
+                game.add_beans(-10)
+                game.peas = min(game.max_peas(), game.peas + 10)
+                game.commit()
+                play_sound("sfx/bean.wav", 0.6)
+                game.talk("basil_bye", "")
+            }
+        } else {
+            game.talk("basil_bye", "")
+        }
+    } elif what == "owl_leaves" {
+        for o in find_all("Owl") { send(o, "fly_away") }
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -199,6 +261,9 @@ func after(what: string, choice: int) -> void {
 func area_started(area: string) -> void {
     if game == nil { game = find("Game") }
     if area == "sprouthollow" and not game.flag("met_flicker") { game.talk("intro", "met_flicker") }
+    if area == "fields" and not game.flag("fields_entered") {
+        game.set_flag("fields_entered")
+    }
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
         game.talk("crock_enter", "")
@@ -221,7 +286,8 @@ func hint() -> string {
     if not game.flag("crock_done") { return "Mother Starter's mouth is open. We have to go inside and break the curse!" }
     if not game.has_item("ember_courage") { return "Talk to Mother Starter, Sprig." }
     if not game.has_item("pipe") { return "Fennel... I think she's waiting for you, by the bridge south of the village." }
-    return "The bridge to the south leads out of Sprouthollow, to Breadbasket Fields and Castle Larder beyond."
+    if game.area == "sprouthollow" { return "The bridge to the south leads out of Sprouthollow, to Breadbasket Fields and Castle Larder beyond." }
+    return "Castle Larder is north, across the field. Mother Starter said to find the princess there!"
 }
 
 func crock_hint() -> string {

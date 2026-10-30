@@ -109,6 +109,23 @@ def main():
     bass = 'C3:4 G2:4 F2:4 G2:4 C3:4 G2:4 F2:4 C3:4 F2:4 G2:4 A2:4 G2:4 C3:4 E3:4 G2:4 C3:4'
     song('title', 92, [(lead, 'square', 0.25, 0.14, LEAD), (harm, 'triangle', 0.5, 0.12, {}), (bass, 'triangle', 0.5, 0.3, {})],
          drums='k . . . h . . . s . . . h . . .')
+    # ---- Breadbasket Fields: an open, striding tune in D (the road ahead) ----
+    lead = ('D5:1.5 A4:0.5 D5:1 F#5:1 E5:1.5 D5:0.5 E5:1 A5:1 '
+            'G5:1.5 F#5:0.5 E5:1 D5:1 E5:3 A4:1 '
+            'D5:1.5 A4:0.5 D5:1 F#5:1 A5:1.5 B5:0.5 A5:1 F#5:1 '
+            'G5:1 F#5:1 E5:1 C#5:1 D5:4 '
+            'B5:1.5 A5:0.5 G5:1 F#5:1 G5:1.5 F#5:0.5 E5:2 '
+            'A5:1.5 G5:0.5 F#5:1 E5:1 F#5:3 r:1 '
+            'G5:1 A5:1 B5:1 G5:1 F#5:1 G5:1 A5:2 '
+            'E5:1 F#5:1 G5:1 E5:1 D5:4')
+    harm = ('F#4:2 A4:2 G4:2 C#5:2 B4:2 A4:2 G4:4 F#4:2 A4:2 C#5:2 D5:2 B4:2 G4:2 F#4:4 '
+            'D5:2 B4:2 B4:2 G4:2 C#5:2 A4:2 A4:4 B4:2 D5:2 A4:2 F#4:2 G4:2 C#5:2 F#4:4')
+    bass = ' '.join(['D3:1 A3:1 F#3:1 A3:1', 'A2:1 E3:1 C#3:1 E3:1', 'G2:1 D3:1 B2:1 D3:1', 'A2:1 E3:1 C#3:1 E3:1',
+                     'D3:1 A3:1 F#3:1 A3:1', 'F#2:1 C#3:1 A2:1 C#3:1', 'G2:1 D3:1 A2:1 E3:1', 'D3:2 A2:2',
+                     'G2:1 D3:1 B2:1 D3:1', 'E2:1 B2:1 G2:1 B2:1', 'A2:1 E3:1 C#3:1 E3:1', 'F#2:1 C#3:1 A2:1 C#3:1',
+                     'G2:1 D3:1 B2:1 D3:1', 'A2:1 E3:1 C#3:1 E3:1', 'G2:1 D3:1 A2:1 E3:1', 'D3:2 A2:2'])
+    song('fields', 126, [(lead, 'square', 0.25, 0.15, LEAD), (harm, 'square', 0.5, 0.055, {}), (bass, 'triangle', 0.5, 0.3, {})],
+         drums='k . h . s . h k k . h . s . h h')
     # ---- game over ----
     song('gameover', 70, [('E5:1 D5:1 C5:1 B4:1 A4:2 C5:2 B4:4 r:4', 'square', 0.25, 0.14, LEAD),
                           ('A3:4 F3:4 E3:4 r:4', 'triangle', 0.5, 0.3, {})], loop=False, echo=0.3)

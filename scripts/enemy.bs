@@ -40,12 +40,14 @@ func start() -> void {
         st = "hidden"
         play_animation(self, "hide", 1, true)
     }
+    if brain == "stalebie" { go_under() }
     if group != "" and game.flag("clear:" + group) { destroy(self) }
 }
 
 func focus_point() -> vec3 {
     if brain == "scrub" { return self.position + vec3(0, 0.45, 0) }
     if brain == "dummy" { return self.position + vec3(0, 1.0, 0) }
+    if brain == "stalebie" { return self.position + vec3(0, 1.1, 0) }
     return self.position + vec3(0, 0.35, 0)
 }
 
@@ -165,6 +167,12 @@ func update(dt: number) -> void {
         }
     } elif brain == "scrub" {
         scrub(dt, to, d)
+    } elif brain == "stalebie" {
+        move = stalebie(dt, to, d)
+    }
+    if brain == "stalebie" and (st == "under" or st == "rising" or st == "sinking") {
+        self.rotation = vec3(0, yaw, 0)
+        return
     }
     if brain != "scrub" {
         if length(move) > 0.1 and st != "hurt" and not ground_ahead(move) { move = vec3(0, 0, 0) }   # (no walking off ledges)
@@ -178,7 +186,7 @@ func update(dt: number) -> void {
     self.rotation = vec3(0, yaw, 0)
     if flash > 0 and floor(flash * 30) % 2 == 0 { self.Mesh.color = "#ff8080ff" } else { self.Mesh.color = "#ffffffff" }
     # touching Sprig hurts him (not while stunned, or for a scrub)
-    if brain != "scrub" and stun <= 0 and st != "hurt" and d < 0.75 and abs(sprig.y - self.y) < 1.2 {
+    if brain != "scrub" and brain != "stalebie" and stun <= 0 and st != "hurt" and d < 0.75 and abs(sprig.y - self.y) < 1.2 {
         var r: string = sprig.hurt(damage, self.position, "touch")
         if r == "blocked" or r == "hit" {
             vel = normalize(to) * -4 + vec3(0, 2, 0)
@@ -192,6 +200,73 @@ func ground_ahead(move: vec3) -> bool {
     var from: vec3 = self.position + normalize(move) * 0.6 + vec3(0, 0.3, 0)
     var hit: any = raycast(from, from + vec3(0, -1.4, 0), self)
     return hit != nil
+}
+
+func is_night() -> bool {
+    var c: number = global("clock", 0.3)
+    return c < 0.22 or c > 0.8
+}
+
+func go_under() -> void {
+    st = "under"
+    self.position = vec3(home.x, home.y - 1.8, home.z)
+    add_tag(self, "hidden")
+}
+
+func stalebie(dt: number, to: vec3, d: number) -> vec3 {
+    if st == "under" {
+        if is_night() and d < 11 and st_t > 2 {
+            st = "rising"
+            st_t = 0
+            self.position = vec3(self.x, home.y - 1.8, self.z)
+            play_sound("sfx/rumble.wav", 0.5, 1.5)
+        }
+        return vec3(0, 0, 0)
+    }
+    if st == "rising" {
+        self.y = lerp(home.y - 1.8, home.y, min(1, st_t / 1.2))
+        face(sprig.position, 200, dt)
+        play_animation(self, "hold", 1, true)
+        if st_t >= 1.2 {
+            st = "idle"
+            st_t = 0
+            remove_tag(self, "hidden")
+        }
+        return vec3(0, 0, 0)
+    }
+    if st == "sinking" {
+        self.y = lerp(home.y, home.y - 1.8, min(1, st_t / 1.2))
+        if st_t >= 1.2 {
+            home = vec3(self.x, home.y, self.z)
+            go_under()
+            st_t = 0
+        }
+        return vec3(0, 0, 0)
+    }
+    if not is_night() or d > 16 {
+        st = "sinking"
+        st_t = 0
+        add_tag(self, "hidden")
+        return vec3(0, 0, 0)
+    }
+    if st == "swipe" {
+        play_animation(self, "slash", 0.7, false)
+        if st_t > 0.3 and st_t - dt <= 0.3 and d < 1.7 { sprig.hurt(damage, self.position, "touch") }
+        if st_t > 0.9 {
+            st = "idle"
+            st_t = 0
+        }
+        return vec3(0, 0, 0)
+    }
+    face(sprig.position, 160, dt)
+    if d < 1.4 and st_t > 0.4 {
+        st = "swipe"
+        st_t = 0
+        play_sound("sfx/swing.wav", 0.6, 0.6)
+        return vec3(0, 0, 0)
+    }
+    play_animation(self, "walk", 0.8, true)
+    return fwd() * 1.5
 }
 
 func fuzzball(dt: number, to: vec3, d: number) -> vec3 {

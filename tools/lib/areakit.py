@@ -151,12 +151,12 @@ class Area:
                     ('Parent', [('entity', i)]))
 
     def enemy(self, brain, x, y, z, yaw=0, hp=2, damage=2, group='', model=None, **more):
-        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub'}[brain]
+        model = model or {'fuzzball': 'fuzzball', 'larva': 'larva', 'scrub': 'scrub', 'stalebie': 'stalebie'}[brain]
         kw = {'brain': brain, 'hp': hp, 'damage': damage}
         if group:
             kw['group'] = group
         kw.update(more)
-        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7)}[brain]
+        r, h = {'fuzzball': (0.35, 0.7), 'larva': (0.25, 0.5), 'scrub': (0.3, 0.7), 'stalebie': (0.32, 1.3)}[brain]
         self.entity(brain.capitalize(), t3((x, y, z), (0, yaw, 0)), mesh('model', file='models/%s.glb' % model, shadow=True),
                     ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.1)]),
                     collider('capsule', (1, h, 1), r, offset=(0, h / 2, 0)), kinematic(),

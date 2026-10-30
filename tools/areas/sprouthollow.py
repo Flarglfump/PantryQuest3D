@@ -271,7 +271,9 @@ def build():
     a.spawn_point('grove', 0, gy + 0.1, cz + 9, 0)
 
     # ---- ways out ----
-    a.loadzone(0, 0, 45, 4, 3, 1, to='', say='to_be_continued')
+    a.loadzone(0, 0, 45, 4, 3, 1, to='fields', at='sprouthollow', needs='crock_done')
+    a.loadzone(0, 0, 44.4, 4, 3, 1, to='', say='sprout_exit_block', until='crock_done')
+    a.spawn_point('fields', 0, height(0, 30) + 0.1, 30, 0)
     a.spawn_point('start', 0, height(0, 26) + 0.1, 26, 0)
     a.spawn_point('crock', 0, gy + 0.1, cz + 8, 0)
     a.save()
