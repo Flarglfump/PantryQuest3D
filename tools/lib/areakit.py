@@ -81,7 +81,17 @@ class Area:
         """The Obj to add `material` geometry to, for the chunk around x, z."""
         return self.chunks.at(material, x, z)
 
+    def place_weevils(self):
+        """The Golden Weevils for this area (weevils.py): near its spawn points."""
+        from weevils import WEEVILS
+        spawns = getattr(self, 'spawns', {})
+        for k, (spawn, dx, dz, night) in enumerate(WEEVILS.get(self.file_id, [])):
+            if spawn in spawns:
+                x, y, z, _ = spawns[spawn]
+                self.weevil(x + dx, y + 1.0, z + dz, '%s_%d' % (self.file_id, k), night=night)
+
     def save(self):
+        self.place_weevils()
         n = 0
         tris = 0
         for (material, cx, cz), obj in self.chunks.items():
@@ -104,6 +114,8 @@ class Area:
     # ---- things ----
     def spawn_point(self, name, x, y, z, yaw=0):
         self.scene.entity('spawn_' + name, t3((x, y, z), (0, yaw, 0)))
+        self.spawns = getattr(self, 'spawns', {})
+        self.spawns[name] = (x, y, z, yaw)
 
     def entity(self, name, *comps):
         return self.scene.entity(name, *comps)
@@ -278,6 +290,15 @@ class Area:
         self.entity('Blue Fire', t3((x, y + 1.1, z)), particles(rate=24, max=40, lifetime=0.8, speed=0.8, spread=20, area=(0.5, 0.5), gravity=-1.2,
                                                                size_start=0.45, size_end=0, color_start='#60a0ffff', color_end='#2040ff00', blend='add'),
                     light('point', '#6090ffff', 1.2, range=6), tags('bluefire'))
+
+    def weevil(self, x, y, z, id, night=False):
+        kw = {'id': id}
+        if night:
+            kw['night'] = True
+        self.entity('Golden Weevil', t3((x, y, z), (0, 0, 0), 0.5), mesh('model', '#f0c030ff', file='models/bean.obj', lit=False),
+                    collider('sphere', radius=0.6, trigger=True), tags('focusable', 'shootable'), script('scripts/weevil.bs', **kw))
+        self.entity('Weevil Glint', t3((x, y, z)), particles(rate=3, max=6, lifetime=0.8, speed=0.3, spread=90, size_start=0.15, size_end=0,
+                                                           color_start='#fff0a0ff', color_end='#ffc00000', blend='add'))
 
     def hammerswitch(self, x, y, z, id):
         self.entity('Rusty Switch', t3((x, y, z)), mesh('model', '#a07050ff', file='models/switch.obj'), collider('box', (1.4, 0.3, 1.4), offset=(0, 0.0, 0)),

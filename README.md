@@ -125,6 +125,9 @@ a jump attack.
   ending, back in the castle garden, seven years before.
 - **Buttercup Dairy** (on the fields' hill): Crème teaches Custard's Song; seven years
   later Grubb wants Custard for the Duke — play her song and she's yours (and a Pie Slice).
+- **Golden Weevils**: 32 cursed weevils floating about the kingdom (some only at night);
+  strike, shoot or lash them for tokens, and the Weevil House in Peppermill gives the
+  Giant Bean Purse, a Pie Slice and a Heart Pie at 10, 20 and 30.
 - Swimming and diving (A dives; hold it to go deeper).
 - Playing songs on Fennel's pipe (put it on an item button: notes on A, the item buttons
   and the shield button), picking up, carrying and throwing bombs.

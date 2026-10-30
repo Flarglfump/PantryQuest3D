@@ -736,6 +736,19 @@ func talk(id: string) -> list {
                 p("CRÈME", "She remembers you! She's yours, Sprig - she'd never go to the Duke now. Here, take this, for Custard's sake!")]
     }
 
+
+    # ---- the Golden Weevils
+    if id == "sign_weevils" { return [p("", "THE WEEVIL HOUSE.|Golden Weevil tokens wanted. Ask inside... er, outside.")] }
+    if id == "weevil_got" { return [p("", "You got a GOLDEN WEEVIL TOKEN!|You have " + game.count("weevils") + ". The Weevil House in Peppermill wants them.")] }
+    if id == "weevil_house" {
+        var n: int = game.count("weevils")
+        if n >= 30 and not game.flag("weevil_r30") { return [p("WEEVIL KID", "THIRTY! I'm almost me again! Here - the biggest thing we had left. A whole HEART PIE!")] }
+        if n >= 20 and not game.flag("weevil_r20") { return [p("WEEVIL KID", "Twenty tokens! My fingers are back! Take this, it's all we've got... a PIE SLICE.")] }
+        if n >= 10 and not game.flag("weevil_r10") { return [p("WEEVIL KID", "Ten tokens! I can feel my nose again! Here - Dad's GIANT BEAN PURSE. It holds 200!")] }
+        return [p("WEEVIL KID", "Bzzz... we were greedy, and now we're Golden Weevils. Every token you find turns one of us back a little."),
+                p("WEEVIL KID", "You have " + n + ". Bring me 10, 20, and 30, and I'll give you something nice. Bzzz.")]
+    }
+
     # ---- the Great Crock
     if id == "crock_enter" {
         return [p("FLICKER", "Eww. It's all warm and bubbly in here. And it smells like... bread?"),
@@ -960,6 +973,18 @@ func after(what: string, choice: int) -> void {
         game.give("song_custard", "")
     } elif what == "custard_slice" {
         game.give("slice", "")
+    } elif what == "weevil_reward" {
+        var n: int = game.count("weevils")
+        if n >= 30 and not game.flag("weevil_r30") {
+            game.set_flag("weevil_r30")
+            game.give("heartpie", "")
+        } elif n >= 20 and not game.flag("weevil_r20") {
+            game.set_flag("weevil_r20")
+            game.give("slice", "")
+        } elif n >= 10 and not game.flag("weevil_r10") {
+            game.set_flag("weevil_r10")
+            game.give("purse200", "")
+        }
     } elif what == "crock_warp" {
         game.set_flag("crock_done")
         game.go("sprouthollow", "grove")
@@ -1207,6 +1232,7 @@ func item_name(kind: string) -> string {
 }
 
 func item_text(kind: string) -> string {
+    if kind == "purse200" { return "You got the GIANT BEAN PURSE!|Now you can carry 200 beans." }
     if kind == "song_custard" { return "You learned CUSTARD'S SONG!|A gentle farm song. Custard the pudding-pony always comes running for it." }
     if kind == "song_requiem" { return "You learned the REQUIEM OF SUGAR!|Play it anywhere outside a dungeon - in either era - to warp to the Salt Idol." }
     if kind == "platter" { return "You got the SILVER PLATTER!|Strong enough to heave the heaviest block of rock salt. It's yours for good." }

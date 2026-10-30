@@ -576,6 +576,78 @@ entity
 
 entity
   Name
+    text = "Weevil_house"
+  Transform3D
+    position = 14 -0.4398 24
+    rotation = 0 180 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/hardtack_kid.glb"
+    color = #ffffffff
+    uv_scale = 1 1
+    shadow = true
+  Animator
+    clip = "idle"
+    speed = 1
+    loop = true
+    playing = true
+    blend = 0.2
+  Collider3D
+    shape = capsule
+    size = 1 1.1 1
+    radius = 0.3
+    friction = 0.8
+    offset = 0 0.55 0
+  Tags
+    list = "npc, interact, focusable"
+  Script
+    file = "scripts/npc.bs"
+    vars = "who = \"weevil_house\", reach = 2.4"
+
+entity
+  Name
+    text = "Sign"
+  Transform3D
+    position = 16.5 0.0441 24
+    rotation = 0 180 0
+    scale = 0.1 0.9 0.1
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Sign Board"
+  Transform3D
+    position = 16.5 0.4441 24
+    rotation = 0 180 0
+    scale = 0.8 0.5 0.08
+  Mesh
+    shape = cube
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Tags
+    list = "interact, focusable"
+  Script
+    file = "scripts/sign.bs"
+    vars = "say = \"sign_weevils\""
+
+entity
+  Name
     text = "Grave"
   Transform3D
     position = 26 0.5047 -12
@@ -2029,6 +2101,50 @@ entity
   Script
     file = "scripts/cuttable.bs"
     vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Golden Weevil"
+  Transform3D
+    position = 33 0.8463 1
+    rotation = 0 0 0
+    scale = 0.5 0.5 0.5
+  Mesh
+    shape = model
+    file = "models/bean.obj"
+    color = #f0c030ff
+    uv_scale = 1 1
+    lit = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "focusable, shootable"
+  Script
+    file = "scripts/weevil.bs"
+    vars = "id = \"peppermill_risen_0\", night = true"
+
+entity
+  Name
+    text = "Weevil Glint"
+  Transform3D
+    position = 33 0.8463 1
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 3
+    max = 6
+    lifetime = 0.8
+    speed = 0.3
+    spread = 90
+    size_start = 0.15
+    size_end = 0
+    color_start = #fff0a0ff
+    color_end = #ffc00000
+    blend = add
 
 entity
   Name

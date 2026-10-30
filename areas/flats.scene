@@ -589,6 +589,50 @@ entity
 
 entity
   Name
+    text = "Golden Weevil"
+  Transform3D
+    position = 30 0.0494 2
+    rotation = 0 0 0
+    scale = 0.5 0.5 0.5
+  Mesh
+    shape = model
+    file = "models/bean.obj"
+    color = #f0c030ff
+    uv_scale = 1 1
+    lit = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "focusable, shootable"
+  Script
+    file = "scripts/weevil.bs"
+    vars = "id = \"flats_0\""
+
+entity
+  Name
+    text = "Weevil Glint"
+  Transform3D
+    position = 30 0.0494 2
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 3
+    max = 6
+    lifetime = 0.8
+    speed = 0.3
+    spread = 90
+    size_start = 0.15
+    size_end = 0
+    color_start = #fff0a0ff
+    color_end = #ffc00000
+    blend = add
+
+entity
+  Name
     text = "bark -2 -1"
   Transform3D
     position = 0 0 0

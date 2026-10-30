@@ -1,0 +1,48 @@
+@strict @3d
+# weevil.bs - a Golden Weevil: one of the cursed Weevil family, crawling on a wall or a
+# tree. Strike it (or shoot it, or catch it with the lash or boomerang) and it drops a token
+# for the Weevil House in Peppermill (each one found for good: the flag "weevil:<id>").
+
+var id: string = ""
+var night: bool = false            # only out at night
+var game: entity
+var t: number = 0
+var home: vec3
+var got: bool = false
+var radius: number = 0.8            # (shots find it by distance: shot.bs)
+var passthrough: bool = false
+
+func start() -> void {
+    game = find("Game")
+    home = self.position
+    if game.flag("weevil:" + id) { destroy(self) }
+}
+
+func focus_point() -> vec3 { return self.position }
+
+func out() -> bool {
+    if not night { return true }
+    var c: number = global("clock", 0.3)
+    return c < 0.22 or c > 0.8
+}
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if got or not out() { return }
+    got = true
+    game.set_flag("weevil:" + id)
+    game.add_count("weevils", 1)
+    spawn("prefabs/poof.scene", self.position)
+    play_sound("sfx/bean.wav", 0.8, 0.8)
+    play_sound("sfx/secret.wav", 0.5, 1.4)
+    game.talk("weevil_got", "")
+    destroy(self)
+}
+
+func update(dt: number) -> void {
+    t += dt
+    var on: bool = out()
+    self.Mesh.visible = on
+    if on { add_tag(self, "focusable") } else { remove_tag(self, "focusable") }
+    self.position = home + vec3(sin(t * 50) * 0.15, cos(t * 37) * 0.1, 0)
+    self.rotation = vec3(0, t * 40, 0)
+}

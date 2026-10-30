@@ -92,6 +92,8 @@ def build(era='fresh'):
     for x, z, w, d, side in [(-24, 6, 7, 6, 'e'), (-26, -16, 7, 6, 'e'), (14, 20, 7, 6, 'n'), (-10, 24, 6, 6, 'n'), (18, -20, 7, 6, 's')]:
         town_house(a, x, z, w, d, 3.8, height(x, z), wall='planks', roof='thatch', door_side=side)
     a.sign(18, height(18, -16.2), -16.2, 0, 'sign_potions')
+    a.npc('weevil_house', 14, height(14, 24), 24, 180, model='hardtack_kid', reach=2.4)
+    a.sign(16.5, height(16.5, 24), 24, 180, 'sign_weevils')
     # the graveyard (east)
     gx, gz = 30, -6
     for i in range(3):

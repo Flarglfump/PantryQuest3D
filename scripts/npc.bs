@@ -124,6 +124,7 @@ func interact(who_by: entity) -> void {
     if id == "cinder_requiem" { then = "requiem" }
     if id == "saffron_reveal" { then = "reveal" }
     if who == "creme" and not game.has_item("song_custard") { then = "custard_song" }
+    if who == "weevil_house" { then = "weevil_reward" }
     if id == "caramel_keeper" and not game.flag("keeper_sweet") { then = "med_sweet" }
     if who == "risen_miller" and not game.has_item("song_boiling") { then = "boiling" }
     if id == "kimchi_keeper" and not game.flag("keeper_sour") { then = "med_sour" }

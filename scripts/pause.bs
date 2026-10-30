@@ -203,6 +203,11 @@ func draw_gear() -> void {
     }
     draw_image("art/icons/slice.png", vec2(188, 102))
     draw_text("x " + (slices % 4) + " / 4", vec2(200, 99), [255, 255, 255])
+    var wv: int = 0
+    for c4 in s[7] {
+        if c4[0] == "weevils" { wv = c4[1] }
+    }
+    draw_text("Weevils: " + wv, vec2(180, 112), [240, 200, 60])
     draw_text("TIME", vec2(180, 124), [255, 220, 130])
     var secs: int = floor(s[10])
     var m: int = floor(secs / 60)
