@@ -13,7 +13,7 @@ made by the Python tools in `tools/`.
 
 ## Playing it
 
-You need a copy of Bronto beside this folder (`../bronto`), at commit `de7ad92` or later
+You need a copy of Bronto beside this folder (`../bronto`), at commit `0d4a578` or later (it has `place_on_bone`, gamepad triggers seen in every step, and botrunner's `pad`)
 (it has the fixes this game needs: steep slopes and mesh edges for characters, view culling).
 
 ```sh
@@ -31,24 +31,39 @@ Or open the folder in Bronto's editor (**Load Project**) and press Play.
 |---|---|---|
 | Move | WASD | left stick |
 | Camera | mouse (swing and tilt), ← → (swing), ↓ (behind Sprig) | right stick |
-| Action: talk, open, read, climb, roll, hop | Space | A |
+| Action: talk, open, read, climb, roll, hop, grab | Space | A |
 | Attack (hold, then let go: spin attack) | left click, J | X |
-| Focus (lock on with Flicker) | middle click, Shift | LT, LB |
-| Shield | right click, K | RT, RB |
-| Item buttons | U, I, O | Y, B, D-pad up |
-| Ask Flicker for a hint | Tab | Back |
-| Pause (items, gear, map, save) | Enter, Esc | Start |
+| Focus (lock on with Flicker) | middle click, Shift | LT |
+| Shield | right click, K | RT |
+| Item buttons | U, I, O | LB, RB, Y |
+| Ask Flicker for a hint | H | D-pad up |
+| Play a song (with the pipe) | P | D-pad down |
+| Cast-Iron Boots / Meringue Boots on and off | 1 / 2 | D-pad left / right |
+| Map | Tab | Back (Select) |
+| Pause (items, equipment, quest, map, save) | Enter, Esc | Start |
 
-The keys can be changed on the CONTROLS page (on the title screen, and in the pause menu's
-SYSTEM page), which has two parts: ADVENTURE and MENUS. The menus also always answer to the
-arrow keys, ENTER and ESC. With the shield up, Sprig steps aside or back still facing ahead. The menus work with the mouse too: point and click (a right click goes back).
+The keys - and the gamepad's buttons, all but the sticks - can be changed on the CONTROLS
+page (on the title screen, and in the pause menu's SYSTEM page), which has two parts:
+ADVENTURE and MENUS. The buttons shown on the screen follow them. The menus also always
+answer to the arrow keys, ENTER and ESC, and work with the mouse too: point and click (a
+right click goes back).
 
 Click on the game to capture the mouse for mouse-look; it is let go while a menu is up
 (and comes back after) and when the window is in the background. In a browser, Esc lets
 it go; click again to take it back.
 
-While focused, Action hops to the side or back-flips; forward + Action with the spoon is
-a jump attack.
+- **Focus:** while focused on something, moving the camera left or right (the right stick,
+  the mouse, ← →) moves the focus to the next thing that way. While focused, Action hops to
+  the side or back-flips; forward + Action with the spoon is a jump attack (with or without
+  something focused).
+- **Shield:** with it up, Sprig stands his ground and the stick turns him on the spot;
+  focused, he steps aside or back behind it instead.
+- **Pea Shooter, Skewer Bow:** the item button aims (look about with the stick, the right
+  stick or the mouse; the button again shoots; Action, Attack or Shield puts it away).
+  Focused on something, it shoots straight at it instead.
+- **Blocks:** Action grabs a crust block; holding on, push or pull it a step at a time.
+- **Pipe:** the notes are on the buttons Ocarina of Time 3D uses - A, X, LB, Y, RB on a
+  gamepad (A, X, L, Y, R there) - or Space, A, W, D, S, shown as those buttons on the staff.
 
 ## What's there
 

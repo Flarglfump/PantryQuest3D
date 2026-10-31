@@ -112,7 +112,7 @@ def build():
     hall(a, 0, bz - 11, 0, ez + 9.6)
     a.entity('Locked Door', t3((0, 1.4, bz - 12), (0, 0, 0), (2.4, 2.8, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='fg_north'))
-    a.entity('Lock', t3((0, 1.3, bz - 12.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'))
+    a.entity('Lock', t3((0, 1.3, bz - 12.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
     room(a, 0, ez, 10, [(90, 1.4), (270, 1.4)], floor=False)
     a.geo('stone', 0, ez + 6).box((-10, -0.5, ez + 3), (10, 0, ez + 10), uvs=0.35)       # south half
     a.geo('stone', 0, ez - 7).box((-10, -0.5, ez - 10), (10, 0, ez - 4.5), uvs=0.35)     # north half

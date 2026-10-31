@@ -1,84 +1,104 @@
 @strict @3d
-# pushblock.bs - a block of hard crust Sprig pushes by walking into it: after a moment it
-# slides one `cell` away from him, if nothing is in the way and there's floor to land on.
+# pushblock.bs - a block of hard crust. Sprig grabs it with Action (as the old adventures
+# had it) and, holding on, pushes it one `cell` away from him or pulls it one towards him -
+# if nothing is in the way and there's floor where it (and, pulling, he) would end up.
 # It's heavy enough to hold a floor switch down (tag "weight").
 
 var cell: number = 1.6
 var carried: bool = false              # (floorswitch.bs asks: a weight being carried doesn't count)
-var push_t: number = 0
 var sliding: number = -1
 var from: vec3
 var to: vec3
+var prompt: string = "Grab"
+var reach: number = 1.9
 var game: entity
 var sprig: entity
 var at: vec3                       # (where it is: for the play-test bots)
+
+const GAP: number = 0.34           # how far from its face Sprig holds on (his middle: his radius and a little)
 
 func start() -> void {
     game = find("Game")
     sprig = find("Sprig")
 }
 
+func focus_point() -> vec3 { return self.position }
+
 func update(dt: number) -> void {
     at = self.position
-    if sliding >= 0 {
-        sliding += dt / 0.45
-        if sliding >= 1 {
-            self.position = to
-            sliding = -1
-        } else {
-            self.position = lerp(from, to, sliding)
-        }
-        return
+    if sliding < 0 { return }
+    sliding += dt / 0.5
+    if sliding >= 1 {
+        self.position = to
+        sliding = -1
+    } else {
+        self.position = lerp(from, to, sliding)
     }
-    if game.state != "play" or sprig == nil or not sprig.alive { return }
-    var dir: vec3 = pushing()
-    if length(dir) < 0.5 {
-        push_t = 0
-        return
+}
+
+# The face Sprig at p is at: a unit step along x or z from the block towards him, or nothing
+# (not square to a face, too far, on another level).
+func face_of(p: vec3) -> vec3 {
+    var rel: vec3 = p - self.position
+    if abs(p.y - (self.y - cell / 2)) > 0.45 { return vec3(0, 0, 0) }
+    if abs(rel.x) > abs(rel.z) {
+        if abs(rel.z) > cell / 2 - 0.2 or abs(rel.x) > cell / 2 + 0.75 { return vec3(0, 0, 0) }
+        return vec3(sign(rel.x), 0, 0)
     }
-    push_t += dt
-    # leaning on it: he's drawn square to it (so he doesn't slide off its side before it goes)
-    var side_v: vec3 = vec3(dir.z, 0, -dir.x)
-    var off_side: number = dot(sprig.position - self.position, side_v)
-    sprig.position = sprig.position - side_v * (off_side * min(1, dt * 8))
-    if push_t < 0.25 { return }
-    push_t = 0
+    if abs(rel.x) > cell / 2 - 0.2 or abs(rel.z) > cell / 2 + 0.75 { return vec3(0, 0, 0) }
+    return vec3(0, 0, sign(rel.z))
+}
+
+func can_use(p: vec3) -> bool { return sliding < 0 and length(face_of(p)) > 0.5 }
+
+func interact(who: entity) -> void {
+    var f: vec3 = face_of(who.position)
+    if length(f) < 0.5 { return }
+    who.grab(self, f * -1)
+}
+
+# Where Sprig stands holding the face he's at (axis: from him into the block).
+func hold_point(axis: vec3, y: number) -> vec3 {
+    var p: vec3 = self.position - axis * (cell / 2 + GAP)
+    return vec3(p.x, y, p.z)
+}
+
+# Pushed away along `axis` (from Sprig into the block), or pulled back towards him with
+# `pull`. True if it goes.
+func try_move(axis: vec3, pull: bool, who: entity) -> bool {
+    if sliding >= 0 { return false }
+    var dir: vec3 = axis
+    if pull { dir = axis * -1 }
     var goal: vec3 = self.position + dir * cell
-    # something in the way? (low and high, either side of the middle)
-    for side in [-0.6, 0.6] {
-        var off: vec3 = vec3(dir.z, 0, -dir.x) * (cell / 2 * side / 0.6 * 0.9)
-        for up in [0.2, cell - 0.2] {
-            var p: vec3 = self.position + vec3(0, up - cell / 2, 0) + off
-            if raycast(p, p + dir * cell, self) != nil {
+    if pull {
+        # room behind Sprig for him to step back into, and floor there
+        for up in [0.3, 1.0] {
+            var p0: vec3 = who.position + vec3(0, up, 0)
+            if raycast(p0, p0 + dir * (cell + 0.3), who) != nil {
                 play_sound("sfx/bonk.wav", 0.3, 0.7)
-                return
+                return false
+            }
+        }
+        var back: vec3 = who.position + dir * cell
+        if raycast(back + vec3(0, 0.5, 0), back + vec3(0, -0.6, 0), who) == nil { return false }
+    } else {
+        # something in the way? (low and high, either side of the middle)
+        for side in [-0.6, 0.6] {
+            var off: vec3 = vec3(dir.z, 0, -dir.x) * (cell / 2 * side / 0.6 * 0.9)
+            for up in [0.2, cell - 0.2] {
+                var p: vec3 = self.position + vec3(0, up - cell / 2, 0) + off
+                if raycast(p, p + dir * cell, self) != nil {
+                    play_sound("sfx/bonk.wav", 0.3, 0.7)
+                    return false
+                }
             }
         }
     }
     # floor to land on?
-    var below: any = raycast(goal, goal + vec3(0, -cell / 2 - 0.3, 0), self)
-    if below == nil { return }
+    if raycast(goal, goal + vec3(0, -cell / 2 - 0.3, 0), self) == nil { return false }
     from = self.position
     to = goal
     sliding = 0
     play_sound("sfx/rumble.wav", 0.5, 0.8)
-}
-
-# The way Sprig is pushing it (a unit step along x or z), or nothing.
-func pushing() -> vec3 {
-    if sprig.st != "free" or sprig.move_amount < 0.5 or sprig.shielding or sprig.carrying != nil { return vec3(0, 0, 0) }
-    var loose: number = 0                    # (once he's leaning on it, a little more slack)
-    if push_t > 0 { loose = 0.2 }
-    var rel: vec3 = self.position - sprig.position
-    if abs(sprig.y - (self.y - cell / 2)) > 0.4 { return vec3(0, 0, 0) }
-    var axis := vec3(0, 0, 0)
-    if abs(rel.x) > abs(rel.z) {
-        axis = vec3(sign(rel.x), 0, 0)
-        if abs(rel.z) > cell / 2 - 0.15 + loose or abs(rel.x) > cell / 2 + 0.5 { return vec3(0, 0, 0) }
-    } else {
-        axis = vec3(0, 0, sign(rel.z))
-        if abs(rel.x) > cell / 2 - 0.15 + loose or abs(rel.z) > cell / 2 + 0.5 { return vec3(0, 0, 0) }
-    }
-    if dot(sprig.forward_of(sprig.facing), axis) < 0.8 - loose * 2 { return vec3(0, 0, 0) }
-    return axis
+    return true
 }

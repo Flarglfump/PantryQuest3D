@@ -1,6 +1,7 @@
 @strict @3d
 # lockdoor.bs - a door with a lock: A uses a small key (once), and it's open for good
-# (flag "door:<id>"). With `boss`, it needs the dungeon's Boss Key instead.
+# (flag "door:<id>"). With `boss`, it needs the dungeon's Boss Key instead. The lock on it
+# (an entity tagged "lock" close by) goes with it.
 
 var id: string = ""
 var boss: bool = false
@@ -10,11 +11,19 @@ var game: entity
 
 func start() -> void {
     game = find("Game")
-    if game.flag("door:" + id) { destroy(self) }
+    if game.flag("door:" + id) { open_up() }
 }
 
 func focus_point() -> vec3 { return self.position + vec3(0, 1.2, 0) }
 func can_use(p: vec3) -> bool { return true }
+
+# The door and its lock go.
+func open_up() -> void {
+    for l in find_tagged("lock") {
+        if l.alive and distance(l.global_position, self.global_position) < 1.2 { destroy(l) }
+    }
+    destroy(self)
+}
 
 func interact(who: entity) -> void {
     if boss {
@@ -34,5 +43,5 @@ func interact(who: entity) -> void {
     play_sound("sfx/door.wav", 0.8)
     play_sound("sfx/secret.wav", 0.5)
     spawn("prefabs/poof.scene", self.position + vec3(0, 1.2, 0))
-    destroy(self)
+    open_up()
 }

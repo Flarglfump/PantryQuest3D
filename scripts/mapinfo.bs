@@ -1,11 +1,38 @@
 @strict @3d
-# mapinfo.bs - where a dungeon's map picture (made by tools/lib/areakit.py from its floors)
-# sits in the world: the picture `picture`, the world x, z of its top left corner, and how many
-# pixels to a metre. game.bs hands it to the pause menu.
+# mapinfo.bs - where a dungeon's map pictures (made by tools/lib/areakit.py, one for each
+# floor) sit in the world: the world x, z of their top left corner, and how many pixels to a
+# metre. Floor i is `names[i]` ("B1", "1F", "2F"...) and holds what's between lows[i] and
+# highs[i] up. game.bs hands them to the pause menu.
 
-var picture: string = ""
+var base: string = ""                  # the pictures: base + the floor's name, lower case, + ".png"
+var names: list = []
+var lows: list = []
+var highs: list = []
 var x0: number = 0
 var z0: number = 0
 var ppm: number = 1
 var w: int = 0
 var h: int = 0
+
+func picture(i: int) -> string {
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var n: string = names[i]
+    var out: string = ""
+    for k in len(n) {
+        var c: string = n[k]
+        for j in 26 {
+            if hi[j] == c { c = lo[j] }
+        }
+        out = out + c
+    }
+    return base + out + ".png"
+}
+
+# The floor a height is on.
+func floor_of(y: number) -> int {
+    for i in len(lows) {
+        if y >= lows[i] and y < highs[i] { return i }
+    }
+    return 0
+}

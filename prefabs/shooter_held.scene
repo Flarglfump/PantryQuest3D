@@ -1,0 +1,17 @@
+# The Pea Shooter in Sprig's hand, while he aims (sprig.bs places it).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Shooter"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/shooter.obj"
+    color = #a07040ff
+    uv_scale = 1 1
+    cast_shadow = false

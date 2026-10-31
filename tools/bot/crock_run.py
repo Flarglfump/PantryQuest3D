@@ -100,29 +100,28 @@ class Run:
         self.g.frames(4)
 
     def aim(self, yaw):
-        """Turn on the spot until he faces yaw (within a few degrees): one-frame taps."""
-        for i in range(40):
+        """Turn on the spot until he faces yaw (within a few degrees): behind the shield, which
+        plants him, the stick turns him round."""
+        self.g.key('k', True)
+        self.g.frames(3)
+        for i in range(60):
             f = self.g.var('Sprig', 'facing')[0]
             err = (yaw - f + 540) % 360 - 180
-            if abs(err) < 5:
-                return
-            turn = f + (50 if err > 0 else -50)
+            if abs(err) < 3:
+                break
+            turn = f + max(-40, min(40, err))
             ks = self.step_keys(-math.sin(math.radians(turn)), -math.cos(math.radians(turn)))
             for k in ks: self.g.key(k, True)
-            self.g.frames(1)
+            self.g.frames(2 if abs(err) > 12 else 1)
             for k in ks: self.g.key(k, False)
-            self.g.frames(3)
+            self.g.frames(1)
+        self.g.key('k', False)
+        self.g.frames(3)
 
     def take_aim(self, x, z, yaw):
-        """Stand at (x, z) facing yaw: turn there, then step back on to the spot behind the
-        shield (which keeps him facing the same way)."""
+        """Stand at (x, z) facing yaw."""
         self.goto(x, z, near=0.2)
         self.aim(yaw)
-        self.g.key('k', True)
-        self.g.frames(4)
-        self.goto(x, z, near=0.12)
-        self.g.key('k', False)
-        self.g.frames(4)
 
     def approach(self, x, z, yaw, run=2.5):
         """Walk the last bit to (x, z) going the way `yaw` faces, so he ends up facing it squarely."""
@@ -157,34 +156,52 @@ class Run:
         return best
 
     def push_block(self, x, z, yaw, times):
-        """Push the block nearest (x, z) `times` cells the way `yaw` faces: lining up behind it each time."""
+        """Push the block nearest (x, z) `times` cells the way `yaw` faces: lining up behind it,
+        grabbing it (holding Action) and pushing a step at a time."""
         dx, dz = -math.sin(math.radians(yaw)), -math.cos(math.radians(yaw))
+        b = self.block_near(x, z)
+        self.goto(b[0] - dx * 1.4, b[2] - dz * 1.4, near=0.2)
+        self.face(yaw)
+        self.g.key('space', True)
+        self.g.frames(6)
+        if self.g.var('Sprig', 'st')[0] != 'grab':
+            self.g.key('space', False)
+            self.fail('grabbing the block at (%.1f, %.1f) %s' % (b[0], b[2], self.g.var('Sprig', 'action_label', 'facing', 'st')))
         for i in range(times):
             b = self.block_near(x, z)
-            self.goto(b[0] - dx * 1.6, b[2] - dz * 1.6, near=0.2)
-            self.face(yaw)
             ks = self.step_keys(dx, dz)
-            for f in range(14):               # (until it slides: then let go, before he walks round it)
+            for f in range(30):
                 for k in ks: self.g.key(k, True)
                 self.g.frames(3)
-                for k in ks: self.g.key(k, False)
                 nb = self.block_near(b[0], b[2])
                 if math.hypot(nb[0] - b[0], nb[2] - b[2]) > 0.2:
                     break
-                ks = self.step_keys(dx, dz)
-            self.g.frames(30)
+            for k in ks: self.g.key(k, False)
+            self.g.frames(36)
             x, z = b[0] + dx * 1.6, b[2] + dz * 1.6
+        self.g.key('space', False)
+        self.g.frames(6)
 
-    def shoot(self, focus=False):
+    def shoot(self, focus=False, yaw=None):
         """Fire a pea (trying again if he was busy - hurt, say - and no pea left the pouch)."""
         for tries in range(4):
             peas = self.g.var('Game', 'peas')[0]
             if focus:
                 self.g.key('shift', True)
                 self.g.frames(8)
-            self.g.press('u', 30)
-            if focus:
+                self.g.press('u', 30)          # (focused: it fires straight away)
                 self.g.key('shift', False)
+            else:
+                self.g.press('u', 12)          # (aiming: straight ahead, or turned to yaw with the stick)...
+                for i in range(80):
+                    if yaw is None:
+                        break
+                    err = (yaw - self.g.var('Sprig', 'aim_yaw')[0] + 540) % 360 - 180
+                    if abs(err) < 1.5:
+                        break
+                    self.g.hold('a' if err > 0 else 'd', 1 if abs(err) < 6 else 3)
+                self.g.press('u', 20)          # ... and shoot
+                self.g.press('k', 6)           # (put it away)
             self.g.frames(20)
             if self.g.var('Game', 'peas')[0] < peas:
                 return
@@ -283,7 +300,7 @@ def main():
     r.need(r.flag('crock_eye'), 'a pea in the eye: the Furnace Room bars open')
     # ---- the hall's web, burnt by a pea through the torch in front of it
     r.take_aim(7.5, 2.0, 0)
-    r.shoot()
+    r.shoot(yaw=0)
     r.need(r.flag('crock_web_hall'), 'a fire pea burns the web in front of the warm column')
     # ---- the Furnace Room: fire peas to the bowls, the cold columns rise
     r.goto(0, -6); r.goto(0, -13); r.goto(0, -16.0)
@@ -291,7 +308,7 @@ def main():
     r.fight()
     for (x, f) in [(-5.5, 'crock_bowl_w'), (5.5, 'crock_bowl_e')]:
         r.take_aim(x, -16.3, 0)
-        r.shoot()
+        r.shoot(yaw=0)
         r.need(r.flag(f), 'a fire pea lights the bowl (%s)' % f)
     r.wait(150)
     r.goto(0, -18.5); r.goto(0, -22); r.goto(0, -26.5)
@@ -301,9 +318,9 @@ def main():
     r.use()
     r.need(r.flag('crock_compass'), 'the COMPASS')
     r.take_aim(2.0, -29.5, 270)
-    r.shoot()
+    r.shoot(yaw=270)
     r.need(r.flag('crock_web_key'), 'a fire pea burns the web over the second key')
-    r.goto(8.0, -29.5)
+    r.goto(4.0, -28.4); r.goto(6.0, -29.5); r.goto(8.0, -29.5)
     r.face(270)
     r.use()
     r.need(r.flag('crock_key2'), 'the second small key')

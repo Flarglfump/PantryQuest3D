@@ -102,7 +102,7 @@ def build():
     gullet(a, 0, bz - 9.6, 0, ez + 8.6)
     a.entity('Locked Door', t3((0, 1.4, bz - 11), (0, 0, 0), (2.4, 2.8, 0.3)), mesh('cube', '#c86070ff', 'art/flesh.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='gulp_north'))
-    a.entity('Lock', t3((0, 1.3, bz - 11.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'))
+    a.entity('Lock', t3((0, 1.3, bz - 11.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
     room(a, 0, ez, 9, [(90, 1.4), (270, 1.4), (180, 1.4)])
     a.floorswitch(4.5, 0, ez + 2, 'ge_sw')
     # the boss key's alcove (west), behind a door the switch holds open

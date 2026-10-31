@@ -26,3 +26,6 @@ entity
     color_end = #ff200000
     blend = add
     auto_destroy = true
+  Script
+    file = "scripts/burnout.bs"
+    vars = "time = 0.9"

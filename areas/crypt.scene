@@ -1369,4 +1369,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/crypt.png\", x0 = -18.337, z0 = -94.938, ppm = 1.0667, w = 57, h = 114"
+    vars = "base = \"art/maps/crypt_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -18.337, z0 = -94.938, ppm = 1.0667, w = 57, h = 114"

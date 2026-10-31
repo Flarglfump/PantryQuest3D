@@ -110,7 +110,7 @@ def build():
     hall(a, 0, bz - 10, 0, ez + 8.6)
     a.entity('Locked Door', t3((0, 1.4, bz - 11), (0, 0, 0), (2.4, 2.8, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='tt_north'))
-    a.entity('Lock', t3((0, 1.3, bz - 11.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'))
+    a.entity('Lock', t3((0, 1.3, bz - 11.2), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
     room(a, 0, ez, 9, [(90, 1.4), (0, 1.4)], ceil=8)
     sister(a, 0, 0, ez, 'tt_flame2', hp=6, arrow_only=True, float_h=3.6, speed=1.0)
     a.chest(-5, 0, ez - 4, -135, 'slice', 'tt_slice', appear='tt_flame2')

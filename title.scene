@@ -82,6 +82,20 @@ entity
 
 entity
   Name
+    text = "Way Out"
+  Transform3D
+    position = 0 1.6 48.05
+    rotation = 0 0 0
+    scale = 3.9 3.8 0.1
+  Mesh
+    shape = cube
+    color = #0c0a06ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
     text = "Sign"
   Transform3D
     position = -3.6 0.4858 -16.2
@@ -1330,6 +1344,21 @@ entity
 
 entity
   Name
+    text = "grass -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/grass_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "grass 0 -2"
   Transform3D
     position = 0 0 0
@@ -1383,6 +1412,21 @@ entity
   Mesh
     shape = model
     file = "models/areas/sprouthollow/grass_0_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/grass_0_2.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1

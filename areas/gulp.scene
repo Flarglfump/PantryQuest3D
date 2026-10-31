@@ -869,6 +869,8 @@ entity
     shape = cube
     color = #c8a040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -1567,4 +1569,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/gulp.png\", x0 = -29.866, z0 = -84.866, ppm = 1.1546, w = 69, h = 113"
+    vars = "base = \"art/maps/gulp_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -29.866, z0 = -84.866, ppm = 1.1546, w = 69, h = 113"

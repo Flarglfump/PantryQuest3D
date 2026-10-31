@@ -121,9 +121,61 @@ class Area:
         self.scene.save(os.path.join('areas', self.file_id + '.scene'))
         print('  %s: %d entities, %d level meshes, %d level triangles' % (self.file_id, self.scene.count, n, tris))
 
-    # ---- the dungeon map: the floors seen from above, as a picture for the pause menu ----
-    def make_map(self, max_w=216, max_h=112):
-        tris = []
+    # ---- the dungeon map: each floor seen from above, as pictures for the pause menu ----
+    def map_floors(self, tris):
+        """The dungeon's floors as (name, low, high, main height): from `self.floors` if the area
+        set them ([(name, low, high), ...]), else worked out from where the floors are: heights
+        close together are one floor, and a floor with little in it joins the nearest."""
+        def main_height(lo, hi):
+            weights = {}
+            for P, wall, area in tris:
+                y = sum(p[1] for p in P) / 3
+                if not wall and lo <= y < hi:
+                    k = round(y * 2) / 2
+                    weights[k] = weights.get(k, 0) + area
+            return max(weights, key=weights.get) if weights else lo
+        floors = getattr(self, 'floors', None)
+        if floors:
+            return [(n, lo, hi, main_height(lo, hi)) for (n, lo, hi) in floors]
+        heights = sorted((sum(p[1] for p in P) / 3, area) for P, wall, area in tris if not wall)
+        if not heights:
+            return [('1F', -1e9, 1e9, 0.0)]
+        groups = [[heights[0]]]
+        for h in heights[1:]:
+            if h[0] - groups[-1][-1][0] > 3.5:
+                groups.append([h])
+            else:
+                groups[-1].append(h)
+        total = sum(a for _, a in heights) or 1
+        merged = True
+        while merged and len(groups) > 1:
+            merged = False
+            for i, g in enumerate(groups):
+                if sum(a for _, a in g) < total * 0.2:
+                    j = i - 1 if i > 0 else 1
+                    if 0 < i < len(groups) - 1 and groups[i + 1][0][0] - g[-1][0] < g[0][0] - groups[i - 1][-1][0]:
+                        j = i + 1
+                    groups[j] = sorted(groups[j] + g)
+                    del groups[i]
+                    merged = True
+                    break
+        bounds = []
+        for i, g in enumerate(groups):
+            lo = -1e9 if i == 0 else (groups[i - 1][-1][0] + g[0][0]) / 2
+            hi = 1e9 if i == len(groups) - 1 else (g[-1][0] + groups[i + 1][0][0]) / 2
+            bounds.append((lo, hi))
+        # names: the floor the entrance is on is 1F; above it 2F, 3F...; below it B1, B2...
+        start = getattr(self, 'spawns', {}).get('start')
+        sy = start[1] if start else 0
+        base = next((i for i, (lo, hi) in enumerate(bounds) if lo <= sy < hi), 0)
+        out = []
+        for i, (lo, hi) in enumerate(bounds):
+            name = '%dF' % (i - base + 1) if i >= base else 'B%d' % (base - i)
+            out.append((name, lo, hi, main_height(lo, hi)))
+        return out
+
+    def make_map(self, max_w=200, max_h=112):
+        tris, walls = [], []          # floors (and wall tops) seen from above; the walls' upright faces
         for (material, cx, cz), obj in self.chunks.items():
             if obj.empty() or not MATERIALS[material][2] or material == 'ceiling':
                 continue
@@ -132,26 +184,29 @@ class Area:
                 P = [obj.v[k[0] - 1] for k in f]
                 e1 = [P[1][i] - P[0][i] for i in range(3)]
                 e2 = [P[2][i] - P[0][i] for i in range(3)]
-                ny = e1[2] * e2[0] - e1[0] * e2[2]
-                l = math.sqrt((e1[1] * e2[2] - e1[2] * e2[1]) ** 2 + ny ** 2 + (e1[0] * e2[1] - e1[1] * e2[0]) ** 2) or 1
-                if ny / l > 0.7:
-                    tris.append((P, wall))
+                n = (e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0])
+                l = math.sqrt(n[0] ** 2 + n[1] ** 2 + n[2] ** 2) or 1
+                if n[1] / l > 0.7:
+                    tris.append((P, wall, l / 2))
+                elif abs(n[1] / l) < 0.2:
+                    walls.append(P)
         if not tris:
             return
-        xs = [p[0] for P, w in tris for p in P]
-        zs = [p[2] for P, w in tris for p in P]
-        ys = [p[1] for P, w in tris for p in P if not w]
+        xs = [p[0] for P, w, _ in tris for p in P]
+        zs = [p[2] for P, w, _ in tris for p in P]
         x0, x1, z0, z1 = min(xs), max(xs), min(zs), max(zs)
         ppm = min(max_w / max(x1 - x0, 1), max_h / max(z1 - z0, 1))
         W, H = int((x1 - x0) * ppm) + 2, int((z1 - z0) * ppm) + 2
-        ylo, yhi = min(ys or [0]), max(ys or [1])
-        top = [[None] * W for _ in range(H)]          # (height, wall) of the highest floor at each pixel
-        for P, wall in tris:
-            Q = [((p[0] - x0) * ppm + 1, (p[2] - z0) * ppm + 1, p[1]) for p in P]
+
+        def to_px(p):
+            return ((p[0] - x0) * ppm + 1, (p[2] - z0) * ppm + 1)
+
+        def raster(P, put):
+            Q = [to_px(p) + (p[1],) for p in P]
             ax, ay, bx, by, cx_, cy = Q[0][0], Q[0][1], Q[1][0], Q[1][1], Q[2][0], Q[2][1]
             den = (by - cy) * (ax - cx_) + (cx_ - bx) * (ay - cy)
             if abs(den) < 1e-9:
-                continue
+                return
             for py in range(max(0, int(min(ay, by, cy))), min(H, int(max(ay, by, cy)) + 1)):
                 for px in range(max(0, int(min(ax, bx, cx_))), min(W, int(max(ax, bx, cx_)) + 1)):
                     X, Y = px + 0.5, py + 0.5
@@ -160,25 +215,77 @@ class Area:
                     w2 = 1 - w0 - w1
                     if min(w0, w1, w2) < -0.02:
                         continue
-                    h = Q[0][2] * w0 + Q[1][2] * w1 + Q[2][2] * w2 + (0.01 if wall else 0)
-                    if top[py][px] is None or h > top[py][px][0]:
-                        top[py][px] = (h, wall)
+                    put(px, py, Q[0][2] * w0 + Q[1][2] * w1 + Q[2][2] * w2)
 
-        def pixel(px, py):
-            c = top[py][px]
-            if c is None:
-                near = any(0 <= py + dy < H and 0 <= px + dx < W and top[py + dy][px + dx] is not None and not top[py + dy][px + dx][1]
-                           for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
-                return (60, 36, 20, 255) if near else (0, 0, 0, 0)
-            if c[1]:
-                return (96, 64, 40, 255)
-            k = (c[0] - ylo) / ((yhi - ylo) or 1)
-            return (150 + 90 * k, 118 + 80 * k, 70 + 60 * k, 255)
-        file = 'art/maps/%s.png' % self.file_id
-        os.makedirs(os.path.dirname(file), exist_ok=True)
-        write_png(file, W, H, pixel, alpha=True)
-        self.scene.entity('Map Info', t2(), script('scripts/mapinfo.bs', picture=file, x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3),
-                                                     ppm=round(ppm, 4), w=W, h=H))
+        def line(a, b, put):
+            (ax, ay), (bx, by) = to_px(a), to_px(b)
+            steps = int(max(abs(bx - ax), abs(by - ay))) + 1
+            for k in range(steps + 1):
+                t = k / steps
+                px, py = int(ax + (bx - ax) * t), int(ay + (by - ay) * t)
+                if 0 <= px < W and 0 <= py < H:
+                    put(px, py)
+
+        floors = self.map_floors(tris)
+        pictures = []
+        for (name, lo, hi, main) in floors:
+            top = [[None] * W for _ in range(H)]        # the highest floor of this storey at each pixel
+            wallpx = [[False] * W for _ in range(H)]
+
+            def put_floor(px, py, h):
+                if top[py][px] is None or h > top[py][px]:
+                    top[py][px] = h
+            for P, wall, _ in tris:
+                y = sum(p[1] for p in P) / 3
+                if not wall and lo <= y < hi:
+                    raster(P, put_floor)
+            # walls standing on this storey: their upright faces cross body height above its floor
+            for P in walls:
+                ys = [p[1] for p in P]
+                if max(ys) < main + 0.6 or min(ys) > main + 1.8:
+                    continue
+                far = max(((P[i], P[j]) for i in range(3) for j in range(i + 1, 3)),
+                          key=lambda ab: (ab[0][0] - ab[1][0]) ** 2 + (ab[0][2] - ab[1][2]) ** 2)
+                if (far[0][0] - far[1][0]) ** 2 + (far[0][2] - far[1][2]) ** 2 < 1e-6:
+                    continue
+
+                def put_wall(px, py):
+                    wallpx[py][px] = True
+                line(far[0], far[1], put_wall)
+            # ... and their tops, where they're next to one
+            for P, wall, _ in tris:
+                if wall and max(p[1] for p in P) > main + 0.6:
+                    def put_top(px, py, h):
+                        if any(0 <= py + dy < H and 0 <= px + dx < W and wallpx[py + dy][px + dx]
+                               for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+                            wallpx[py][px] = True
+                    raster(P, put_top)
+            hs = [h for row in top for h in row if h is not None]
+            ylo, yhi = (min(hs), max(hs)) if hs else (0, 1)
+
+            def pixel(px, py):
+                if wallpx[py][px]:
+                    return (96, 64, 40, 255)
+                c = top[py][px]
+                if c is None:
+                    near = any(0 <= py + dy < H and 0 <= px + dx < W and top[py + dy][px + dx] is not None
+                               for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+                    return (60, 36, 20, 255) if near else (0, 0, 0, 0)
+                k = (c - ylo) / ((yhi - ylo) or 1)
+                return (150 + 90 * k, 118 + 80 * k, 70 + 60 * k, 255)
+            file = 'art/maps/%s_%s.png' % (self.file_id, name.lower())          # (mapinfo.bs makes the same name)
+            os.makedirs(os.path.dirname(file), exist_ok=True)
+            write_png(file, W, H, pixel, alpha=True)
+            pictures.append(file)
+        folder = 'art/maps'
+        for old in os.listdir(folder):                    # (pictures for floors this dungeon no longer has)
+            if old.startswith(self.file_id + '_') and old.endswith('.png') and os.path.join(folder, old) not in pictures:
+                os.remove(os.path.join(folder, old))
+        if os.path.exists('art/maps/%s.png' % self.file_id):
+            os.remove('art/maps/%s.png' % self.file_id)
+        self.scene.entity('Map Info', t2(), script('scripts/mapinfo.bs', base='art/maps/%s_' % self.file_id, names=[f[0] for f in floors],
+                                                     lows=[round(max(-999, f[1]), 1) for f in floors], highs=[round(min(999, f[2]), 1) for f in floors],
+                                                     x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3), ppm=round(ppm, 4), w=W, h=H))
 
     # ---- things ----
     def spawn_point(self, name, x, y, z, yaw=0):
@@ -391,7 +498,7 @@ def stump_house(a, x, z, ground, r=2.4, h=3.0, door_yaw=0, roof='thatch'):
 
 
 def roof_on(a, x, z, y, r, h, roof):
-    a.geo(roof, x, z).cylinder((x, y + h + 0.3, z), r + 0.6, 0.35, 14, top=False, radius_top=r + 0.4, uvs=0.5)
+    a.geo(roof, x, z).cylinder((x, y + h + 0.3, z), r + 0.6, 0.35, 14, top=False, bottom=True, radius_top=r + 0.4, uvs=0.5)   # (closed underneath: no sky through the eaves)
     a.geo(roof, x, z).cone((x, y + h + 0.65, z), r + 0.4, 2.0, 14, uvs=0.5)
 
 

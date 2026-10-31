@@ -14,6 +14,7 @@ var pos: vec3
 var recenter: number = 0           # seconds of swinging back behind him
 var shake_t: number = 0
 var tilt: number = 0               # the mouse: the camera raised (+) or lowered (-), metres
+var aiming: bool = false
 const MOUSE_TURN: number = 0.45    # degrees per game pixel of mouse motion
 const MOUSE_TILT: number = 0.02    # metres per game pixel
 const STICK_TURN: number = 160     # degrees a second, the right stick all the way over
@@ -46,6 +47,26 @@ func snap_behind() -> void {
 func update(dt: number) -> void {
     if sprig == nil { return }
     if not sprig.alive { return }
+    if sprig.st == "aim" {
+        # aiming: just over his right shoulder, looking along the shot
+        var d: vec3 = sprig.aim_dir()
+        var f: vec3 = sprig.forward_of(sprig.aim_yaw)
+        var right := vec3(-f.z, 0, f.x)
+        var eye: vec3 = sprig.position + vec3(0, 1.25, 0) - f * 1.3 + right * 0.4 - d * 0.2
+        follow_y = sprig.y
+        pos = lerp(pos, eye, min(1, dt * 14))
+        aiming = true
+        var hit: any = raycast(sprig.position + vec3(0, 1.0, 0), pos, sprig)        # (not through a wall behind him)
+        if hit != nil { pos = hit[1] + (sprig.position + vec3(0, 1.0, 0) - hit[1]) * 0.15 }
+        self.position = pos
+        look_at(self, pos + d * 10)
+        return
+    }
+    if aiming {                                    # (back behind him, from where the aim left off)
+        aiming = false
+        pos = behind_point()
+        pos.y = follow_y + height
+    }
     # height: follow Sprig's feet smoothly (hops and steps don't jolt the view)
     var k: number = min(1, dt * 5)
     if sprig.st == "climb" { k = min(1, dt * 8) }

@@ -259,7 +259,7 @@ entity
   Name
     text = "Eye Switch"
   Transform3D
-    position = 0 3 -5.85
+    position = 0 3.24 -11.82
     rotation = 0 0 0
     scale = 0.9 0.5 0.3
   Mesh
@@ -277,7 +277,7 @@ entity
   Name
     text = "Eye Pupil"
   Transform3D
-    position = 0 3 -5.68
+    position = 0 3.24 -11.66
     rotation = 0 0 0
     scale = 0.28 0.28 0.1
   Mesh
@@ -344,6 +344,8 @@ entity
     shape = cube
     color = #c8a040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -379,6 +381,8 @@ entity
     shape = cube
     color = #c84040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -764,7 +768,7 @@ entity
   RigidBody3D
     type = kinematic
   Tags
-    list = "weight"
+    list = "weight, interact"
   Script
     file = "scripts/pushblock.bs"
 
@@ -805,7 +809,7 @@ entity
     type = kinematic
   Script
     file = "scripts/switchdoor.bs"
-    vars = "when = \"crock_sw_crate\", stay = true"
+    vars = "when = \"crock_sw_crate\""
 
 entity
   Name
@@ -1089,6 +1093,8 @@ entity
     shape = cube
     color = #c8a040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -2045,7 +2051,7 @@ entity
   RigidBody3D
     type = kinematic
   Tags
-    list = "weight"
+    list = "weight, interact"
   Script
     file = "scripts/pushblock.bs"
 
@@ -2069,7 +2075,7 @@ entity
   RigidBody3D
     type = kinematic
   Tags
-    list = "weight"
+    list = "weight, interact"
   Script
     file = "scripts/pushblock.bs"
 
@@ -2114,7 +2120,7 @@ entity
     scale = 1 1 1
   Script
     file = "scripts/allflags.bs"
-    vars = "a = \"crock_sw_a\", b = \"crock_sw_b\", out = \"crock_bk_gate\", stay = true"
+    vars = "a = \"crock_sw_a\", b = \"crock_sw_b\", out = \"crock_bk_gate\""
 
 entity
   Name
@@ -2137,7 +2143,7 @@ entity
     type = kinematic
   Script
     file = "scripts/switchdoor.bs"
-    vars = "when = \"crock_bk_gate\", stay = true"
+    vars = "when = \"crock_bk_gate\""
 
 entity
   Name
@@ -3142,4 +3148,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/crock.png\", x0 = -30, z0 = -32, ppm = 2, w = 120, h = 114"
+    vars = "base = \"art/maps/crock_\", names = [\"B1\", \"1F\", \"2F\"], lows = [-40, -6, 2.5], highs = [-6, 2.5, 40], x0 = -30, z0 = -32, ppm = 2, w = 120, h = 114"

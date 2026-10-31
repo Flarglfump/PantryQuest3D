@@ -38,9 +38,9 @@ def height(x, z):
     # the grove path: a ramp up through the gap at x in -2..2, z from -18 to -26
     if abs(x) < 2.4 and -27 < z < -17:
         h = max(h, 2.5 * smooth((-17 - z) / 9))
-    # the ravine to the south
+    # the ravine to the south (closing up at its ends, east and west, before the rim)
     if z > 33 and z < 42:
-        h -= 9 * smooth((z - 33) / 1.5) * smooth((42 - z) / 1.5)
+        h -= 9 * smooth((z - 33) / 1.5) * smooth((42 - z) / 1.5) * smooth((34 - abs(x)) / 4)
     # the stream
     d = stream_d(x, z) if z < 33 else 99
     h -= 0.45 * smooth((1.8 - d) / 1.2)
@@ -48,6 +48,8 @@ def height(x, z):
     edge = R_EDGE
     if z < -26:
         edge = R_EDGE + 14 * smooth((16 - abs(x)) / 4)
+    if 28 < z < 49:                               # the way out south: a cutting through the rim, level with the bridge
+        edge = R_EDGE + 16 * smooth((6.5 - abs(x)) / 3)
     h += 9 * smooth((r - edge) / 5)
     return h
 
@@ -61,12 +63,14 @@ def build():
     a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav', kill_y=-6, sky='#b8e0f0ff', fog=(26, 58),
              fog_color='#c8e8d8ff', ambient=('#8898b8ff', 0.55))
     # ---- the ground ----
-    for cz in range(-48, 48, 12):
+    for cz in range(-48, 60, 12):
         for cx in range(-48, 48, 12):
+            if cz >= 48 and abs(cx + 6) > 12:
+                continue                       # (beyond the rim: only behind the way out)
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 6, 6, height, uvs=0.25,
-                                                   keep=lambda x, z: not (33.4 < z < 41.6))
-    # the ravine's sides (cliff faces) and floor
-    for cx in range(-48, 48, 12):
+                                                   keep=lambda x, z: not (33.4 < z < 41.6 and abs(x) < 36))
+    # the ravine's sides (cliff faces) and floor (it closes up before x reaches 36 either way)
+    for cx in range(-36, 36, 12):
         o = a.geo('cliff', cx + 6, 37)
         o.ground(cx, 33.0, cx + 12, 42.0, 6, 9, height, uvs=0.3)
     # dirt paths: thin strips just above the ground
@@ -111,6 +115,12 @@ def build():
             a.geo('bark', xx, zz).cylinder((xx, -0.3, zz), 0.12, 1.2, 6, uvs=1)
     a.entity('Rail', t3((-1.5, 0.8, 37.5), (0, 0, 0), (0.1, 0.1, 10)), mesh('cube', '#ffffffff', 'art/bark.png'), collider('box'))
     a.entity('Rail', t3((1.5, 0.8, 37.5), (0, 0, 0), (0.1, 0.1, 10)), mesh('cube', '#ffffffff', 'art/bark.png'), collider('box'))
+    # past the bridge, the way out: a cutting through the rim to a dark archway in the herb roots
+    path_strip([(0, 42.6), (0, 47.6)], 2.4)
+    for xx in (-2.3, 2.3):
+        a.geo('bark', xx, 47.9).box((xx - 0.35, -0.3, 47.55), (xx + 0.35, 3.4, 48.25), uvs=0.6)
+    a.geo('bark', 0, 47.9).box((-2.9, 3.4, 47.5), (2.9, 4.1, 48.3), uvs=0.6)
+    a.entity('Way Out', t3((0, 1.6, 48.05), (0, 0, 0), (3.9, 3.8, 0.1)), mesh('cube', '#0c0a06ff', lit=False, cast=False))
 
     # ---- the giant herb stalks round the hollow, and a canopy far overhead ----
     for i in range(30):
@@ -120,15 +130,19 @@ def build():
         if abs(x) < 4 and z > 30:
             continue
         rad = random.uniform(1.2, 2.2)
-        a.geo('bark', x, z).cylinder((x, height(x, z) - 1, z), rad, 26, 8, top=False, uvs=0.25, radius_top=rad * 0.7)
+        # (its foot below the ground all round it: they stand on the rim's slope)
+        base = min(height(x + math.cos(k * math.pi / 4) * rad, z + math.sin(k * math.pi / 4) * rad) for k in range(8)) - 0.6
+        a.geo('bark', x, z).cylinder((x, base, z), rad, 26 + height(x, z) - base - 1, 8, top=False, uvs=0.25, radius_top=rad * 0.7)
     for i in range(12):
         ang = 2 * math.pi * i / 12
         x, z = math.cos(ang) * 36, math.sin(ang) * 36
         a.geo('canopy', x, z).sphere((x, 24, z), 16, 8, 4, squash=0.25, uvs=3)
 
     # ---- the grove plateau's edge: hedges, with a gap for the path ----
-    box_wall(a, 'hedge', -18, -26.3, -2.6, -26.3, 0, 3.6, thick=1.0)
-    box_wall(a, 'hedge', 2.6, -26.3, 18, -26.3, 0, 3.6, thick=1.0)
+    # (thick enough to hold the whole slope up to the plateau inside it: walking down the
+    # slope can't push Sprig into one)
+    box_wall(a, 'hedge', -18, -26.8, -2.4, -26.8, 0, 3.6, thick=1.6)
+    box_wall(a, 'hedge', 2.4, -26.8, 18, -26.8, 0, 3.6, thick=1.6)
     box_wall(a, 'hedge', -18, -26.3, -26, -40, 0, 4.0, thick=1.0)
     box_wall(a, 'hedge', 18, -26.3, 26, -40, 0, 4.0, thick=1.0)
     # the gate posts and Chive's fence
@@ -138,7 +152,7 @@ def build():
     # hedges along both sides of the grove path, from the gate posts up to the plateau's
     # hedge: no way round Chive's fence on to the path's low end
     for xx in (-2.95, 2.95):
-        box_wall(a, 'hedge', xx, -17.84, xx, -26.0, -0.5, 3.6, thick=1.0)
+        box_wall(a, 'hedge', xx, -17.84, xx, -26.4, -0.5, 3.6, thick=1.0)
     a.npc('chive', 1.2, height(1.2, -16.6), -16.6, 180, until='chive_moved')
     a.npc('chive', 4.2, height(4.2, -15.5), -15.5, 150, needs='chive_moved')
     a.sign(-3.6, height(-3.6, -16.2), -16.2, 180, 'sign_grove')
@@ -168,6 +182,8 @@ def build():
     # the vine ladder down the south side (facing +z... out of the deck)
     # (hanging from the deck's edge, which stands out past the stump: he climbs out round it)
     a.vine(tx + 0.0, height(tx, tz + 3.05), tz + 3.05, 1.0, deck_y - height(tx, tz + 3.05), 180, top=deck_y)
+    # (they grow up a board, from the ground to the deck's edge: something to hold on to)
+    a.geo('bark', tx, tz + 2.9).box((tx - 0.65, height(tx, tz + 3.0) - 0.3, tz + 2.78), (tx + 0.65, deck_y - 0.21, tz + 3.0), uvs=0.6)
     # the bridge gap on the deck rail: the vines come up there (no rail post in the way)
     a.spawn_point('bed', tx + 0.4, deck_y + 0.05, tz - 0.2, 200)
     # Sprig's savings, by the bed: with the beans about the village (and in the trees), enough
@@ -181,11 +197,15 @@ def build():
     sx, sz = 13, -7
     sy = height(sx, sz)
     a.geo('planks', sx, sz).box((sx - 2.2, sy - 0.2, sz - 0.4), (sx + 2.2, sy + 1.0, sz + 0.4), uvs=0.8)
-    a.geo('planks', sx, sz).box((sx - 2.6, sy - 0.2, sz - 3.6), (sx + 2.6, sy + 2.6, sz - 3.2), uvs=0.6)
+    # the awning slopes down to the back; its posts stand right up under it
+    aw_y, aw_tilt, aw_z = sy + 3.0, 12.0, sz - 1.3
+    def under_awning(zz):              # the awning's underside at zz
+        return aw_y - 0.075 / math.cos(math.radians(aw_tilt)) + (zz - aw_z) * math.tan(math.radians(aw_tilt))
+    a.geo('planks', sx, sz).box((sx - 2.6, sy - 0.2, sz - 3.6), (sx + 2.6, under_awning(sz - 3.2) - 0.02, sz - 3.2), uvs=0.6)
     for xx in (-2.4, 2.4):
-        a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy, sz + 0.3), 0.12, 2.8, 6, uvs=1)
-        a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy, sz - 3.2), 0.12, 2.8, 6, uvs=1)
-    a.entity('Awning', t3((sx, sy + 3.0, sz - 1.3), (-12, 0, 0), (5.8, 0.15, 4.6)), mesh('cube', '#e8a858ff', 'art/thatch.png'))
+        for zz in (sz + 0.3, sz - 3.2):
+            a.geo('bark', sx + xx, sz).cylinder((sx + xx, sy - 0.1, zz), 0.12, under_awning(zz) + 0.05 - (sy - 0.1), 6, uvs=1)
+    a.entity('Awning', t3((sx, aw_y, aw_z), (-aw_tilt, 0, 0), (5.8, 0.15, 4.6)), mesh('cube', '#e8a858ff', 'art/thatch.png'))
     a.npc('sage', sx, sy, sz - 1.4, 0, reach=2.9)
     for k, (xx, c) in enumerate([(-1.4, '#c0c0c8ff'), (1.3, '#80d050ff')]):
         a.entity('Wares', t3((sx + xx, sy + 1.15, sz), (0, 20, 0), 0.6), mesh('cylinder', c))

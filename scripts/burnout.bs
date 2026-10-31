@@ -1,0 +1,11 @@
+@strict @3d
+# burnout.bs - a fire that burns for `time` seconds, then stops giving off flames; the last
+# ones fade and the entity goes (Particles auto_destroy).
+
+var time: number = 0.9
+var t: number = 0
+
+func update(dt: number) -> void {
+    t += dt
+    if t >= time and self.Particles.emitting { self.Particles.emitting = false }
+}

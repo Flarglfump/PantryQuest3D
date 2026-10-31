@@ -64,17 +64,34 @@ func start() -> void {
 }
 
 # ---- controls (actions last the whole game) ----
-# The keys can be changed on the CONTROLS page (controls.bs, which has the same defaults):
-# it keeps them in the saved data "keys". The mouse buttons and gamepad stay as they are.
+# The keys and gamepad buttons can be changed on the CONTROLS page (controls.bs, which has
+# the same defaults): it keeps them in the saved data "keys" and "pads". The mouse buttons,
+# the sticks, Esc (pause) stay as they are.
 const DEFAULT_KEYS: list = [["up", "w"], ["down", "s"], ["left", "a"], ["right", "d"], ["action", "space"], ["attack", "j"],
-                            ["shield", "k"], ["focus", "shift"], ["item1", "u"], ["item2", "i"], ["item3", "o"], ["flicker", "tab"],
+                            ["shield", "k"], ["focus", "shift"], ["item1", "u"], ["item2", "i"], ["item3", "o"], ["flicker", "h"],
+                            ["song", "p"], ["boots", "1"], ["hover", "2"], ["map", "tab"],
                             ["pause", "enter"], ["cam_left", "left"], ["cam_right", "right"], ["cam_center", "down"]]
+# (like the Wind Waker's: items on LB, RB and Y; the D-pad for a hint, a song and the boots)
+const DEFAULT_PADS: list = [["action", "a"], ["attack", "x"], ["shield", "rt"], ["focus", "lt"], ["item1", "lb"], ["item2", "rb"],
+                            ["item3", "y"], ["flicker", "up"], ["song", "down"], ["boots", "left"], ["hover", "right"],
+                            ["map", "back"], ["pause", "start"]]
+const MOUSE: list = [["attack", "mouse:0"], ["shield", "mouse:1"], ["focus", "mouse:2"]]
 
 func key_for(chosen: list, action: string) -> string {
     for k in chosen {
         if k[0] == action { return k[1] }
     }
     for k in DEFAULT_KEYS {
+        if k[0] == action { return k[1] }
+    }
+    return ""
+}
+
+func pad_for(chosen: list, action: string) -> string {
+    for k in chosen {
+        if k[0] == action { return k[1] }
+    }
+    for k in DEFAULT_PADS {
         if k[0] == action { return k[1] }
     }
     return ""
@@ -102,32 +119,44 @@ func bind_menus(chosen: list) -> void {
     unbind("m_right"); bind("m_right", menu_key(chosen, "m_right"), "right", "pad:right", "pad:left_x+")
     unbind("m_ok"); bind("m_ok", menu_key(chosen, "m_ok"), "enter", "pad:a")
     unbind("m_back"); bind("m_back", menu_key(chosen, "m_back"), "escape", "pad:b")
-    unbind("m_page_l"); bind("m_page_l", menu_key(chosen, "m_page_l"), "pad:lb")
-    unbind("m_page_r"); bind("m_page_r", menu_key(chosen, "m_page_r"), "pad:rb")
+    unbind("m_page_l"); bind("m_page_l", menu_key(chosen, "m_page_l"), "pad:lb", "pad:lt")
+    unbind("m_page_r"); bind("m_page_r", menu_key(chosen, "m_page_r"), "pad:rb", "pad:rt")
     unbind("m_erase"); bind("m_erase", menu_key(chosen, "m_erase"), "pad:y")
 }
 
 func bind_controls() -> void {
     var chosen: list = load_data("keys", [])
+    var pads: list = load_data("pads", [])
     var map: list = []
-    for k in DEFAULT_KEYS { push(map, [k[0], key_for(chosen, k[0])]) }
-    set_global("keymap", map)                  # (for the HUD and the text box: the keys' names)
+    for k in DEFAULT_KEYS {
+        var mouse: string = ""
+        for m in MOUSE {
+            if m[0] == k[0] { mouse = m[1] }
+        }
+        push(map, [k[0], key_for(chosen, k[0]), pad_for(pads, k[0]), mouse])
+    }
+    set_global("keymap", map)                  # (for the HUD, the text box and the pipe: [action, key, pad button, mouse])
     unbind("up"); bind("up", key_for(chosen, "up"), "pad:left_y-")
     unbind("down"); bind("down", key_for(chosen, "down"), "pad:left_y+")
     unbind("left"); bind("left", key_for(chosen, "left"), "pad:left_x-")
     unbind("right"); bind("right", key_for(chosen, "right"), "pad:left_x+")
-    unbind("action"); bind("action", key_for(chosen, "action"), "pad:a")
-    unbind("attack"); bind("attack", key_for(chosen, "attack"), "mouse:0", "pad:x")
-    unbind("focus"); bind("focus", key_for(chosen, "focus"), "mouse:2", "pad:lt", "pad:lb")
-    unbind("shield"); bind("shield", key_for(chosen, "shield"), "mouse:1", "pad:rt", "pad:rb")
-    unbind("item1"); bind("item1", key_for(chosen, "item1"), "pad:y")
-    unbind("item2"); bind("item2", key_for(chosen, "item2"), "pad:b")
-    unbind("item3"); bind("item3", key_for(chosen, "item3"), "pad:up")
-    unbind("flicker"); bind("flicker", key_for(chosen, "flicker"), "pad:back")
-    unbind("pause"); bind("pause", key_for(chosen, "pause"), "escape", "pad:start")
+    for act in ["action", "attack", "shield", "focus", "item1", "item2", "item3", "flicker", "song", "boots", "hover", "map", "pause"] {
+        unbind(act)
+        bind(act, key_for(chosen, act), "pad:" + pad_for(pads, act))
+        for m in MOUSE {
+            if m[0] == act { bind(act, m[1]) }
+        }
+    }
+    bind("pause", "escape")
     unbind("cam_left"); bind("cam_left", key_for(chosen, "cam_left"))          # (the right stick: camera.bs reads it itself)
     unbind("cam_right"); bind("cam_right", key_for(chosen, "cam_right"))
     unbind("cam_center"); bind("cam_center", key_for(chosen, "cam_center"))
+    # the pipe's five notes, as in Ocarina of Time 3D: A, X, LB, Y, RB - or Space, A, W, D, S
+    unbind("n_a"); bind("n_a", "space", "pad:a")
+    unbind("n_l"); bind("n_l", "a", "pad:x")
+    unbind("n_u"); bind("n_u", "w", "pad:lb")
+    unbind("n_r"); bind("n_r", "d", "pad:y")
+    unbind("n_d"); bind("n_d", "s", "pad:rb")
     bind_menus(chosen)
 }
 
@@ -146,6 +175,9 @@ func load_state() -> void {
     spawn = s[9]
     playtime = s[10]
     era = s[11]
+    for i in 3 {                               # (the boots are on the D-pad now, not item buttons)
+        if slots[i] == "boots" or slots[i] == "hover" { slots[i] = "" }
+    }
 }
 
 func commit() -> void {
@@ -230,7 +262,7 @@ func add_item(name: string) -> void {
         add_count("bombs", 20 - count("bombs"))
         put_on_button(name)
     }
-    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" or name == "boots" or name == "hover" or name == "lens" { put_on_button(name) }
+    if name == "boomerang" or name == "jar1" or name == "lash" or name == "hammer" or name == "lens" { put_on_button(name) }
     if name == "longlash" { put_on_button("lash") }
     if name == "bow" {
         add_count("arrows", 30 - count("arrows"))
@@ -425,25 +457,28 @@ func pause() -> void {
     push_scene("pause.scene", true, false)
 }
 
-# The dungeon map for the pause menu: the picture (from the area's Map Info), where Sprig
-# is, and for the compass the chests not yet opened and the boss.
+# The dungeon map for the pause menu: a picture of each floor (from the area's Map Info),
+# where Sprig is, and for the compass the chests not yet opened and the boss - each with the
+# floor it's on.
 func map_for_pause() -> void {
     var info: entity = find("Map Info")
     if info == nil or dungeon == "" {
         set_global("dmap", [])
         return
     }
-    set_global("dmap", [info.picture, info.x0, info.z0, info.ppm, info.w, info.h])
+    var pics: list = []
+    for i in len(info.names) { push(pics, info.picture(i)) }
+    set_global("dmap", [pics, info.x0, info.z0, info.ppm, info.w, info.h, info.names])
     var chests: list = []
     for c in find_tagged("chest") {
-        if not c.opened and c.shown { push(chests, [c.x, c.z]) }
+        if not c.opened and c.shown { push(chests, [c.x, c.z, info.floor_of(c.y + 0.2)]) }
     }
     var bosses: list = []
     for b in find_tagged("boss") {
-        if b.alive { push(bosses, [b.x, b.z]) }
+        if b.alive { push(bosses, [b.x, b.z, info.floor_of(b.y + 0.2)]) }
     }
-    var at: list = [0, 0, 0]
-    if sprig != nil { at = [sprig.x, sprig.z, sprig.facing] }
+    var at: list = [0, 0, 0, 0]
+    if sprig != nil { at = [sprig.x, sprig.z, sprig.facing, info.floor_of(sprig.y + 0.2)] }
     set_global("dmap_marks", [at, chests, bosses])
 }
 
@@ -513,6 +548,10 @@ func update(dt: number) -> void {
         bind_controls()
     }
     if state == "play" and action_pressed("pause") { pause() }
+    if state == "play" and action_pressed("map") {           # (straight to the MAP page)
+        set_global("pause_page", "MAP")
+        pause()
+    }
     mouse_look_update()
 }
 

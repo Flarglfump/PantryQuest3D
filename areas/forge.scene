@@ -819,6 +819,8 @@ entity
     shape = cube
     color = #c8a040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -1860,4 +1862,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/forge.png\", x0 = -31.896, z0 = -90.896, ppm = 1.1155, w = 71, h = 114"
+    vars = "base = \"art/maps/forge_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -31.896, z0 = -90.896, ppm = 1.1155, w = 71, h = 114"

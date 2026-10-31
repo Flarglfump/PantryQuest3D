@@ -31,6 +31,8 @@ def main():
             ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.12)])))
     prefab('spoon', "The wooden spoon (sprig.bs places it).",
            ('Spoon', t3((0, 0, 0)), mesh('model', '#d8a868ff', file='models/spoon.obj', cast=False)))
+    prefab('shooter_held', "The Pea Shooter in Sprig's hand, while he aims (sprig.bs places it).",
+           ('Shooter', t3((0, 0, 0)), mesh('model', '#a07040ff', file='models/shooter.obj', cast=False)))
     prefab('potlid', "The pot-lid shield (sprig.bs places it).",
            ('PotLid', t3((0, 0, 0)), mesh('model', '#c0c0c8ff', file='models/potlid.obj', cast=False)))
     prefab('pea', "A pea from the pea shooter (shot.bs).",
@@ -125,7 +127,7 @@ def main():
            ('Flame', t3((0, 0, 0)), particles(rate=60, burst=40, max=120, lifetime=0.8, lifetime_random=0.4, speed=1.5,
                                                speed_random=0.5, spread=40, area=(1.6, 1.6), gravity=-2.0, size_start=0.3,
                                                size_end=0.02, color_start='#ffd060ff', color_end='#ff200000', blend='add',
-                                               auto_destroy=True)))
+                                               auto_destroy=True), script('scripts/burnout.bs', time=0.9)))
 
     # ---- overlay scenes (2D, drawn by their scripts) ----
     for name, file, comment in [('dialogue', 'scripts/dialogue.bs', 'The text box (pushed over an area).'),

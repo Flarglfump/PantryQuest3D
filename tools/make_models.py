@@ -185,6 +185,11 @@ def standard_anims(m, b, s=1.0, hero=False):
         b['spine']: [(0, R(x=-20)), (1, R(x=-20))],
         b['leg_l']: cycle(4, 1.2, lambda p: R(x=30 * math.sin(2 * math.pi * p) - 10)),
         b['leg_r']: cycle(4, 1.2, lambda p: R(x=-30 * math.sin(2 * math.pi * p) - 10))})
+    m.animation('grab', rotations={        # both hands on a block, braced
+        b['arm_l']: [(0, R(x=85)), (1, R(x=85))], b['arm_r']: [(0, R(x=85)), (1, R(x=85))],
+        b['spine']: [(0, R(x=-12)), (1, R(x=-12))],
+        b['leg_l']: [(0, R(x=20)), (1, R(x=20))], b['leg_r']: [(0, R(x=-20)), (1, R(x=-20))],
+        b['shin_l']: [(0, R(x=-15)), (1, R(x=-15))]})
     m.animation('aim', rotations={         # the pea shooter held up to the eye
         b['arm_r']: [(0, R(x=85, z=10)), (1, R(x=85, z=10))], b['arm_l']: [(0, R(x=85, z=-25)), (1, R(x=85, z=-25))]})
     m.animation('fall', rotations={
@@ -465,9 +470,12 @@ def statics():
     o.box((-0.45, 1.0, -0.05), (0.45, 1.08, 0.05), uvs=1)
     o.sphere((0, 1.35, 0), 0.18, 8, 5)
     o.save(path('models', 'dummy.obj'))
-    o = Obj('a pea shooter: a forked stick')
+    o = Obj('a pea shooter: a forked stick, up +y from the hand')
     o.box((-0.02, 0, -0.02), (0.02, 0.18, 0.02), uvs=4)
     o.box((-0.1, 0.16, -0.02), (0.1, 0.2, 0.02), uvs=4)
+    o.box((-0.1, 0.2, -0.02), (-0.06, 0.3, 0.02), uvs=4)
+    o.box((0.06, 0.2, -0.02), (0.1, 0.3, 0.02), uvs=4)
+    o.save(path('models', 'shooter.obj'))
     o.box((-0.1, 0.16, -0.02), (-0.06, 0.32, 0.02), uvs=4)
     o.box((0.06, 0.16, -0.02), (0.1, 0.32, 0.02), uvs=4)
     o.save(path('models', 'shooter.obj'))

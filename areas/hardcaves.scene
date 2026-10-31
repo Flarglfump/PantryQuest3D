@@ -576,6 +576,8 @@ entity
     shape = cube
     color = #c8a040ff
     uv_scale = 1 1
+  Tags
+    list = "lock"
 
 entity
   Name
@@ -1948,4 +1950,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/hardcaves.png\", x0 = -32.902, z0 = -88.902, ppm = 1.1089, w = 72, h = 114"
+    vars = "base = \"art/maps/hardcaves_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -32.902, z0 = -88.902, ppm = 1.1089, w = 72, h = 114"

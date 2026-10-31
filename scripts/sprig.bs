@@ -5,8 +5,11 @@
 # each move (on his back, drawn, swung, raised).
 #
 # Controls are actions (game.bs binds them): move, action (A: talk / open / climb / roll /
-# hop), attack (B: slash, combo, hold for a spin), focus (Z: lock on with Flicker), shield
-# (R), item1..3 (C buttons), flicker (hints), pause.
+# hop / grab), attack (X: slash, combo, hold for a spin), focus (LT: lock on with Flicker;
+# the camera's left / right moves it to the next thing that way), shield (RT: planted, turning
+# on the spot - stepping about only while focused), item1..3 (LB, RB, Y), flicker (hints),
+# song, boots, hover (the D-pad), map, pause. The Pea Shooter and the Skewer Bow aim first
+# (look about, press the button again to shoot) unless something is focused.
 
 const RUN: number = 5.2
 const GRAVITY: number = 24
@@ -21,7 +24,7 @@ var lid: entity
 
 var vel: vec3
 var facing: number = 0             # yaw, degrees (0: looking down -z)
-var st: string = "free"            # free slash charge spin roll hop jumpatk hurt climb hold talk shoot dead
+var st: string = "free"            # free slash charge spin roll hop jumpatk hurt climb hold talk shoot aim grab dead
 var st_t: number = 0
 var combo: int = 0
 var queued: bool = false
@@ -65,6 +68,15 @@ var shielding: bool = false
 var hint_glow: bool = false
 var at: vec3                       # (where he is: for the play-test bots)
 var last_hurt: string = ""         # (what hurt him last: for the bots)
+var aim_item: string = ""          # aiming the Pea Shooter or the Skewer Bow (st "aim")...
+var aim_yaw: number = 0            # ... this way round (degrees, as facing)...
+var aim_pitch: number = 0          # ... and this far up (degrees)
+var grabbed: entity                # the crust block he's holding (st "grab")...
+var grab_axis: vec3                # ... from him into it
+var grab_t: number = 0
+var switch_acc: number = 0         # the mouse moved sideways while focused (to switch target)
+var rs_was: number = 0             # the right stick's x a step ago
+var shooter: entity                # the Pea Shooter in his hand, while aiming
 
 func start() -> void {
     game = find("Game")
@@ -122,6 +134,42 @@ func world_dir(mv: vec2) -> vec3 {
 }
 
 # ---- focus ----
+# Can e be focused on from here (in range, not behind his back unless close, in sight)?
+func focusable(e: entity) -> bool {
+    if not e.alive or has_tag(e, "hidden") { return false }
+    var to: vec3 = e.global_position - self.position
+    to.y = 0
+    var d: number = length(to)
+    var far: number = 11
+    if has_tag(e, "hookable") and game.has_item("longlash") { far = 21 }
+    if d > far or d < 0.05 { return false }
+    return in_sight(e)
+}
+
+# The camera swung left (-1) or right (+1) while focused on something: the next thing that
+# way round from it, seen from Sprig (the nearest turn that way), if there is one.
+func switch_target(way: number) -> void {
+    if target == nil { return }
+    var now: vec3 = target.global_position - self.position
+    var base: number = atan2(-now.x, -now.z)
+    var best: entity = nil
+    var best_turn: number = 999
+    for e in find_tagged("focusable") {
+        if e == target or not focusable(e) { continue }
+        var to: vec3 = e.global_position - self.position
+        var turn: number = ((atan2(-to.x, -to.z) - base + 540) % 360) - 180      # (+: to the left)
+        turn = turn * -way                                                        # (+: the way asked)
+        if turn > 2 and turn < best_turn {
+            best_turn = turn
+            best = e
+        }
+    }
+    if best != nil {
+        target = best
+        play_sound("sfx/focus.wav", 0.5, 1.2)
+    }
+}
+
 func acquire() -> void {
     var best: entity = nil
     var best_score: number = 1000
@@ -158,7 +206,8 @@ func acquire() -> void {
 # (A torch on the way lights the pea as it passes.) If there's nothing, but a torch's flame
 # close by, it goes through the flame.
 func aim_assist(from: vec3, dir: vec3) -> vec3 {
-    var best: number = 0.966                   # (within about 15 degrees)
+    var best: number = 0.966                   # (within about 15 degrees; aiming, 8)
+    if st == "aim" { best = 0.99 }
     var aim: vec3 = dir
     var flat: vec3 = normalize(vec3(dir.x, 0, dir.z))
     var found: bool = false
@@ -379,6 +428,10 @@ func use_item(name: string) -> void {
         return
     }
     if name == "bow" {
+        if target == nil and st != "aim" {
+            start_aim(name)
+            return
+        }
         if game.count("arrows") <= 0 {
             play_sound("sfx/empty.wav", 0.6)
             return
@@ -386,15 +439,20 @@ func use_item(name: string) -> void {
         game.add_count("arrows", -1)
         var from2: vec3 = self.position + vec3(0, 1.0, 0) + forward_of(facing) * 0.4
         var dir2: vec3 = forward_of(facing)
-        if target != nil { dir2 = normalize(target_point() - from2) } else { dir2 = aim_assist(from2, dir2) }
+        if target != nil { dir2 = normalize(target_point() - from2) } elif st == "aim" {
+            from2 = aim_from()
+            dir2 = aim_assist(from2, aim_dir())
+        } else { dir2 = aim_assist(from2, dir2) }
         var ar: entity = spawn("prefabs/arrow.scene", from2)
         ar.dir = dir2
         ar.owner = self
         look_at(ar, from2 + dir2)
         play_sound("sfx/pea.wav", 0.7, 0.6)
-        st = "shoot"
-        st_t = 0
-        play_animation(body, "aim", 1, false)
+        if st != "aim" {
+            st = "shoot"
+            st_t = 0
+            play_animation(body, "aim", 1, false)
+        }
         return
     }
     if name == "jar1" {
@@ -467,6 +525,10 @@ func use_item(name: string) -> void {
         return
     }
     if name == "shooter" {
+        if target == nil and st != "aim" {
+            start_aim(name)
+            return
+        }
         if game.peas <= 0 {
             play_sound("sfx/empty.wav", 0.6)
             return
@@ -475,14 +537,19 @@ func use_item(name: string) -> void {
         game.commit()
         var from: vec3 = self.position + vec3(0, 0.75, 0) + forward_of(facing) * 0.4
         var dir: vec3 = forward_of(facing)
-        if target != nil { dir = normalize(target_point() - from) } else { dir = aim_assist(from, dir) }
+        if target != nil { dir = normalize(target_point() - from) } elif st == "aim" {
+            from = aim_from()
+            dir = aim_assist(from, aim_dir())
+        } else { dir = aim_assist(from, dir) }
         var p: entity = spawn("prefabs/pea.scene", from)
         p.dir = dir
         p.owner = self
         play_sound("sfx/pea.wav", 0.6)
-        st = "shoot"
-        st_t = 0
-        play_animation(body, "aim", 1, false)
+        if st != "aim" {
+            st = "shoot"
+            st_t = 0
+            play_animation(body, "aim", 1, false)
+        }
     }
 }
 
@@ -499,11 +566,32 @@ func update(dt: number) -> void {
     var dir: vec3 = world_dir(mv)
 
     # focus (hold to keep it)
-    if playing and action_pressed("focus") and st != "dead" { acquire() }
+    if playing and action_pressed("focus") and st != "dead" and st != "aim" { acquire() }
     if not action_down("focus") or not playing {
         target = nil
         focusing = false
     }
+    # focused on something: the camera's left / right (keys, right stick, mouse) moves to the next
+    if target != nil and playing {
+        var way: number = 0
+        if action_pressed("cam_left") { way = -1 }
+        if action_pressed("cam_right") { way = 1 }
+        var rx: number = stick("right").x
+        if rx < -0.6 and rs_was >= -0.6 { way = -1 }
+        if rx > 0.6 and rs_was <= 0.6 { way = 1 }
+        if mouse_locked() {
+            switch_acc = switch_acc * max(0, 1 - dt * 3) + mouse_motion().x
+            if switch_acc < -28 { way = -1 }
+            if switch_acc > 28 { way = 1 }
+        }
+        if way != 0 {
+            switch_acc = 0
+            switch_target(way)
+        }
+    } else {
+        switch_acc = 0
+    }
+    rs_was = stick("right").x
     var keep: number = 15
     if target != nil and target.alive and has_tag(target, "hookable") { keep = 23 }
     if target != nil and (not target.alive or has_tag(target, "hidden") or distance(target.global_position, self.position) > keep) {
@@ -561,6 +649,10 @@ func update(dt: number) -> void {
         want = vel_want(dir, mv)
     } elif st == "swim" or st == "dive" {
         want = update_swim(dt, mv, dir, on_floor)
+    } elif st == "aim" {
+        update_aim(dt, mv)
+    } elif st == "grab" {
+        update_grab(dt, dir)
     } elif st == "slash" or st == "slash2" or st == "thrust" {
         want = forward_of(facing) * max(0, 2 - st_t * 8)
         if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
@@ -748,9 +840,10 @@ func update(dt: number) -> void {
 
     at = self.position
     if carrying != nil and carrying.alive and carrying.carried {
-        var lift: number = 1.35
-        if has_tag(carrying, "weight") { lift = 1.1 }
-        carrying.position = self.position + vec3(0, lift, 0) + forward_of(facing) * 0.05
+        var lift: number = 0.2                         # (a bomb's half: it sits on his raised hands)
+        if has_tag(carrying, "weight") { lift = 0.05 }
+        var hp: vec3 = hands_point()
+        carrying.position = vec3(self.x, max(hp.y, self.y + 0.9) + lift, self.z) + forward_of(facing) * 0.05
         if st == "hurt" or st == "dead" or st == "climb" {
             carrying.put_down(self.position + vec3(0, 0.3, 0))
             carrying = nil
@@ -778,12 +871,27 @@ func update(dt: number) -> void {
     place_gear(dt)
     animate()
     if playing and action_pressed("flicker") { game.talk("flicker", "") }
+    # the D-pad: a song on the pipe, the Cast-Iron Boots, the Meringue Boots
+    if playing and st != "dead" and (st == "free" or st == "swim") {
+        if action_pressed("song") {
+            if game.has_item("pipe") { game.play_pipe() } else { play_sound("sfx/empty.wav", 0.5) }
+        }
+        if action_pressed("boots") {
+            if game.has_item("boots") { use_item("boots") } else { play_sound("sfx/empty.wav", 0.5) }
+        }
+        if action_pressed("hover") {
+            if game.has_item("hover") { use_item("hover") } else { play_sound("sfx/empty.wav", 0.5) }
+        }
+    }
 }
 
 func vel_want(dir: vec3, mv: vec2) -> vec3 {
     var speed: number = RUN
-    if shielding { speed = SHIELD_WALK }          # (behind the shield: a slow step any way, still facing ahead)
     if focusing { speed = 4.2 }
+    if shielding {
+        if not focusing { return vec3(0, 0, 0) }   # (shield up: planted, turning on the spot...)
+        speed = SHIELD_WALK                        # (... and only focused does he step about behind it)
+    }
     return dir * speed * move_amount
 }
 
@@ -792,12 +900,15 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
         shielding = true
         drawn = 3
     }
-    # facing (behind the shield he keeps facing the way he was: steps aside or back)
+    # facing (behind the shield, unfocused, the stick turns him on the spot; focused he keeps
+    # facing ahead, or what's focused, and steps aside or back)
     if target != nil {
         turn_to(yaw_of(target.global_position - self.position), 900, dt)
     } elif focusing {
         turn_to(focus_yaw, 900, dt)
-    } elif move_amount > 0.1 and not shielding {
+    } elif move_amount > 0.1 and shielding {
+        turn_to(yaw_of(dir), 300, dt)
+    } elif move_amount > 0.1 {
         turn_to(yaw_of(dir), 720, dt)
     }
     if carrying != nil and carrying.alive {
@@ -820,7 +931,7 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
         }
         if focusing and move_amount > 0.3 and on_floor {
             var local_fwd: number = dot(dir, forward_of(facing))
-            if local_fwd > 0.6 and target != nil and has_spoon() {
+            if local_fwd > 0.6 and has_spoon() {                  # (focused - something to hit there or not)
                 st = "jumpatk"
                 st_t = 0
                 vel.y = 6
@@ -890,11 +1001,9 @@ func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
             pitch = 0
             return vec3(0, 0, 0)
         }
-        for bi in 3 {
-            if action_pressed("item" + (bi + 1)) and game.slots[bi] == "boots" {
-                use_item("boots")
-                return vec3(0, 0, 0)
-            }
+        if action_pressed("boots") and game.has_item("boots") {
+            use_item("boots")
+            return vec3(0, 0, 0)
         }
         if action_pressed("action") and game.state == "play" {
             st = "dive"
@@ -934,6 +1043,103 @@ func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
         }
     }
     return dir * 2.4 * move_amount
+}
+
+# ---- aiming (the Pea Shooter, the Skewer Bow), as the old adventures had it: he stands
+# still and looks along the shot - the stick, the right stick or the mouse turn him and tilt
+# the aim - and the item's button shoots. Action, attack, shield or focus put it away. ----
+func start_aim(name: string) -> void {
+    if st != "free" and st != "shoot" { return }
+    aim_item = name
+    aim_yaw = facing
+    aim_pitch = 0
+    st = "aim"
+    st_t = 0
+    vel = vec3(0, vel.y, 0)
+    play_animation(body, "aim", 1, true)
+    play_sound("sfx/focus.wav", 0.4, 0.8)
+}
+
+func aim_dir() -> vec3 {
+    var f: vec3 = forward_of(aim_yaw)
+    return normalize(f * cos(aim_pitch) + vec3(0, sin(aim_pitch), 0))
+}
+func aim_from() -> vec3 { return self.position + vec3(0, 0.8, 0) + forward_of(aim_yaw) * 0.35 }
+
+func update_aim(dt: number, mv: vec2) -> void {
+    vel = vec3(0, vel.y, 0)
+    var turn: number = mv.x * 90 * dt
+    var tilt: number = -mv.y * 60 * dt
+    var rs: vec2 = stick("right")
+    if abs(rs.x) > 0.15 { turn += rs.x * 110 * dt }
+    if abs(rs.y) > 0.15 { tilt -= rs.y * 80 * dt }
+    if mouse_locked() {
+        var mm: vec2 = mouse_motion()
+        turn += mm.x * 0.35
+        tilt -= mm.y * 0.35
+    }
+    turn += action_axis("cam_left", "cam_right") * 90 * dt
+    aim_yaw -= turn
+    aim_pitch = clamp(aim_pitch + tilt, -45, 60)
+    facing = aim_yaw
+    if st_t < 0.1 { return }                       # (not the press that started it)
+    for i in 3 {
+        if action_pressed("item" + (i + 1)) {
+            var it: string = game.slots[i]
+            if it == aim_item { use_item(it) } elif it == "shooter" or it == "bow" {
+                aim_item = it                      # (the other one, aimed the same way)
+                use_item(it)
+            } else {
+                st = "free"
+                if it != "" { use_item(it) }
+            }
+            return
+        }
+    }
+    if action_pressed("action") or action_pressed("attack") or action_pressed("shield") or action_pressed("focus") {
+        st = "free"
+        play_sound("sfx/menu.wav", 0.3, 0.8)
+    }
+}
+
+# ---- holding a crust block (pushblock.bs): stick away from it pushes, towards him pulls;
+# letting go of Action lets go ----
+func grab(block: entity, axis: vec3) -> void {
+    grabbed = block
+    grab_axis = axis
+    grab_t = 0
+    st = "grab"
+    st_t = 0
+    facing = yaw_of(axis)
+    vel = vec3(0, 0, 0)
+    play_sound("sfx/thunk.wav", 0.4, 1.3)
+}
+
+func update_grab(dt: number, dir: vec3) -> void {
+    if grabbed == nil or not grabbed.alive or not action_down("action") {
+        if grabbed == nil or not grabbed.alive or grabbed.sliding < 0 {
+            st = "free"
+            grabbed = nil
+            return
+        }
+    }
+    facing = yaw_of(grab_axis)
+    var hold: vec3 = grabbed.hold_point(grab_axis, self.y)
+    if grabbed.sliding >= 0 {
+        self.position = hold                       # (going with it)
+        grab_t = 0
+        return
+    }
+    self.position = lerp(self.position, hold, min(1, dt * 12))
+    var along: number = dot(dir, grab_axis) * move_amount
+    if abs(along) < 0.5 {
+        grab_t = 0
+        return
+    }
+    grab_t += dt
+    if grab_t < 0.2 { return }
+    grab_t = -0.6                                   # (once a step, with a moment between)
+    grabbed.try_move(grab_axis, along < 0, self)
 }
 
 const CLIMB_GAP: number = 0.45        # how far from the wall he climbs (his middle; the vines are drawn 0.15 out)
@@ -1041,6 +1247,14 @@ func update_context() -> void {
         action_label = "Dive"
         return
     }
+    if st == "grab" {
+        action_label = "Hold"
+        return
+    }
+    if st == "aim" {
+        action_label = "Stop"
+        return
+    }
     if st != "free" { return }
     var best: number = 99
     var fwd: vec3 = forward_of(facing)
@@ -1073,54 +1287,61 @@ func update_context() -> void {
     }
 }
 
-# The spoon and lid: on his back, drawn, swung or raised.
+# The spoon and lid: on his back, or in his hands - the spoon in his right fist (drawn, swung),
+# the lid on his left (raised, or held at his side); the hammer in both hands; the Pea Shooter
+# held out in his left while he aims. place_on_bone() puts them where the animation has the
+# hands, so he's really holding them.
 func place_gear(dt: number) -> void {
     weapon.Mesh.visible = has_spoon()
     lid.Mesh.visible = has_lid()
-    var out: bool = drawn > 0 or focusing
-    var wp: vec3 = vec3(0.02, 0.62, 0.19)
-    var wr: vec3 = vec3(115, 0, -25)
-    if st == "slash" or st == "slash2" {
-        var a: number = clamp(st_t / 0.22, 0, 1)
-        var yaw: number = lerp(110, -100, a)
-        if st == "slash2" { yaw = lerp(-100, 110, a) }
-        wp = vec3(-0.17, 0.66, 0) + forward_of(yaw) * 0.12
-        wr = vec3(-8, yaw, 0)
-    } elif st == "thrust" or st == "jumpatk" {
-        var t: number = clamp(st_t / 0.12, 0, 1)
-        wp = vec3(-0.1, 0.62, -0.08 - 0.3 * t)
-        wr = vec3(-4, 0, 0)
-    } elif st == "spin" {
-        wp = vec3(-0.25, 0.6, 0)
-        wr = vec3(0, 90, 0)
-    } elif st == "charge" {
-        wp = vec3(-0.25, 0.65, 0.1)
-        wr = vec3(0, 140, 0)
-    } elif out and has_spoon() {
-        wp = vec3(-0.2, 0.55, -0.12)
-        wr = vec3(28, 8, 0)
-    }
-    weapon.position = wp
-    weapon.rotation = wr
+    var busy: bool = st == "climb" or st == "swim" or st == "dive" or st == "grab" or st == "aim" or st == "hold" or carrying != nil
+    var swinging: bool = st == "slash" or st == "slash2" or st == "thrust" or st == "jumpatk" or st == "spin" or st == "charge"
+    var out: bool = (drawn > 0 or focusing or swinging) and not busy
     if st == "hammer" {
         if hammer == nil or not hammer.alive { hammer = spawn("prefabs/hammer.scene", vec3(0, 0, 0), body) }
-        var ha: number = clamp(st_t / 0.28, 0, 1)
-        hammer.position = vec3(-0.2, 0.75, -0.1)
-        hammer.rotation = vec3(lerp(80, -60, ha), 0, 0)
+        place_on_bone(hammer, body, "hand_r", vec3(0, -0.15, 0.04), vec3(-80, 0, 0))
         weapon.Mesh.visible = false
     } elif hammer != nil and hammer.alive {
         destroy(hammer)
     }
-    if shielding {
-        lid.position = vec3(0.12, 0.62, -0.26)
-        lid.rotation = vec3(-90, 0, 0)
-    } elif out {
-        lid.position = vec3(0.22, 0.55, -0.05)
-        lid.rotation = vec3(-90, -70, 0)
+    if out and has_spoon() and st != "hammer" {
+        var r := vec3(-25, 0, 0)                 # (held ready: the bowl forward, a little down)
+        if swinging { r = vec3(-85, 0, 0) }      # (swung: along his arm)
+        if not place_on_bone(weapon, body, "hand_r", vec3(0, -0.15, 0.03), r) {
+            weapon.position = vec3(-0.2, 0.55, -0.12)
+            weapon.rotation = vec3(28, 8, 0)
+        }
     } else {
-        lid.position = vec3(0, 0.6, 0.16)
+        weapon.position = vec3(0.02, 0.62, 0.19)          # on his back
+        weapon.rotation = vec3(115, 0, -25)
+    }
+    var placed: bool = false
+    if shielding {
+        placed = place_on_bone(lid, body, "hand_l", vec3(0, -0.2, 0), vec3(180, 0, 0))       # (its face (+y) out along his raised arm)
+    } elif out {
+        placed = place_on_bone(lid, body, "hand_l", vec3(0.05, -0.1, 0), vec3(0, 0, -90))     # (on his arm, facing out)
+    }
+    if not placed {
+        lid.position = vec3(0, 0.6, 0.16)                  # on his back
         lid.rotation = vec3(90, 0, 0)
     }
+    # the Pea Shooter, out while he aims it
+    if st == "aim" and aim_item == "shooter" {
+        if shooter == nil or not shooter.alive { shooter = spawn("prefabs/shooter_held.scene", vec3(0, 0, 0), body) }
+        place_on_bone(shooter, body, "hand_l", vec3(0, -0.16, 0), vec3(-90, 0, 0))
+    } elif shooter != nil and shooter.alive {
+        destroy(shooter)
+    }
+}
+
+# Where his hands are now (between them), in the world: what he holds over his head sits on them.
+func hands_point() -> vec3 {
+    var l: any = bone_position(body, "hand_l", vec3(0, -0.18, 0))
+    var r: any = bone_position(body, "hand_r", vec3(0, -0.18, 0))
+    if l == nil or r == nil { return self.position + vec3(0, 1.2, 0) }
+    var lv: vec3 = l
+    var rv: vec3 = r
+    return (lv + rv) * 0.5
 }
 
 func animate() -> void {
@@ -1149,5 +1370,9 @@ func animate() -> void {
         }
     } elif st == "talk" {
         play_animation(body, "idle", 1, true)
+    } elif st == "aim" {
+        play_animation(body, "aim", 1, true)
+    } elif st == "grab" {
+        if grabbed != nil and grabbed.alive and grabbed.sliding >= 0 { play_animation(body, "push", 1, true) } else { play_animation(body, "grab", 1, true) }
     }
 }

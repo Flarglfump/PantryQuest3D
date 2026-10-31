@@ -79,7 +79,7 @@ def build():
     tunnel(a.geo('rock', 0, bz - 13), a.geo('rock', 0, bz - 13), 0, bz - 10.6, 0, bz - 15.5, 0)
     a.entity('Locked Door', t3((0, 1.4, bz - 12.2), (0, 0, 0), (2.4, 2.8, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='hc_north'))
-    a.entity('Lock', t3((0, 1.3, bz - 12.0), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'))
+    a.entity('Lock', t3((0, 1.3, bz - 12.0), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
 
     # ---- C: the crustlings' den (west) ----
     cx = -24.0

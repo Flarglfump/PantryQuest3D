@@ -1,8 +1,9 @@
 @strict
 # pipe.bs - playing Fennel's pipe (later the Kettle Whistle): a scene pushed over the area.
-# Five notes - {action} and the three item buttons and {shield} - and the songs Sprig knows.
-# When the last notes played make a song, it plays back, the global "song_played" names
-# it, and the scene closes. {attack} or Esc puts the pipe away.
+# Five notes, on the buttons Ocarina of Time 3D plays them with - A, X, LB, Y, RB on a
+# gamepad (A, X, L, Y, R there), or Space, A, W, D, S on the keyboard - shown on the staff
+# as those buttons. When the last notes played make a song, it plays back, the global
+# "song_played" names it, and the scene closes. B or Esc puts the pipe away.
 
 var draw_layer: int = 96
 var notes: list[string] = []
@@ -68,24 +69,32 @@ func update(dt: number) -> void {
         return
     }
     if done < -10 { return }
-    if action_pressed("attack") or action_pressed("m_back") {
+    if action_pressed("m_back") or key_pressed("escape") or mouse_pressed(1) {
         done = -100
         pop_scene()
         return
     }
-    if action_pressed("action") { note("a") }
-    if action_pressed("item1") { note("l") }
-    if action_pressed("item2") { note("u") }
-    if action_pressed("item3") { note("r") }
-    if action_pressed("shield") { note("d") }
+    if action_pressed("n_a") { note("a") }
+    if action_pressed("n_l") { note("l") }
+    if action_pressed("n_u") { note("u") }
+    if action_pressed("n_r") { note("r") }
+    if action_pressed("n_d") { note("d") }
 }
 
-func glyph(n: string) -> string {
-    if n == "a" { return "A" }
-    if n == "l" { return "<" }
-    if n == "u" { return "^" }
-    if n == "r" { return ">" }
-    return "v"
+# The button a note is on, as a glyph: the gamepad's or the keyboard's.
+func note_glyph(n: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    var pads: list = [["a", "a"], ["l", "x"], ["u", "lb"], ["r", "y"], ["d", "rb"]]
+    var keys: list = [["a", "space"], ["l", "a"], ["u", "w"], ["r", "d"], ["d", "s"]]
+    var from: list = keys
+    if pad { from = pads }
+    for k in from {
+        if k[0] == n {
+            if pad { return "pad:" + k[1] }
+            return "key:" + k[1]
+        }
+    }
+    return ""
 }
 
 func row(n: string) -> int {
@@ -96,31 +105,24 @@ func row(n: string) -> int {
     return 0
 }
 
-func keyname(n: string) -> string {
-    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
-    if n == "a" { if pad { return "A" } return "SPACE" }
-    if n == "l" { if pad { return "Y" } return "U" }
-    if n == "u" { if pad { return "B" } return "I" }
-    if n == "r" { if pad { return "UP" } return "O" }
-    if pad { return "RT" }
-    return "K"
-}
-
 func draw() -> void {
     if done < -10 { return }
-    draw_rect(vec2(16, 150), vec2(288, 78), [16, 12, 30, 220])
-    draw_rect(vec2(16, 150), vec2(288, 78), [220, 190, 120, 255], false)
+    draw_rect(vec2(16, 150), vec2(288, 80), [16, 12, 30, 220])
+    draw_rect(vec2(16, 150), vec2(288, 80), [220, 190, 120, 255], false)
     for i in 5 { draw_line(vec2(28, 162 + i * 10), vec2(292, 162 + i * 10), [140, 120, 90]) }
     for i in len(notes) {
         var n: string = notes[i]
-        var c: vec2 = vec2(44 + i * 32, 162 + row(n) * 10)
-        var col: list = [255, 230, 120]
-        if done >= 0 { col = [140, 255, 140] }
-        draw_circle(c, 5, col)
-        draw_text(glyph(n), c - vec2(3, 3), [40, 30, 10])
+        var c: vec2 = vec2(46 + i * 31, 162 + row(n) * 10)
+        if done >= 0 { draw_circle(c, 8, [140, 255, 140, 200]) }
+        draw_glyph(note_glyph(n), c)
     }
-    var line: string = "A:" + keyname("a") + " <:" + keyname("l") + " ^:" + keyname("u") + " >:" + keyname("r") + " v:" + keyname("d")
-    draw_text(line, vec2(24, 216), [200, 190, 160])
+    # the five notes and their buttons
+    var x: number = 40
+    for n in ["a", "l", "u", "r", "d"] {
+        draw_glyph(note_glyph(n), vec2(x, 220))
+        x += 30
+    }
+    draw_text("B/ESC: put away", vec2(196, 216), [170, 160, 140])
     if done >= 0 {
         var name: string = ""
         for sg in known {
@@ -128,14 +130,146 @@ func draw() -> void {
         }
         draw_text("You played " + name + "!", vec2(160 - text_size("You played " + name + "!").x / 2, 136), [140, 255, 140])
     } else {
-        draw_text("FENNEL'S PIPE", vec2(26, 140), [255, 220, 130])
-        var y: number = 26
-        for sg in known {
-            var str2: string = ""
+        draw_text("FENNEL'S PIPE", vec2(26, 138), [255, 220, 130])
+        # the songs known, each note as its button (eight at a time: more turn over by themselves)
+        var per: int = 8
+        var pages: int = floor((len(known) + per - 1) / per)
+        var first: int = 0
+        if pages > 1 { first = (floor(t / 5) % pages) * per }
+        var y: number = 18
+        for i in range(first, min(len(known), first + per)) {
+            var sg: list = known[i]
+            draw_rect(vec2(18, y - 7), vec2(284, 14), [16, 12, 30, 190])
+            draw_text(sg[1], vec2(24, y - 3), [220, 210, 190])
             var w: string = sg[2]
-            for k in len(w) { str2 = str2 + glyph(w[k]) + " " }
-            draw_text(sg[1] + "  " + str2, vec2(150 - 120, y), [220, 210, 190])
-            y += 11
+            for k in len(w) { draw_glyph(note_glyph(w[k]), vec2(206 + k * 17, y)) }
+            y += 15
         }
+        if pages > 1 { draw_text(str(floor(first / per) + 1) + "/" + pages, vec2(276, 138), [170, 160, 140]) }
+    }
+}
+
+# ---- button glyphs (the same in hud.bs, pause.bs, pipe.bs and controls.bs) ----
+# What an action's button looks like for whoever's playing: the gamepad button it's on
+# ("pad:x"), else its key ("key:j") - or the mouse button ("mouse:0") when the mouse was used last.
+func glyph_for(action: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    for k in global("keymap", []) {
+        if k[0] == action {
+            if pad and len(k) > 2 and k[2] != "" { return "pad:" + k[2] }
+            if last_input() == "mouse" and len(k) > 3 and k[3] != "" { return k[3] }
+            return "key:" + k[1]
+        }
+    }
+    return ""
+}
+
+# A key's name, short enough for a key cap.
+func cap_text(key: string) -> string {
+    var names: list = [["space", "SPC"], ["shift", "SHF"], ["leftshift", "LSH"], ["rightshift", "RSH"], ["leftctrl", "LCT"],
+                       ["rightctrl", "RCT"], ["leftalt", "LAL"], ["rightalt", "RAL"], ["enter", "ENT"], ["tab", "TAB"],
+                       ["escape", "ESC"], ["backspace", "BSP"], ["delete", "DEL"], ["up", "^"], ["down", "v"], ["left", "<"], ["right", ">"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for i in len(key) {
+        var c: string = key[i]
+        for j in 26 {
+            if lo[j] == c { c = hi[j] }
+        }
+        out = out + c
+    }
+    if len(out) > 3 { out = substr(out, 0, 3) }
+    return out
+}
+
+# How wide a glyph is drawn.
+func glyph_w(g: string) -> number {
+    if substr(g, 0, 4) == "key:" { return max(11, text_size(cap_text(substr(g, 4))).x + 5) }
+    var b: string = substr(g, 4)
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" { return 19 }
+    return 13
+}
+
+# Draws a glyph centred on c.
+func draw_glyph(g: string, c: vec2) -> void {
+    if g == "" { return }
+    var kind: string = substr(g, 0, 4)
+    var b: string = substr(g, 4)
+    var white: list = [255, 255, 255]
+    if kind == "key:" {
+        var txt: string = cap_text(b)
+        var w: number = glyph_w(g)
+        draw_rect(c - vec2(w / 2, 6) + vec2(0, 1), vec2(w, 12), [0, 0, 0, 140])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [235, 230, 220, 255])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [90, 80, 70, 255], false)
+        draw_text(txt, c - vec2(floor(text_size(txt).x / 2) - 1, 4), [40, 30, 30])
+        return
+    }
+    if kind == "mous" {
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [235, 230, 220, 255])
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [90, 80, 70, 255], false)
+        draw_line(c - vec2(5, 1), c + vec2(4, -1), [90, 80, 70])
+        var bx: number = -4
+        if g == "mouse:1" { bx = 1 }
+        if g == "mouse:2" { bx = -1 }
+        var bw: number = 4
+        if g == "mouse:2" { bw = 2 }
+        draw_rect(c + vec2(bx, -5), vec2(bw, 4), [220, 60, 60, 255])
+        return
+    }
+    if b == "a" or b == "b" or b == "x" or b == "y" or b == "ls" or b == "rs" {
+        var col: list = [60, 170, 80, 255]
+        if b == "b" { col = [210, 60, 60, 255] }
+        if b == "x" { col = [60, 110, 220, 255] }
+        if b == "y" { col = [215, 175, 30, 255] }
+        if b == "ls" or b == "rs" { col = [90, 90, 100, 255] }
+        draw_circle(c + vec2(0, 1), 6, [0, 0, 0, 140])
+        draw_circle(c, 6, col)
+        draw_circle(c, 6, [255, 255, 255, 170], false)
+        var t2: string = "A"
+        if b == "b" { t2 = "B" }
+        if b == "x" { t2 = "X" }
+        if b == "y" { t2 = "Y" }
+        if b == "ls" { t2 = "L" }
+        if b == "rs" { t2 = "R" }
+        draw_text(t2, c - vec2(3, 3), white)
+        return
+    }
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" {
+        var t3: string = "LB"
+        if b == "rb" { t3 = "RB" }
+        if b == "lt" { t3 = "LT" }
+        if b == "rt" { t3 = "RT" }
+        var top: number = 5
+        if b == "lt" or b == "rt" { top = 7 }
+        draw_rect(c - vec2(9, top) + vec2(0, 1), vec2(19, 11), [0, 0, 0, 140])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [70, 70, 80, 255])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [210, 210, 220, 255], false)
+        draw_text(t3, c - vec2(7, 3), white)
+        return
+    }
+    if b == "up" or b == "down" or b == "left" or b == "right" {
+        var grey: list = [70, 70, 80, 255]
+        draw_rect(c - vec2(2, 6), vec2(5, 13), grey)
+        draw_rect(c - vec2(6, 2), vec2(13, 5), grey)
+        var lit: list = [255, 255, 255, 255]
+        if b == "up" { draw_rect(c - vec2(2, 6), vec2(5, 5), lit) }
+        if b == "down" { draw_rect(c + vec2(-2, 2), vec2(5, 5), lit) }
+        if b == "left" { draw_rect(c - vec2(6, 2), vec2(5, 5), lit) }
+        if b == "right" { draw_rect(c + vec2(2, -2), vec2(5, 5), lit) }
+        return
+    }
+    # START, SELECT (BACK), the guide button: a pill with lines or squares on it
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [70, 70, 80, 255])
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [210, 210, 220, 255], false)
+    if b == "start" {
+        for k in 3 { draw_line(c + vec2(-3, -2 + k * 2), c + vec2(3, -2 + k * 2), white) }
+    } else {
+        draw_rect(c + vec2(-3, -2), vec2(4, 4), [210, 210, 220, 255], false)
+        draw_rect(c + vec2(0, -1), vec2(4, 4), [210, 210, 220, 255], false)
     }
 }

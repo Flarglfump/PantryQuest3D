@@ -1086,4 +1086,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "picture = \"art/maps/idoltemple.png\", x0 = -31.652, z0 = -63.652, ppm = 1.5342, w = 97, h = 114"
+    vars = "base = \"art/maps/idoltemple_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -31.652, z0 = -63.652, ppm = 1.5342, w = 97, h = 114"

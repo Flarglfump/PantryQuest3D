@@ -1250,12 +1250,12 @@ func item_text(kind: string) -> string {
     if kind == "song_boiling" { return "You learned the BOILING SONG!|A stormy song that makes the clouds boil over. Rain follows it." }
     if kind == "lens" { return "You got the ONION LENS!|Put it on a button and peel back the world: see what's hidden, and see through what's false." }
     if kind == "song_nocturne" { return "You learned the NOCTURNE OF ROT!|Play it to warp to Peppermill's graveyard. It also opens the Compost Crypt." }
-    if kind == "hover" { return "You got the MERINGUE BOOTS!|So light you can walk on air for a moment. Put them on a button; press again to take them off." }
+    if kind == "hover" { return "You got the MERINGUE BOOTS!|So light you can walk on air for a moment. {hover} puts them on; press it again to take them off." }
     if kind == "med_sour" { return "You got the SOUR MEDALLION!|Nanny Kimchi, Keeper of Sour, has woken." }
     if kind == "map_crypt" { return "You found the DUNGEON MAP!|See every room of the Compost Crypt in the pause menu." }
     if kind == "compass_crypt" { return "You found the COMPASS!|Now the map shows the treasure and the master." }
     if kind == "bosskey_crypt" { return "You got the BOSS KEY!|It opens the door to the Maw of Rot." }
-    if kind == "boots" { return "You got the CAST-IRON BOOTS!|Put them on a button. On, you sink in water and walk the bottom; press again to take them off." }
+    if kind == "boots" { return "You got the CAST-IRON BOOTS!|{boots} puts them on: you sink in water and walk the bottom. Press it again to take them off." }
     if kind == "snorkel" { return "You got the SNORKEL APRON!|The royal Fizzling apron. Now you can breathe under water as long as you like." }
     if kind == "song_serenade" { return "You learned the SERENADE OF BRINE!|Play it anywhere outside a dungeon to warp to Lake Brine." }
     if kind == "longlash" { return "You got the LONG LICORICE!|Your Licorice Lash now reaches twice as far!" }
@@ -1291,7 +1291,7 @@ func item_text(kind: string) -> string {
     if kind == "bosskey_gulp" { return "You got the BOSS KEY!|It opens the way to what's making Lord Gulp sick." }
     if kind == "spoon" { return "You got the WOODEN SPOON!|Swing it with {attack}. Hold {attack} and let go for a spin attack!" }
     if kind == "potlid" { return "You got the POT-LID SHIELD!|Hold {shield} to raise it. It blocks attacks from the front." }
-    if kind == "shooter" { return "You got the PEA SHOOTER!|It's on a C button: press it to fire. Focus with {focus} first to aim at what Flicker marks." }
+    if kind == "shooter" { return "You got the PEA SHOOTER!|It's on an item button: press it to aim, then again to shoot. Focused with {focus}, it fires straight away." }
     if kind == "map_crock" { return "You found the DUNGEON MAP!|See every room of the Great Crock in the pause menu." }
     if kind == "compass_crock" { return "You found the COMPASS!|Now the map shows where the treasure chests and the boss are." }
     if kind == "bosskey_crock" { return "You got the BOSS KEY!|It opens the door to the lair of the Great Crock's master." }

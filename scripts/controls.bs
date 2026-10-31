@@ -1,11 +1,12 @@
 @strict
 # controls.bs - the CONTROLS page (from the title screen or the pause menu's SYSTEM page),
 # in two parts: ADVENTURE (playing) and MENUS. Every action with its key, mouse button and
-# gamepad button. Choose an action (or click it) and press a new key for it; a key another
-# action on the same part had moves over to the one it came from. The menus always answer
-# to the arrow keys, ENTER and ESC as well, so they can't be lost.
-# The keys are kept in the saved data "keys" ([[action, key], ...]); game.bs and title.bs
-# bind them (with the same defaults as here).
+# gamepad button. Choose an action (or click it) and press a new key - or a new gamepad
+# button - for it; one another action on the same part had moves over to the one it came
+# from. Moving stays on the left stick. The menus always answer to the arrow keys, ENTER and
+# ESC as well, so they can't be lost.
+# The keys are kept in the saved data "keys" ([[action, key], ...]) and the buttons in "pads";
+# game.bs and title.bs bind them (with the same defaults as here).
 
 var draw_layer: int = 98
 var cur: int = 0
@@ -17,30 +18,37 @@ var last_mouse: vec2 = vec2(-1, -1)
 var note: string = ""
 var note_t: number = 0
 var tab: int = 0                         # 0 ADVENTURE, 1 MENUS
+var pads: list = []
+var scroll: int = 0                      # the first row shown
+var wait_t: number = 0
 
-# action, what it does, its key unless changed, mouse, gamepad
-# (game.bs has the same default keys, for a game started before this page was ever opened)
-const ROWS: list = [["up", "Forward", "w", "", "L-stick"], ["down", "Back", "s", "", "L-stick"],
-                    ["left", "Left", "a", "", "L-stick"], ["right", "Right", "d", "", "L-stick"],
-                    ["action", "Action/roll", "space", "", "A"], ["attack", "Attack", "j", "L-click", "X"],
-                    ["shield", "Shield", "k", "R-click", "RT/RB"], ["focus", "Focus", "shift", "M-click", "LT/LB"],
-                    ["item1", "Item 1", "u", "", "Y"], ["item2", "Item 2", "i", "", "B"],
-                    ["item3", "Item 3", "o", "", "D-up"], ["flicker", "Flicker", "tab", "", "Back"],
-                    ["pause", "Pause", "enter", "", "Start"], ["cam_left", "Camera left", "left", "Move", "R-stick"],
-                    ["cam_right", "Camera right", "right", "Move", "R-stick"], ["cam_center", "Camera back", "down", "", "LT"]]
+# action, what it does, its key unless changed, mouse, its gamepad button unless changed ("" fixed)
+# (game.bs has the same defaults, for a game started before this page was ever opened)
+const ROWS: list = [["up", "Forward", "w", "", ""], ["down", "Back", "s", "", ""],
+                    ["left", "Left", "a", "", ""], ["right", "Right", "d", "", ""],
+                    ["action", "Action/roll", "space", "", "a"], ["attack", "Attack", "j", "mouse:0", "x"],
+                    ["shield", "Shield", "k", "mouse:1", "rt"], ["focus", "Focus", "shift", "mouse:2", "lt"],
+                    ["item1", "Item 1", "u", "", "lb"], ["item2", "Item 2", "i", "", "rb"],
+                    ["item3", "Item 3", "o", "", "y"], ["flicker", "Hint", "h", "", "up"],
+                    ["song", "Play a song", "p", "", "down"], ["boots", "Iron Boots", "1", "", "left"],
+                    ["hover", "Meringue Boots", "2", "", "right"], ["map", "Map", "tab", "", "back"],
+                    ["pause", "Pause", "enter", "", "start"], ["cam_left", "Camera left", "left", "Move", ""],
+                    ["cam_right", "Camera right", "right", "Move", ""], ["cam_center", "Camera back", "down", "", ""]]
 # action, what it does, its key unless changed, the keys it always has too, gamepad
 const MENU_ROWS: list = [["m_up", "Up", "w", "UP", "D-pad"], ["m_down", "Down", "s", "DOWN", "D-pad"],
                          ["m_left", "Left", "a", "LEFT", "D-pad"], ["m_right", "Right", "d", "RIGHT", "D-pad"],
                          ["m_ok", "Choose", "space", "ENTER", "A"], ["m_back", "Back", "backspace", "ESC", "B"],
-                         ["m_page_l", "Page left", "q", "", "LB"], ["m_page_r", "Page right", "e", "", "RB"],
+                         ["m_page_l", "Page left", "q", "", "LB/LT"], ["m_page_r", "Page right", "e", "", "RB/RT"],
                          ["m_erase", "Erase save", "delete", "", "Y"]]
 const TABS: list = ["ADVENTURE", "MENUS"]
 const TOP: number = 56
-const ROW_H: number = 9
+const ROW_H: number = 10
+const SHOWN: int = 14                    # rows shown at once (the list scrolls)
 
 func start() -> void {
     lock_mouse(false)
     keys = load_data("keys", [])
+    pads = load_data("pads", [])
 }
 
 func rows() -> list {
@@ -86,6 +94,36 @@ func set_key(action: string, key: string) -> void {
     set_global("rebind", true)                 # (the game, or the title screen, binds them again)
 }
 
+func pad_of(action: string) -> string {
+    for k in pads {
+        if k[0] == action { return k[1] }
+    }
+    for r in ROWS {
+        if r[0] == action { return r[4] }
+    }
+    return ""
+}
+
+func set_pad(action: string, button: string) -> void {
+    var old: string = pad_of(action)
+    var out: list = []
+    for r in ROWS {
+        if r[4] == "" { continue }
+        var b: string = pad_of(r[0])
+        if r[0] == action {
+            b = button
+        } elif b == button {
+            b = old                              # (it had this button: it gets the one given up)
+            note = r[1] + " is on " + upper(old) + " now"
+            note_t = 3
+        }
+        push(out, [r[0], b])
+    }
+    pads = out
+    save_data("pads", pads)
+    set_global("rebind", true)
+}
+
 func label(key: string) -> string {
     var names: list = [["leftshift", "L-SHIFT"], ["rightshift", "R-SHIFT"], ["leftctrl", "L-CTRL"], ["rightctrl", "R-CTRL"],
                        ["leftalt", "L-ALT"], ["rightalt", "R-ALT"], ["shift", "SHIFT"], ["up", "UP"], ["down", "DOWN"],
@@ -113,19 +151,35 @@ func upper(text: string) -> string {
 
 func row_count() -> int { return len(rows()) + 2 }      # (and RESET, BACK)
 
+# Which row is under the mouse (-1: none).
 func row_at(p: vec2) -> int {
     if p.x < 16 or p.x > 304 { return -1 }
     for i in row_count() {
+        if not row_shown(i) { continue }
         var y: number = row_y(i)
         if p.y >= y - 1 and p.y < y + ROW_H - 1 { return i }
     }
     return -1
 }
 
+func row_shown(i: int) -> bool {
+    var n: int = len(rows())
+    return i >= n or (i >= scroll and i < scroll + SHOWN)
+}
+
 func row_y(i: int) -> number {
     var n: int = len(rows())
-    if i >= n { return TOP + n * ROW_H + 5 + (i - n) * 11 }
-    return TOP + i * ROW_H
+    if i >= n { return TOP + min(n, SHOWN) * ROW_H + 5 + (i - n) * 11 }
+    return TOP + (i - scroll) * ROW_H
+}
+
+func keep_in_view() -> void {
+    var n: int = len(rows())
+    if cur < n {
+        if cur < scroll { scroll = cur }
+        if cur >= scroll + SHOWN { scroll = cur - SHOWN + 1 }
+    }
+    scroll = clamp(scroll, 0, max(0, n - SHOWN))
 }
 
 func tab_at(p: vec2) -> int {
@@ -139,6 +193,7 @@ func switch_tab(to: int) -> void {
     if to == tab { return }
     tab = to
     cur = 0
+    scroll = 0
     play_sound("sfx/page.wav", 0.5)
 }
 
@@ -147,14 +202,28 @@ func update(dt: number) -> void {
     note_t = max(0, note_t - dt)
     if closing { return }
     if waiting {
+        wait_t += dt
+        if wait_t < 0.15 { return }              # (not the press that chose the row)
         var k: string = last_key()
+        var pb: string = last_button()
+        var r: list = rows()[cur]
         if mouse_pressed(0) or mouse_pressed(1) or k == "escape" {
             waiting = false                          # (left as it was)
             play_sound("sfx/menu.wav", 0.4, 0.8)
         } elif k != "" {
             waiting = false
-            set_key(rows()[cur][0], k)
+            set_key(r[0], k)
             play_sound("sfx/select.wav", 0.5)
+        } elif pb != "" {
+            waiting = false
+            if tab == 0 and r[4] != "" {
+                set_pad(r[0], pb)
+                play_sound("sfx/select.wav", 0.5)
+            } else {
+                note = "That one stays on the gamepad as it is."
+                note_t = 3
+                play_sound("sfx/menu.wav", 0.4, 0.8)
+            }
         }
         return
     }
@@ -171,6 +240,10 @@ func update(dt: number) -> void {
     if action_pressed("m_down") or key_pressed("down") { move(1) }
     if action_pressed("m_page_l") or action_pressed("m_left") or action_pressed("m_page_r") or action_pressed("m_right") {
         switch_tab(1 - tab)
+    }
+    var wh: vec2 = mouse_wheel()
+    if wh.y != 0 {
+        scroll = clamp(scroll - sign(wh.y), 0, max(0, len(rows()) - SHOWN))
     }
     var tb: int = tab_at(mp)
     if mouse_pressed(0) and tb >= 0 {
@@ -189,6 +262,7 @@ func update(dt: number) -> void {
 
 func move(d: int) -> void {
     cur = (cur + d + row_count()) % row_count()
+    keep_in_view()
     play_sound("sfx/cursor.wav", 0.3)
 }
 
@@ -205,14 +279,19 @@ func choose() -> void {
         }
         keys = out
         save_data("keys", keys)
+        if tab == 0 {
+            pads = []
+            save_data("pads", pads)
+        }
         set_global("rebind", true)
-        note = "The usual keys are back."
+        note = "The usual keys and buttons are back."
         note_t = 3
         play_sound("sfx/select.wav", 0.5)
     } elif cur == n + 1 {
         close()
     } else {
         waiting = true
+        wait_t = 0
         play_sound("sfx/select.wav", 0.4)
     }
 }
@@ -242,11 +321,12 @@ func draw() -> void {
         draw_text(TABS[i], at + vec2(55 - text_size(TABS[i]).x / 2, 3), tc)
     }
     draw_text("ACTION", vec2(18, 46), [180, 160, 120])
-    draw_text("KEY", vec2(120, 46), [180, 160, 120])
+    draw_text("KEY", vec2(136, 46), [180, 160, 120])
     if tab == 0 { draw_text("MOUSE", vec2(192, 46), [180, 160, 120]) } else { draw_text("ALSO", vec2(192, 46), [180, 160, 120]) }
-    draw_text("PAD", vec2(252, 46), [180, 160, 120])
+    draw_text("PAD", vec2(256, 46), [180, 160, 120])
     var list_rows: list = rows()
     for i in row_count() {
+        if not row_shown(i) { continue }
         var y: number = row_y(i)
         var sel: bool = i == cur
         if sel { draw_rect(vec2(16, y - 1), vec2(288, ROW_H), [70, 55, 90, 255]) }
@@ -254,23 +334,165 @@ func draw() -> void {
         if sel { c = [255, 236, 150] }
         if i < len(list_rows) {
             var r: list = list_rows[i]
-            draw_text(r[1], vec2(18, y), c)
+            draw_text(r[1], vec2(18, y + 1), c)
             var k: string = label(key_of(r[0]))
             if sel and waiting {
                 k = "PRESS..."
                 if floor(t * 3) % 2 == 1 { k = "" }
             }
-            draw_text(k, vec2(120, y), [255, 255, 255])
-            draw_text(r[3], vec2(192, y), [170, 170, 190])
-            draw_text(r[4], vec2(252, y), [170, 170, 190])
+            draw_text(k, vec2(136, y + 1), [255, 255, 255])
+            if tab == 0 {
+                if substr(r[3], 0, 6) == "mouse:" { draw_glyph(r[3], vec2(212, y + 4)) } else { draw_text(r[3], vec2(196, y + 1), [170, 170, 190]) }
+                if r[4] != "" { draw_glyph("pad:" + pad_of(r[0]), vec2(266, y + 4)) } elif r[0] == "cam_left" or r[0] == "cam_right" {
+                    draw_text("R-stick", vec2(244, y + 1), [170, 170, 190])
+                } elif r[0] == "cam_center" {
+                    draw_text("Focus", vec2(244, y + 1), [170, 170, 190])
+                } else {
+                    draw_text("L-stick", vec2(244, y + 1), [170, 170, 190])
+                }
+            } else {
+                draw_text(r[3], vec2(196, y + 1), [170, 170, 190])
+                draw_text(r[4], vec2(244, y + 1), [170, 170, 190])
+            }
         } elif i == len(list_rows) {
-            draw_text("RESET TO THE USUAL KEYS", vec2(18, y), c)
+            draw_text("RESET TO THE USUAL KEYS", vec2(18, y + 1), c)
         } else {
-            draw_text("BACK", vec2(18, y), c)
+            draw_text("BACK", vec2(18, y + 1), c)
         }
     }
+    # the list scrolls: arrows when there's more above or below
+    if scroll > 0 { draw_text("^", vec2(296, TOP), [255, 220, 130]) }
+    if scroll + SHOWN < len(list_rows) { draw_text("v", vec2(296, TOP + (SHOWN - 1) * ROW_H), [255, 220, 130]) }
     var help: string = "ENTER/click: change  Q/E: page"
-    if waiting { help = "Press a key (ESC, click: cancel)" }
+    if waiting {
+        help = "Press a key (ESC, click: cancel)"
+        if tab == 0 and rows()[cur][4] != "" { help = "Press a key or a button (ESC: cancel)" }
+    }
     if note_t > 0 { help = note }
     draw_text(help, vec2(160 - text_size(help).x / 2, 224), [200, 190, 170])
+}
+
+# ---- button glyphs (the same in hud.bs, pause.bs, pipe.bs and controls.bs) ----
+# What an action's button looks like for whoever's playing: the gamepad button it's on
+# ("pad:x"), else its key ("key:j") - or the mouse button ("mouse:0") when the mouse was used last.
+func glyph_for(action: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    for k in global("keymap", []) {
+        if k[0] == action {
+            if pad and len(k) > 2 and k[2] != "" { return "pad:" + k[2] }
+            if last_input() == "mouse" and len(k) > 3 and k[3] != "" { return k[3] }
+            return "key:" + k[1]
+        }
+    }
+    return ""
+}
+
+# A key's name, short enough for a key cap.
+func cap_text(key: string) -> string {
+    var names: list = [["space", "SPC"], ["shift", "SHF"], ["leftshift", "LSH"], ["rightshift", "RSH"], ["leftctrl", "LCT"],
+                       ["rightctrl", "RCT"], ["leftalt", "LAL"], ["rightalt", "RAL"], ["enter", "ENT"], ["tab", "TAB"],
+                       ["escape", "ESC"], ["backspace", "BSP"], ["delete", "DEL"], ["up", "^"], ["down", "v"], ["left", "<"], ["right", ">"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for i in len(key) {
+        var c: string = key[i]
+        for j in 26 {
+            if lo[j] == c { c = hi[j] }
+        }
+        out = out + c
+    }
+    if len(out) > 3 { out = substr(out, 0, 3) }
+    return out
+}
+
+# How wide a glyph is drawn.
+func glyph_w(g: string) -> number {
+    if substr(g, 0, 4) == "key:" { return max(11, text_size(cap_text(substr(g, 4))).x + 5) }
+    var b: string = substr(g, 4)
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" { return 19 }
+    return 13
+}
+
+# Draws a glyph centred on c.
+func draw_glyph(g: string, c: vec2) -> void {
+    if g == "" { return }
+    var kind: string = substr(g, 0, 4)
+    var b: string = substr(g, 4)
+    var white: list = [255, 255, 255]
+    if kind == "key:" {
+        var txt: string = cap_text(b)
+        var w: number = glyph_w(g)
+        draw_rect(c - vec2(w / 2, 6) + vec2(0, 1), vec2(w, 12), [0, 0, 0, 140])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [235, 230, 220, 255])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [90, 80, 70, 255], false)
+        draw_text(txt, c - vec2(floor(text_size(txt).x / 2) - 1, 4), [40, 30, 30])
+        return
+    }
+    if kind == "mous" {
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [235, 230, 220, 255])
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [90, 80, 70, 255], false)
+        draw_line(c - vec2(5, 1), c + vec2(4, -1), [90, 80, 70])
+        var bx: number = -4
+        if g == "mouse:1" { bx = 1 }
+        if g == "mouse:2" { bx = -1 }
+        var bw: number = 4
+        if g == "mouse:2" { bw = 2 }
+        draw_rect(c + vec2(bx, -5), vec2(bw, 4), [220, 60, 60, 255])
+        return
+    }
+    if b == "a" or b == "b" or b == "x" or b == "y" or b == "ls" or b == "rs" {
+        var col: list = [60, 170, 80, 255]
+        if b == "b" { col = [210, 60, 60, 255] }
+        if b == "x" { col = [60, 110, 220, 255] }
+        if b == "y" { col = [215, 175, 30, 255] }
+        if b == "ls" or b == "rs" { col = [90, 90, 100, 255] }
+        draw_circle(c + vec2(0, 1), 6, [0, 0, 0, 140])
+        draw_circle(c, 6, col)
+        draw_circle(c, 6, [255, 255, 255, 170], false)
+        var t2: string = "A"
+        if b == "b" { t2 = "B" }
+        if b == "x" { t2 = "X" }
+        if b == "y" { t2 = "Y" }
+        if b == "ls" { t2 = "L" }
+        if b == "rs" { t2 = "R" }
+        draw_text(t2, c - vec2(3, 3), white)
+        return
+    }
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" {
+        var t3: string = "LB"
+        if b == "rb" { t3 = "RB" }
+        if b == "lt" { t3 = "LT" }
+        if b == "rt" { t3 = "RT" }
+        var top: number = 5
+        if b == "lt" or b == "rt" { top = 7 }
+        draw_rect(c - vec2(9, top) + vec2(0, 1), vec2(19, 11), [0, 0, 0, 140])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [70, 70, 80, 255])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [210, 210, 220, 255], false)
+        draw_text(t3, c - vec2(7, 3), white)
+        return
+    }
+    if b == "up" or b == "down" or b == "left" or b == "right" {
+        var grey: list = [70, 70, 80, 255]
+        draw_rect(c - vec2(2, 6), vec2(5, 13), grey)
+        draw_rect(c - vec2(6, 2), vec2(13, 5), grey)
+        var lit: list = [255, 255, 255, 255]
+        if b == "up" { draw_rect(c - vec2(2, 6), vec2(5, 5), lit) }
+        if b == "down" { draw_rect(c + vec2(-2, 2), vec2(5, 5), lit) }
+        if b == "left" { draw_rect(c - vec2(6, 2), vec2(5, 5), lit) }
+        if b == "right" { draw_rect(c + vec2(2, -2), vec2(5, 5), lit) }
+        return
+    }
+    # START, SELECT (BACK), the guide button: a pill with lines or squares on it
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [70, 70, 80, 255])
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [210, 210, 220, 255], false)
+    if b == "start" {
+        for k in 3 { draw_line(c + vec2(-3, -2 + k * 2), c + vec2(3, -2 + k * 2), white) }
+    } else {
+        draw_rect(c + vec2(-3, -2), vec2(4, 4), [210, 210, 220, 255], false)
+        draw_rect(c + vec2(0, -1), vec2(4, 4), [210, 210, 220, 255], false)
+    }
 }

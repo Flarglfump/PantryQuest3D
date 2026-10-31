@@ -158,6 +158,20 @@ entity
 
 entity
   Name
+    text = "Way Out"
+  Transform3D
+    position = 0 1.6 48.05
+    rotation = 0 0 0
+    scale = 3.9 3.8 0.1
+  Mesh
+    shape = cube
+    color = #0c0a06ff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
     text = "Blocker"
   Transform3D
     position = 0 0.7857 -18
@@ -676,7 +690,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 40
+    entity = 41
 
 entity
   Name
@@ -1165,7 +1179,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 64
+    entity = 65
 
 entity
   Name
@@ -4527,6 +4541,26 @@ entity
 
 entity
   Name
+    text = "grass -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/grass_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
     text = "grass 0 -2"
   Transform3D
     position = 0 0 0
@@ -4595,6 +4629,26 @@ entity
   Mesh
     shape = model
     file = "models/areas/sprouthollow/grass_0_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/grass_0_2.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1

@@ -1,8 +1,11 @@
 @strict
-# pause.bs - the pause menu, pushed over the area. Pages (Q / E, or left and right at the
-# edges): ITEMS (choose one, then press an item button to put it there), GEAR & QUEST,
-# MAP and SYSTEM (save, save and quit). It works on the global "save" and the area reloads
-# it when the menu closes.
+# pause.bs - the pause menu, pushed over the area. Pages (Q / E, LT / RT, or left and right
+# at the edges): ITEMS (the things that go on item buttons: choose one, then press an item
+# button - or click one of the boxes - to put it there), EQUIPMENT (what Sprig wears and
+# carries, which works by itself or on its own button), QUEST (embers, hearts, songs), MAP
+# (a dungeon's floors: up and down change floor) and SYSTEM (save, controls). It works on the
+# global "save" and the area reloads it when the menu closes. The global "pause_page" can
+# name the page to open on (the Map button opens the MAP).
 
 var draw_layer: int = 96
 var page: int = 0
@@ -13,23 +16,36 @@ var message: string = ""
 var msg_t: number = 0
 var closing: bool = false
 var last_mouse: vec2 = vec2(-1, -1)
+var map_floor: int = -1                 # the floor the MAP page shows (-1: Sprig's)
 
-const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
+const PAGES: list = ["ITEMS", "EQUIPMENT", "QUEST", "MAP", "SYSTEM"]
 const SYSTEM: list = ["SAVE", "SAVE AND QUIT", "CONTROLS", "BACK TO THE GAME"]
-const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "bow", "lash", "hammer", "boots", "lens", "hover", "jar1", "jar2"]
+# the items that go on item buttons
+const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "bow", "lash", "hammer", "pipe", "lens", "jar1", "jar2"]
+const COLS: int = 5
+# equipment, by kind: [heading, [item, ...]]
+const EQUIPMENT: list = [["WEAPONS", ["spoon", "cleaver"]], ["SHIELDS", ["potlid", "platter"]],
+                         ["CLOTHES", ["apron", "snorkel"]], ["BOOTS", ["boots", "hover"]],
+                         ["GEAR", ["bracelet", "fizzbubble", "purse200"]]]
 
-func start() -> void { s = global("save", []) }
+func start() -> void {
+    s = global("save", [])
+    var want: string = global("pause_page", "")
+    set_global("pause_page", "")
+    for i in len(PAGES) {
+        if PAGES[i] == want { page = i }
+    }
+}
 
 func has(name: string) -> bool { return contains(s[1], name) }
 
-func item_shown(name: string) -> bool {
-    if name == "pipe" { return has("pipe") }
-    return has(name)
-}
+func item_shown(name: string) -> bool { return name != "" and has(name) }
 
 func icon(name: string) -> string {
     if name == "pipe" { return "art/icons/whistle.png" }
     if name == "bombs" { return "art/icons/bomb.png" }
+    if name == "cleaver" { return "art/icons/spoon.png" }
+    if name == "purse200" { return "art/icons/bean.png" }
     if name == "jar1" and contains(s[0], "jar1_fish") { return "art/icons/jar_fish.png" }
     if name == "jar1" and contains(s[0], "jar1_fire") { return "art/icons/jar_fire.png" }
     if name == "lash" and contains(s[1], "longlash") { return "art/icons/longlash.png" }
@@ -39,8 +55,12 @@ func icon(name: string) -> string {
 func label(name: string) -> string {
     var names: list = [["hover", "MERINGUE BOOTS"], ["boots", "CAST-IRON BOOTS"], ["hammer", "MEAT TENDERIZER"], ["bow", "SKEWER BOW"], ["lash", "LICORICE LASH"], ["shooter", "PEA SHOOTER"], ["bombs", "POPCORN BOMBS"], ["boomerang", "SPATULA BOOMERANG"],
                        ["pipe", "FENNEL'S PIPE"], ["lens", "ONION LENS"], ["beans", "MAGIC BEANS"],
-                       ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["potlid", "POT-LID SHIELD"],
+                       ["jar1", "JAR"], ["jar2", "JAR"], ["spoon", "WOODEN SPOON"], ["cleaver", "CLEAVER OF DAWN"], ["potlid", "POT-LID SHIELD"],
+                       ["platter", "SILVER PLATTER"], ["apron", "OVEN APRON"], ["snorkel", "SNORKEL APRON"], ["bracelet", "GUM BRACELET"],
+                       ["fizzbubble", "FIZZ BUBBLE"], ["purse200", "BIG BEAN PURSE"],
                        ["ember_courage", "EMBER OF COURAGE"], ["ember_power", "EMBER OF POWER"], ["ember_wisdom", "EMBER OF WISDOM"]]
+    if name == "pipe" and has("whistle") { return "KETTLE WHISTLE" }
+    if name == "lash" and has("longlash") { return "LONG LICORICE" }
     for n in names {
         if n[0] == name { return n[1] }
     }
@@ -51,26 +71,33 @@ func update(dt: number) -> void {
     t += dt
     msg_t = max(0, msg_t - dt)
     if closing { return }
-    if action_pressed("m_back") or (action_pressed("pause") and not action_pressed("m_ok")) {
+    if action_pressed("m_back") or (action_pressed("pause") and not action_pressed("m_ok")) or (action_pressed("map") and page == 3) {
         close()
         return
     }
-    if action_pressed("m_page_l") { turn(-1) }
-    if action_pressed("m_page_r") { turn(1) }
+    var assigned: bool = false
+    if page == 0 {                               # (an item button here puts the chosen item on it - even LB / RB)
+        for i in 3 {
+            if action_pressed("item" + (i + 1)) {
+                put_on(i)
+                assigned = true
+            }
+        }
+    }
+    if not assigned {
+        if action_pressed("m_page_l") { turn(-1) }
+        if action_pressed("m_page_r") { turn(1) }
+    }
     if mouse_input() { return }
     if page == 0 {
-        var cols: int = 4
         if action_pressed("m_left") {
-            if cur % cols == 0 { turn(-1) } else { move(-1) }
+            if cur % COLS == 0 { turn(-1) } else { move(-1) }
         } elif action_pressed("m_right") {
-            if cur % cols == cols - 1 { turn(1) } else { move(1) }
+            if cur % COLS == COLS - 1 { turn(1) } else { move(1) }
         }
-        if action_pressed("m_up") { move(-cols) }
-        if action_pressed("m_down") { move(cols) }
-        for i in 3 {
-            if action_pressed("item" + (i + 1)) { put_on(i) }
-        }
-    } elif page == 3 {
+        if action_pressed("m_up") { move(-COLS) }
+        if action_pressed("m_down") { move(COLS) }
+    } elif page == 4 {
         if action_pressed("m_up") { move(-1) }
         if action_pressed("m_down") { move(1) }
         if action_pressed("m_ok") { system(cur) }
@@ -78,7 +105,24 @@ func update(dt: number) -> void {
     } else {
         if action_pressed("m_left") { turn(-1) }
         if action_pressed("m_right") { turn(1) }
+        if page == 3 {
+            var floors: int = len(map_names())
+            if action_pressed("m_up") and map_floor < floors - 1 {
+                map_floor += 1
+                play_sound("sfx/cursor.wav", 0.4)
+            }
+            if action_pressed("m_down") and map_floor > 0 {
+                map_floor -= 1
+                play_sound("sfx/cursor.wav", 0.4)
+            }
+        }
     }
+}
+
+func map_names() -> list {
+    var dm: list = global("dmap", [])
+    if len(dm) == 7 { return dm[6] }
+    return []
 }
 
 # The chosen item on to item button i.
@@ -99,9 +143,11 @@ func inside(p: vec2, at: vec2, size: vec2) -> bool {
     return p.x >= at.x and p.y >= at.y and p.x < at.x + size.x and p.y < at.y + size.y
 }
 
+func item_at(i: int) -> vec2 { return vec2(64 + (i % COLS) * 48, 90 + floor(i / COLS) * 32) }
+
 # The mouse: the page arrows and dots turn pages; on ITEMS, point at an item and click it,
-# then click one of the three buttons under the grid to put it there; on SYSTEM, click an
-# option. A right click closes the menu. True if it did something this frame.
+# then click one of the three boxes under the grid to put it there; on MAP, click a floor;
+# on SYSTEM, click an option. A right click closes the menu. True if it did something.
 func mouse_input() -> bool {
     var mp: vec2 = mouse_position()
     var moved: bool = distance(mp, last_mouse) > 0.5
@@ -120,26 +166,36 @@ func mouse_input() -> bool {
         return true
     }
     for i in len(PAGES) {
-        if click and inside(mp, vec2(144 + i * 8, 52), vec2(8, 8)) and i != page {
+        if click and inside(mp, dot_at(i) - vec2(4, 4), vec2(8, 8)) and i != page {
             turn(i - page)
             return true
         }
     }
     if page == 0 {
         for i in len(ITEM_GRID) {
-            var c: vec2 = vec2(88 + (i % 4) * 48, 86 + floor(i / 4) * 30)
+            var c: vec2 = item_at(i)
             if inside(mp, c - vec2(15, 15), vec2(30, 30)) and (moved or click) and i != cur {
                 cur = i
                 play_sound("sfx/cursor.wav", 0.4)
             }
         }
         for j in 3 {
-            if click and inside(mp, slot_box(j), vec2(20, 20)) {
+            if click and inside(mp, slot_box(j), vec2(22, 22)) {
                 put_on(j)
                 return true
             }
         }
     } elif page == 3 {
+        var n: int = len(map_names())
+        for k in n {
+            var i2: int = n - 1 - k
+            if click and inside(mp, vec2(36, floor_y(k, n)), vec2(24, 12)) {
+                map_floor = i2
+                play_sound("sfx/cursor.wav", 0.4)
+                return true
+            }
+        }
+    } elif page == 4 {
         for i in len(SYSTEM) {
             if inside(mp, vec2(84, 96 + i * 20), vec2(160, 16)) {
                 if (moved or click) and i != cur {
@@ -157,11 +213,15 @@ func mouse_input() -> bool {
 }
 
 # Where item button j's box is drawn on the ITEMS page (top left).
-func slot_box(j: int) -> vec2 { return vec2(196 + j * 26, 190) }
+func slot_box(j: int) -> vec2 { return vec2(132 + j * 44, 178) }
+
+func floor_y(k: int, n: int) -> number { return 134 - n * 7 + k * 14 }
+
+func dot_at(i: int) -> vec2 { return vec2(160 - (len(PAGES) - 1) * 4 + i * 8, 56) }
 
 func move(d: int) -> void {
     var n: int = len(ITEM_GRID)
-    if page == 3 { n = len(SYSTEM) }
+    if page == 4 { n = len(SYSTEM) }
     var c: int = cur + d
     if c < 0 or c >= n { return }
     cur = c
@@ -208,12 +268,12 @@ func frame(title: string) -> void {
     draw_rect(vec2(22, 28), vec2(276, 186), [110, 90, 60, 255], false)
     var w: number = text_size(title, 2).x
     draw_text(title, vec2(160 - w / 2, 34), [255, 220, 130], 2)
-    draw_text("< Q", vec2(28, 38), [180, 160, 120])
-    draw_text("E >", vec2(270, 38), [180, 160, 120])
+    draw_text("<", vec2(30, 38), [180, 160, 120])
+    draw_text(">", vec2(282, 38), [180, 160, 120])
     for i in len(PAGES) {
         var c: list = [90, 80, 70]
         if i == page { c = [255, 220, 130] }
-        draw_circle(vec2(148 + i * 8, 56), 2, c)
+        draw_circle(dot_at(i), 2, c)
     }
 }
 
@@ -221,9 +281,10 @@ func draw() -> void {
     if closing { return }
     frame(PAGES[page])
     if page == 0 { draw_items() }
-    if page == 1 { draw_gear() }
-    if page == 2 { draw_map() }
-    if page == 3 { draw_system() }
+    if page == 1 { draw_equipment() }
+    if page == 2 { draw_quest() }
+    if page == 3 { draw_map() }
+    if page == 4 { draw_system() }
     if msg_t > 0 {
         var w: number = text_size(message).x
         draw_rect(vec2(160 - w / 2 - 6, 222), vec2(w + 12, 13), [0, 0, 0, 200])
@@ -232,88 +293,117 @@ func draw() -> void {
 }
 
 func draw_items() -> void {
+    var slots: list = s[6]
     for i in len(ITEM_GRID) {
-        var c: vec2 = vec2(88 + (i % 4) * 48, 86 + floor(i / 4) * 30)
+        var c: vec2 = item_at(i)
         draw_rect(c - vec2(13, 13), vec2(26, 26), [60, 50, 70, 255])
         if item_shown(ITEM_GRID[i]) { draw_image(icon(ITEM_GRID[i]), c) }
         if i == cur {
             var o: number = floor(t * 4) % 2
             draw_rect(c - vec2(15 + o, 15 + o), vec2(30 + o * 2, 30 + o * 2), [255, 220, 90, 255], false)
         }
-        var slots: list = s[6]
         for j in 3 {
-            if slots[j] == ITEM_GRID[i] and slots[j] != "" { draw_text(slot_names()[j], c + vec2(7, 6), [255, 220, 90]) }
+            if slots[j] == ITEM_GRID[i] and slots[j] != "" { draw_glyph(glyph_for("item" + (j + 1)), c + vec2(10, 10)) }
         }
     }
     var it: string = ITEM_GRID[cur]
     if item_shown(it) {
-        draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 174), [255, 255, 255])
+        draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 158), [255, 255, 255])
     }
     # the three item buttons: press one (or click its box) to put the chosen item there
-    draw_text("Put it on:", vec2(110, 196), [190, 180, 150])
-    var slots: list = s[6]
-    var names: list = slot_names()
+    draw_text("Put on:", vec2(70, 185), [190, 180, 150])
     var mp: vec2 = mouse_position()
     for j in 3 {
         var b: vec2 = slot_box(j)
         var col: list = [70, 60, 50, 255]
-        if inside(mp, b, vec2(20, 20)) { col = [110, 90, 60, 255] }
-        draw_rect(b, vec2(20, 20), col)
-        draw_rect(b, vec2(20, 20), [210, 170, 40, 255], false)
-        if slots[j] != "" { draw_image(icon(slots[j]), b + vec2(10, 10)) }
-        draw_text(names[j], b + vec2(14, 14), [255, 220, 90])
+        if inside(mp, b, vec2(22, 22)) { col = [110, 90, 60, 255] }
+        draw_rect(b, vec2(22, 22), col)
+        draw_rect(b, vec2(22, 22), [210, 170, 40, 255], false)
+        if slots[j] != "" { draw_image(icon(slots[j]), b + vec2(11, 11)) }
+        draw_glyph(glyph_for("item" + (j + 1)), b + vec2(34, 11))
     }
 }
 
-func draw_gear() -> void {
-    draw_text("GEAR", vec2(40, 68), [255, 220, 130])
-    var gear: list = ["spoon", "potlid"]
-    for i in len(gear) {
-        var c: vec2 = vec2(52 + i * 30, 92)
-        draw_rect(c - vec2(12, 12), vec2(24, 24), [60, 50, 70, 255])
-        if has(gear[i]) { draw_image(icon(gear[i]), c) }
+func draw_equipment() -> void {
+    var y: number = 70
+    for row in EQUIPMENT {
+        draw_text(row[0], vec2(34, y + 7), [255, 220, 130])
+        var x: number = 120
+        for it in row[1] {
+            var c: vec2 = vec2(x, y + 11)
+            draw_rect(c - vec2(11, 11), vec2(22, 22), [60, 50, 70, 255])
+            if has(it) {
+                draw_image(icon(it), c)
+                # the boots work on their own buttons
+                if it == "boots" { draw_glyph(glyph_for("boots"), c + vec2(10, 9)) }
+                if it == "hover" { draw_glyph(glyph_for("hover"), c + vec2(10, 9)) }
+                if (it == "boots" and contains(s[0], "boots_on")) or (it == "hover" and contains(s[0], "hover_on")) {
+                    draw_rect(c - vec2(12, 12), vec2(24, 24), [255, 255, 255, 220], false)
+                }
+            }
+            x += 30
+        }
+        y += 28
     }
-    draw_text("EMBERS", vec2(40, 118), [255, 220, 130])
+    # what the one under the mouse is
+    var mp: vec2 = mouse_position()
+    var yy: number = 70
+    var tip: string = "Boots go on with their own buttons"
+    for row2 in EQUIPMENT {
+        var xx: number = 120
+        for it2 in row2[1] {
+            if has(it2) and inside(mp, vec2(xx - 11, yy), vec2(22, 22)) { tip = label(it2) }
+            xx += 30
+        }
+        yy += 28
+    }
+    draw_text(tip, vec2(160 - text_size(tip).x / 2, 206), [200, 190, 160])
+}
+
+func draw_quest() -> void {
+    draw_text("EMBERS", vec2(36, 66), [255, 220, 130])
     var embers: list = ["ember_courage", "ember_power", "ember_wisdom"]
+    var eic: list = ["ember", "ember2", "ember3"]
     for i in 3 {
-        var c2: vec2 = vec2(52 + i * 30, 142)
-        draw_circle(c2, 11, [60, 50, 70, 255])
-        if has(embers[i]) { draw_image("art/icons/ember.png", c2) }
+        var c2: vec2 = vec2(48 + i * 26, 88)
+        draw_circle(c2, 10, [60, 50, 70, 255])
+        if has(embers[i]) { draw_image("art/icons/" + eic[i] + ".png", c2) }
     }
-    draw_text("HEARTS", vec2(180, 68), [255, 220, 130])
+    draw_text("MEDALLIONS", vec2(36, 106), [255, 220, 130])
+    var meds: list = ["med_bitter", "med_spice", "med_salt", "med_sour", "med_sweet", "med_umami"]
+    for i in 6 {
+        var c5: vec2 = vec2(44 + i * 18, 124)
+        draw_circle(c5, 7, [60, 50, 70, 255])
+        if has(meds[i]) { draw_image("art/icons/" + meds[i] + ".png", c5) }
+    }
+    draw_text("HEARTS", vec2(176, 66), [255, 220, 130])
     var mx: int = s[3]
-    draw_text(str(floor(mx / 4)) + " hearts", vec2(180, 82), [255, 255, 255])
+    draw_text(str(floor(mx / 4)) + " hearts", vec2(176, 78), [255, 255, 255])
     var slices: int = 0
+    var wv: int = 0
     for c3 in s[7] {
         if c3[0] == "slices" { slices = c3[1] }
+        if c3[0] == "weevils" { wv = c3[1] }
     }
-    draw_image("art/icons/slice.png", vec2(188, 102))
-    draw_text("x " + (slices % 4) + " / 4", vec2(200, 99), [255, 255, 255])
-    var wv: int = 0
-    for c4 in s[7] {
-        if c4[0] == "weevils" { wv = c4[1] }
-    }
-    draw_text("Weevils: " + wv, vec2(180, 112), [240, 200, 60])
-    draw_text("TIME", vec2(180, 124), [255, 220, 130])
+    draw_image("art/icons/slice.png", vec2(182, 96))
+    draw_text("x " + (slices % 4) + " / 4", vec2(194, 93), [255, 255, 255])
+    draw_text("Weevils: " + wv, vec2(176, 106), [240, 200, 60])
     var secs: int = floor(s[10])
     var m: int = floor(secs / 60)
     var sec: int = secs % 60
     var pad: string = ""
     if sec < 10 { pad = "0" }
-    draw_text(str(floor(m / 60)) + ":" + (m % 60) + ":" + pad + sec, vec2(180, 138), [255, 255, 255])
-    if has("whistle") {
-        draw_image("art/icons/whistle.png", vec2(188, 168))
-        draw_text("Kettle Whistle", vec2(200, 165), [255, 255, 255])
-    } elif has("pipe") {
-        draw_image("art/icons/whistle.png", vec2(188, 168))
-        draw_text("Fennel's Pipe", vec2(200, 165), [255, 255, 255])
-    }
-    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron's Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Prelude of the Hearth"], ["song_minuet", "Minuet of Thyme"], ["song_bolero", "Bolero of Embers"], ["song_serenade", "Serenade of Brine"], ["song_boiling", "Boiling Song"], ["song_nocturne", "Nocturne of Rot"], ["song_requiem", "Requiem of Sugar"], ["song_custard", "Custard's Song"]]
-    var sy: number = 180
+    draw_text("TIME " + str(floor(m / 60)) + ":" + (m % 60) + ":" + pad + sec, vec2(176, 118), [255, 255, 255])
+    # the songs, in two columns
+    var title: string = "SONGS"
+    if has("whistle") { title = "SONGS (KETTLE WHISTLE)" } elif has("pipe") { title = "SONGS (FENNEL'S PIPE)" }
+    draw_text(title, vec2(36, 140), [255, 220, 130])
+    var songs: list = [["song_fennel", "Fennel's Tune"], ["song_lullaby", "Saffron Lullaby"], ["song_rising", "Song of Rising"], ["song_prelude", "Hearth Prelude"], ["song_minuet", "Minuet of Thyme"], ["song_bolero", "Bolero of Embers"], ["song_serenade", "Brine Serenade"], ["song_boiling", "Boiling Song"], ["song_nocturne", "Nocturne of Rot"], ["song_requiem", "Requiem of Sugar"], ["song_custard", "Custard's Song"]]
+    var k: int = 0
     for sg in songs {
         if has(sg[0]) {
-            draw_text(sg[1], vec2(40, sy), [255, 200, 230])
-            sy += 10
+            draw_text(sg[1], vec2(36 + floor(k / 6) * 128, 152 + (k % 6) * 10), [255, 200, 230])
+            k += 1
         }
     }
 }
@@ -356,34 +446,67 @@ func draw_map() -> void {
         if n[0] == dun { title = n[1] }
     }
     var dm: list = global("dmap", [])
-    if hm and len(dm) == 6 {
-        # the map: every room from above; Sprig blinks where he is (and faces)
+    if hm and len(dm) == 7 {
+        # the map: a floor at a time, from above (up / down change floors); Sprig blinks where
+        # he is (and faces), on his floor
+        var marks: list = global("dmap_marks", [[0, 0, 0, 0], [], []])
+        var floors: list = dm[6]
+        if map_floor < 0 or map_floor >= len(floors) { map_floor = marks[0][3] }
         var w: number = dm[4]
         var h: number = dm[5]
-        var c: vec2 = vec2(160, 134)
-        draw_image(dm[0], c)
+        var c: vec2 = vec2(172, 134)
+        draw_image(dm[0][map_floor], c)
         var origin: vec2 = c - vec2(floor(w / 2), floor(h / 2))
-        var marks: list = global("dmap_marks", [[0, 0, 0], [], []])
+        # the floors, top floor at the top: this one lit, Sprig's marked, the compass's dots
+        var n: int = len(floors)
+        for k in n {
+            var i: int = n - 1 - k
+            var fy: number = 134 - n * 7 + k * 14
+            var on: bool = i == map_floor
+            var bg: list = [50, 40, 60, 255]
+            if on { bg = [110, 90, 60, 255] }
+            draw_rect(vec2(36, fy), vec2(24, 12), bg)
+            if on { draw_rect(vec2(36, fy), vec2(24, 12), [255, 220, 120, 255], false) }
+            var tc: list = [190, 180, 150]
+            if on { tc = [255, 240, 170] }
+            draw_text(floors[i], vec2(48 - text_size(floors[i]).x / 2, fy + 2), tc)
+            if i == marks[0][3] { draw_circle(vec2(30, fy + 6), 3, [80, 200, 255, 255]) }
+            if hc {
+                var here: bool = false
+                for ch0 in marks[1] {
+                    if ch0[2] == i { here = true }
+                }
+                if here { draw_rect(vec2(63, fy + 4), vec2(4, 4), [230, 170, 40, 255]) }
+                for b0 in marks[2] {
+                    if b0[2] == i { draw_circle(vec2(71, fy + 6), 2, [220, 40, 40, 255]) }
+                }
+            }
+        }
+        if n > 1 { draw_text("^ v floors", vec2(26, 134 + n * 7 + 4), [150, 140, 120]) }
         if hc {
             for ch in marks[1] {
+                if ch[2] != map_floor { continue }
                 var p: vec2 = origin + vec2((ch[0] - dm[1]) * dm[3], (ch[1] - dm[2]) * dm[3])
                 draw_rect(p - vec2(2, 2), vec2(5, 4), [230, 170, 40, 255])
                 draw_rect(p - vec2(2, 2), vec2(5, 4), [90, 50, 10, 255], false)
             }
             for b in marks[2] {
+                if b[2] != map_floor { continue }
                 var p2: vec2 = origin + vec2((b[0] - dm[1]) * dm[3], (b[1] - dm[2]) * dm[3])
                 draw_circle(p2, 4, [220, 40, 40, 255])
                 draw_circle(p2, 4, [60, 0, 0, 255], false)
             }
         }
         var at: list = marks[0]
-        var sp: vec2 = origin + vec2((at[0] - dm[1]) * dm[3], (at[1] - dm[2]) * dm[3])
-        var sc: list = [80, 200, 255, 255]
-        if floor(t * 3) % 2 == 0 { sc = [255, 255, 255, 255] }
-        draw_circle(sp, 3, sc)
-        draw_circle(sp, 3, [10, 30, 60, 255], false)
-        var f: vec2 = vec2(-sin(at[2]), -cos(at[2]))
-        draw_line(sp, sp + f * 7, sc)
+        if at[3] == map_floor {
+            var sp: vec2 = origin + vec2((at[0] - dm[1]) * dm[3], (at[1] - dm[2]) * dm[3])
+            var sc: list = [80, 200, 255, 255]
+            if floor(t * 3) % 2 == 0 { sc = [255, 255, 255, 255] }
+            draw_circle(sp, 3, sc)
+            draw_circle(sp, 3, [10, 30, 60, 255], false)
+            var f: vec2 = vec2(-sin(at[2]), -cos(at[2]))
+            draw_line(sp, sp + f * 7, sc)
+        }
     } else {
         draw_text("Find the DUNGEON MAP!", vec2(160 - text_size("Find the DUNGEON MAP!").x / 2, 110), [200, 190, 160])
     }
@@ -403,30 +526,6 @@ func draw_map() -> void {
     if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(92, 200)); draw_text("Boss Key", vec2(102, 197), [255, 255, 255]) }
 }
 
-# The item buttons' names: their keys (the CONTROLS page can change them), or the pad's.
-func slot_names() -> list {
-    var names: list = ["U", "I", "O"]
-    for k in global("keymap", []) {
-        if k[0] == "item1" { names[0] = short_key(k[1]) }
-        if k[0] == "item2" { names[1] = short_key(k[1]) }
-        if k[0] == "item3" { names[2] = short_key(k[1]) }
-    }
-    if last_input() == "gamepad" or last_input() == "touch" { names = ["Y", "B", "^"] }
-    return names
-}
-
-func short_key(key: string) -> string {
-    var lo: string = "abcdefghijklmnopqrstuvwxyz"
-    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    if len(key) == 1 {
-        for j in 26 {
-            if lo[j] == key { return hi[j] }
-        }
-        return key
-    }
-    return "*"
-}
-
 func draw_system() -> void {
     var opts: list = SYSTEM
     for i in len(opts) {
@@ -436,5 +535,130 @@ func draw_system() -> void {
             draw_text(">", vec2(90 + floor(t * 4) % 2, 100 + i * 20), c)
         }
         draw_text(opts[i], vec2(104, 100 + i * 20), c)
+    }
+}
+
+# ---- button glyphs (the same in hud.bs, pause.bs, pipe.bs and controls.bs) ----
+# What an action's button looks like for whoever's playing: the gamepad button it's on
+# ("pad:x"), else its key ("key:j") - or the mouse button ("mouse:0") when the mouse was used last.
+func glyph_for(action: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    for k in global("keymap", []) {
+        if k[0] == action {
+            if pad and len(k) > 2 and k[2] != "" { return "pad:" + k[2] }
+            if last_input() == "mouse" and len(k) > 3 and k[3] != "" { return k[3] }
+            return "key:" + k[1]
+        }
+    }
+    return ""
+}
+
+# A key's name, short enough for a key cap.
+func cap_text(key: string) -> string {
+    var names: list = [["space", "SPC"], ["shift", "SHF"], ["leftshift", "LSH"], ["rightshift", "RSH"], ["leftctrl", "LCT"],
+                       ["rightctrl", "RCT"], ["leftalt", "LAL"], ["rightalt", "RAL"], ["enter", "ENT"], ["tab", "TAB"],
+                       ["escape", "ESC"], ["backspace", "BSP"], ["delete", "DEL"], ["up", "^"], ["down", "v"], ["left", "<"], ["right", ">"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for i in len(key) {
+        var c: string = key[i]
+        for j in 26 {
+            if lo[j] == c { c = hi[j] }
+        }
+        out = out + c
+    }
+    if len(out) > 3 { out = substr(out, 0, 3) }
+    return out
+}
+
+# How wide a glyph is drawn.
+func glyph_w(g: string) -> number {
+    if substr(g, 0, 4) == "key:" { return max(11, text_size(cap_text(substr(g, 4))).x + 5) }
+    var b: string = substr(g, 4)
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" { return 19 }
+    return 13
+}
+
+# Draws a glyph centred on c.
+func draw_glyph(g: string, c: vec2) -> void {
+    if g == "" { return }
+    var kind: string = substr(g, 0, 4)
+    var b: string = substr(g, 4)
+    var white: list = [255, 255, 255]
+    if kind == "key:" {
+        var txt: string = cap_text(b)
+        var w: number = glyph_w(g)
+        draw_rect(c - vec2(w / 2, 6) + vec2(0, 1), vec2(w, 12), [0, 0, 0, 140])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [235, 230, 220, 255])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [90, 80, 70, 255], false)
+        draw_text(txt, c - vec2(floor(text_size(txt).x / 2) - 1, 4), [40, 30, 30])
+        return
+    }
+    if kind == "mous" {
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [235, 230, 220, 255])
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [90, 80, 70, 255], false)
+        draw_line(c - vec2(5, 1), c + vec2(4, -1), [90, 80, 70])
+        var bx: number = -4
+        if g == "mouse:1" { bx = 1 }
+        if g == "mouse:2" { bx = -1 }
+        var bw: number = 4
+        if g == "mouse:2" { bw = 2 }
+        draw_rect(c + vec2(bx, -5), vec2(bw, 4), [220, 60, 60, 255])
+        return
+    }
+    if b == "a" or b == "b" or b == "x" or b == "y" or b == "ls" or b == "rs" {
+        var col: list = [60, 170, 80, 255]
+        if b == "b" { col = [210, 60, 60, 255] }
+        if b == "x" { col = [60, 110, 220, 255] }
+        if b == "y" { col = [215, 175, 30, 255] }
+        if b == "ls" or b == "rs" { col = [90, 90, 100, 255] }
+        draw_circle(c + vec2(0, 1), 6, [0, 0, 0, 140])
+        draw_circle(c, 6, col)
+        draw_circle(c, 6, [255, 255, 255, 170], false)
+        var t2: string = "A"
+        if b == "b" { t2 = "B" }
+        if b == "x" { t2 = "X" }
+        if b == "y" { t2 = "Y" }
+        if b == "ls" { t2 = "L" }
+        if b == "rs" { t2 = "R" }
+        draw_text(t2, c - vec2(3, 3), white)
+        return
+    }
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" {
+        var t3: string = "LB"
+        if b == "rb" { t3 = "RB" }
+        if b == "lt" { t3 = "LT" }
+        if b == "rt" { t3 = "RT" }
+        var top: number = 5
+        if b == "lt" or b == "rt" { top = 7 }
+        draw_rect(c - vec2(9, top) + vec2(0, 1), vec2(19, 11), [0, 0, 0, 140])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [70, 70, 80, 255])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [210, 210, 220, 255], false)
+        draw_text(t3, c - vec2(7, 3), white)
+        return
+    }
+    if b == "up" or b == "down" or b == "left" or b == "right" {
+        var grey: list = [70, 70, 80, 255]
+        draw_rect(c - vec2(2, 6), vec2(5, 13), grey)
+        draw_rect(c - vec2(6, 2), vec2(13, 5), grey)
+        var lit: list = [255, 255, 255, 255]
+        if b == "up" { draw_rect(c - vec2(2, 6), vec2(5, 5), lit) }
+        if b == "down" { draw_rect(c + vec2(-2, 2), vec2(5, 5), lit) }
+        if b == "left" { draw_rect(c - vec2(6, 2), vec2(5, 5), lit) }
+        if b == "right" { draw_rect(c + vec2(2, -2), vec2(5, 5), lit) }
+        return
+    }
+    # START, SELECT (BACK), the guide button: a pill with lines or squares on it
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [70, 70, 80, 255])
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [210, 210, 220, 255], false)
+    if b == "start" {
+        for k in 3 { draw_line(c + vec2(-3, -2 + k * 2), c + vec2(3, -2 + k * 2), white) }
+    } else {
+        draw_rect(c + vec2(-3, -2), vec2(4, 4), [210, 210, 220, 255], false)
+        draw_rect(c + vec2(0, -1), vec2(4, 4), [210, 210, 220, 255], false)
     }
 }

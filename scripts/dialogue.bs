@@ -51,17 +51,30 @@ func open_page() -> void {
 
 func keys(text: string) -> string {
     var pad: bool = last_input() == "gamepad" or last_input() == "touch"
-    var names: list = [["{action}", key_name("action"), "(A)"], ["{attack}", key_name("attack"), "(X)"], ["{focus}", key_name("focus"), "(LT)"],
-                       ["{shield}", key_name("shield"), "(RT)"], ["{flicker}", key_name("flicker"), "(BACK)"],
-                       ["{item}", key_name("item1") + ", " + key_name("item2") + " or " + key_name("item3"), "(Y), (B) or (UP)"],
-                       ["{pause}", key_name("pause"), "(START)"]]
     var out: string = text
-    for n in names {
-        var with: string = n[1]
-        if pad { with = n[2] }
-        out = replace(out, n[0], with)
+    for act in ["action", "attack", "focus", "shield", "flicker", "pause", "song", "boots", "hover", "map", "item1", "item2", "item3"] {
+        var with: string = key_name(act)
+        if pad { with = "(" + pad_name(act) + ")" }
+        out = replace(out, "{" + act + "}", with)
     }
-    return out
+    var items: string = key_name("item1") + ", " + key_name("item2") + " or " + key_name("item3")
+    if pad { items = "(" + pad_name("item1") + "), (" + pad_name("item2") + ") or (" + pad_name("item3") + ")" }
+    return replace(out, "{item}", items)
+}
+
+# The gamepad button an action is on (the CONTROLS page can change them).
+func pad_name(action: string) -> string {
+    var names: list = [["a", "A"], ["b", "B"], ["x", "X"], ["y", "Y"], ["lb", "LB"], ["rb", "RB"], ["lt", "LT"], ["rt", "RT"],
+                       ["up", "D-PAD UP"], ["down", "D-PAD DOWN"], ["left", "D-PAD LEFT"], ["right", "D-PAD RIGHT"],
+                       ["back", "SELECT"], ["start", "START"], ["ls", "L-STICK"], ["rs", "R-STICK"]]
+    for k in global("keymap", []) {
+        if k[0] == action and len(k) > 2 {
+            for n in names {
+                if n[0] == k[2] { return n[1] }
+            }
+        }
+    }
+    return "?"
 }
 
 # The key an action is on (the CONTROLS page can change them), as the player sees it.

@@ -47,6 +47,23 @@ class Game:
     def key(self, name, down):
         self.cmd('key %d %d' % (KEYS[name], 1 if down else 0))
 
+    # the gamepad (pad 0): buttons by name, sticks and triggers (botrunner "pad")
+    PAD = {'a': 0, 'b': 1, 'x': 2, 'y': 3, 'lb': 4, 'rb': 5, 'back': 6, 'start': 7, 'guide': 8, 'ls': 9, 'rs': 10,
+           'up': 11, 'right': 12, 'down': 13, 'left': 14}
+    AXES = {'left_x': 0, 'left_y': 1, 'right_x': 2, 'right_y': 3, 'lt': 4, 'rt': 5}
+
+    def pad(self, button, down):
+        self.cmd('pad button %d %d' % (self.PAD[button], 1 if down else 0))
+
+    def axis(self, name, value):
+        self.cmd('pad axis %d %g' % (self.AXES[name], value))
+
+    def pad_press(self, button, after=4):
+        self.pad(button, True)
+        self.frames(2)
+        self.pad(button, False)
+        self.frames(after)
+
     def frames(self, n):
         r = self.cmd('frame %d' % n)
         line = [l for l in r if l.startswith('frame ')][-1]

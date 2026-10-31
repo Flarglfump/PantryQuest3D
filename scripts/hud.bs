@@ -55,7 +55,7 @@ func button(c: vec2, r: number, col: list, label: string) -> void {
 }
 
 func draw() -> void {
-    if game.state == "paused" or game.fade >= 1 { return }
+    if game.state == "paused" or game.state == "pipe" or game.fade >= 1 { return }
     if game.flag("lens_on") { draw_rect(vec2(0, 0), vec2(320, 240), [160, 60, 200, 40]) }      # the Onion Lens
     if sprig.st == "dive" { draw_rect(vec2(0, 0), vec2(320, 240), [30, 90, 170, 80]) }      # under water
     hearts()
@@ -87,31 +87,23 @@ func draw() -> void {
             draw_text("x" + keys, vec2(28, 203), [255, 255, 255])
         }
     }
-    # A: what the action button does
+    # the buttons, along the top right: each thing on its own, its button under it (the
+    # gamepad's or the keys, whichever is in use; the CONTROLS page can change them)
     var label: string = sprig.action_label
-    var ax: number = 236
-    button(vec2(ax, 22), 10, [60, 110, 220, 220], "A")
-    if label != "" {
-        draw_rect(vec2(ax - 54, 17), vec2(42, 11), [20, 30, 70, 190])
-        var w: number = text_size(label).x
-        draw_text(label, vec2(ax - 33 - w / 2, 19), [255, 255, 255])
-    }
-    # B: the spoon
-    button(vec2(ax + 18, 38), 10, [60, 170, 80, 220], "")
-    if game.has_item("spoon") { draw_image("art/icons/spoon.png", vec2(ax + 18, 38)) } else { draw_text("B", vec2(ax + 15, 35), [255, 255, 255]) }
+    var ax: number = 156
+    draw_rect(vec2(ax - 24, 13), vec2(48, 13), [20, 30, 70, 200])
+    draw_rect(vec2(ax - 24, 13), vec2(48, 13), [140, 170, 255, 200], false)
+    if label != "" { draw_text(label, vec2(ax - floor(text_size(label).x / 2), 16), [255, 255, 255]) }
+    draw_glyph(glyph_for("action"), vec2(ax, 36))
+    # the spoon
+    var sx: number = 204
+    button(vec2(sx, 19), 10, [60, 170, 80, 220], "")
+    if game.has_item("spoon") or (game.era == "risen" and game.has_item("cleaver")) { draw_image("art/icons/spoon.png", vec2(sx, 19)) }
+    draw_glyph(glyph_for("attack"), vec2(sx, 36))
     # the three item buttons
-    var cs: list = [vec2(272, 18), vec2(294, 32), vec2(272, 46)]
-    var names: list = ["U", "I", "O"]
-    var km: list = global("keymap", [])
-    for k in km {                              # (keys changed on the CONTROLS page: the first letters)
-        if k[0] == "item1" { names[0] = short_key(k[1]) }
-        if k[0] == "item2" { names[1] = short_key(k[1]) }
-        if k[0] == "item3" { names[2] = short_key(k[1]) }
-    }
-    if last_input() == "gamepad" or last_input() == "touch" { names = ["Y", "B", "^"] }
     for i in 3 {
-        var c: vec2 = cs[i]
-        button(c, 9, [210, 170, 40, 210], "")
+        var c: vec2 = vec2(238 + i * 32, 19)
+        button(c, 10, [210, 170, 40, 210], "")
         var it: string = game.slots[i]
         if it != "" {
             var ic: string = it
@@ -122,26 +114,44 @@ func draw() -> void {
                 if game.flag("jar1_fish") { ic = "jar_fish" }
                 if game.flag("jar1_fire") { ic = "jar_fire" }
             }
-            if (it == "boots" and game.flag("boots_on")) or (it == "hover" and game.flag("hover_on")) or (it == "lens" and game.flag("lens_on")) { draw_circle(c, 9, [255, 255, 255, 200], false) }
+            if it == "lens" and game.flag("lens_on") { draw_circle(c, 10, [255, 255, 255, 200], false) }
             draw_image("art/icons/" + ic + ".png", c)
-            if it == "bombs" {
-                var bc2: list = [255, 255, 255]
-                if game.count("bombs") == 0 { bc2 = [255, 90, 90] }
-                draw_text(str(game.count("bombs")), c + vec2(-4, 6), bc2, 1)
+            var n: int = -1
+            var full: int = 0
+            if it == "bombs" { n = game.count("bombs"); full = 20 }
+            if it == "bow" { n = game.count("arrows"); full = 30 }
+            if it == "shooter" { n = game.peas; full = game.max_peas() }
+            if n >= 0 {
+                var nc: list = [255, 255, 255]
+                if n == 0 { nc = [255, 90, 90] }
+                if n >= full { nc = [120, 255, 120] }
+                var ns: string = str(n)
+                draw_rect(c + vec2(10 - text_size(ns).x, 3), vec2(text_size(ns).x + 1, 8), [0, 0, 0, 170])
+                draw_text(ns, c + vec2(11 - text_size(ns).x, 3), nc)
             }
-            if it == "bow" {
-                var ac: list = [255, 255, 255]
-                if game.count("arrows") == 0 { ac = [255, 90, 90] }
-                draw_text(str(game.count("arrows")), c + vec2(-4, 6), ac, 1)
-            }
-            if it == "shooter" {
-                var pc: list = [255, 255, 255]
-                if game.peas == 0 { pc = [255, 90, 90] }
-                if game.peas >= game.max_peas() { pc = [120, 255, 120] }
-                draw_text(str(game.peas), c + vec2(-4, 6), pc, 1)
-            }
-        } else {
-            draw_text(names[i], c - vec2(3, 3), [90, 60, 10])
+        }
+        draw_glyph(glyph_for("item" + (i + 1)), vec2(c.x, 36))
+    }
+    # the boots on (the D-pad left and right put them on)
+    var by: number = 52
+    if game.flag("boots_on") {
+        draw_image("art/icons/boots.png", vec2(286, by + 6))
+        draw_glyph(glyph_for("boots"), vec2(302, by + 6))
+    }
+    if game.flag("hover_on") {
+        draw_image("art/icons/hover.png", vec2(286, by + 6))
+        draw_glyph(glyph_for("hover"), vec2(302, by + 6))
+    }
+    # aiming: a sight where the shot will go
+    if sprig.st == "aim" {
+        var aim_at: vec2 = world_to_screen(sprig.aim_from() + sprig.aim_dir() * 12)
+        if aim_at.x > -1000 {
+            var cc: list = [255, 240, 160]
+            draw_circle(aim_at, 5, cc, false)
+            draw_line(aim_at - vec2(9, 0), aim_at - vec2(6, 0), cc)
+            draw_line(aim_at + vec2(6, 0), aim_at + vec2(9, 0), cc)
+            draw_line(aim_at - vec2(0, 9), aim_at - vec2(0, 6), cc)
+            draw_line(aim_at + vec2(0, 6), aim_at + vec2(0, 9), cc)
         }
     }
     # focus marks
@@ -174,15 +184,127 @@ func draw() -> void {
     }
 }
 
-# A key's name, short enough for a button on the HUD.
-func short_key(key: string) -> string {
+# ---- button glyphs (the same in hud.bs, pause.bs, pipe.bs and controls.bs) ----
+# What an action's button looks like for whoever's playing: the gamepad button it's on
+# ("pad:x"), else its key ("key:j") - or the mouse button ("mouse:0") when the mouse was used last.
+func glyph_for(action: string) -> string {
+    var pad: bool = last_input() == "gamepad" or last_input() == "touch"
+    for k in global("keymap", []) {
+        if k[0] == action {
+            if pad and len(k) > 2 and k[2] != "" { return "pad:" + k[2] }
+            if last_input() == "mouse" and len(k) > 3 and k[3] != "" { return k[3] }
+            return "key:" + k[1]
+        }
+    }
+    return ""
+}
+
+# A key's name, short enough for a key cap.
+func cap_text(key: string) -> string {
+    var names: list = [["space", "SPC"], ["shift", "SHF"], ["leftshift", "LSH"], ["rightshift", "RSH"], ["leftctrl", "LCT"],
+                       ["rightctrl", "RCT"], ["leftalt", "LAL"], ["rightalt", "RAL"], ["enter", "ENT"], ["tab", "TAB"],
+                       ["escape", "ESC"], ["backspace", "BSP"], ["delete", "DEL"], ["up", "^"], ["down", "v"], ["left", "<"], ["right", ">"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
     var lo: string = "abcdefghijklmnopqrstuvwxyz"
     var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    if len(key) == 1 {
+    var out: string = ""
+    for i in len(key) {
+        var c: string = key[i]
         for j in 26 {
-            if lo[j] == key { return hi[j] }
+            if lo[j] == c { c = hi[j] }
         }
-        return key
+        out = out + c
     }
-    return "*"
+    if len(out) > 3 { out = substr(out, 0, 3) }
+    return out
+}
+
+# How wide a glyph is drawn.
+func glyph_w(g: string) -> number {
+    if substr(g, 0, 4) == "key:" { return max(11, text_size(cap_text(substr(g, 4))).x + 5) }
+    var b: string = substr(g, 4)
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" { return 19 }
+    return 13
+}
+
+# Draws a glyph centred on c.
+func draw_glyph(g: string, c: vec2) -> void {
+    if g == "" { return }
+    var kind: string = substr(g, 0, 4)
+    var b: string = substr(g, 4)
+    var white: list = [255, 255, 255]
+    if kind == "key:" {
+        var txt: string = cap_text(b)
+        var w: number = glyph_w(g)
+        draw_rect(c - vec2(w / 2, 6) + vec2(0, 1), vec2(w, 12), [0, 0, 0, 140])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [235, 230, 220, 255])
+        draw_rect(c - vec2(w / 2, 6), vec2(w, 11), [90, 80, 70, 255], false)
+        draw_text(txt, c - vec2(floor(text_size(txt).x / 2) - 1, 4), [40, 30, 30])
+        return
+    }
+    if kind == "mous" {
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [235, 230, 220, 255])
+        draw_rect(c - vec2(5, 6), vec2(10, 12), [90, 80, 70, 255], false)
+        draw_line(c - vec2(5, 1), c + vec2(4, -1), [90, 80, 70])
+        var bx: number = -4
+        if g == "mouse:1" { bx = 1 }
+        if g == "mouse:2" { bx = -1 }
+        var bw: number = 4
+        if g == "mouse:2" { bw = 2 }
+        draw_rect(c + vec2(bx, -5), vec2(bw, 4), [220, 60, 60, 255])
+        return
+    }
+    if b == "a" or b == "b" or b == "x" or b == "y" or b == "ls" or b == "rs" {
+        var col: list = [60, 170, 80, 255]
+        if b == "b" { col = [210, 60, 60, 255] }
+        if b == "x" { col = [60, 110, 220, 255] }
+        if b == "y" { col = [215, 175, 30, 255] }
+        if b == "ls" or b == "rs" { col = [90, 90, 100, 255] }
+        draw_circle(c + vec2(0, 1), 6, [0, 0, 0, 140])
+        draw_circle(c, 6, col)
+        draw_circle(c, 6, [255, 255, 255, 170], false)
+        var t2: string = "A"
+        if b == "b" { t2 = "B" }
+        if b == "x" { t2 = "X" }
+        if b == "y" { t2 = "Y" }
+        if b == "ls" { t2 = "L" }
+        if b == "rs" { t2 = "R" }
+        draw_text(t2, c - vec2(3, 3), white)
+        return
+    }
+    if b == "lb" or b == "rb" or b == "lt" or b == "rt" {
+        var t3: string = "LB"
+        if b == "rb" { t3 = "RB" }
+        if b == "lt" { t3 = "LT" }
+        if b == "rt" { t3 = "RT" }
+        var top: number = 5
+        if b == "lt" or b == "rt" { top = 7 }
+        draw_rect(c - vec2(9, top) + vec2(0, 1), vec2(19, 11), [0, 0, 0, 140])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [70, 70, 80, 255])
+        draw_rect(c - vec2(9, top), vec2(19, 10 + top - 5), [210, 210, 220, 255], false)
+        draw_text(t3, c - vec2(7, 3), white)
+        return
+    }
+    if b == "up" or b == "down" or b == "left" or b == "right" {
+        var grey: list = [70, 70, 80, 255]
+        draw_rect(c - vec2(2, 6), vec2(5, 13), grey)
+        draw_rect(c - vec2(6, 2), vec2(13, 5), grey)
+        var lit: list = [255, 255, 255, 255]
+        if b == "up" { draw_rect(c - vec2(2, 6), vec2(5, 5), lit) }
+        if b == "down" { draw_rect(c + vec2(-2, 2), vec2(5, 5), lit) }
+        if b == "left" { draw_rect(c - vec2(6, 2), vec2(5, 5), lit) }
+        if b == "right" { draw_rect(c + vec2(2, -2), vec2(5, 5), lit) }
+        return
+    }
+    # START, SELECT (BACK), the guide button: a pill with lines or squares on it
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [70, 70, 80, 255])
+    draw_rect(c - vec2(6, 4), vec2(13, 9), [210, 210, 220, 255], false)
+    if b == "start" {
+        for k in 3 { draw_line(c + vec2(-3, -2 + k * 2), c + vec2(3, -2 + k * 2), white) }
+    } else {
+        draw_rect(c + vec2(-3, -2), vec2(4, 4), [210, 210, 220, 255], false)
+        draw_rect(c + vec2(0, -1), vec2(4, 4), [210, 210, 220, 255], false)
+    }
 }
