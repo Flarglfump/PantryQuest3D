@@ -1,0 +1,206 @@
+@strict
+# controls.bs - the CONTROLS page (from the title screen or the pause menu's SYSTEM page):
+# every action with its key, mouse button and gamepad button. Choose an action (or click it)
+# and press a new key for it; a key another action had moves over to the one it came from.
+# The keys are kept in the saved data "keys" ([[action, key], ...]); game.bs binds them.
+
+var draw_layer: int = 98
+var cur: int = 0
+var t: number = 0
+var keys: list = []
+var waiting: bool = false
+var closing: bool = false
+var last_mouse: vec2 = vec2(-1, -1)
+var note: string = ""
+var note_t: number = 0
+
+# action, what it does, its key unless changed, mouse, gamepad
+# (game.bs has the same default keys, for a game started before this page was ever opened)
+const ROWS: list = [["up", "Forward", "w", "", "L-stick"], ["down", "Back", "s", "", "L-stick"],
+                    ["left", "Left", "a", "", "L-stick"], ["right", "Right", "d", "", "L-stick"],
+                    ["action", "Action/roll", "space", "", "A"], ["attack", "Attack", "j", "L-click", "X"],
+                    ["shield", "Shield", "k", "R-click", "RT/RB"], ["focus", "Focus", "shift", "M-click", "LT/LB"],
+                    ["item1", "Item 1", "u", "", "Y"], ["item2", "Item 2", "i", "", "B"],
+                    ["item3", "Item 3", "o", "", "D-up"], ["flicker", "Flicker", "tab", "", "Back"],
+                    ["pause", "Pause", "enter", "", "Start"], ["cam_left", "Camera left", "left", "Move", "R-stick"],
+                    ["cam_right", "Camera right", "right", "Move", "R-stick"], ["cam_center", "Camera back", "down", "", "LT"]]
+const TOP: number = 44
+const ROW_H: number = 9
+
+func start() -> void {
+    lock_mouse(false)
+    keys = load_data("keys", [])
+}
+
+func key_of(action: string) -> string {
+    for k in keys {
+        if k[0] == action { return k[1] }
+    }
+    for r in ROWS {
+        if r[0] == action { return r[2] }
+    }
+    return ""
+}
+
+func set_key(action: string, key: string) -> void {
+    var old: string = key_of(action)
+    var out: list = []
+    for r in ROWS {
+        var k: string = key_of(r[0])
+        if r[0] == action {
+            k = key
+        } elif k == key {
+            k = old                              # (it had this key: it gets the one given up)
+            note = r[1] + " is on " + label(old) + " now"
+            note_t = 3
+        }
+        push(out, [r[0], k])
+    }
+    keys = out
+    save_data("keys", keys)
+    set_global("rebind", true)                 # (the game binds them again when it carries on)
+}
+
+func label(key: string) -> string {
+    var names: list = [["leftshift", "L-SHIFT"], ["rightshift", "R-SHIFT"], ["leftctrl", "L-CTRL"], ["rightctrl", "R-CTRL"],
+                       ["leftalt", "L-ALT"], ["rightalt", "R-ALT"], ["shift", "SHIFT"], ["up", "UP"], ["down", "DOWN"],
+                       ["left", "LEFT"], ["right", "RIGHT"], ["space", "SPACE"], ["enter", "ENTER"], ["tab", "TAB"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
+    return upper(key)
+}
+
+func upper(text: string) -> string {
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for i in len(text) {
+        var c: string = text[i]
+        for j in 26 {
+            if lo[j] == c { c = hi[j] }
+        }
+        out = out + c
+    }
+    return out
+}
+
+func row_count() -> int { return len(ROWS) + 2 }      # (and RESET, BACK)
+
+func row_at(p: vec2) -> int {
+    if p.x < 16 or p.x > 304 { return -1 }
+    for i in row_count() {
+        var y: number = row_y(i)
+        if p.y >= y - 1 and p.y < y + ROW_H - 1 { return i }
+    }
+    return -1
+}
+
+func row_y(i: int) -> number {
+    if i >= len(ROWS) { return TOP + len(ROWS) * ROW_H + 6 + (i - len(ROWS)) * 12 }
+    return TOP + i * ROW_H
+}
+
+func update(dt: number) -> void {
+    t += dt
+    note_t = max(0, note_t - dt)
+    if closing { return }
+    if waiting {
+        var k: string = last_key()
+        if mouse_pressed(0) or mouse_pressed(1) or k == "escape" {
+            waiting = false                          # (left as it was)
+            play_sound("sfx/menu.wav", 0.4, 0.8)
+        } elif k != "" {
+            waiting = false
+            set_key(ROWS[cur][0], k)
+            play_sound("sfx/select.wav", 0.5)
+        }
+        return
+    }
+    if t < 0.2 { return }
+    var mp: vec2 = mouse_position()
+    var moved: bool = distance(mp, last_mouse) > 0.5
+    last_mouse = mp
+    var row: int = row_at(mp)
+    if row >= 0 and moved and row != cur {
+        cur = row
+        play_sound("sfx/cursor.wav", 0.3)
+    }
+    if action_pressed("m_up") { move(-1) }
+    if action_pressed("m_down") { move(1) }
+    if action_pressed("m_back") or mouse_pressed(1) {
+        close()
+        return
+    }
+    if action_pressed("m_ok") or (mouse_pressed(0) and row >= 0) {
+        if mouse_pressed(0) { cur = row }
+        choose()
+    }
+}
+
+func move(d: int) -> void {
+    cur = (cur + d + row_count()) % row_count()
+    play_sound("sfx/cursor.wav", 0.3)
+}
+
+func choose() -> void {
+    if cur == len(ROWS) {
+        keys = []
+        save_data("keys", keys)
+        set_global("rebind", true)
+        note = "The usual keys are back."
+        note_t = 3
+        play_sound("sfx/select.wav", 0.5)
+    } elif cur == len(ROWS) + 1 {
+        close()
+    } else {
+        waiting = true
+        play_sound("sfx/select.wav", 0.4)
+    }
+}
+
+func close() -> void {
+    closing = true
+    play_sound("sfx/menu.wav", 0.5, 0.8)
+    pop_scene()
+}
+
+func draw() -> void {
+    if closing { return }
+    draw_rect(vec2(0, 0), vec2(320, 240), [0, 0, 0, 150])
+    draw_rect(vec2(10, 8), vec2(300, 226), [30, 22, 40, 252])
+    draw_rect(vec2(10, 8), vec2(300, 226), [220, 190, 120, 255], false)
+    var title: string = "CONTROLS"
+    draw_text(title, vec2(160 - text_size(title, 2).x / 2, 14), [255, 220, 130], 2)
+    draw_text("ACTION", vec2(18, 33), [180, 160, 120])
+    draw_text("KEY", vec2(120, 33), [180, 160, 120])
+    draw_text("MOUSE", vec2(192, 33), [180, 160, 120])
+    draw_text("PAD", vec2(252, 33), [180, 160, 120])
+    for i in row_count() {
+        var y: number = row_y(i)
+        var sel: bool = i == cur
+        if sel { draw_rect(vec2(16, y - 1), vec2(288, ROW_H), [70, 55, 90, 255]) }
+        var c: list = [210, 200, 180]
+        if sel { c = [255, 236, 150] }
+        if i < len(ROWS) {
+            var r: list = ROWS[i]
+            draw_text(r[1], vec2(18, y), c)
+            var k: string = label(key_of(r[0]))
+            if sel and waiting {
+                k = "PRESS..."
+                if floor(t * 3) % 2 == 1 { k = "" }
+            }
+            draw_text(k, vec2(120, y), [255, 255, 255])
+            draw_text(r[3], vec2(192, y), [170, 170, 190])
+            draw_text(r[4], vec2(252, y), [170, 170, 190])
+        } elif i == len(ROWS) {
+            draw_text("RESET TO THE USUAL KEYS", vec2(18, y), c)
+        } else {
+            draw_text("BACK", vec2(18, y), c)
+        }
+    }
+    var help: string = "ENTER/click: change   ESC: back"
+    if waiting { help = "Press a key (ESC, click: cancel)" }
+    if note_t > 0 { help = note }
+    draw_text(help, vec2(160 - text_size(help).x / 2, 222), [200, 190, 170])
+}

@@ -57,6 +57,7 @@ def build():
     ring_floor(g('crust'), 0, 0, 8.6, R, F2, 262, 278, segs=3, thick=4.0)              # a pillar under it (vines 1F->2F)
     ring_floor(g('crust'), 0, 0, 9.5, R, F3, 200, 340, segs=16, thick=0.6)             # 3F ledge (north)
     ring_floor(g('crust'), 0, 0, 9.0, 9.5, F3, 220, 236, segs=2, thick=4.0)            # a pillar under it (vines 2F->3F)
+    ring_floor(g('crust'), 0, 0, 8.0, 9.0, F2, 218, 238, segs=2, thick=0.6)            # ... and room to stand in front of it on 2F
     # the plank over the middle, from 3F
     g('planks').box((-0.7, F3 - 0.25, -9.6), (0.7, F3, -3.0), uvs=0.6)
     a.entity('Plank Tip', t3((0, F3 + 0.3, -3.1), (0, 0, 0), (1.2, 0.1, 0.1)), mesh('cube', '#a07040ff'))

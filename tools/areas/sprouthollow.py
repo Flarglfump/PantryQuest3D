@@ -135,6 +135,10 @@ def build():
     for xx in (-2.8, 2.8):
         a.geo('bark', xx, -18).cylinder((xx, height(xx, -18) - 0.2, -18), 0.25, 2.2, 8, uvs=1)
     a.blocker(0, height(0, -18), -18, (5.2, 1.4, 0.2), 'chive_moved')
+    # hedges along both sides of the grove path, from the gate posts up to the plateau's
+    # hedge: no way round Chive's fence on to the path's low end
+    for xx in (-2.95, 2.95):
+        box_wall(a, 'hedge', xx, -17.84, xx, -26.0, -0.5, 3.6, thick=1.0)
     a.npc('chive', 1.2, height(1.2, -16.6), -16.6, 180, until='chive_moved')
     a.npc('chive', 4.2, height(4.2, -15.5), -15.5, 150, needs='chive_moved')
     a.sign(-3.6, height(-3.6, -16.2), -16.2, 180, 'sign_grove')
@@ -162,9 +166,13 @@ def build():
     a.entity('Bed', t3((tx - 0.6, deck_y + 0.2, tz - 0.6), (0, 30, 0), (1.0, 0.35, 1.8)), mesh('cube', '#ffffffff', 'art/planks.png'), collider('box'))
     a.entity('Blanket', t3((tx - 0.6, deck_y + 0.4, tz - 0.4), (0, 30, 0), (0.95, 0.1, 1.2)), mesh('cube', '#7ab868ff'))
     # the vine ladder down the south side (facing +z... out of the deck)
-    a.vine(tx + 0.0, height(tx, tz + 2.5), tz + 2.45, 1.0, deck_y - height(tx, tz + 2.5), 180, top=deck_y)
+    # (hanging from the deck's edge, which stands out past the stump: he climbs out round it)
+    a.vine(tx + 0.0, height(tx, tz + 3.05), tz + 3.05, 1.0, deck_y - height(tx, tz + 3.05), 180, top=deck_y)
     # the bridge gap on the deck rail: the vines come up there (no rail post in the way)
     a.spawn_point('bed', tx + 0.4, deck_y + 0.05, tz - 0.2, 200)
+    # Sprig's savings, by the bed: with the beans about the village (and in the trees), enough
+    # for Sage's shield (40) without counting on lucky drops
+    a.chest(tx + 1.73, deck_y, tz - 1.0, 120, 'bean20', 'deck_chest')
     for k in range(5):
         ang = 2 * math.pi * k / 5 + 1.2
         a.pickup('bean1', tx + math.cos(ang) * 1.6, deck_y + 0.15, tz + math.sin(ang) * 1.6, id='deck%d' % k)
@@ -215,8 +223,8 @@ def build():
     a.pot(-35, 0, -1)
 
     # ---- trees, grass and pots round the village ----
-    trees = [(-14, -18, 1.2, 'bean5'), (10, -18, 1.1, ''), (22, 8, 1.0, 'heart'), (-24, 20, 1.2, 'bean1'), (26, 22, 1.1, ''),
-             (-30, 26, 1.0, ''), (32, 12, 1.2, 'bean5'), (18, -18, 1.0, ''), (-14, 28, 1.0, 'bean1'), (14, 30, 1.0, '')]
+    trees = [(-14, -18, 1.2, 'bean5'), (10, -18, 1.1, 'bean5'), (22, 8, 1.0, 'heart'), (-24, 20, 1.2, 'bean1'), (26, 22, 1.1, 'bean5'),
+             (-30, 26, 1.0, ''), (32, 12, 1.2, 'bean5'), (18, -18, 1.0, 'bean5'), (-14, 28, 1.0, 'bean1'), (14, 30, 1.0, '')]
     for x, z, s, drop in trees:
         a.tree(x, height(x, z), z, s, drop)
     spots = []

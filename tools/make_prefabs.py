@@ -131,7 +131,8 @@ def main():
     for name, file, comment in [('dialogue', 'scripts/dialogue.bs', 'The text box (pushed over an area).'),
                                 ('pause', 'scripts/pause.bs', 'The pause menu (pushed over an area).'),
                                 ('gameover', 'scripts/gameover.bs', 'Game over (pushed over an area).'),
-                                ('pipe', 'scripts/pipe.bs', 'Playing the pipe (pushed over an area).')]:
+                                ('pipe', 'scripts/pipe.bs', 'Playing the pipe (pushed over an area).'),
+                                ('controls', 'scripts/controls.bs', 'The controls page (pushed over the title or the pause menu).')]:
         s = Scene(comment + '\nMade by tools/make_prefabs.py.')
         s.entity(name.capitalize(), t2((0, 0)), script(file))
         s.save(name + '.scene')

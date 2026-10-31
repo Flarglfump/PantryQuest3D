@@ -1,0 +1,11 @@
+# The controls page (pushed over the title or the pause menu).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Controls"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/controls.bs"

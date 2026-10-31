@@ -381,14 +381,14 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = -8 1.3564 17.5
+    position = -8 1.3418 18.2
     rotation = 0 180 0
-    scale = 1 3.5778 0.05
+    scale = 1 3.6072 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
     color = #7ac060ff
-    uv_scale = 1 3.5778
+    uv_scale = 1 3.6072
 
 entity
   Name

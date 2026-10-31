@@ -6,6 +6,7 @@ var draw_layer: int = 97
 var t: number = 0
 var cur: int = 0
 var done: bool = false
+var last_mouse: vec2 = vec2(-1, -1)
 
 func start() -> void { play_music("music/gameover.wav", 0.6, 0.3) }
 
@@ -16,7 +17,20 @@ func update(dt: number) -> void {
         cur = 1 - cur
         play_sound("sfx/cursor.wav", 0.4)
     }
-    if action_pressed("m_ok") {
+    # the mouse: point at an option, click it
+    var mp: vec2 = mouse_position()
+    var moved: bool = distance(mp, last_mouse) > 0.5
+    last_mouse = mp
+    var row: int = -1
+    for i in 2 {
+        if mp.x >= 104 and mp.x < 230 and mp.y >= 136 + i * 18 and mp.y < 152 + i * 18 { row = i }
+    }
+    if row >= 0 and moved and row != cur {
+        cur = row
+        play_sound("sfx/cursor.wav", 0.4)
+    }
+    if action_pressed("m_ok") or (mouse_pressed(0) and row >= 0) {
+        if row >= 0 and mouse_pressed(0) { cur = row }
         done = true
         play_sound("sfx/select.wav", 0.6)
         set_global("gameover_choice", cur)

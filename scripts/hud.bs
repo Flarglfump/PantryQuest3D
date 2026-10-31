@@ -102,6 +102,12 @@ func draw() -> void {
     # the three item buttons
     var cs: list = [vec2(272, 18), vec2(294, 32), vec2(272, 46)]
     var names: list = ["U", "I", "O"]
+    var km: list = global("keymap", [])
+    for k in km {                              # (keys changed on the CONTROLS page: the first letters)
+        if k[0] == "item1" { names[0] = short_key(k[1]) }
+        if k[0] == "item2" { names[1] = short_key(k[1]) }
+        if k[0] == "item3" { names[2] = short_key(k[1]) }
+    }
     if last_input() == "gamepad" or last_input() == "touch" { names = ["Y", "B", "^"] }
     for i in 3 {
         var c: vec2 = cs[i]
@@ -166,4 +172,17 @@ func draw() -> void {
         draw_rect(vec2(80, 207), vec2(160 * frac, 6), [220, 50, 60, 255])
         draw_rect(vec2(80, 207), vec2(160, 6), [255, 255, 255, 160], false)
     }
+}
+
+# A key's name, short enough for a button on the HUD.
+func short_key(key: string) -> string {
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if len(key) == 1 {
+        for j in 26 {
+            if lo[j] == key { return hi[j] }
+        }
+        return key
+    }
+    return "*"
 }

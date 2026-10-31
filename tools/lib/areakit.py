@@ -231,7 +231,8 @@ class Area:
         sits just in front."""
         fx, fz = -math.sin(math.radians(out_yaw)), -math.cos(math.radians(out_yaw))
         top = y + height if top is None else top
-        self.entity('Vines', t3((x + fx * 0.05, y + height / 2, z + fz * 0.05), (0, out_yaw, 0), (width, height, 0.05)),
+        # (drawn well out from the wall, so they don't flicker against it or dip into a curved one)
+        self.entity('Vines', t3((x + fx * 0.15, y + height / 2, z + fz * 0.15), (0, out_yaw, 0), (width, height, 0.04)),
                     mesh('cube', '#7ac060ff', 'art/leaves.png', uv=(width, height)))
         self.entity('Vine Climb', t3((x + fx * 0.45, y + height / 2, z + fz * 0.45), (0, out_yaw, 0)),
                     collider('box', (width, height + 0.6, 0.7), trigger=True), tags('climbable'),

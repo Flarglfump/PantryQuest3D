@@ -12,8 +12,10 @@ var s: list = []
 var message: string = ""
 var msg_t: number = 0
 var closing: bool = false
+var last_mouse: vec2 = vec2(-1, -1)
 
 const PAGES: list = ["ITEMS", "GEAR & QUEST", "MAP", "SYSTEM"]
+const SYSTEM: list = ["SAVE", "SAVE AND QUIT", "CONTROLS", "BACK TO THE GAME"]
 const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "pipe", "bow", "lash", "hammer", "boots", "lens", "hover", "jar1", "jar2"]
 
 func start() -> void { s = global("save", []) }
@@ -55,6 +57,7 @@ func update(dt: number) -> void {
     }
     if action_pressed("m_page_l") { turn(-1) }
     if action_pressed("m_page_r") { turn(1) }
+    if mouse_input() { return }
     if page == 0 {
         var cols: int = 4
         if action_pressed("m_left") {
@@ -64,18 +67,8 @@ func update(dt: number) -> void {
         }
         if action_pressed("m_up") { move(-cols) }
         if action_pressed("m_down") { move(cols) }
-        var it: string = ITEM_GRID[cur]
         for i in 3 {
-            if action_pressed("item" + (i + 1)) and item_shown(it) {
-                var slots: list = s[6]
-                for j in 3 {
-                    if slots[j] == it { slots[j] = "" }
-                }
-                slots[i] = it
-                s[6] = slots
-                set_global("save", s)
-                play_sound("sfx/select.wav", 0.5)
-            }
+            if action_pressed("item" + (i + 1)) { put_on(i) }
         }
     } elif page == 3 {
         if action_pressed("m_up") { move(-1) }
@@ -88,9 +81,87 @@ func update(dt: number) -> void {
     }
 }
 
+# The chosen item on to item button i.
+func put_on(i: int) -> void {
+    var it: string = ITEM_GRID[cur]
+    if not item_shown(it) { return }
+    var slots: list = s[6]
+    for j in 3 {
+        if slots[j] == it { slots[j] = "" }
+    }
+    slots[i] = it
+    s[6] = slots
+    set_global("save", s)
+    play_sound("sfx/select.wav", 0.5)
+}
+
+func inside(p: vec2, at: vec2, size: vec2) -> bool {
+    return p.x >= at.x and p.y >= at.y and p.x < at.x + size.x and p.y < at.y + size.y
+}
+
+# The mouse: the page arrows and dots turn pages; on ITEMS, point at an item and click it,
+# then click one of the three buttons under the grid to put it there; on SYSTEM, click an
+# option. A right click closes the menu. True if it did something this frame.
+func mouse_input() -> bool {
+    var mp: vec2 = mouse_position()
+    var moved: bool = distance(mp, last_mouse) > 0.5
+    last_mouse = mp
+    var click: bool = mouse_pressed(0)
+    if mouse_pressed(1) {
+        close()
+        return true
+    }
+    if click and inside(mp, vec2(22, 32), vec2(36, 16)) {
+        turn(-1)
+        return true
+    }
+    if click and inside(mp, vec2(262, 32), vec2(36, 16)) {
+        turn(1)
+        return true
+    }
+    for i in len(PAGES) {
+        if click and inside(mp, vec2(144 + i * 8, 52), vec2(8, 8)) and i != page {
+            turn(i - page)
+            return true
+        }
+    }
+    if page == 0 {
+        for i in len(ITEM_GRID) {
+            var c: vec2 = vec2(88 + (i % 4) * 48, 86 + floor(i / 4) * 30)
+            if inside(mp, c - vec2(15, 15), vec2(30, 30)) and (moved or click) and i != cur {
+                cur = i
+                play_sound("sfx/cursor.wav", 0.4)
+            }
+        }
+        for j in 3 {
+            if click and inside(mp, slot_box(j), vec2(20, 20)) {
+                put_on(j)
+                return true
+            }
+        }
+    } elif page == 3 {
+        for i in len(SYSTEM) {
+            if inside(mp, vec2(84, 96 + i * 20), vec2(160, 16)) {
+                if (moved or click) and i != cur {
+                    cur = i
+                    play_sound("sfx/cursor.wav", 0.4)
+                }
+                if click {
+                    system(i)
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
+# Where item button j's box is drawn on the ITEMS page (top left).
+func slot_box(j: int) -> vec2 { return vec2(196 + j * 26, 190) }
+
 func move(d: int) -> void {
     var n: int = len(ITEM_GRID)
-    if page == 3 { n = 3 }
+    if page == 3 { n = len(SYSTEM) }
     var c: int = cur + d
     if c < 0 or c >= n { return }
     cur = c
@@ -117,6 +188,8 @@ func system(i: int) -> void {
             set_global("quit_to_title", true)
             close()
         }
+    } elif i == 2 {
+        push_scene("controls.scene", true, false)
     } else {
         close()
     }
@@ -169,13 +242,26 @@ func draw_items() -> void {
         }
         var slots: list = s[6]
         for j in 3 {
-            if slots[j] == ITEM_GRID[i] and slots[j] != "" { draw_text(["U", "I", "O"][j], c + vec2(7, 6), [255, 220, 90]) }
+            if slots[j] == ITEM_GRID[i] and slots[j] != "" { draw_text(slot_names()[j], c + vec2(7, 6), [255, 220, 90]) }
         }
     }
     var it: string = ITEM_GRID[cur]
     if item_shown(it) {
         draw_text(label(it), vec2(160 - text_size(label(it)).x / 2, 174), [255, 255, 255])
-        if true { draw_text("U / I / O: put it on that button", vec2(36, 186), [190, 180, 150]) }
+    }
+    # the three item buttons: press one (or click its box) to put the chosen item there
+    draw_text("Put it on:", vec2(110, 196), [190, 180, 150])
+    var slots: list = s[6]
+    var names: list = slot_names()
+    var mp: vec2 = mouse_position()
+    for j in 3 {
+        var b: vec2 = slot_box(j)
+        var col: list = [70, 60, 50, 255]
+        if inside(mp, b, vec2(20, 20)) { col = [110, 90, 60, 255] }
+        draw_rect(b, vec2(20, 20), col)
+        draw_rect(b, vec2(20, 20), [210, 170, 40, 255], false)
+        if slots[j] != "" { draw_image(icon(slots[j]), b + vec2(10, 10)) }
+        draw_text(names[j], b + vec2(14, 14), [255, 220, 90])
     }
 }
 
@@ -291,9 +377,33 @@ func draw_map() -> void {
     if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(138, 168)); draw_text("Boss Key", vec2(150, 165), [255, 255, 255]) }
 }
 
+# The item buttons' names: their keys (the CONTROLS page can change them), or the pad's.
+func slot_names() -> list {
+    var names: list = ["U", "I", "O"]
+    for k in global("keymap", []) {
+        if k[0] == "item1" { names[0] = short_key(k[1]) }
+        if k[0] == "item2" { names[1] = short_key(k[1]) }
+        if k[0] == "item3" { names[2] = short_key(k[1]) }
+    }
+    if last_input() == "gamepad" or last_input() == "touch" { names = ["Y", "B", "^"] }
+    return names
+}
+
+func short_key(key: string) -> string {
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    if len(key) == 1 {
+        for j in 26 {
+            if lo[j] == key { return hi[j] }
+        }
+        return key
+    }
+    return "*"
+}
+
 func draw_system() -> void {
-    var opts: list = ["SAVE", "SAVE AND QUIT", "BACK TO THE GAME"]
-    for i in 3 {
+    var opts: list = SYSTEM
+    for i in len(opts) {
         var c: list = [200, 190, 160]
         if i == cur {
             c = [255, 230, 120]

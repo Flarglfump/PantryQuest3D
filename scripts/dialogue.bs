@@ -13,6 +13,7 @@ var total: int = 0
 var choice: int = 0
 var t: number = 0
 var closing: bool = false
+var last_mouse: vec2 = vec2(-1, -1)
 
 const WIDTH: int = 34
 const LINES: int = 4
@@ -50,14 +51,43 @@ func open_page() -> void {
 
 func keys(text: string) -> string {
     var pad: bool = last_input() == "gamepad" or last_input() == "touch"
-    var names: list = [["{action}", "SPACE", "(A)"], ["{attack}", "J", "(X)"], ["{focus}", "SHIFT", "(LT)"],
-                       ["{shield}", "K", "(RT)"], ["{flicker}", "TAB", "(BACK)"], ["{item}", "U, I or O", "(Y), (B) or (UP)"],
-                       ["{pause}", "ENTER", "(START)"]]
+    var names: list = [["{action}", key_name("action"), "(A)"], ["{attack}", key_name("attack"), "(X)"], ["{focus}", key_name("focus"), "(LT)"],
+                       ["{shield}", key_name("shield"), "(RT)"], ["{flicker}", key_name("flicker"), "(BACK)"],
+                       ["{item}", key_name("item1") + ", " + key_name("item2") + " or " + key_name("item3"), "(Y), (B) or (UP)"],
+                       ["{pause}", key_name("pause"), "(START)"]]
     var out: string = text
     for n in names {
         var with: string = n[1]
         if pad { with = n[2] }
         out = replace(out, n[0], with)
+    }
+    return out
+}
+
+# The key an action is on (the CONTROLS page can change them), as the player sees it.
+func key_name(action: string) -> string {
+    var key: string = ""
+    for k in global("keymap", []) {
+        if k[0] == action { key = k[1] }
+    }
+    return key_label(key)
+}
+
+func key_label(key: string) -> string {
+    var names: list = [["leftshift", "L-SHIFT"], ["rightshift", "R-SHIFT"], ["leftctrl", "L-CTRL"], ["rightctrl", "R-CTRL"],
+                       ["leftalt", "L-ALT"], ["rightalt", "R-ALT"]]
+    for n in names {
+        if n[0] == key { return n[1] }
+    }
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for i in len(key) {
+        var c: string = key[i]
+        for j in 26 {
+            if lo[j] == c { c = hi[j] }
+        }
+        out = out + c
     }
     return out
 }
@@ -117,12 +147,25 @@ func update(dt: number) -> void {
     shown = min(total, shown + dt * 60)
     if floor(shown) != before and floor(shown) % 3 == 0 and floor(shown) < total { play_sound("sfx/blip.wav", 0.25) }
     var ch: list = pages[page][2]
-    var go: bool = action_pressed("m_ok") or action_pressed("attack") or action_pressed("action")
+    # the mouse: a click goes on (attack is on the left button too: not counted twice)
+    var click: bool = mouse_pressed(0)
+    var go: bool = action_pressed("m_ok") or action_pressed("action") or (action_pressed("attack") and not click)
     if shown < total {
-        if go { shown = total }
+        if go or click { shown = total }
         return
     }
+    if len(ch) == 0 and click { go = true }
     if len(ch) > 0 {
+        if mouse_locked() { lock_mouse(false) }          # (a pointer to choose with; the game takes it back after)
+        var mp: vec2 = mouse_position()
+        var moved: bool = distance(mp, last_mouse) > 0.5
+        last_mouse = mp
+        var row: int = choice_at(mp, len(ch))
+        if row >= 0 and (moved or click) and row != choice {
+            choice = row
+            play_sound("sfx/cursor.wav", 0.4)
+        }
+        if click and row >= 0 { go = true }
         if action_pressed("m_up") {
             choice = (choice + len(ch) - 1) % len(ch)
             play_sound("sfx/cursor.wav", 0.4)
@@ -145,6 +188,17 @@ func update(dt: number) -> void {
         }
         open_page()
     }
+}
+
+# Which choice row the point is over (-1: none).
+func choice_at(p: vec2, n: int) -> int {
+    var top: number = 172 - n * 11
+    var y: number = top + 9 + LINES * 11 - 2
+    if p.x < 14 or p.x > 306 { return -1 }
+    for i in n {
+        if p.y >= y + i * 11 - 2 and p.y < y + i * 11 + 9 { return i }
+    }
+    return -1
 }
 
 func icon_file(item: string) -> string {

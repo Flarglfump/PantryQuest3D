@@ -890,6 +890,8 @@ func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
     return dir * 2.4 * move_amount
 }
 
+const CLIMB_GAP: number = 0.45        # how far from the wall he climbs (his middle; the vines are drawn 0.15 out)
+
 func update_climb(dt: number, mv: vec2) -> void {
     if vine == nil {
         st = "free"
@@ -897,11 +899,15 @@ func update_climb(dt: number, mv: vec2) -> void {
     }
     var up: number = -mv.y
     var side: vec3 = vec3(vine.out.z, 0, -vine.out.x)       # (his right, facing the vine)
-    var v: vec3 = vec3(0, up * 1.8, 0) + side * (mv.x * 1.4) + vine.out * -0.5
+    # he holds on at arm's length from the wall: not drifting in or out, whatever is behind
+    var wall: vec3 = vine.global_position - vine.out * 0.45
+    var gap: number = dot(self.position - wall, vine.out)
+    var v: vec3 = vec3(0, up * 1.8, 0) + side * (mv.x * 1.4) + vine.out * ((CLIMB_GAP - gap) * 8)
     vel = move_and_slide(self, v)
     if abs(up) > 0.1 or abs(mv.x) > 0.1 { play_animation(body, "climb", 1, true) } else { stop_animation(body) }
     if self.y >= vine.top - 0.05 and up > 0 {
-        self.position = vec3(self.x, vine.top + 0.1, self.z) + vine.out * -0.7       # up over the top
+        # up over the top: on to the ledge, well in from its edge
+        self.position = vec3(self.x, vine.top + 0.1, self.z) + vine.out * -(gap + 0.55)
         st = "free"
         vel = vec3(0, 0, 0)
     } elif up < 0 and is_on_floor(self) {

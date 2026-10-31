@@ -136,9 +136,9 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = 0 2 -8.55
+    position = 0 2 -8.45
     rotation = 0 -180 0
-    scale = 1.4 4 0.05
+    scale = 1.4 4 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
@@ -168,9 +168,9 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = -5.9887 6 -6.6511
+    position = -5.9218 6 -6.5768
     rotation = 0 -138 0
-    scale = 1.4 4 0.05
+    scale = 1.4 4 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
@@ -200,9 +200,9 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = 9.55 -3 0
+    position = 9.65 -3 0
     rotation = 0 -90 0
-    scale = 1.4 6 0.05
+    scale = 1.4 6 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"

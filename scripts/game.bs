@@ -64,23 +64,43 @@ func start() -> void {
 }
 
 # ---- controls (actions last the whole game) ----
+# The keys can be changed on the CONTROLS page (controls.bs, which has the same defaults):
+# it keeps them in the saved data "keys". The mouse buttons and gamepad stay as they are.
+const DEFAULT_KEYS: list = [["up", "w"], ["down", "s"], ["left", "a"], ["right", "d"], ["action", "space"], ["attack", "j"],
+                            ["shield", "k"], ["focus", "shift"], ["item1", "u"], ["item2", "i"], ["item3", "o"], ["flicker", "tab"],
+                            ["pause", "enter"], ["cam_left", "left"], ["cam_right", "right"], ["cam_center", "down"]]
+
+func key_for(chosen: list, action: string) -> string {
+    for k in chosen {
+        if k[0] == action { return k[1] }
+    }
+    for k in DEFAULT_KEYS {
+        if k[0] == action { return k[1] }
+    }
+    return ""
+}
+
 func bind_controls() -> void {
-    unbind("up"); bind("up", "w", "pad:left_y-")
-    unbind("down"); bind("down", "s", "pad:left_y+")
-    unbind("left"); bind("left", "a", "pad:left_x-")
-    unbind("right"); bind("right", "d", "pad:left_x+")
-    unbind("action"); bind("action", "space", "pad:a")
-    unbind("attack"); bind("attack", "j", "mouse:0", "pad:x")
-    unbind("focus"); bind("focus", "shift", "l", "mouse:2", "pad:lt", "pad:lb")
-    unbind("shield"); bind("shield", "k", "mouse:1", "pad:rt", "pad:rb")
-    unbind("item1"); bind("item1", "u", "pad:y")
-    unbind("item2"); bind("item2", "i", "pad:b")
-    unbind("item3"); bind("item3", "o", "pad:up")
-    unbind("flicker"); bind("flicker", "tab", "pad:back")
-    unbind("pause"); bind("pause", "enter", "escape", "pad:start")
-    unbind("cam_left"); bind("cam_left", "left", "pad:right_x-")
-    unbind("cam_right"); bind("cam_right", "right", "pad:right_x+")
-    unbind("cam_center"); bind("cam_center", "down")
+    var chosen: list = load_data("keys", [])
+    var map: list = []
+    for k in DEFAULT_KEYS { push(map, [k[0], key_for(chosen, k[0])]) }
+    set_global("keymap", map)                  # (for the HUD and the text box: the keys' names)
+    unbind("up"); bind("up", key_for(chosen, "up"), "pad:left_y-")
+    unbind("down"); bind("down", key_for(chosen, "down"), "pad:left_y+")
+    unbind("left"); bind("left", key_for(chosen, "left"), "pad:left_x-")
+    unbind("right"); bind("right", key_for(chosen, "right"), "pad:left_x+")
+    unbind("action"); bind("action", key_for(chosen, "action"), "pad:a")
+    unbind("attack"); bind("attack", key_for(chosen, "attack"), "mouse:0", "pad:x")
+    unbind("focus"); bind("focus", key_for(chosen, "focus"), "mouse:2", "pad:lt", "pad:lb")
+    unbind("shield"); bind("shield", key_for(chosen, "shield"), "mouse:1", "pad:rt", "pad:rb")
+    unbind("item1"); bind("item1", key_for(chosen, "item1"), "pad:y")
+    unbind("item2"); bind("item2", key_for(chosen, "item2"), "pad:b")
+    unbind("item3"); bind("item3", key_for(chosen, "item3"), "pad:up")
+    unbind("flicker"); bind("flicker", key_for(chosen, "flicker"), "pad:back")
+    unbind("pause"); bind("pause", key_for(chosen, "pause"), "escape", "pad:start")
+    unbind("cam_left"); bind("cam_left", key_for(chosen, "cam_left"), "pad:right_x-")
+    unbind("cam_right"); bind("cam_right", key_for(chosen, "cam_right"), "pad:right_x+")
+    unbind("cam_center"); bind("cam_center", key_for(chosen, "cam_center"))
     # menus
     unbind("m_up"); bind("m_up", "up", "w", "pad:up", "pad:left_y-")
     unbind("m_down"); bind("m_down", "down", "s", "pad:down", "pad:left_y+")
@@ -445,6 +465,10 @@ func update(dt: number) -> void {
     if not greeted and fade < 0.1 and state == "play" {
         greeted = true
         story.area_started(area)
+    }
+    if global("rebind", false) {               # (keys changed on the CONTROLS page)
+        set_global("rebind", false)
+        bind_controls()
     }
     if state == "play" and action_pressed("pause") { pause() }
     mouse_look_update()
