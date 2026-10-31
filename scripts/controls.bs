@@ -1,8 +1,11 @@
 @strict
-# controls.bs - the CONTROLS page (from the title screen or the pause menu's SYSTEM page):
-# every action with its key, mouse button and gamepad button. Choose an action (or click it)
-# and press a new key for it; a key another action had moves over to the one it came from.
-# The keys are kept in the saved data "keys" ([[action, key], ...]); game.bs binds them.
+# controls.bs - the CONTROLS page (from the title screen or the pause menu's SYSTEM page),
+# in two parts: ADVENTURE (playing) and MENUS. Every action with its key, mouse button and
+# gamepad button. Choose an action (or click it) and press a new key for it; a key another
+# action on the same part had moves over to the one it came from. The menus always answer
+# to the arrow keys, ENTER and ESC as well, so they can't be lost.
+# The keys are kept in the saved data "keys" ([[action, key], ...]); game.bs and title.bs
+# bind them (with the same defaults as here).
 
 var draw_layer: int = 98
 var cur: int = 0
@@ -13,6 +16,7 @@ var closing: bool = false
 var last_mouse: vec2 = vec2(-1, -1)
 var note: string = ""
 var note_t: number = 0
+var tab: int = 0                         # 0 ADVENTURE, 1 MENUS
 
 # action, what it does, its key unless changed, mouse, gamepad
 # (game.bs has the same default keys, for a game started before this page was ever opened)
@@ -24,12 +28,24 @@ const ROWS: list = [["up", "Forward", "w", "", "L-stick"], ["down", "Back", "s",
                     ["item3", "Item 3", "o", "", "D-up"], ["flicker", "Flicker", "tab", "", "Back"],
                     ["pause", "Pause", "enter", "", "Start"], ["cam_left", "Camera left", "left", "Move", "R-stick"],
                     ["cam_right", "Camera right", "right", "Move", "R-stick"], ["cam_center", "Camera back", "down", "", "LT"]]
-const TOP: number = 44
+# action, what it does, its key unless changed, the keys it always has too, gamepad
+const MENU_ROWS: list = [["m_up", "Up", "w", "UP", "D-pad"], ["m_down", "Down", "s", "DOWN", "D-pad"],
+                         ["m_left", "Left", "a", "LEFT", "D-pad"], ["m_right", "Right", "d", "RIGHT", "D-pad"],
+                         ["m_ok", "Choose", "space", "ENTER", "A"], ["m_back", "Back", "backspace", "ESC", "B"],
+                         ["m_page_l", "Page left", "q", "", "LB"], ["m_page_r", "Page right", "e", "", "RB"],
+                         ["m_erase", "Erase save", "delete", "", "Y"]]
+const TABS: list = ["ADVENTURE", "MENUS"]
+const TOP: number = 56
 const ROW_H: number = 9
 
 func start() -> void {
     lock_mouse(false)
     keys = load_data("keys", [])
+}
+
+func rows() -> list {
+    if tab == 1 { return MENU_ROWS }
+    return ROWS
 }
 
 func key_of(action: string) -> string {
@@ -39,32 +55,42 @@ func key_of(action: string) -> string {
     for r in ROWS {
         if r[0] == action { return r[2] }
     }
+    for r in MENU_ROWS {
+        if r[0] == action { return r[2] }
+    }
     return ""
 }
 
 func set_key(action: string, key: string) -> void {
     var old: string = key_of(action)
     var out: list = []
-    for r in ROWS {
-        var k: string = key_of(r[0])
-        if r[0] == action {
-            k = key
-        } elif k == key {
-            k = old                              # (it had this key: it gets the one given up)
-            note = r[1] + " is on " + label(old) + " now"
-            note_t = 3
+    for group in [ROWS, MENU_ROWS] {
+        var mine: bool = false
+        for r in group {
+            if r[0] == action { mine = true }
         }
-        push(out, [r[0], k])
+        for r in group {
+            var k: string = key_of(r[0])
+            if r[0] == action {
+                k = key
+            } elif k == key and mine {
+                k = old                          # (it had this key: it gets the one given up)
+                note = r[1] + " is on " + label(old) + " now"
+                note_t = 3
+            }
+            push(out, [r[0], k])
+        }
     }
     keys = out
     save_data("keys", keys)
-    set_global("rebind", true)                 # (the game binds them again when it carries on)
+    set_global("rebind", true)                 # (the game, or the title screen, binds them again)
 }
 
 func label(key: string) -> string {
     var names: list = [["leftshift", "L-SHIFT"], ["rightshift", "R-SHIFT"], ["leftctrl", "L-CTRL"], ["rightctrl", "R-CTRL"],
                        ["leftalt", "L-ALT"], ["rightalt", "R-ALT"], ["shift", "SHIFT"], ["up", "UP"], ["down", "DOWN"],
-                       ["left", "LEFT"], ["right", "RIGHT"], ["space", "SPACE"], ["enter", "ENTER"], ["tab", "TAB"]]
+                       ["left", "LEFT"], ["right", "RIGHT"], ["space", "SPACE"], ["enter", "ENTER"], ["tab", "TAB"],
+                       ["backspace", "BKSPACE"], ["delete", "DELETE"], ["escape", "ESC"]]
     for n in names {
         if n[0] == key { return n[1] }
     }
@@ -85,7 +111,7 @@ func upper(text: string) -> string {
     return out
 }
 
-func row_count() -> int { return len(ROWS) + 2 }      # (and RESET, BACK)
+func row_count() -> int { return len(rows()) + 2 }      # (and RESET, BACK)
 
 func row_at(p: vec2) -> int {
     if p.x < 16 or p.x > 304 { return -1 }
@@ -97,8 +123,23 @@ func row_at(p: vec2) -> int {
 }
 
 func row_y(i: int) -> number {
-    if i >= len(ROWS) { return TOP + len(ROWS) * ROW_H + 6 + (i - len(ROWS)) * 12 }
+    var n: int = len(rows())
+    if i >= n { return TOP + n * ROW_H + 5 + (i - n) * 11 }
     return TOP + i * ROW_H
+}
+
+func tab_at(p: vec2) -> int {
+    for i in 2 {
+        if p.x >= 40 + i * 130 and p.x < 150 + i * 130 and p.y >= 30 and p.y < 43 { return i }
+    }
+    return -1
+}
+
+func switch_tab(to: int) -> void {
+    if to == tab { return }
+    tab = to
+    cur = 0
+    play_sound("sfx/page.wav", 0.5)
 }
 
 func update(dt: number) -> void {
@@ -112,7 +153,7 @@ func update(dt: number) -> void {
             play_sound("sfx/menu.wav", 0.4, 0.8)
         } elif k != "" {
             waiting = false
-            set_key(ROWS[cur][0], k)
+            set_key(rows()[cur][0], k)
             play_sound("sfx/select.wav", 0.5)
         }
         return
@@ -126,13 +167,21 @@ func update(dt: number) -> void {
         cur = row
         play_sound("sfx/cursor.wav", 0.3)
     }
-    if action_pressed("m_up") { move(-1) }
-    if action_pressed("m_down") { move(1) }
-    if action_pressed("m_back") or mouse_pressed(1) {
+    if action_pressed("m_up") or key_pressed("up") { move(-1) }
+    if action_pressed("m_down") or key_pressed("down") { move(1) }
+    if action_pressed("m_page_l") or action_pressed("m_left") or action_pressed("m_page_r") or action_pressed("m_right") {
+        switch_tab(1 - tab)
+    }
+    var tb: int = tab_at(mp)
+    if mouse_pressed(0) and tb >= 0 {
+        switch_tab(tb)
+        return
+    }
+    if action_pressed("m_back") or key_pressed("escape") or mouse_pressed(1) {
         close()
         return
     }
-    if action_pressed("m_ok") or (mouse_pressed(0) and row >= 0) {
+    if action_pressed("m_ok") or key_pressed("enter") or (mouse_pressed(0) and row >= 0) {
         if mouse_pressed(0) { cur = row }
         choose()
     }
@@ -144,14 +193,23 @@ func move(d: int) -> void {
 }
 
 func choose() -> void {
-    if cur == len(ROWS) {
-        keys = []
+    var n: int = len(rows())
+    if cur == n {
+        var out: list = []                       # (only this part's keys go back)
+        for k in keys {
+            var here: bool = false
+            for r in rows() {
+                if r[0] == k[0] { here = true }
+            }
+            if not here { push(out, k) }
+        }
+        keys = out
         save_data("keys", keys)
         set_global("rebind", true)
         note = "The usual keys are back."
         note_t = 3
         play_sound("sfx/select.wav", 0.5)
-    } elif cur == len(ROWS) + 1 {
+    } elif cur == n + 1 {
         close()
     } else {
         waiting = true
@@ -171,19 +229,31 @@ func draw() -> void {
     draw_rect(vec2(10, 8), vec2(300, 226), [30, 22, 40, 252])
     draw_rect(vec2(10, 8), vec2(300, 226), [220, 190, 120, 255], false)
     var title: string = "CONTROLS"
-    draw_text(title, vec2(160 - text_size(title, 2).x / 2, 14), [255, 220, 130], 2)
-    draw_text("ACTION", vec2(18, 33), [180, 160, 120])
-    draw_text("KEY", vec2(120, 33), [180, 160, 120])
-    draw_text("MOUSE", vec2(192, 33), [180, 160, 120])
-    draw_text("PAD", vec2(252, 33), [180, 160, 120])
+    draw_text(title, vec2(160 - text_size(title, 2).x / 2, 12), [255, 220, 130], 2)
+    for i in 2 {
+        var at: vec2 = vec2(40 + i * 130, 30)
+        var on: bool = i == tab
+        var bg: list = [40, 32, 52, 255]
+        if on { bg = [80, 64, 100, 255] }
+        draw_rect(at, vec2(110, 13), bg)
+        if on { draw_rect(at, vec2(110, 13), [255, 220, 120, 255], false) }
+        var tc: list = [170, 160, 140]
+        if on { tc = [255, 236, 150] }
+        draw_text(TABS[i], at + vec2(55 - text_size(TABS[i]).x / 2, 3), tc)
+    }
+    draw_text("ACTION", vec2(18, 46), [180, 160, 120])
+    draw_text("KEY", vec2(120, 46), [180, 160, 120])
+    if tab == 0 { draw_text("MOUSE", vec2(192, 46), [180, 160, 120]) } else { draw_text("ALSO", vec2(192, 46), [180, 160, 120]) }
+    draw_text("PAD", vec2(252, 46), [180, 160, 120])
+    var list_rows: list = rows()
     for i in row_count() {
         var y: number = row_y(i)
         var sel: bool = i == cur
         if sel { draw_rect(vec2(16, y - 1), vec2(288, ROW_H), [70, 55, 90, 255]) }
         var c: list = [210, 200, 180]
         if sel { c = [255, 236, 150] }
-        if i < len(ROWS) {
-            var r: list = ROWS[i]
+        if i < len(list_rows) {
+            var r: list = list_rows[i]
             draw_text(r[1], vec2(18, y), c)
             var k: string = label(key_of(r[0]))
             if sel and waiting {
@@ -193,14 +263,14 @@ func draw() -> void {
             draw_text(k, vec2(120, y), [255, 255, 255])
             draw_text(r[3], vec2(192, y), [170, 170, 190])
             draw_text(r[4], vec2(252, y), [170, 170, 190])
-        } elif i == len(ROWS) {
+        } elif i == len(list_rows) {
             draw_text("RESET TO THE USUAL KEYS", vec2(18, y), c)
         } else {
             draw_text("BACK", vec2(18, y), c)
         }
     }
-    var help: string = "ENTER/click: change   ESC: back"
+    var help: string = "ENTER/click: change  Q/E: page"
     if waiting { help = "Press a key (ESC, click: cancel)" }
     if note_t > 0 { help = note }
-    draw_text(help, vec2(160 - text_size(help).x / 2, 222), [200, 190, 170])
+    draw_text(help, vec2(160 - text_size(help).x / 2, 224), [200, 190, 170])
 }

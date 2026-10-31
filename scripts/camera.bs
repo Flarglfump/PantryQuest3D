@@ -16,6 +16,8 @@ var shake_t: number = 0
 var tilt: number = 0               # the mouse: the camera raised (+) or lowered (-), metres
 const MOUSE_TURN: number = 0.45    # degrees per game pixel of mouse motion
 const MOUSE_TILT: number = 0.02    # metres per game pixel
+const STICK_TURN: number = 160     # degrees a second, the right stick all the way over
+const STICK_TILT: number = 2.6     # metres a second
 
 func start() -> void {
     sprig = find("Sprig")
@@ -53,23 +55,28 @@ func update(dt: number) -> void {
     flat.y = 0
     if length(flat) < 0.1 { flat = sprig.forward_of(sprig.facing) * -1 }
 
-    var turn: number = action_axis("cam_left", "cam_right") * 110 * dt
-    var rs: vec2 = stick("right")
-    if abs(rs.x) > abs(action_axis("cam_left", "cam_right")) { turn = rs.x * 140 * dt }
     if action_pressed("cam_center") or action_pressed("focus") { recenter = 0.25 }
 
     var t: entity = sprig.target
     if t != nil and not t.alive { t = nil }
+    # swinging round and tilting: the mouse (while it's captured), the right stick, ← →
+    var swing: number = action_axis("cam_left", "cam_right") * 110 * dt
+    var rs: vec2 = stick("right")
+    if abs(rs.x) < 0.15 { rs.x = 0 }
+    if abs(rs.y) < 0.15 { rs.y = 0 }
+    swing += rs.x * STICK_TURN * dt
+    tilt = clamp(tilt + rs.y * STICK_TILT * dt, -1.1, 2.4)
     var mm: vec2 = mouse_motion()
     if mouse_locked() {
         tilt = clamp(tilt + mm.y * MOUSE_TILT, -1.1, 2.4)
-        if mm.x != 0 and t == nil and sprig.st != "climb" and not sprig.focusing and recenter <= 0 {
-            # swing the camera itself round Sprig, so the view keeps up with the hand
-            var a2: number = atan2(flat.x, flat.z) - mm.x * MOUSE_TURN
-            var r: number = length(flat)
-            flat = vec3(sin(a2), 0, cos(a2)) * r
-            pos = vec3(me.x + flat.x, pos.y, me.z + flat.z)
-        }
+        swing += mm.x * MOUSE_TURN
+    }
+    if swing != 0 and t == nil and sprig.st != "climb" and not sprig.focusing and recenter <= 0 {
+        # swing the camera itself round Sprig, so the view keeps up with the hand
+        var a2: number = atan2(flat.x, flat.z) - swing
+        var r: number = length(flat)
+        flat = vec3(sin(a2), 0, cos(a2)) * r
+        pos = vec3(me.x + flat.x, pos.y, me.z + flat.z)
     }
     if t != nil {
         # behind Sprig, on the line from what's focused through him
@@ -84,9 +91,6 @@ func update(dt: number) -> void {
         if recenter > 0 { tilt = lerp(tilt, 0, min(1, dt * 12)) }
         var back: vec3 = sprig.forward_of(sprig.facing) * -1
         flat = lerp(normalize(flat), back, min(1, dt * 12))
-    } elif turn != 0 {
-        var a: number = atan2(flat.x, flat.z) - turn
-        flat = vec3(sin(a), 0, cos(a))
     }
     flat = normalize(flat) * dist * (1 - max(0, tilt) * 0.1)     # (looking down from higher up: a little closer)
     var want: vec3 = me + flat + vec3(0, height + tilt, 0)

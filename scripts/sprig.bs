@@ -735,24 +735,24 @@ func update(dt: number) -> void {
 }
 
 func vel_want(dir: vec3, mv: vec2) -> vec3 {
-    if shielding { return vec3(0, 0, 0) }
     var speed: number = RUN
+    if shielding { speed = SHIELD_WALK }          # (behind the shield: a slow step any way, still facing ahead)
     if focusing { speed = 4.2 }
     return dir * speed * move_amount
 }
 
 func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
-    # facing
+    if has_lid() and action_down("shield") and on_floor {
+        shielding = true
+        drawn = 3
+    }
+    # facing (behind the shield he keeps facing the way he was: steps aside or back)
     if target != nil {
         turn_to(yaw_of(target.global_position - self.position), 900, dt)
     } elif focusing {
         turn_to(focus_yaw, 900, dt)
-    } elif move_amount > 0.1 {
+    } elif move_amount > 0.1 and not shielding {
         turn_to(yaw_of(dir), 720, dt)
-    }
-    if has_lid() and action_down("shield") and on_floor {
-        shielding = true
-        drawn = 3
     }
     if carrying != nil and carrying.alive {
         if action_pressed("action") {
@@ -891,6 +891,8 @@ func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
 }
 
 const CLIMB_GAP: number = 0.45        # how far from the wall he climbs (his middle; the vines are drawn 0.15 out)
+
+const SHIELD_WALK: number = 2.4      # how fast he steps with the shield up
 
 func update_climb(dt: number, mv: vec2) -> void {
     if vine == nil {

@@ -15,11 +15,7 @@ var last_mouse: vec2 = vec2(-1, -1)
 
 func start() -> void {
     lock_mouse(false)
-    unbind("m_up"); bind("m_up", "up", "w", "pad:up", "pad:left_y-")
-    unbind("m_down"); bind("m_down", "down", "s", "pad:down", "pad:left_y+")
-    unbind("m_ok"); bind("m_ok", "enter", "space", "j", "pad:a", "pad:start")
-    unbind("m_back"); bind("m_back", "escape", "backspace", "pad:b")
-    unbind("m_erase"); bind("m_erase", "delete", "pad:y")
+    bind_menus()
     for i in 3 { push(slots, load_data("slot" + i)) }
     play_music("music/title.wav", 0.7, 1.0)
 }
@@ -32,6 +28,11 @@ func update(dt: number) -> void {
         return
     }
     if t < 0.5 { return }
+    if global("rebind", false) {               # (keys changed on the CONTROLS page)
+        set_global("rebind", false)
+        set_global("bound", false)             # (and the game binds everything again when it starts)
+        bind_menus()
+    }
     var mp: vec2 = mouse_position()
     var moved: bool = distance(mp, last_mouse) > 0.5
     last_mouse = mp
@@ -74,6 +75,33 @@ func update(dt: number) -> void {
         leaving = 0
         stop_music(0.8)
     }
+}
+
+# The menus' keys (the CONTROLS page can change one of each; game.bs has the same).
+const MENU_KEYS: list = [["m_up", "w"], ["m_down", "s"], ["m_left", "a"], ["m_right", "d"], ["m_ok", "space"],
+                         ["m_back", "backspace"], ["m_page_l", "q"], ["m_page_r", "e"], ["m_erase", "delete"]]
+
+func menu_key(chosen: list, action: string) -> string {
+    for k in chosen {
+        if k[0] == action { return k[1] }
+    }
+    for k in MENU_KEYS {
+        if k[0] == action { return k[1] }
+    }
+    return ""
+}
+
+func bind_menus() -> void {
+    var chosen: list = load_data("keys", [])
+    unbind("m_up"); bind("m_up", menu_key(chosen, "m_up"), "up", "pad:up", "pad:left_y-")
+    unbind("m_down"); bind("m_down", menu_key(chosen, "m_down"), "down", "pad:down", "pad:left_y+")
+    unbind("m_left"); bind("m_left", menu_key(chosen, "m_left"), "left", "pad:left", "pad:left_x-")
+    unbind("m_right"); bind("m_right", menu_key(chosen, "m_right"), "right", "pad:right", "pad:left_x+")
+    unbind("m_ok"); bind("m_ok", menu_key(chosen, "m_ok"), "enter", "pad:a", "pad:start")
+    unbind("m_back"); bind("m_back", menu_key(chosen, "m_back"), "escape", "pad:b")
+    unbind("m_page_l"); bind("m_page_l", menu_key(chosen, "m_page_l"), "pad:lb")
+    unbind("m_page_r"); bind("m_page_r", menu_key(chosen, "m_page_r"), "pad:rb")
+    unbind("m_erase"); bind("m_erase", menu_key(chosen, "m_erase"), "pad:y")
 }
 
 func inside(p: vec2, at: vec2, size: vec2) -> bool {

@@ -40,7 +40,8 @@ Or open the folder in Bronto's editor (**Load Project**) and press Play.
 | Pause (items, gear, map, save) | Enter, Esc | Start |
 
 The keys can be changed on the CONTROLS page (on the title screen, and in the pause menu's
-SYSTEM page). The menus work with the mouse too: point and click (a right click goes back).
+SYSTEM page), which has two parts: ADVENTURE and MENUS. The menus also always answer to the
+arrow keys, ENTER and ESC. With the shield up, Sprig steps aside or back still facing ahead. The menus work with the mouse too: point and click (a right click goes back).
 
 Click on the game to capture the mouse for mouse-look; it is let go while a menu is up
 (and comes back after) and when the window is in the background. In a browser, Esc lets

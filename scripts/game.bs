@@ -45,7 +45,7 @@ func start() -> void {
     load_state()
     sprig = find("Sprig")
     story = find("Story")
-    if not has_global("bound") {
+    if not global("bound", false) {
         bind_controls()
         set_global("bound", true)
     }
@@ -80,6 +80,33 @@ func key_for(chosen: list, action: string) -> string {
     return ""
 }
 
+# The menus' keys: one the CONTROLS page can change, and the arrows, ENTER and ESC always.
+# (title.bs binds them the same way.)
+const MENU_KEYS: list = [["m_up", "w"], ["m_down", "s"], ["m_left", "a"], ["m_right", "d"], ["m_ok", "space"],
+                         ["m_back", "backspace"], ["m_page_l", "q"], ["m_page_r", "e"], ["m_erase", "delete"]]
+
+func menu_key(chosen: list, action: string) -> string {
+    for k in chosen {
+        if k[0] == action { return k[1] }
+    }
+    for k in MENU_KEYS {
+        if k[0] == action { return k[1] }
+    }
+    return ""
+}
+
+func bind_menus(chosen: list) -> void {
+    unbind("m_up"); bind("m_up", menu_key(chosen, "m_up"), "up", "pad:up", "pad:left_y-")
+    unbind("m_down"); bind("m_down", menu_key(chosen, "m_down"), "down", "pad:down", "pad:left_y+")
+    unbind("m_left"); bind("m_left", menu_key(chosen, "m_left"), "left", "pad:left", "pad:left_x-")
+    unbind("m_right"); bind("m_right", menu_key(chosen, "m_right"), "right", "pad:right", "pad:left_x+")
+    unbind("m_ok"); bind("m_ok", menu_key(chosen, "m_ok"), "enter", "pad:a")
+    unbind("m_back"); bind("m_back", menu_key(chosen, "m_back"), "escape", "pad:b")
+    unbind("m_page_l"); bind("m_page_l", menu_key(chosen, "m_page_l"), "pad:lb")
+    unbind("m_page_r"); bind("m_page_r", menu_key(chosen, "m_page_r"), "pad:rb")
+    unbind("m_erase"); bind("m_erase", menu_key(chosen, "m_erase"), "pad:y")
+}
+
 func bind_controls() -> void {
     var chosen: list = load_data("keys", [])
     var map: list = []
@@ -98,18 +125,10 @@ func bind_controls() -> void {
     unbind("item3"); bind("item3", key_for(chosen, "item3"), "pad:up")
     unbind("flicker"); bind("flicker", key_for(chosen, "flicker"), "pad:back")
     unbind("pause"); bind("pause", key_for(chosen, "pause"), "escape", "pad:start")
-    unbind("cam_left"); bind("cam_left", key_for(chosen, "cam_left"), "pad:right_x-")
-    unbind("cam_right"); bind("cam_right", key_for(chosen, "cam_right"), "pad:right_x+")
+    unbind("cam_left"); bind("cam_left", key_for(chosen, "cam_left"))          # (the right stick: camera.bs reads it itself)
+    unbind("cam_right"); bind("cam_right", key_for(chosen, "cam_right"))
     unbind("cam_center"); bind("cam_center", key_for(chosen, "cam_center"))
-    # menus
-    unbind("m_up"); bind("m_up", "up", "w", "pad:up", "pad:left_y-")
-    unbind("m_down"); bind("m_down", "down", "s", "pad:down", "pad:left_y+")
-    unbind("m_left"); bind("m_left", "left", "a", "pad:left", "pad:left_x-")
-    unbind("m_right"); bind("m_right", "right", "d", "pad:right", "pad:left_x+")
-    unbind("m_ok"); bind("m_ok", "enter", "space", "j", "pad:a")
-    unbind("m_back"); bind("m_back", "escape", "backspace", "pad:b")
-    unbind("m_page_l"); bind("m_page_l", "q", "pad:lb")
-    unbind("m_page_r"); bind("m_page_r", "e", "pad:rb")
+    bind_menus(chosen)
 }
 
 # ---- the state ----
