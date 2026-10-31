@@ -25,6 +25,7 @@ var yaw: number = 0
 var home: vec3
 var wander_to: vec3
 var dead: bool = false
+var at: vec3                       # (where it is: for the play-test bots)
 var spit_t: number = 1.5
 var wobble: number = 0
 var popped: bool = false
@@ -160,6 +161,7 @@ func trio_reset() -> void {
 }
 
 func update(dt: number) -> void {
+    at = self.position
     if dead or game.state != "play" { return }
     st_t += dt
     flash = max(0, flash - dt)

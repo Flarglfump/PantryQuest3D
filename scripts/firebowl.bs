@@ -1,0 +1,29 @@
+@strict @3d
+# firebowl.bs - a bowl of oil in the Great Crock. A burning pea lights it, for good (the flag
+# `id`), and once lit it's a flame like a torch's: a pea through it catches fire too.
+# (Its fire warms the dough: proof.bs columns watching `id` rise.)
+
+var id: string = ""
+var lit: bool = false
+var radius: number = 0.7
+var passthrough: bool = false
+var flame_h: number = 0.75
+var game: entity
+
+func start() -> void {
+    game = find("Game")
+    lit = game.flag(id)
+    self.Particles.emitting = lit
+}
+
+func flame_point() -> vec3 { return self.position + vec3(0, flame_h, 0) }
+func focus_point() -> vec3 { return flame_point() }
+
+func hit(amount: int, how: string, from: vec3) -> void {
+    if lit or how != "fire" { return }
+    lit = true
+    self.Particles.emitting = true
+    game.set_flag(id)
+    play_sound("sfx/ignite.wav", 0.8)
+    play_sound("sfx/secret.wav", 0.6)
+}

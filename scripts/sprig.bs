@@ -136,6 +136,7 @@ func acquire() -> void {
         if d > far or d < 0.05 { continue }
         var facing_dot: number = dot(normalize(to), fwd)
         if facing_dot < -0.3 and d > 3 { continue }
+        if not in_sight(e) { continue }           # (not through a wall, or a floor)
         var score: number = d * (1.6 - facing_dot)
         if score < best_score {
             best_score = score
@@ -150,6 +151,51 @@ func acquire() -> void {
     } else {
         cam.snap_behind()
     }
+}
+
+# Shooting without focusing: if something to shoot (an eye, a web, a fire-bowl) is nearly
+# straight ahead, the shot goes right at it - keys and sticks can't aim finer than that.
+# (A torch on the way lights the pea as it passes.) If there's nothing, but a torch's flame
+# close by, it goes through the flame.
+func aim_assist(from: vec3, dir: vec3) -> vec3 {
+    var best: number = 0.966                   # (within about 15 degrees)
+    var aim: vec3 = dir
+    var flat: vec3 = normalize(vec3(dir.x, 0, dir.z))
+    var found: bool = false
+    for e in find_tagged("shootable") {
+        var p2: vec3 = e.global_position
+        var to2: vec3 = vec3(p2.x - from.x, 0, p2.z - from.z)
+        if length(to2) < 0.5 or length(to2) > 18 { continue }
+        var c2: number = dot(normalize(to2), flat)
+        var seen: any = raycast(from, p2, self)          # (nothing solid in the way)
+        if c2 > best and (seen == nil or seen[0] == e or distance(seen[1], p2) < 0.6) {
+            best = c2
+            aim = normalize(p2 - from)
+            found = true
+        }
+    }
+    if found { return aim }
+    for t in find_tagged("torch") {
+        if not t.lit { continue }
+        var p: vec3 = t.flame_point()
+        var to: vec3 = vec3(p.x - from.x, 0, p.z - from.z)
+        if length(to) < 0.3 or length(to) > 4 { continue }
+        var c: number = dot(normalize(to), flat)
+        if c > best and abs(p.y - from.y) < 1.2 {
+            best = c
+            aim = normalize(to)
+        }
+    }
+    return aim
+}
+
+# Whether Sprig can see e (nothing solid between his eyes and the point he'd aim at).
+func in_sight(e: entity) -> bool {
+    var eye: vec3 = self.position + vec3(0, 1.0, 0)
+    var p: vec3 = e.focus_point()
+    var hit: any = raycast(eye, p, self)
+    if hit == nil or hit[0] == e { return true }
+    return distance(hit[1], p) < 0.6
 }
 
 func target_point() -> vec3 { return target.focus_point() }
@@ -340,7 +386,7 @@ func use_item(name: string) -> void {
         game.add_count("arrows", -1)
         var from2: vec3 = self.position + vec3(0, 1.0, 0) + forward_of(facing) * 0.4
         var dir2: vec3 = forward_of(facing)
-        if target != nil { dir2 = normalize(target_point() - from2) }
+        if target != nil { dir2 = normalize(target_point() - from2) } else { dir2 = aim_assist(from2, dir2) }
         var ar: entity = spawn("prefabs/arrow.scene", from2)
         ar.dir = dir2
         ar.owner = self
@@ -429,7 +475,7 @@ func use_item(name: string) -> void {
         game.commit()
         var from: vec3 = self.position + vec3(0, 0.75, 0) + forward_of(facing) * 0.4
         var dir: vec3 = forward_of(facing)
-        if target != nil { dir = normalize(target_point() - from) }
+        if target != nil { dir = normalize(target_point() - from) } else { dir = aim_assist(from, dir) }
         var p: entity = spawn("prefabs/pea.scene", from)
         p.dir = dir
         p.owner = self

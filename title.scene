@@ -392,6 +392,20 @@ entity
 
 entity
   Name
+    text = "Lid"
+  Transform3D
+    position = 0 0.55 0.35
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/chest_lid.obj"
+    texture = "art/chest.png"
+    color = #ffffffff
+    uv_scale = 1 1
+
+entity
+  Name
     text = "Awning"
   Transform3D
     position = 13 3.0292 -8.3
@@ -1514,6 +1528,20 @@ entity
   Mesh
     shape = model
     file = "models/areas/sprouthollow/hedge_0_-2.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+
+entity
+  Name
+    text = "hedge 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/hedge_0_-1.obj"
     texture = "art/hedge.png"
     color = #ffffffff
     uv_scale = 1 1

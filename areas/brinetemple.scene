@@ -1238,3 +1238,12 @@ entity
     cast_shadow = false
   Tags
     list = "seethrough"
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "picture = \"art/maps/brinetemple.png\", x0 = -32.679, z0 = -64.679, ppm = 1.4737, w = 114, h = 114"

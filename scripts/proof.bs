@@ -1,0 +1,49 @@
+@strict @3d
+# proof.bs - a column of risen dough in the Great Crock, its top a platform Sprig stands on.
+#   mode "stand": warm dough - it rises (to `high`) while Sprig stands on it, and sinks back
+#                 (to `low`) when he steps off
+#   mode "flag":  cold dough - it rises when the flag `when` is set (a fire-bowl lit) and stays
+# `low` and `high` are heights of its top; the entity is the middle of a column `tall` high
+# (tall enough that it never shows its bottom). Tagged "platform": it carries him.
+
+var mode: string = "stand"
+var low: number = 0
+var high: number = 2
+var tall: number = 8
+var half: number = 1.0                 # half its width (it's square)
+var speed: number = 1.3
+var when: string = ""
+var top: number = 0
+var game: entity
+var sprig: entity
+var moving: bool = false
+
+func start() -> void {
+    game = find("Game")
+    sprig = find("Sprig")
+    top = low
+    if mode == "flag" and game.flag(when) { top = high }
+    place()
+}
+
+func place() -> void { self.position = vec3(self.x, top - tall / 2, self.z) }
+
+func stood_on() -> bool {
+    if sprig == nil or not sprig.alive { return false }
+    if abs(sprig.x - self.x) > half + 0.15 or abs(sprig.z - self.z) > half + 0.15 { return false }
+    return sprig.y > top - 0.25 and sprig.y < top + 0.45
+}
+
+func update(dt: number) -> void {
+    if game.state != "play" { return }
+    var goal: number = low
+    if mode == "stand" and stood_on() { goal = high }
+    if mode == "flag" and game.flag(when) { goal = high }
+    var was: bool = moving
+    moving = abs(goal - top) > 0.001
+    if moving {
+        top = top + clamp(goal - top, -speed * dt, speed * dt)
+        place()
+        if not was { play_sound("sfx/rumble.wav", 0.35, 1.4) }
+    }
+}

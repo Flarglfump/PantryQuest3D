@@ -1361,3 +1361,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "picture = \"art/maps/crypt.png\", x0 = -18.337, z0 = -94.938, ppm = 1.0667, w = 57, h = 114"

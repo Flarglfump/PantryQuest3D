@@ -1940,3 +1940,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "picture = \"art/maps/hardcaves.png\", x0 = -32.902, z0 = -88.902, ppm = 1.1089, w = 72, h = 114"

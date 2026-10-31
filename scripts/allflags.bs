@@ -1,0 +1,22 @@
+@strict @3d
+# allflags.bs - sets the flag `out` while the flags `a` and `b` are both set (two floor
+# switches held down at once opening one gate), and clears it when they aren't. With
+# `stay`, once set it stays.
+
+var a: string = ""
+var b: string = ""
+var out: string = ""
+var stay: bool = false
+var game: entity
+
+func start() -> void { game = find("Game") }
+
+func update(dt: number) -> void {
+    var both: bool = game.flag(a) and game.flag(b)
+    if both and not game.flag(out) {
+        game.set_flag(out)
+        play_sound("sfx/secret.wav", 0.7)
+    } elif not both and game.flag(out) and not stay {
+        game.clear_flag(out)
+    }
+}

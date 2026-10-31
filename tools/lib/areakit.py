@@ -12,7 +12,7 @@ An area script makes an Area, adds geometry and things, and saves it:
 import math
 import os
 
-from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path)
+from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path, write_png)
 
 MATERIALS = {
     # material: (texture, colour, solid, cast shadows, lit, cull)
@@ -43,6 +43,7 @@ MATERIALS = {
     'mould': ('art/mould.png', '#ffffffff', True, False, True, True),
     'rot': ('art/rot.png', '#ffffffff', True, False, True, True),
     'starter': ('art/dough.png', '#f0e0b8e0', False, False, True, False),
+    'starter_pool': ('art/dough.png', '#d8c090ff', False, False, True, True),   # (a pit's runny starter: not see-through)
     'deco': ('art/planks.png', '#ffffffff', False, True, True, True),
     'ceiling': ('art/dough.png', '#a89878ff', True, False, True, True),
 }
@@ -56,6 +57,7 @@ class Area:
         self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
         self.chunks = Chunked(chunk)
         self.kill_y = kill_y
+        self.dungeon = dungeon
         s = self.scene
         gk = dict(area=id, area_name=name, music=music, dungeon=dungeon, kill_y=kill_y)
         if hot:
@@ -109,6 +111,8 @@ class Area:
             self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
             n += 1
             tris += obj.tri_count()
+        if self.dungeon:
+            self.make_map()
         written = {'%s_%d_%d.obj' % (m, cx, cz) for (m, cx, cz), obj in self.chunks.items() if not obj.empty()}
         folder = os.path.join('models', 'areas', self.file_id)
         for old in os.listdir(folder) if os.path.isdir(folder) else []:
@@ -116,6 +120,65 @@ class Area:
                 os.remove(os.path.join(folder, old))       # (chunks an earlier version made: not packed into the game)
         self.scene.save(os.path.join('areas', self.file_id + '.scene'))
         print('  %s: %d entities, %d level meshes, %d level triangles' % (self.file_id, self.scene.count, n, tris))
+
+    # ---- the dungeon map: the floors seen from above, as a picture for the pause menu ----
+    def make_map(self, max_w=216, max_h=112):
+        tris = []
+        for (material, cx, cz), obj in self.chunks.items():
+            if obj.empty() or not MATERIALS[material][2] or material == 'ceiling':
+                continue
+            wall = 'wall' in material
+            for f in obj.f:
+                P = [obj.v[k[0] - 1] for k in f]
+                e1 = [P[1][i] - P[0][i] for i in range(3)]
+                e2 = [P[2][i] - P[0][i] for i in range(3)]
+                ny = e1[2] * e2[0] - e1[0] * e2[2]
+                l = math.sqrt((e1[1] * e2[2] - e1[2] * e2[1]) ** 2 + ny ** 2 + (e1[0] * e2[1] - e1[1] * e2[0]) ** 2) or 1
+                if ny / l > 0.7:
+                    tris.append((P, wall))
+        if not tris:
+            return
+        xs = [p[0] for P, w in tris for p in P]
+        zs = [p[2] for P, w in tris for p in P]
+        ys = [p[1] for P, w in tris for p in P if not w]
+        x0, x1, z0, z1 = min(xs), max(xs), min(zs), max(zs)
+        ppm = min(max_w / max(x1 - x0, 1), max_h / max(z1 - z0, 1))
+        W, H = int((x1 - x0) * ppm) + 2, int((z1 - z0) * ppm) + 2
+        ylo, yhi = min(ys or [0]), max(ys or [1])
+        top = [[None] * W for _ in range(H)]          # (height, wall) of the highest floor at each pixel
+        for P, wall in tris:
+            Q = [((p[0] - x0) * ppm + 1, (p[2] - z0) * ppm + 1, p[1]) for p in P]
+            ax, ay, bx, by, cx_, cy = Q[0][0], Q[0][1], Q[1][0], Q[1][1], Q[2][0], Q[2][1]
+            den = (by - cy) * (ax - cx_) + (cx_ - bx) * (ay - cy)
+            if abs(den) < 1e-9:
+                continue
+            for py in range(max(0, int(min(ay, by, cy))), min(H, int(max(ay, by, cy)) + 1)):
+                for px in range(max(0, int(min(ax, bx, cx_))), min(W, int(max(ax, bx, cx_)) + 1)):
+                    X, Y = px + 0.5, py + 0.5
+                    w0 = ((by - cy) * (X - cx_) + (cx_ - bx) * (Y - cy)) / den
+                    w1 = ((cy - ay) * (X - cx_) + (ax - cx_) * (Y - cy)) / den
+                    w2 = 1 - w0 - w1
+                    if min(w0, w1, w2) < -0.02:
+                        continue
+                    h = Q[0][2] * w0 + Q[1][2] * w1 + Q[2][2] * w2 + (0.01 if wall else 0)
+                    if top[py][px] is None or h > top[py][px][0]:
+                        top[py][px] = (h, wall)
+
+        def pixel(px, py):
+            c = top[py][px]
+            if c is None:
+                near = any(0 <= py + dy < H and 0 <= px + dx < W and top[py + dy][px + dx] is not None and not top[py + dy][px + dx][1]
+                           for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+                return (60, 36, 20, 255) if near else (0, 0, 0, 0)
+            if c[1]:
+                return (96, 64, 40, 255)
+            k = (c[0] - ylo) / ((yhi - ylo) or 1)
+            return (150 + 90 * k, 118 + 80 * k, 70 + 60 * k, 255)
+        file = 'art/maps/%s.png' % self.file_id
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        write_png(file, W, H, pixel, alpha=True)
+        self.scene.entity('Map Info', t2(), script('scripts/mapinfo.bs', picture=file, x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3),
+                                                     ppm=round(ppm, 4), w=W, h=H))
 
     # ---- things ----
     def spawn_point(self, name, x, y, z, yaw=0):

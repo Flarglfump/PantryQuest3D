@@ -419,9 +419,32 @@ func pause() -> void {
     set_global("area_name", area_name)
     set_global("dungeon", dungeon)
     set_global("area", area)
+    map_for_pause()
     state = "paused"
     play_sound("sfx/menu.wav", 0.6)
     push_scene("pause.scene", true, false)
+}
+
+# The dungeon map for the pause menu: the picture (from the area's Map Info), where Sprig
+# is, and for the compass the chests not yet opened and the boss.
+func map_for_pause() -> void {
+    var info: entity = find("Map Info")
+    if info == nil or dungeon == "" {
+        set_global("dmap", [])
+        return
+    }
+    set_global("dmap", [info.picture, info.x0, info.z0, info.ppm, info.w, info.h])
+    var chests: list = []
+    for c in find_tagged("chest") {
+        if not c.opened and c.shown { push(chests, [c.x, c.z]) }
+    }
+    var bosses: list = []
+    for b in find_tagged("boss") {
+        if b.alive { push(bosses, [b.x, b.z]) }
+    }
+    var at: list = [0, 0, 0]
+    if sprig != nil { at = [sprig.x, sprig.z, sprig.facing] }
+    set_global("dmap_marks", [at, chests, bosses])
 }
 
 func game_over() -> void {

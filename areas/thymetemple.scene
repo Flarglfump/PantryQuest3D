@@ -1792,3 +1792,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "picture = \"art/maps/thymetemple.png\", x0 = -29.991, z0 = -101.991, ppm = 1.009, w = 60, h = 113"

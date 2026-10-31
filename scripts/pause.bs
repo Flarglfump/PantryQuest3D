@@ -348,33 +348,59 @@ func draw_map() -> void {
     }
     var hm: bool = has("map_" + dun)
     var hc: bool = has("compass_" + dun)
-    var names: list = [["crock", "THE GREAT CROCK", "The Queen lurks on 3F,", "past the web below."],
-                       ["hardcaves", "HARDTACK CAVERNS", "King Crustodon waits", "beyond the north cave."],
-                       ["gulp", "INSIDE LORD GULP", "Something knotted lurks", "past the north chamber."],
-                       ["thymetemple", "THYME TEMPLE", "The master waits below,", "down the lift in the hall."],
-                       ["forge", "FONDUE FORGE", "The dragon sleeps in the cheese,", "past the north room."],
-                       ["brinetemple", "FIZZWATER TEMPLE", "The master lurks in the", "pool past the north door."],
-                       ["crypt", "COMPOST CRYPT", "Something unseen waits", "beyond the north room."],
-                       ["idoltemple", "SALT IDOL", "The twin witches wait", "at the top of the Idol."]]
+    var names: list = [["crock", "THE GREAT CROCK"], ["hardcaves", "HARDTACK CAVERNS"], ["gulp", "INSIDE LORD GULP"],
+                       ["thymetemple", "THYME TEMPLE"], ["forge", "FONDUE FORGE"], ["brinetemple", "FIZZWATER TEMPLE"],
+                       ["crypt", "COMPOST CRYPT"], ["idoltemple", "SALT IDOL"]]
     var title: string = dun
-    var b1: string = ""
-    var b2: string = ""
     for n in names {
-        if n[0] == dun {
-            title = n[1]
-            b1 = n[2]
-            b2 = n[3]
-        }
+        if n[0] == dun { title = n[1] }
     }
-    draw_text(title, vec2(160 - text_size(title).x / 2, 88), [255, 220, 130])
-    if hm { draw_text("You have the map.", vec2(70, 110), [140, 220, 120]) } else { draw_text("Find the DUNGEON MAP!", vec2(70, 110), [200, 190, 160]) }
-    if hc { draw_text(b1, vec2(70, 130), [255, 140, 120]); draw_text(b2, vec2(70, 142), [255, 140, 120]) } else { draw_text("Find the COMPASS!", vec2(70, 130), [200, 190, 160]) }
+    var dm: list = global("dmap", [])
+    if hm and len(dm) == 6 {
+        # the map: every room from above; Sprig blinks where he is (and faces)
+        var w: number = dm[4]
+        var h: number = dm[5]
+        var c: vec2 = vec2(160, 134)
+        draw_image(dm[0], c)
+        var origin: vec2 = c - vec2(floor(w / 2), floor(h / 2))
+        var marks: list = global("dmap_marks", [[0, 0, 0], [], []])
+        if hc {
+            for ch in marks[1] {
+                var p: vec2 = origin + vec2((ch[0] - dm[1]) * dm[3], (ch[1] - dm[2]) * dm[3])
+                draw_rect(p - vec2(2, 2), vec2(5, 4), [230, 170, 40, 255])
+                draw_rect(p - vec2(2, 2), vec2(5, 4), [90, 50, 10, 255], false)
+            }
+            for b in marks[2] {
+                var p2: vec2 = origin + vec2((b[0] - dm[1]) * dm[3], (b[1] - dm[2]) * dm[3])
+                draw_circle(p2, 4, [220, 40, 40, 255])
+                draw_circle(p2, 4, [60, 0, 0, 255], false)
+            }
+        }
+        var at: list = marks[0]
+        var sp: vec2 = origin + vec2((at[0] - dm[1]) * dm[3], (at[1] - dm[2]) * dm[3])
+        var sc: list = [80, 200, 255, 255]
+        if floor(t * 3) % 2 == 0 { sc = [255, 255, 255, 255] }
+        draw_circle(sp, 3, sc)
+        draw_circle(sp, 3, [10, 30, 60, 255], false)
+        var f: vec2 = vec2(-sin(at[2]), -cos(at[2]))
+        draw_line(sp, sp + f * 7, sc)
+    } else {
+        draw_text("Find the DUNGEON MAP!", vec2(160 - text_size("Find the DUNGEON MAP!").x / 2, 110), [200, 190, 160])
+    }
+    if hc {
+        draw_rect(vec2(168, 198), vec2(5, 4), [230, 170, 40, 255])
+        draw_text("chest", vec2(176, 196), [230, 200, 140])
+        draw_circle(vec2(228, 200), 3, [220, 40, 40, 255])
+        draw_text("boss", vec2(234, 196), [230, 200, 140])
+    } elif hm {
+        draw_text("No compass yet", vec2(168, 196), [150, 140, 120])
+    }
     var keys: int = 0
     for c in s[7] {
         if c[0] == "keys_" + dun { keys = c[1] }
     }
-    draw_image("art/icons/key.png", vec2(78, 168)); draw_text("x" + keys, vec2(90, 165), [255, 255, 255])
-    if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(138, 168)); draw_text("Boss Key", vec2(150, 165), [255, 255, 255]) }
+    draw_image("art/icons/key.png", vec2(42, 200)); draw_text("x" + keys, vec2(52, 197), [255, 255, 255])
+    if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(92, 200)); draw_text("Boss Key", vec2(102, 197), [255, 255, 255]) }
 }
 
 # The item buttons' names: their keys (the CONTROLS page can change them), or the pad's.

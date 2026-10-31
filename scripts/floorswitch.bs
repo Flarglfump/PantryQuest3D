@@ -18,7 +18,7 @@ func start() -> void {
 func pressed() -> bool {
     if distance(vec3(sprig.x, 0, sprig.z), vec3(self.x, 0, self.z)) < 0.9 and abs(sprig.y - base_y) < 0.6 { return true }
     for w in find_tagged("weight") {
-        if not w.carried and distance(vec3(w.x, 0, w.z), vec3(self.x, 0, self.z)) < 0.9 and abs(w.y - base_y) < 0.8 { return true }
+        if not w.carried and distance(vec3(w.x, 0, w.z), vec3(self.x, 0, self.z)) < 0.9 and w.y - base_y > -0.3 and w.y - base_y < 1.0 { return true }   # (a block's middle is 0.8 up)
     }
     return false
 }

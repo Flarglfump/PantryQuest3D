@@ -755,6 +755,10 @@ func talk(id: string) -> list {
                 p("FLICKER", "The curse must be deep down. Let's look around! Press {flicker} if you get stuck.")]
     }
     if id == "crock_eye" { return [p("FLICKER", "That eye over the door is watching us! If only we had something to shoot it with...")] }
+    if id == "crock_crates" { return [p("", "CRUST BLOCKS|Walk into a block and keep pushing: it slides a step. Heavy enough to hold a switch down!")] }
+    if id == "crock_proof" { return [p("", "THE PROOFING ROOM|Warm dough rises under a sprout's feet, and sinks when he steps off. Don't dawdle!")] }
+    if id == "crock_furnace" { return [p("", "THE FURNACE|Cold dough won't rise. Light the fire-bowls and their warmth will raise it - for good.")] }
+    if id == "crock_bkroom" { return [p("", "Both switches down, and the gate opens.")] }
     if id == "crock_web" { return [p("FLICKER", "This web is made of mould. Swords won't cut it... but I bet fire would burn it right up!")] }
     if id == "crock_torch" { return [p("FLICKER", "A torch! If a pea flew through that flame... it might catch fire!")] }
     if id == "crock_scrubs" {
@@ -1212,11 +1216,14 @@ func hardcaves_hint() -> string {
 }
 
 func crock_hint() -> string {
-    if not game.has_item("shooter") { return "There must be something in here we can use. Look on every floor - climb the vines, and ride the crusts!" }
-    if not game.flag("crock_web1") { return "The web in the middle of the floor... if only we could burn it. Remember that torch?" }
-    if not game.flag("crock_scrubs") { return "The Scrub brothers guard the door down below. The sign tells the order to beat them in!" }
-    if not game.has_item("bosskey_crock") { return "We need the big key! Search the basement." }
-    return "The Queen is below the web on the top floor! Shoot her eye when it glows red!"
+    if not game.flag("door:crock_proof") and game.count("keys_crock") <= 0 { return "The room to the east has a crust block - and a switch in the floor. Push the block on to it!" }
+    if not game.has_item("shooter") { return "The locked door is to the west of the big hall. Ride the warm dough up to the ledge in there!" }
+    if not game.flag("crock_eye") { return "The eye under the balcony! Focus on it with {focus} and shoot it with the Pea Shooter." }
+    if not (game.flag("crock_bowl_w") and game.flag("crock_bowl_e")) { return "Shoot a pea through a torch's flame and it'll catch fire. Then aim it at the fire-bowls across the gap!" }
+    if game.count("keys_crock") <= 0 and not game.flag("door:crock_bk") and not game.flag("crock_web_key") { return "The web over there guards something! A burning pea will burn it - find a torch in line with it." }
+    if not game.flag("crock_web_hall") { return "The warm dough in the hall is behind a web. Shoot a pea through the torch in front of it!" }
+    if not game.has_item("bosskey_crock") { return "Up on the balcony, the locked door north. Two blocks, two switches!" }
+    return "The big door is at the west end of the balcony. The Queen's eye is her weak spot - shoot it when it glows red!"
 }
 
 # ---- names and descriptions of things ----

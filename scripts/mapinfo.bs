@@ -1,0 +1,11 @@
+@strict @3d
+# mapinfo.bs - where a dungeon's map picture (made by tools/lib/areakit.py from its floors)
+# sits in the world: the picture `picture`, the world x, z of its top left corner, and how many
+# pixels to a metre. game.bs hands it to the pause menu.
+
+var picture: string = ""
+var x0: number = 0
+var z0: number = 0
+var ppm: number = 1
+var w: int = 0
+var h: int = 0

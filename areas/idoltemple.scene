@@ -1078,3 +1078,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "picture = \"art/maps/idoltemple.png\", x0 = -31.652, z0 = -63.652, ppm = 1.5342, w = 97, h = 114"
