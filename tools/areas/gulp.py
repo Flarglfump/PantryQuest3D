@@ -89,7 +89,7 @@ def build():
     a.entity('Acid', t3((dx0, -2.6, bz)), collider('box', (5.0, 0.8, 14), trigger=True), tags('pit'))
     a.geo('lava', dx0, bz).quad((dx0 - 2.6, -2.9, bz + 7), (dx0 + 2.4, -2.9, bz + 7), (dx0 + 2.4, -2.9, bz - 7), (dx0 - 2.6, -2.9, bz - 7),
                                 (0, 0), (2, 0), (2, 5), (0, 5))
-    a.switchdoor(dx0 - 0.1, -3.3, bz, (5.0, 0.3, 2.4), 'gd_bridge', stay=True, material='planks', color='#e8d8c0ff')
+    a.switchdoor(dx0 - 0.1, -3.36, bz, (4.96, 0.3, 2.4), 'gd_bridge', stay=True, material='planks', color='#e8d8c0ff')
     a.tendril(dx0 + 4.5, H - 0.4, bz, 'gd_bridge', count=1)
     a.sign(dx0 - 4.5, 0, bz - 2.6, -90, 'gulp_tendril')
     a.chest(dx0 + 5.2, 0, bz - 2.2, 90, 'key', 'gd_key')

@@ -135,7 +135,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 0 6 -40.75
+    position = 0 6 -40.86
     rotation = 0 0 0
     scale = 2.4 3 0.1
   Mesh

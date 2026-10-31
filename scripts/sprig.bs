@@ -572,8 +572,15 @@ func update(dt: number) -> void {
     } elif st == "roll" {
         want = forward_of(facing) * 7.0 * max(0.3, 1 - st_t * 1.2)
         pitch = -st_t / 0.45 * 360
-        if is_on_wall(self) and st_t > 0.08 {
-            send(wall_thing(), "bonked", self.position)
+        var front: entity = nil
+        if is_on_wall(self) and st_t > 0.08 { front = wall_thing() }     # (not a lip in the ground)
+        if front != nil {
+            # whatever he rolled into: two pots side by side both break
+            var bonked: list = overlap_sphere(self.position + forward_of(facing) * 0.55 + vec3(0, 0.45, 0), 0.5)
+            if not contains(bonked, front) { push(bonked, front) }
+            for b in bonked {
+                if b != self and b.alive { send(b, "bonked", self.position) }
+            }
             play_sound("sfx/bonk.wav", 0.6)
             shake_camera(1.5, 0.15)
             st = "hurt"
@@ -889,7 +896,7 @@ func update_climb(dt: number, mv: vec2) -> void {
         return
     }
     var up: number = -mv.y
-    var side: vec3 = vec3(-vine.out.z, 0, vine.out.x)
+    var side: vec3 = vec3(vine.out.z, 0, -vine.out.x)       # (his right, facing the vine)
     var v: vec3 = vec3(0, up * 1.8, 0) + side * (mv.x * 1.4) + vine.out * -0.5
     vel = move_and_slide(self, v)
     if abs(up) > 0.1 or abs(mv.x) > 0.1 { play_animation(body, "climb", 1, true) } else { stop_animation(body) }
@@ -905,11 +912,17 @@ func update_climb(dt: number, mv: vec2) -> void {
     }
 }
 
+# What he's up against, straight ahead or a little to either side (between two pots, the
+# middle ray can miss both); nil if nothing is found.
 func wall_thing() -> entity {
-    var from: vec3 = self.position + vec3(0, 0.5, 0)
-    var hit: any = raycast(from, from + forward_of(facing) * 0.8, self)
-    if hit == nil { return nil }
-    return hit[0]
+    var from: vec3 = self.position + vec3(0, 0.4, 0)
+    var f: vec3 = forward_of(facing)
+    var side := vec3(-f.z, 0, f.x) * 0.3
+    for off in [vec3(0, 0, 0), side, side * -1] {
+        var hit: any = raycast(from + off, from + off + f * 0.8, self)
+        if hit != nil { return hit[0] }
+    }
+    return nil
 }
 
 # Is there a real drop just ahead (not a bump or a dip)?

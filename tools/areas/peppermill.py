@@ -47,9 +47,9 @@ def build(era='fresh'):
                 L = math.hypot(bx - ax, bz - az) or 1
                 px, pz = -(bz - az) / L * width / 2, (bx - ax) / L * width / 2
                 P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], height(*p) + 0.05, p[1]) for p in P]
+                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + 0.06, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
                 U = [(p[0] / 3, p[1] / 3) for p in P]
-                o = a.geo('dirt', ax, az)
+                o = a.geo('path', ax, az)
                 if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
                     o.quad(Y[0], Y[1], Y[2], Y[3], *U)
                 else:
@@ -109,7 +109,7 @@ def build(era='fresh'):
         cy0 = height(gx, gz - 10)
         a.entity('Crypt Door', t3((gx, cy0 + 1.5, gz - 10.4), (0, 0, 0), (2.4, 3.0, 0.2)), mesh('cube', '#3a2a3aff', 'art/stone.png'),
                  collider('box'), tags('interact', 'focusable'), script('scripts/songdoor.bs', song='nocturne', id='door:crypt', say='crypt_door', reach=3.0))
-        a.entity('Crypt Dark', t3((gx, cy0 + 1.5, gz - 10.45), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#08040aff', lit=False))
+        a.entity('Crypt Dark', t3((gx, cy0 + 1.5, gz - 10.47), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#08040aff', lit=False))
         a.loadzone(gx, cy0, gz - 10.2, 2.2, 3, 0.5, to='crypt', at='start', needs='door:crypt')
         a.spawn_point('crypt', gx, cy0 + 0.1, gz - 8.2, 180)
         a.spawn_point('graveyard', gx, height(gx, gz + 9) + 0.1, gz + 9, 180)

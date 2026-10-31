@@ -120,7 +120,7 @@ def build():
     a.geo('lava', 0, ez).quad((-10, -1.2, ez + 3), (10, -1.2, ez + 3), (10, -1.2, ez - 4.5), (-10, -1.2, ez - 4.5), (0, 0), (5, 0), (5, 2), (0, 2))
     a.entity('Molten Cheese', t3((0, -0.9, ez - 0.8)), collider('box', (20, 0.8, 7.6), trigger=True), tags('lava'))
     a.hammerswitch(-5, 0, ez + 5, 'fg_rust2')
-    a.switchdoor(0, -3.3, ez - 0.8, (2.6, 0.3, 7.8), 'fg_rust2', stay=True, material='stone', color='#a08070ff')
+    a.switchdoor(0, -3.36, ez - 0.8, (2.6, 0.3, 7.7), 'fg_rust2', stay=True, material='stone', color='#a08070ff')
     a.chest(-6, 0, ez - 7, 180, 'bosskey_forge', 'fg_bosskey', big=True)
     cell(a, 6, ez - 7.5, 0, 'prisoner2')
     a.point_light(0, 5, ez, '#ff9050ff', 1.3, 14)

@@ -2126,186 +2126,6 @@ entity
 
 entity
   Name
-    text = "dirt -2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_-2_1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt -2 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_-2_2.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_-1_0.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_-1_1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_0_-2.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_0_-1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_0_0.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_1_-1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "dirt 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/dirt_1_0.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "grass -2 -2"
   Transform3D
     position = 0 0 0
@@ -2623,6 +2443,141 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "path -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_-2_1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_-2_2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_-1_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_-1_1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_0_-2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_0_-1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_0_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_1_-1.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "path 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/peppermill/path_1_0.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
 
 entity
   Name

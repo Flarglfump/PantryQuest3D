@@ -89,7 +89,7 @@ def build():
     a.loadzone(0, LEDGE, fz - 0.5, 3, 3, 0.6, to='fizzdomain', at='start', needs='door:falls')
     a.spawn_point('falls', -2.5, LEDGE + 0.1, fz + 4.5, 160)
     # the ledge before the falls, joined to the path
-    a.geo('stone', -4, fz + 4).box((-11, BED, fz - 1.0), (2.6, LEDGE, fz + 7), uvs=0.3)
+    a.geo('stone', -4, fz + 4).box((-11, BED, fz - 1.0), (2.6, LEDGE - 0.03, fz + 7), uvs=0.3)   # (just under the ground where they meet: no flicker)
     a.sign(-5.5, LEDGE, fz + 5.5, 180, 'falls_seal')
     # a low wall along the path's edge, above the drop to the river
     for i in range(12):

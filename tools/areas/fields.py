@@ -74,9 +74,9 @@ def build(era='fresh'):
                 L = math.hypot(dx, dz) or 1
                 px, pz = -dz / L * width / 2, dx / L * width / 2
                 P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], height(*p) + 0.06, p[1]) for p in P]
+                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + 0.06, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
                 U = [(p[0] / 3, p[1] / 3) for p in P]
-                o = a.geo('dirt', ax, az)
+                o = a.geo('path', ax, az)
                 if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
                     o.quad(Y[0], Y[1], Y[2], Y[3], *U)
                 else:

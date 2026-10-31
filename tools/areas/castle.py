@@ -31,7 +31,7 @@ def build():
     for xx in (-16, 0, 16):
         a.geo('stone', xx, -46).cylinder((xx, 0, -46), 3.2, 28, 10, top=False, uvs=0.25)
         a.geo('thatch', xx, -46).cone((xx, 28, -46), 3.8, 7, 10, uvs=0.3)
-    a.entity('Window', t3((0, 6, -40.75), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#f8e8a0ff', lit=False))
+    a.entity('Window', t3((0, 6, -40.86), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#f8e8a0ff', lit=False))
     a.loadzone(0, 0, 34.4, 5, 4, 1.2, to='town', at='castle')
     a.spawn_point('start', 0, 0.1, 30, 0)
     a.spawn_point('t_court', 6, 0.1, -25, 0)

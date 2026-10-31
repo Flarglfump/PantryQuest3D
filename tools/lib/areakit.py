@@ -19,6 +19,7 @@ MATERIALS = {
     'grass': ('art/grass.png', '#ffffffff', True, False, True, True),
     'flowers': ('art/flowers.png', '#ffffffff', True, False, True, True),
     'dirt': ('art/dirt.png', '#ffffffff', True, False, True, True),
+    'path': ('art/dirt.png', '#ffffffff', False, False, True, True),     # (dirt paths laid on the ground: walked on through)
     'cobble': ('art/cobble.png', '#ffffffff', True, False, True, True),
     'lava': ('art/lavacheese.png', '#ffffffff', False, False, False, True),
     'rock': ('art/stone.png', '#c8a080ff', True, False, True, True),
@@ -108,6 +109,11 @@ class Area:
             self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
             n += 1
             tris += obj.tri_count()
+        written = {'%s_%d_%d.obj' % (m, cx, cz) for (m, cx, cz), obj in self.chunks.items() if not obj.empty()}
+        folder = os.path.join('models', 'areas', self.file_id)
+        for old in os.listdir(folder) if os.path.isdir(folder) else []:
+            if old.endswith('.obj') and old not in written:
+                os.remove(os.path.join(folder, old))       # (chunks an earlier version made: not packed into the game)
         self.scene.save(os.path.join('areas', self.file_id + '.scene'))
         print('  %s: %d entities, %d level meshes, %d level triangles' % (self.file_id, self.scene.count, n, tris))
 
@@ -343,6 +349,8 @@ def box_wall(a, material, x0, z0, x1, z1, y0, y1, thick=0.6, uvs=0.5):
     L = math.hypot(dx, dz)
     yaw = math.degrees(math.atan2(-dx, -dz))     # (the wall's length runs along its local -z)
     cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    if abs(dx) > abs(dz):
+        y1 += 0.01        # (walls running east-west a centimetre taller: where two walls cross at a corner, their tops don't flicker)
     a.geo(material, cx, cz).box((cx - thick / 2, y0, cz - L / 2), (cx + thick / 2, y1, cz + L / 2), uvs=uvs, rot_y=yaw, center=(cx, cz))
 
 
@@ -429,12 +437,14 @@ def tunnel(o_floor, o_wall, x0, z0, x1, z1, y, w=2.4, h=2.8, uvs=0.35, ceiling=T
     A, B = (x0, z0), (x1, z1)
     def p(c, side, yy):
         return (c[0] + px * side, yy, c[1] + pz * side)
-    # floor (facing up)
-    q = [p(A, 1, y), p(B, 1, y), p(B, -1, y), p(A, -1, y)]
+    # floor (facing up): a centimetre down, so where its ends reach into a room's floor the
+    # two don't lie in one plane and flicker against each other
+    yf = y - 0.01
+    q = [p(A, 1, yf), p(B, 1, yf), p(B, -1, yf), p(A, -1, yf)]
     if (q[1][0] - q[0][0]) * (q[2][2] - q[0][2]) - (q[1][2] - q[0][2]) * (q[2][0] - q[0][0]) > 0:
         q = q[::-1]
     o_floor.quad(*q, *[(v[0] * uvs, v[2] * uvs) for v in q])
-    o_floor.box((min(x0, x1) - abs(px), y - 0.5, min(z0, z1) - abs(pz)), (max(x0, x1) + abs(px), y, max(z0, z1) + abs(pz)), sides=('ny',))
+    o_floor.box((min(x0, x1) - abs(px), y - 0.5, min(z0, z1) - abs(pz)), (max(x0, x1) + abs(px), yf, max(z0, z1) + abs(pz)), sides=('ny',))
     # walls (facing in) and a ceiling (facing down)
     for side in (1, -1):
         w0, w1 = p(A, side, y), p(B, side, y)

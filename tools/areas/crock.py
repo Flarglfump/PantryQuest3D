@@ -52,7 +52,7 @@ def build():
     ring_floor(g('dough'), 0, 0, 0, R, B1, segs=28, thick=0.5)                         # the basement floor
     ring_floor(g('dough'), 0, 0, 4, 9.5, F1, segs=28, thick=0.6)                       # 1F: the inner ring
     ring_floor(g('dough'), 0, 0, 9.5, R, F1, 14, 346, segs=32, thick=0.6)              # ... and the outer, with a gap east
-    ring_floor(g('crust'), 0, 0, 9.0, 9.5, F1, -14, 14, segs=4, thick=6.0)             # a crust wall up from B1 there (vines)
+    ring_floor(g('crust'), 0, 0, 9.0, 9.5, F1 - 0.01, -14, 14, segs=4, thick=6.0)      # a crust wall up from B1 there (vines; just under the floor's level)
     ring_floor(g('crust'), 0, 0, 9.0, R, F2, 0, 360, segs=36, thick=0.6)               # 2F ledge
     ring_floor(g('crust'), 0, 0, 8.6, R, F2, 262, 278, segs=3, thick=4.0)              # a pillar under it (vines 1F->2F)
     ring_floor(g('crust'), 0, 0, 9.5, R, F3, 200, 340, segs=16, thick=0.6)             # 3F ledge (north)

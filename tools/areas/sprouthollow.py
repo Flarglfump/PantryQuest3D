@@ -80,8 +80,8 @@ def build():
                 L = math.hypot(dx, dz) or 1
                 px, pz = -dz / L * width / 2, dx / L * width / 2
                 P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], height(*p) + 0.04, p[1]) for p in P]
-                o = a.geo('dirt', ax, az)
+                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + 0.06, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
+                o = a.geo('path', ax, az)
                 # (counter-clockwise from above)
                 if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
                     o.quad(Y[0], Y[1], Y[2], Y[3], (P[0][0] / 3, P[0][1] / 3), (P[1][0] / 3, P[1][1] / 3), (P[2][0] / 3, P[2][1] / 3), (P[3][0] / 3, P[3][1] / 3))
@@ -149,7 +149,7 @@ def build():
     a.sign(-5.4, height(-5.4, 18.4), 18.4, 30, 'sign_house')
     # (the house above is the stump house at -8, 15; Sprig's bed is on its roof deck)
     deck_y = height(tx, tz) + 3.1
-    stump_house(a, tx, tz, ground_y, r=2.2, h=3.1, door_yaw=30, roof=None)
+    stump_house(a, tx, tz, ground_y, r=2.2, h=2.85, door_yaw=30, roof=None)   # (its top just under the deck: not in the same plane)
     a.geo('planks', tx, tz).cylinder((tx, deck_y - 0.2, tz), 3.0, 0.2, 12, top=True, bottom=True, uvs=0.6)
     for k in range(12):                       # the rail, open where the vines come up (south, +z)
         ang0, ang1 = 2 * math.pi * (k + 0.5) / 12, 2 * math.pi * (k + 1.5) / 12
