@@ -2465,21 +2465,6 @@ entity
 
 entity
   Name
-    text = "path -2 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/path_-2_2.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-
-entity
-  Name
     text = "path -1 0"
   Transform3D
     position = 0 0 0
@@ -2563,21 +2548,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/peppermill/path_1_-1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-
-entity
-  Name
-    text = "path 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/peppermill/path_1_0.obj"
     texture = "art/dirt.png"
     color = #ffffffff
     uv_scale = 1 1

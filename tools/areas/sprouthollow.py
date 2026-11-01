@@ -54,20 +54,6 @@ def height(x, z):
     return h
 
 
-def mesh_height(x, z):
-    """The ground's height as it is drawn (and collided with): its triangles, not height()'s curve.
-    2m cells, but 2m by 1m over the ravine (z 32..42); each cell split corner (x0, z0) to (x1, z1)."""
-    sx, sz = 2.0, (1.0 if 32 <= z < 42 else 2.0)
-    xa, za = math.floor(x / sx) * sx, math.floor(z / sz) * sz
-    fx, fz = (x - xa) / sx, (z - za) / sz
-    h00, h11 = height(xa, za), height(xa + sx, za + sz)
-    if fz >= fx:                      # (the triangle with corner (x0, z1))
-        h01 = height(xa, za + sz)
-        return h00 + (h01 - h00) * (fz - fx) + (h11 - h00) * fx
-    h10 = height(xa + sx, za)
-    return h00 + (h10 - h00) * (fx - fz) + (h11 - h00) * fz
-
-
 def ground_y(x, z):
     return height(x, z)
 
@@ -89,38 +75,11 @@ def build():
         o = a.geo('cliff', cx + 6, 37)
         o.ground(cx, 32.0, cx + 12, 42.0, 6, 10, height, uvs=0.3)
     # dirt paths: thin strips just above the ground
-    strips = [0]
-    def path_strip(points, width):
-        strips[0] += 1
-        for seg, ((x0, z0), (x1, z1)) in enumerate(zip(points, points[1:])):
-            lift = 0.03 + 0.012 * strips[0] + 0.006 * (seg % 2)      # (each strip, and each other bend, a hair apart where they cross: no flicker)
-            n = max(1, int(math.ceil(math.hypot(x1 - x0, z1 - z0) / 0.6)))      # (small pieces, on the ground as it is drawn)
-            L = math.hypot(x1 - x0, z1 - z0) or 1
-            px, pz = -(z1 - z0) / L * width / 2, (x1 - x0) / L * width / 2
-            cols = 3
-            def at(i, k):
-                fx, fz = x0 + (x1 - x0) * i / n, z0 + (z1 - z0) * i / n
-                w = 2 * k / cols - 1
-                return (fx + px * w, fz + pz * w)
-            Y = {}
-            for i in range(n + 1):
-                for k in range(cols + 1):
-                    x, z = at(i, k)
-                    Y[i, k] = (x, mesh_height(x, z) + lift, z)
-            o = a.geo('path', (x0 + x1) / 2, (z0 + z1) / 2)
-            ccw = (x1 - x0) * pz - (z1 - z0) * px < 0
-            uv = lambda q: (q[0] / 3, q[2] / 3)
-            for i in range(n):
-                for k in range(cols):
-                    q = [Y[i, k], Y[i + 1, k], Y[i + 1, k + 1], Y[i, k + 1]]
-                    if not ccw:
-                        q = q[::-1]
-                    o.quad(q[0], q[1], q[2], q[3], uv(q[0]), uv(q[1]), uv(q[2]), uv(q[3]))
-    path_strip([(0, 32), (0, 20), (-2, 8), (0, -4), (0, -16), (0, -27), (0, -36)], 2.4)
-    path_strip([(0, -4), (12, -6), (22, -6), (28, -4)], 1.8)
-    path_strip([(-2, 8), (-12, 6), (-22, 2), (-25, 0)], 1.8)
-    path_strip([(-2, 8), (-8, 15)], 1.6)
-    path_strip([(0, 20), (14, 14)], 1.6)
+    a.path([(0, 32), (0, 20), (-2, 8), (0, -4), (0, -16), (0, -27), (0, -36)], 2.4)
+    a.path([(0, -4), (12, -6), (22, -6), (28, -4)], 1.8)
+    a.path([(-2, 8), (-12, 6), (-22, 2), (-25, 0)], 1.8)
+    a.path([(-2, 8), (-8, 15)], 1.6)
+    a.path([(0, 20), (14, 14)], 1.6)
     # the stream's water
     for i in range(40):
         t0, t1 = i / 40, (i + 1) / 40
@@ -144,7 +103,7 @@ def build():
     a.entity('Rail', t3((-1.5, 0.8, 37.5), (0, 0, 0), (0.1, 0.1, 10)), mesh('cube', '#ffffffff', 'art/bark.png'), collider('box'))
     a.entity('Rail', t3((1.5, 0.8, 37.5), (0, 0, 0), (0.1, 0.1, 10)), mesh('cube', '#ffffffff', 'art/bark.png'), collider('box'))
     # past the bridge, the way out: a cutting through the rim to a dark archway in the herb roots
-    path_strip([(0, 42.6), (0, 47.6)], 2.4)
+    a.path([(0, 42.6), (0, 47.6)], 2.4)
     for xx in (-2.3, 2.3):
         a.geo('bark', xx, 47.9).box((xx - 0.35, -0.3, 47.55), (xx + 0.35, 3.4, 48.25), uvs=0.6)
     a.geo('bark', 0, 47.9).box((-2.9, 3.4, 47.5), (2.9, 4.1, 48.3), uvs=0.6)

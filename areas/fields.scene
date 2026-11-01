@@ -4546,21 +4546,6 @@ entity
 
 entity
   Name
-    text = "path -3 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/fields/path_-3_1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-
-entity
-  Name
     text = "path -2 1"
   Transform3D
     position = 0 0 0
@@ -4599,21 +4584,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/fields/path_-1_1.obj"
-    texture = "art/dirt.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-
-entity
-  Name
-    text = "path 0 -3"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/fields/path_0_-3.obj"
     texture = "art/dirt.png"
     color = #ffffffff
     uv_scale = 1 1

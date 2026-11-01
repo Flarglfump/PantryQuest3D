@@ -13,6 +13,7 @@ import math
 import os
 
 from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path, write_png)
+import kit
 
 MATERIALS = {
     # material: (texture, colour, solid, cast shadows, lit, cull)
@@ -49,10 +50,37 @@ MATERIALS = {
 }
 
 
+def area2d(poly):
+    """Twice the signed area of a polygon [(x, z), ...] (positive: counter-clockwise, x right, z up)."""
+    return sum(poly[i][0] * poly[(i + 1) % len(poly)][1] - poly[(i + 1) % len(poly)][0] * poly[i][1] for i in range(len(poly)))
+
+
+def clip_convex(poly, clip):
+    """poly (convex or not) cut to the convex polygon clip (both counter-clockwise)."""
+    out = list(poly)
+    for i in range(len(clip)):
+        if not out:
+            break
+        (ex0, ez0), (ex1, ez1) = clip[i], clip[(i + 1) % len(clip)]
+        side = lambda p: (ex1 - ex0) * (p[1] - ez0) - (ez1 - ez0) * (p[0] - ex0)
+        inp, out = out, []
+        for k in range(len(inp)):
+            p, q = inp[k], inp[(k + 1) % len(inp)]
+            sp, sq = side(p), side(q)
+            if sp >= 0:
+                out.append(p)
+            if (sp >= 0) != (sq >= 0):
+                t = sp / (sp - sq)
+                out.append((p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t))
+    return out
+
+
 class Area:
     def __init__(self, id, name, music='', dungeon='', kill_y=-20.0, sky='#a8d8f0ff', fog=(22, 60), fog_color=None,
                  ambient=('#8090b0ff', 0.5), sun=('#fff2dcff', 0.95), sun_rot=(-55, -35, 0), shadows=False, chunk=24.0, variant='', hot=False):
         self.id, self.name = id, name
+        kit.GROUNDS.clear()              # (this area's heightfields, as they're made: kit.ground_height)
+        self.path_count = 0
         self.file_id = id + ('_' + variant if variant else '')     # (the Risen era's version: areas/<id>_risen.scene)
         self.scene = Scene('%s - an area of Pantry Quest 3D.\nMade by tools/areas/%s.py: change that and run tools/make_all.py.' % (name, id))
         self.chunks = Chunked(chunk)
@@ -80,6 +108,44 @@ class Area:
         s.entity('HUD', t2(), script('scripts/hud.bs'))
 
     # ---- level geometry ----
+    def path(self, points, width, material='path', uv=1 / 3):
+        """A dirt path along the polyline `points` [(x, z), ...], laid on the ground as it is
+        drawn (make the ground first): cut along the ground's own triangles, so it lies on
+        them exactly, a few centimetres up. Each path, and each other bend of one, sits a hair
+        higher than the last, so where they cross or overlap they don't flicker."""
+        self.path_count += 1
+        for seg, ((x0, z0), (x1, z1)) in enumerate(zip(points, points[1:])):
+            lift = 0.03 + 0.012 * self.path_count + 0.006 * (seg % 2)
+            L = math.hypot(x1 - x0, z1 - z0) or 1
+            px, pz = -(z1 - z0) / L * width / 2, (x1 - x0) / L * width / 2
+            quad = [(x0 - px, z0 - pz), (x1 - px, z1 - pz), (x1 + px, z1 + pz), (x0 + px, z0 + pz)]
+            if area2d(quad) < 0:
+                quad = quad[::-1]                   # (counter-clockwise from above, as the ground's are)
+            o = self.geo(material, (x0 + x1) / 2, (z0 + z1) / 2)
+            xs, zs = [q[0] for q in quad], [q[1] for q in quad]
+            for tri, height in kit.ground_triangles(min(xs), min(zs), max(xs), max(zs)):
+                t2 = [(p[0], p[2]) for p in tri]
+                if area2d(t2) < 0:
+                    t2, tri = t2[::-1], tri[::-1]
+                poly = clip_convex(quad, t2)
+                if len(poly) < 3 or abs(area2d(poly)) < 1e-6:
+                    continue
+                (ax, ay, az), (bx, by, bz), (cx, cy, cz) = tri
+                # the triangle's plane: y = ay + gx (x - ax) + gz (z - az)
+                det = (bx - ax) * (cz - az) - (cx - ax) * (bz - az)
+                if abs(det) < 1e-12:
+                    continue
+                gx = ((by - ay) * (cz - az) - (cy - ay) * (bz - az)) / det
+                gz = ((bx - ax) * (cy - ay) - (cx - ax) * (by - ay)) / det
+                Y = lambda x, z: ay + gx * (x - ax) + gz * (z - az) + lift
+                e = 0.1
+                N = lambda x, z: (height(x - e, z) - height(x + e, z), 2 * e, height(x, z - e) - height(x, z + e))
+                V = [(x, Y(x, z), z) for x, z in poly]
+                for k in range(1, len(V) - 1):       # (a fan; turned to face up)
+                    A, B, C = V[0], V[k + 1], V[k]
+                    o.tri(A, B, C, (A[0] * uv, A[2] * uv), (B[0] * uv, B[2] * uv), (C[0] * uv, C[2] * uv),
+                          N(A[0], A[2]), N(B[0], B[2]), N(C[0], C[2]))
+
     def geo(self, material, x=0.0, z=0.0):
         """The Obj to add `material` geometry to, for the chunk around x, z."""
         return self.chunks.at(material, x, z)

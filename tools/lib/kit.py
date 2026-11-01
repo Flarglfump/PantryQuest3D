@@ -13,6 +13,56 @@ import zlib
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 
 
+# The heightfields made since the last reset (Obj.ground): ground_height() reads the ground as it
+# is drawn, its triangles, not the smooth function behind them (things set on the function float
+# over hollows and sink into rises).
+GROUNDS = []
+
+
+def ground_height(x, z, default=None):
+    """The drawn ground's height at x, z (the last heightfield made that covers it), or default."""
+    for (x0, z0, x1, z1, nx, nz, height, keep) in reversed(GROUNDS):
+        if not (x0 <= x <= x1 and z0 <= z <= z1):
+            continue
+        sx, sz = (x1 - x0) / nx, (z1 - z0) / nz
+        i, j = min(nx - 1, int((x - x0) / sx)), min(nz - 1, int((z - z0) / sz))
+        xa, za = x0 + i * sx, z0 + j * sz
+        if keep and not keep(xa + sx / 2, za + sz / 2):
+            continue
+        fx, fz = (x - xa) / sx, (z - za) / sz
+        h00, h11 = height(xa, za), height(xa + sx, za + sz)
+        if fz >= fx:                     # (each cell split from its corner (x0, z0) to (x1, z1))
+            h01 = height(xa, za + sz)
+            return h00 + (h11 - h01) * fx + (h01 - h00) * fz
+        h10 = height(xa + sx, za)
+        return h00 + (h10 - h00) * fx + (h11 - h10) * fz
+    return default
+
+
+def ground_triangles(xa, za, xb, zb):
+    """The drawn ground's triangles (each [(x, y, z) * 3], counter-clockwise from above) over the
+    rectangle xa..xb, za..zb, with the height function behind each (for normals). Where two
+    heightfields overlap, the one made last."""
+    seen = set()
+    for gi in range(len(GROUNDS) - 1, -1, -1):
+        (x0, z0, x1, z1, nx, nz, height, keep) = GROUNDS[gi]
+        sx, sz = (x1 - x0) / nx, (z1 - z0) / nz
+        i0, i1 = max(0, int(math.floor((xa - x0) / sx))), min(nx - 1, int(math.floor((xb - x0) / sx)))
+        j0, j1 = max(0, int(math.floor((za - z0) / sz))), min(nz - 1, int(math.floor((zb - z0) / sz)))
+        for j in range(j0, j1 + 1):
+            for i in range(i0, i1 + 1):
+                cxa, cza = x0 + i * sx, z0 + j * sz
+                mid = (round(cxa + sx / 2, 3), round(cza + sz / 2, 3))
+                if keep and not keep(*mid):
+                    continue
+                if any(ox0 <= mid[0] <= ox1 and oz0 <= mid[1] <= oz1 for (ox0, oz0, ox1, oz1) in seen):
+                    continue                     # (a later heightfield's ground there)
+                P = [(x, height(x, z), z) for x, z in [(cxa, cza), (cxa, cza + sz), (cxa + sx, cza + sz), (cxa + sx, cza)]]
+                yield [P[0], P[1], P[2]], height
+                yield [P[0], P[2], P[3]], height
+        seen.add((x0, z0, x1, z1))
+
+
 def path(*parts):
     p = os.path.join(ROOT, *parts)
     os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -331,6 +381,7 @@ class Obj:
         """A heightfield over a rectangle: height(x, z) gives y. keep(x, z) can drop cells
         (for holes). Normals are smoothed from the height function."""
         sx, sz = (x1 - x0) / cells_x, (z1 - z0) / cells_z
+        GROUNDS.append((x0, z0, x1, z1, cells_x, cells_z, height, keep))
 
         def N(x, z):
             e = 0.1

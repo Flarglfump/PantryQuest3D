@@ -38,27 +38,8 @@ def build(era='fresh'):
         for cx in range(-48, 48, 12):
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 3, 3, height, uvs=0.25)
 
-    strips = [0]
-    def path(points, width):
-        strips[0] += 1
-        for seg, ((x0, z0), (x1, z1)) in enumerate(zip(points, points[1:])):
-            lift = 0.06 + 0.008 * (strips[0] - 1) + 0.005 * (seg % 2)      # (each path, and each other bend, a hair apart where they cross: no flicker)
-            n = max(1, int(math.hypot(x1 - x0, z1 - z0) / 2.5))
-            for i in range(n):
-                ax, az = x0 + (x1 - x0) * i / n, z0 + (z1 - z0) * i / n
-                bx, bz = x0 + (x1 - x0) * (i + 1) / n, z0 + (z1 - z0) * (i + 1) / n
-                L = math.hypot(bx - ax, bz - az) or 1
-                px, pz = -(bz - az) / L * width / 2, (bx - ax) / L * width / 2
-                P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + lift, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
-                U = [(p[0] / 3, p[1] / 3) for p in P]
-                o = a.geo('path', ax, az)
-                if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
-                    o.quad(Y[0], Y[1], Y[2], Y[3], *U)
-                else:
-                    o.quad(Y[3], Y[2], Y[1], Y[0], U[3], U[2], U[1], U[0])
-    path([(-30, 46), (-24, 30), (-10, 14), (0, 4), (0, -20), (0, -46)], 3.0)
-    path([(0, 4), (22, 0), (30, -6)], 2.2)
+    a.path([(-30, 46), (-24, 30), (-10, 14), (0, 4), (0, -20), (0, -46)], 3.0)
+    a.path([(0, 4), (22, 0), (30, -6)], 2.2)
 
     # ---- the way in from the field (south-west) ----
     a.loadzone(-30, height(-30, HALF - 1), HALF - 0.5, 8, 4, 1.4, to='fields', at='peppermill')
