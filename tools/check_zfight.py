@@ -14,6 +14,7 @@ import sys
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 EPS_D = 0.004          # metres: planes closer than this fight at a distance
 EPS_N = 0.999          # normals this parallel count as the same direction
+LOOSE = False          # (--loose: let alike-textured pairs pass; lit per corner, they still flicker)
 MIN_AREA = 0.02        # square metres of overlap worth reporting
 
 
@@ -197,7 +198,7 @@ def check(area):
             pi, t1, n1, d1 = items[i]
             for j in range(i + 1, len(items)):
                 pj, t2, n2, d2 = items[j]
-                if pi == pj or dot(n1, n2) < EPS_N or abs(d1 - d2) > EPS_D:
+                if dot(n1, n2) < EPS_N or abs(d1 - d2) > EPS_D:
                     continue
                 # quick bounds test
                 if any(max(p[k] for p in t1) < min(p[k] for p in t2) - 1e-4 or max(p[k] for p in t2) < min(p[k] for p in t1) - 1e-4 for k in range(3)):
@@ -207,7 +208,7 @@ def check(area):
                 a, c3 = overlap(t1, t2, n1)
                 if a > 1e-4 and abs(dot(n2, c3) - d2) > EPS_D:
                     continue          # (nearly parallel, but apart where they overlap)
-                if a > 1e-4 and material(parts[pi][0]) == material(parts[pj][0]):
+                if a > 1e-4 and LOOSE and material(parts[pi][0]) == material(parts[pj][0]):
                     u1, u2 = uv_at(t1, c3), uv_at(t2, c3)
                     if u1 and u2 and all(abs((u1[k] - u2[k]) - round(u1[k] - u2[k])) < 0.01 for k in range(2)):
                         continue      # the same texture, the same way round: they look alike (no flicker)
@@ -220,6 +221,10 @@ def check(area):
 
 
 def main(areas):
+    global LOOSE
+    if '--loose' in areas:
+        LOOSE = True
+        areas = [x for x in areas if x != '--loose']
     if not areas:
         areas = sorted(os.path.splitext(os.path.basename(f))[0] for f in glob.glob(os.path.join(ROOT, 'areas', '*.scene')))
     total = 0

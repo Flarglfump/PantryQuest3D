@@ -64,8 +64,11 @@ def build(era='fresh'):
         for cx in range(-104, 104, 26):
             a.geo('grass', cx + 13, cz + 13).ground(cx, cz, cx + 26, cz + 26, 4, 4, height, uvs=0.2)
 
+    strips = [0]
     def path_strip(points, width):
-        for (x0, z0), (x1, z1) in zip(points, points[1:]):
+        strips[0] += 1
+        for seg, ((x0, z0), (x1, z1)) in enumerate(zip(points, points[1:])):
+            lift = 0.06 + 0.008 * (strips[0] - 1) + 0.005 * (seg % 2)      # (each strip, and each other bend, a hair apart where they cross: no flicker)
             n = max(1, int(math.hypot(x1 - x0, z1 - z0) / 4))
             for i in range(n):
                 ax, az = x0 + (x1 - x0) * i / n, z0 + (z1 - z0) * i / n
@@ -74,7 +77,7 @@ def build(era='fresh'):
                 L = math.hypot(dx, dz) or 1
                 px, pz = -dz / L * width / 2, dx / L * width / 2
                 P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + 0.06, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
+                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + lift, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
                 U = [(p[0] / 3, p[1] / 3) for p in P]
                 o = a.geo('path', ax, az)
                 if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
@@ -109,7 +112,7 @@ def build(era='fresh'):
             continue
         x0, z0 = hx + math.cos(a0) * hr, hz + math.sin(a0) * hr
         x1, z1 = hx + math.cos(a1) * hr, hz + math.sin(a1) * hr
-        box_wall(a, 'planks', x0, z0, x1, z1, height(x0, z0) - 0.3, height(x0, z0) + 1.1, thick=0.4)
+        box_wall(a, 'planks', x0, z0, x1, z1, height(x0, z0) - 0.3, height(x0, z0) + 1.1 + 0.012 * (k % 2), thick=0.4)   # (tops a hair apart where they meet)
     for k in range(2):
         ang = math.pi + (0.3 if k else -0.3)
         a.geo('bark', hx + math.cos(ang) * hr, hz).cylinder((hx + math.cos(ang) * hr, height(hx - hr, hz) - 0.2, hz + math.sin(ang) * hr), 0.25, 2.2, 6)

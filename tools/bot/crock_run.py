@@ -386,8 +386,9 @@ def main():
     r.advance_talk()
     r.need(r.flag('crock_boss'), 'Queen Mildewmite beaten')
     # ---- into the blue light, back to Mother Starter: she speaks at once
-    r.goto(-19.0, -10.0, near=0.5, limit=900)
     for i in range(40):
+        if not any('sprouthollow' in x for x in g.scenes()):
+            r.goto(-19.0, -10.0, near=0.5, limit=900)     # (again if the light came up under him: it eases him out first)
         g.frames(10)
         sc = g.scenes()
         if any('sprouthollow' in x for x in sc) and any('dialogue' in x for x in sc):

@@ -47,7 +47,7 @@ def box_room(a, floor, wall, x0, z0, x1, z1, y, h, doors=(), sides='nsew', ceili
         cut = [(c - w / 2, c + w / 2, b, t) for (s, c, w, b, t) in doors if s == side]
         if side in 'ns':
             zz = z0 - WALL if side == 'n' else z1
-            span = (x0 - WALL, x1 + WALL)
+            span = (x0 - (WALL if 'w' in sides else 0), x1 + (WALL if 'e' in sides else 0))   # (an open end: the next room's wall is there)
             def put(u0, u1, b, t, zz=zz):
                 a.geo(wall, (u0 + u1) / 2, zz).box((u0, b, zz), (u1, t, zz + WALL), uvs=0.3)
         else:
