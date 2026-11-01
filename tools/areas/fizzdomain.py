@@ -34,7 +34,7 @@ def build(era='fresh'):
     a.geo('fizzrock', 0, 0).cylinder((0, BED - 0.5, 0), POOL + 0.2, 0.5, 20, top=True, uvs=0.3)
     a.geo('fizzrock', 0, 0).cylinder((0, BED, 0), POOL, -BED, 20, top=False, inside=True, uvs=0.3)
     if risen:      # frozen solid
-        a.geo('ice', 0, 0).cylinder((0, -0.4, 0), POOL + 0.05, 0.4, 20, top=True, uvs=0.25)
+        a.geo('ice', 0, 0).cylinder((0, -0.4, 0), POOL + 0.05, 0.39, 20, top=True, uvs=0.25)    # (a centimetre under the rim it reaches under)
     else:
         a.water(-POOL, -POOL, POOL, POOL, SURF, depth=5, round_=True)
     if not risen:

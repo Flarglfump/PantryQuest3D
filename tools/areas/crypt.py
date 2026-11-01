@@ -53,7 +53,7 @@ def build():
     a.geo('rot', 0, bz - 6).box((-9, -0.5, bz - 9), (9, 0, bz - 4), uvs=0.35)
     a.geo('rock', 0, bz).box((-9, -6.5, bz - 4), (9, -6, bz + 4), uvs=0.35)
     a.entity('Pit', t3((0, -5.5, bz)), collider('box', (18, 0.6, 8), trigger=True), tags('pit'))
-    a.entity('Unseen Bridge', t3((-2.5, -0.25, bz), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#d0b0ffa0', 'art/stone.png', cast=False),
+    a.entity('Unseen Bridge', t3((-2.5, -0.26, bz), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#d0b0ffa0', 'art/stone.png', cast=False),
              collider('box'), script('scripts/secret.bs', kind='invisible'))
     a.entity('Seen Bridge', t3((3, -0.25, bz + 2.5), (0, 0, 0), (1.6, 0.5, 3.0)), mesh('cube', '#ffffffff', 'art/stone.png'), collider('box'))
     a.point_light(0, 4, bz, '#c0a0c0ff', 1.2, 12)

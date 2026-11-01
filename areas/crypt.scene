@@ -278,7 +278,7 @@ entity
   Name
     text = "Unseen Bridge"
   Transform3D
-    position = -2.5 -0.25 -20
+    position = -2.5 -0.26 -20
     rotation = 0 0 0
     scale = 1.6 0.5 8.2
   Mesh

@@ -41,7 +41,7 @@ def build():
     a.spawn_point('gorge', 40, height(40, 0) + 0.1, 0, 90)
     a.sign(38, height(38, 3), 3, 90, 'sign_fort')
     # the fort: walls round the compound, the way in on the south
-    for (x0, z0, x1, z1) in [(-14, -12, -2, -12), (2, -12, 14, -12), (-14, -34, 14, -34), (-14, -34, -14, -12), (14, -34, 14, -12)]:
+    for (x0, z0, x1, z1) in [(-14, -12, -2.03, -12), (2.03, -12, 14, -12), (-14, -34, 14, -34), (-14, -34, -14, -12), (14, -34, 14, -12)]:   # (the gate's walls end in its posts, not flush with them)
         box_wall(a, 'planks', x0, z0, x1, z1, -0.5, 4.0, thick=0.8, uvs=0.3)
     for xx in (-2.8, 2.8):
         a.geo('planks', xx, -12).box((xx - 0.8, -0.5, -12.8), (xx + 0.8, 6, -11.2), uvs=0.3)

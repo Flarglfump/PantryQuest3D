@@ -389,7 +389,7 @@ entity
   Name
     text = "Crust Raft"
   Transform3D
-    position = 3 -0.25 -27
+    position = 3 -0.27 -27
     rotation = 0 0 0
     scale = 2 0.5 2
   Mesh
@@ -408,7 +408,7 @@ entity
     list = "platform"
   Script
     file = "scripts/platform.bs"
-    vars = "a = vec3(3, -0.25, -27), b = vec3(0, -0.25, -30.8), speed = 1.4, wait = 1.5"
+    vars = "a = vec3(3, -0.27, -27), b = vec3(0, -0.27, -30.8), speed = 1.4, wait = 1.5"
 
 entity
   Name

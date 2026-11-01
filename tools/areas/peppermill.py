@@ -38,8 +38,11 @@ def build(era='fresh'):
         for cx in range(-48, 48, 12):
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 3, 3, height, uvs=0.25)
 
+    strips = [0]
     def path(points, width):
-        for (x0, z0), (x1, z1) in zip(points, points[1:]):
+        strips[0] += 1
+        for seg, ((x0, z0), (x1, z1)) in enumerate(zip(points, points[1:])):
+            lift = 0.06 + 0.008 * (strips[0] - 1) + 0.005 * (seg % 2)      # (each path, and each other bend, a hair apart where they cross: no flicker)
             n = max(1, int(math.hypot(x1 - x0, z1 - z0) / 2.5))
             for i in range(n):
                 ax, az = x0 + (x1 - x0) * i / n, z0 + (z1 - z0) * i / n
@@ -47,7 +50,7 @@ def build(era='fresh'):
                 L = math.hypot(bx - ax, bz - az) or 1
                 px, pz = -(bz - az) / L * width / 2, (bx - ax) / L * width / 2
                 P = [(ax - px, az - pz), (bx - px, bz - pz), (bx + px, bz + pz), (ax + px, az + pz)]
-                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + 0.06, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
+                Y = [(p[0], max(height(p[0] + ox, p[1] + oz) for ox, oz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1))) + lift, p[1]) for p in P]   # (clear of the ground's own triangles round it: no flicker)
                 U = [(p[0] / 3, p[1] / 3) for p in P]
                 o = a.geo('path', ax, az)
                 if (P[1][0] - P[0][0]) * (P[2][1] - P[0][1]) - (P[1][1] - P[0][1]) * (P[2][0] - P[0][0]) < 0:
@@ -109,7 +112,7 @@ def build(era='fresh'):
         cy0 = height(gx, gz - 10)
         a.entity('Crypt Door', t3((gx, cy0 + 1.5, gz - 10.4), (0, 0, 0), (2.4, 3.0, 0.2)), mesh('cube', '#3a2a3aff', 'art/stone.png'),
                  collider('box'), tags('interact', 'focusable'), script('scripts/songdoor.bs', song='nocturne', id='door:crypt', say='crypt_door', reach=3.0))
-        a.entity('Crypt Dark', t3((gx, cy0 + 1.5, gz - 10.47), (0, 0, 0), (2.4, 3.0, 0.1)), mesh('cube', '#08040aff', lit=False))
+        a.entity('Crypt Dark', t3((gx, cy0 + 1.5, gz - 10.47), (0, 0, 0), (2.44, 3.04, 0.1)), mesh('cube', '#08040aff', lit=False))     # (a little bigger than the door: its edges in the walls, not in the door's planes)
         a.loadzone(gx, cy0, gz - 10.2, 2.2, 3, 0.5, to='crypt', at='start', needs='door:crypt')
         a.spawn_point('crypt', gx, cy0 + 0.1, gz - 8.2, 180)
         a.spawn_point('graveyard', gx, height(gx, gz + 9) + 0.1, gz + 9, 180)

@@ -14,6 +14,7 @@ import sys
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 EPS_D = 0.004          # metres: planes closer than this fight at a distance
 EPS_N = 0.999          # normals this parallel count as the same direction
+DETAIL = False
 LOOSE = False          # (--loose: let alike-textured pairs pass; lit per corner, they still flicker)
 MIN_AREA = 0.02        # square metres of overlap worth reporting
 
@@ -190,6 +191,7 @@ def check(area):
             key = (round(n[0], 1), round(n[1], 1), round(n[2], 1), round(d / 0.05))
             buckets.setdefault(key, []).append((pi, t, n, d))
     found = {}
+    shown = set()
     for key, items in buckets.items():
         if len(items) < 2:
             continue
@@ -217,11 +219,18 @@ def check(area):
                     c = tuple(round(sum(p[k] for p in t1) / 3, 1) for k in range(3))
                     tot, at = found.get(k2, (0, c))
                     found[k2] = (tot + a, at)
+                    if DETAIL and k2 not in shown:
+                        shown.add(k2)
+                        bb = lambda t: tuple(tuple(round(f(p[k] for p in t), 2) for k in range(3)) for f in (min, max))
+                        print('   %s: n %s  %s %s | %s %s' % (area, tuple(round(x, 2) for x in n1), parts[pi][0], bb(t1), parts[pj][0], bb(t2)))
     return [(k, v) for k, v in found.items() if v[0] >= MIN_AREA]
 
 
 def main(areas):
-    global LOOSE
+    global LOOSE, DETAIL
+    if '--detail' in areas:
+        DETAIL = True
+        areas = [x for x in areas if x != '--detail']
     if '--loose' in areas:
         LOOSE = True
         areas = [x for x in areas if x != '--loose']

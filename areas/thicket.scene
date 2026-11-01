@@ -341,7 +341,7 @@ entity
   Name
     text = "Lash Target"
   Transform3D
-    position = 48.2 6.4 3.5
+    position = 48.2 6.39 3.5
     rotation = 0 90 0
     scale = 0.8 0.8 0.25
   Mesh
@@ -363,7 +363,7 @@ entity
   Name
     text = "Bullseye"
   Transform3D
-    position = 48.06 6.4 3.5
+    position = 48.06 6.39 3.5
     rotation = 90 90 0
     scale = 0.45 0.02 0.45
   Mesh

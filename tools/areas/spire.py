@@ -44,7 +44,7 @@ def build():
     a.spawn_point('bottom', 0, 0.1, 4, 180)
     for x, z in [(-4, -2), (4, -2), (0, -5), (-5, 3)]:
         a.enemy('stalebie', x, 0, z, hp=6, damage=4, always=True, group='sp1')
-    a.switchdoor(0, 0, -7.5, (3.2, 3.0, 0.6), 'clear:sp1', stay=True, material='stone', color='#506040ff')
+    a.switchdoor(0, 0, -7.52, (3.2, 3.0, 0.6), 'clear:sp1', stay=True, material='stone', color='#506040ff')
     stairs(a, 0, -8.6, 'f2')
     a.point_light(0, 4, 0, '#c0e0a0ff', 1.2, 14)
     # ---- F2: the pit of rot ----
@@ -66,9 +66,9 @@ def build():
     a.geo('rot', 0, z3 - 7).box((-10, -0.5, z3 - 10), (10, 0, z3 - 4.5), uvs=0.35)
     a.geo('rot', 0, z3).box((-10, -7.5, z3 - 4.5), (10, -7, z3 + 3.5), uvs=0.35)
     a.entity('Pit', t3((0, -6.5, z3 - 0.5)), collider('box', (20, 0.6, 8), trigger=True), tags('pit'))
-    a.entity('Unseen Bridge', t3((3, -0.25, z3 - 0.5), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#d0b0ffa0', 'art/stone.png', cast=False),
+    a.entity('Unseen Bridge', t3((3, -0.26, z3 - 0.5), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#d0b0ffa0', 'art/stone.png', cast=False),
              collider('box'), script('scripts/secret.bs', kind='invisible'))
-    a.entity('False Bridge', t3((-3, -0.25, z3 - 0.5), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#ffffffff', 'art/stone.png'),
+    a.entity('False Bridge', t3((-3, -0.26, z3 - 0.5), (0, 0, 0), (1.6, 0.5, 8.2)), mesh('cube', '#ffffffff', 'art/stone.png'),
              script('scripts/secret.bs', kind='fake'))
     a.spawn_point('f3', 0, 0.1, z3 + 7.5, 0)
     stairs(a, 0, z3 - 7.5, 'top')

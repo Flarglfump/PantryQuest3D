@@ -13,7 +13,7 @@ def build():
     a = Area('temple', 'Temple of the First Hearth', music='', kill_y=-20, sky='#100c08ff', fog=(16, 40), fog_color='#1a140cff',
              ambient=('#c0a880ff', 0.6), sun=('#ffe0a0ff', 0.5), sun_rot=(-75, 20, 0), chunk=16)
     W, N, S, H = 7.0, -16.0, 14.0, 9.0
-    a.geo('stone', 0, 0).box((-W, -0.5, N), (W, 0.0, S), uvs=0.3)
+    a.geo('stone', 0, 0).box((-W + 0.02, -0.5, N + 0.02), (W - 0.02, 0.0, S + 0.35), uvs=0.3)     # (its edges in the walls, not in their faces' planes)
     for x0, z0, x1, z1 in [(-W, N, -W, S), (W, N, W, S), (-W, N, W, N), (-W, S, -1.6, S), (1.6, S, W, S)]:
         box_wall(a, 'stone', x0, z0, x1, z1, -0.5, H, thick=0.8, uvs=0.25)
     a.geo('stone', 0, S).box((-1.6, 3.2, S - 0.4), (1.6, H, S + 0.4), uvs=0.25)
@@ -40,8 +40,8 @@ def build():
                  script('scripts/pedestal.bs', item=item))
     a.point_light(0, 4, 0, '#ffd090ff', 1.2, 14)
     # the Door of Seasons
-    a.geo('stone', 0, N + 6).box((-W, 0, N + 5.6), (-2.4, H, N + 6.4), uvs=0.25)
-    a.geo('stone', 0, N + 6).box((2.4, 0, N + 5.6), (W, H, N + 6.4), uvs=0.25)
+    a.geo('stone', 0, N + 6).box((-W + 0.4, 0, N + 5.6), (-2.4, H, N + 6.4), uvs=0.25)      # (from the side walls' faces)
+    a.geo('stone', 0, N + 6).box((2.4, 0, N + 5.6), (W - 0.4, H, N + 6.4), uvs=0.25)
     a.geo('stone', 0, N + 6).box((-2.4, 5, N + 5.6), (2.4, H, N + 6.4), uvs=0.25)
     a.entity('Door of Seasons', t3((0, 2.5, N + 6), (0, 0, 0), (4.8, 5.0, 0.5)), mesh('cube', '#d8b860ff', 'art/stone.png'), collider('box'),
              tags('interact', 'focusable'), script('scripts/songdoor.bs', song='rising', id='door:seasons', say='seasons_door', need='embers', reach=3.0))

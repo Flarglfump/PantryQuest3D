@@ -66,9 +66,9 @@ def build():
     a.entity('Pool Floor', t3((0, -2.2, bz)), collider('box', (16, 0.4, 16)))
     for x, z in [(-2.5, bz + 4.5), (0.5, bz + 1.5), (3, bz - 1.5)]:              # stepping stones (south -> centre)
         a.geo('rock', x, z).cylinder((x, -2, z), 1.0, 2.0, 8)
-    a.entity('Crust Raft', t3((3, -0.25, bz - 3), (0, 0, 0), (2.0, 0.5, 2.0)), mesh('cube', '#ffffffff', 'art/crust.png'), collider('box'),
+    a.entity('Crust Raft', t3((3, -0.27, bz - 3), (0, 0, 0), (2.0, 0.5, 2.0)), mesh('cube', '#ffffffff', 'art/crust.png'), collider('box'),
              ('RigidBody3D', [('type', 'kinematic')]), tags('platform'),
-             script('scripts/platform.bs', a=(3, -0.25, bz - 3), b=(0, -0.25, bz - 6.8), speed=1.4, wait=1.5))
+             script('scripts/platform.bs', a=(3, -0.27, bz - 3), b=(0, -0.27, bz - 6.8), speed=1.4, wait=1.5))   # (its top just under the stones': no flicker)
     x, z = polar(9.4, 250)
     a.chest(x, 0, bz + z, -160, 'map_hardcaves', 'hc_map')
     for ang in (120, 60):

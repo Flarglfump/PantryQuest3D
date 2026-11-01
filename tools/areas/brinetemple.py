@@ -44,10 +44,10 @@ def build():
     a.entity('Temple Water', t3((-10.5, 0, -10)), collider('box', (51, 14, 46), trigger=True), tags('water'), script('scripts/tide.bs'))
     a.entity('Tide Surface', t3((-10.5, 5.2, -10), (0, 0, 0), (51, 0.02, 46)), mesh('cube', '#80c0f0a0', 'art/water.png', uv=(20, 10), cast=False, lit=False))
     # ---- A: the way in ----
-    for x0, z0, x1, z1 in [(-3, 12, -3, -10), (3, 12, 3, -10)]:
+    for x0, z0, x1, z1 in [(-3, 12, -3, -10.03), (3, 12, 3, -10.03)]:      # (just past the floor's end: not in its plane)
         box_wall(a, 'fizzrock', x0, z0, x1, z1, -4, H, thick=0.8, uvs=0.3)
     a.geo('fizzrock', 0, 0).box((-3, H, -10), (3, H + 0.4, 12), uvs=0.3, sides=('ny',))
-    a.geo('stone', 0, 1).box((-3, -0.5, -10), (3, 0, 12), uvs=0.35)
+    a.geo('stone', 0, 1).box((-3, -0.5, -10), (3, 0, 12.05), uvs=0.35)      # (a little past the walls' ends: not in their plane)
     a.loadzone(0, 0, 11.6, 6, 6, 0.8, to='lake', at='brinetemple')
     a.spawn_point('start', 0, 0.1, 9, 0)
     a.sign(2.2, 0, 6, 0, 'bt_plate')
@@ -85,8 +85,8 @@ def build():
     a.entity('Locked Door', t3((12.5, 1.5, bz), (0, 90, 0), (2.6, 3.0, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='bt_east'))
     for z0 in (bz - 5, bz + 5):
-        box_wall(a, 'fizzrock', 16, z0, 44, z0, -8, 7, thick=0.8, uvs=0.3)
-    box_wall(a, 'fizzrock', 44, bz - 5, 44, bz + 5, -8, 7, thick=0.8, uvs=0.3)
+        box_wall(a, 'fizzrock', 15.97, z0, 44.03, z0, -8, 7, thick=0.8, uvs=0.3)     # (ends a hair off the floors' ends: no flicker)
+    box_wall(a, 'fizzrock', 44, bz - 5.03, 44, bz + 5.03, -8, 7, thick=0.8, uvs=0.3)
     a.geo('fizzrock', 30, bz).box((16, 7, bz - 5), (44, 7.4, bz + 5), uvs=0.3, sides=('ny',))
     a.geo('stone', 18, bz).box((16, -0.5, bz - 5), (20, 0, bz + 5), uvs=0.35)
     a.geo('stone', 39, bz).box((34, -0.5, bz - 5), (44, 0, bz + 5), uvs=0.35)

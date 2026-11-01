@@ -83,7 +83,7 @@ def build():
     a.entity('Spray', t3((0, SURF + 0.3, fz + 1.2)), particles(rate=20, max=60, lifetime=1.2, speed=2.5, spread=50, area=(5, 1), gravity=2,
                                                               size_start=0.3, size_end=0.8, color_start='#ffffffb0', color_end='#ffffff00'))
     for xx in (-2.1, 2.1):         # the cave's jambs
-        a.geo('stone', xx, fz - 1).box((xx - 0.4, LEDGE - 0.5, fz - 1.2), (xx + 0.4, LEDGE + 3.4, fz + 0.2), uvs=0.4)
+        a.geo('stone', xx, fz - 1).box((xx - 0.4, LEDGE - 0.5, fz - 1.2), (xx + 0.4, LEDGE + 3.0, fz + 0.2), uvs=0.4)     # (up to the lintel, not into it: no shared faces)
     a.geo('stone', 0, fz - 1).box((-2.5, LEDGE + 3.0, fz - 1.2), (2.5, LEDGE + 3.6, fz + 0.2), uvs=0.4)
     a.entity('Cave', t3((0, LEDGE + 1.5, fz - 0.95), (0, 0, 0), (3.4, 3.0, 0.1)), mesh('cube', '#081018ff', lit=False))
     a.loadzone(0, LEDGE, fz - 0.5, 3, 3, 0.6, to='fizzdomain', at='start', needs='door:falls')

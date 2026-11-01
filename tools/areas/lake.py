@@ -68,10 +68,10 @@ def build(era='fresh'):
         a.entity('Temple Door', t3((CX, ty + 1.6, tz - 0.95), (0, 0, 0), (2.6, 3.0, 0.1)), mesh('cube', '#0a1828ff', lit=False))
         a.loadzone(CX, ty, tz - 0.6, 2.4, 3, 0.6, to='brinetemple', at='start')
         a.spawn_point('brinetemple', CX, ty + 0.1, tz + 2, 180)
-        a.entity('Temple Door Sign', t3((CX, 1.0, CZ - 2.6), (0, 0, 0), (2.2, 1.6, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
+        a.entity('Temple Door Sign', t3((CX, 0.99, CZ - 2.6), (0, 0, 0), (2.2, 1.56, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
                  collider('box'), tags('interact'), script('scripts/sign.bs', say='lake_temple_door', prompt='Look', reach=2.4))
     else:
-        a.entity('Temple Door', t3((CX, 1.0, CZ - 2.6), (0, 0, 0), (2.2, 1.6, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
+        a.entity('Temple Door', t3((CX, 0.99, CZ - 2.6), (0, 0, 0), (2.2, 1.56, 0.2)), mesh('cube', '#4a6a8aff', 'art/stone.png'),
                  collider('box'), tags('interact'), script('scripts/sign.bs', say='tbc_lake_temple', prompt='Look', reach=2.4))
     a.tree(CX + 4, height(CX + 4, CZ + 3), CZ + 3, 1.4, 'heart')
     # what glints on the lake bed: a jar with a letter in it

@@ -296,9 +296,9 @@ entity
   Name
     text = "Temple Door Sign"
   Transform3D
-    position = 0 1 -8.6
+    position = 0 0.99 -8.6
     rotation = 0 0 0
-    scale = 2.2 1.6 0.2
+    scale = 2.2 1.56 0.2
   Mesh
     shape = cube
     texture = "art/stone.png"

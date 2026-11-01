@@ -51,7 +51,7 @@ def build():
              fog=(12, 34), fog_color='#182418ff', ambient=('#a0c098ff', 0.6), sun=('#d0f0c0ff', 0.35), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16)
     # ---- A: the entry and its broken bridge ----
-    for x0, z0, x1, z1 in [(-3, 10, -3, -10), (3, 10, 3, -10)]:
+    for x0, z0, x1, z1 in [(-3, 10.03, -3, -10.03), (3, 10.03, 3, -10.03)]:      # (ends a hair past the floors': not in their plane)
         box_wall(a, 'stone', x0, z0, x1, z1, -6, H, thick=0.8, uvs=0.3)
     a.geo('planks', 0, 0).box((-3, H, -10), (3, H + 0.3, 10), uvs=0.3, sides=('ny',))
     a.geo('cobble', 0, 6).box((-3, -0.5, 1), (3, 0, 10), uvs=0.35)
@@ -117,9 +117,9 @@ def build():
     a.point_light(0, 5, ez, '#ffb0b0ff', 1.2, 12)
     # east to F, over a pit
     fx = 22.0
-    a.geo('cobble', 11, ez).box((8.6, -0.5, ez - 1.6), (11, 0, ez + 1.6), uvs=0.35)
+    a.geo('cobble', 11, ez).box((8.6, -0.5, ez - 1.6), (11, -0.01, ez + 1.6), uvs=0.35)     # (a centimetre under the room's floor, where it reaches in)
     for z0, z1 in [(ez - 1.6, ez - 1.6), (ez + 1.6, ez + 1.6)]:
-        box_wall(a, 'stone', 8.6, z0, fx - 6.6, z1, -6, 3.0, thick=0.5, uvs=0.3)
+        box_wall(a, 'stone', 8.57, z0, fx - 6.57, z1, -6, 3.0, thick=0.5, uvs=0.3)     # (ends a hair past the floor's and ceiling's)
     a.geo('stone', 11, ez).box((8.6, 3.0, ez - 1.8), (fx - 6.6, 3.4, ez + 1.8), uvs=0.3)
     a.geo('stone', 14, ez).box((11, -6.5, ez - 1.6), (fx - 6.6, -6, ez + 1.6), uvs=0.35)
     a.entity('Pit', t3((14, -5.5, ez)), collider('box', (8, 0.6, 3.2), trigger=True), tags('pit'))

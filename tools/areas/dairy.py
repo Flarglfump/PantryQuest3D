@@ -32,7 +32,7 @@ def build(era='fresh'):
         a0, a1 = 2 * math.pi * k / 20, 2 * math.pi * (k + 1) / 20
         if k in (9, 10):
             continue
-        box_wall(a, 'planks', px + math.cos(a0) * 9, pz + math.sin(a0) * 9, px + math.cos(a1) * 9, pz + math.sin(a1) * 9, -0.3, 1.1, thick=0.3)
+        box_wall(a, 'planks', px + math.cos(a0) * 9, pz + math.sin(a0) * 9, px + math.cos(a1) * 9, pz + math.sin(a1) * 9, -0.3, 1.1 + 0.025 * (k % 2), thick=0.3)   # (tops a hair apart where they meet)
     a.entity('Custard', t3((px, 0, pz), (0, 0, 0), 1.6), mesh('model', '#f8e0a0ff', file='models/custard.glb', shadow=True),
              ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
              collider('capsule', (1, 1.0, 1), 0.5, offset=(0, 0.5, 0)), tags('focusable'), script('scripts/pony.bs'))

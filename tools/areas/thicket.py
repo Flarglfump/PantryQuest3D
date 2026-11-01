@@ -83,11 +83,11 @@ def build(era='fresh'):
     o = a.geo('stone', gx + 3, gz)
     x0, x1, y1 = gx - 4.0, gx + 2.0, 3.0                   # the stair: a ramp up to its broken end
     o.quad((x0, -0.4, -1.6), (x0, -0.4, 1.6), (x1, y1, 1.6), (x1, y1, -1.6), (0, 0), (0, 1), (2, 1), (2, 0))
-    o.box((x1 - 0.01, -0.5, -1.6), (x1 + 0.4, y1, 1.6), uvs=0.4)
+    o.box((x1 - 0.01, -0.5, -1.62), (x1 + 0.4, y1, 1.62), uvs=0.4)      # (a hair wider than the ramp: its sides not in the ramp's)
     for sz in (-1.6, 1.6):
         o.tri((x0, 0.05, sz), (x1, -0.3, sz), (x1, y1, sz)) if sz > 0 else o.tri((x0, 0.05, sz), (x1, y1, sz), (x1, -0.3, sz))
     a.geo('stone', LEDGE_X + 3, gz).box((LEDGE_X, -0.5, gz - 6), (LEDGE_X + 6, LEDGE_Y, gz + 6), uvs=0.3)
-    a.target(LEDGE_X + 1.2, LEDGE_Y + 1.4, gz + 3.5, 90)
+    a.target(LEDGE_X + 1.2, LEDGE_Y + 1.39, gz + 3.5, 90)     # (its top just under the post's)
     a.geo('bark', LEDGE_X + 1.2, gz + 3.5).cylinder((LEDGE_X + 1.35, LEDGE_Y, gz + 3.5), 0.25, 1.8, 6)
     a.sign(gx - 5, 0, gz + 2.6, -90, 'sign_temple_stair')
     # the temple's door, on the ledge

@@ -320,7 +320,7 @@ entity
   Name
     text = "Switch Door"
   Transform3D
-    position = 0 1.5 -7.5
+    position = 0 1.5 -7.52
     rotation = 0 0 0
     scale = 3.2 3 0.6
   Mesh
@@ -522,7 +522,7 @@ entity
   Name
     text = "Unseen Bridge"
   Transform3D
-    position = 3 -0.25 -80.5
+    position = 3 -0.26 -80.5
     rotation = 0 0 0
     scale = 1.6 0.5 8.2
   Mesh
@@ -544,7 +544,7 @@ entity
   Name
     text = "False Bridge"
   Transform3D
-    position = -3 -0.25 -80.5
+    position = -3 -0.26 -80.5
     rotation = 0 0 0
     scale = 1.6 0.5 8.2
   Mesh

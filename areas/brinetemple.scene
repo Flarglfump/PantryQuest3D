@@ -1246,4 +1246,4 @@ entity
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "base = \"art/maps/brinetemple_\", names = [\"B1\", \"1F\"], lows = [-999, -2], highs = [-2, 999], x0 = -32.679, z0 = -64.679, ppm = 1.4737, w = 114, h = 114"
+    vars = "base = \"art/maps/brinetemple_\", names = [\"B1\", \"1F\"], lows = [-999, -2], highs = [-2, 999], x0 = -32.679, z0 = -64.679, ppm = 1.4727, w = 114, h = 114"
