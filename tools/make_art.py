@@ -213,6 +213,7 @@ def flowers(x, y):
 # ---- HUD icons: a 16 x 16 sheet, frames left to right ----------------------------------------
 ICONS = ['heart4', 'heart3', 'heart2', 'heart1', 'heart0', 'bean', 'pea', 'key', 'spoon', 'potlid',
          'shooter', 'ember', 'map', 'compass', 'bosskey', 'pie', 'slice', 'fairy', 'jar', 'whistle', 'bomb', 'bracelet', 'ember2', 'letter', 'boss',
+         'bean_blue', 'bean_red', 'bean_purple',
          'jar1', 'jar2', 'jar_fish', 'boomerang', 'fizzbubble', 'letter_fizzy', 'ember3', 'lash', 'bow', 'med_umami', 'med_bitter', 'hammer', 'apron', 'med_spice', 'boots', 'snorkel', 'med_salt', 'jar_fire', 'longlash', 'lens', 'hover', 'med_sour', 'platter', 'med_sweet']
 
 
@@ -230,11 +231,15 @@ def icon_pixel(name, x, y):
         if edge:
             return (60, 10, 20, 255)
         return (230, 40, 60, 255) if full else (70, 40, 46, 200)
-    if name == 'bean':
+    if name == 'bean' or name.startswith('bean_'):
         d = (cx / 4.5) ** 2 + (cy / 6.5) ** 2
         if d > 1:
             return (0, 0, 0, 0)
-        return (120, 230, 110, 255) if cx + cy < -3 else (40, 170, 60, 255)
+        light, dark = {'bean': ((120, 230, 110), (40, 170, 60)), 'bean_blue': ((130, 180, 255), (40, 90, 220)),
+                       'bean_red': ((255, 130, 120), (200, 40, 40)), 'bean_purple': ((220, 150, 255), (130, 50, 200))}[name]
+        if d > 0.8:
+            return tuple(int(c * 0.6) for c in dark) + (255,)
+        return (light if cx + cy < -3 else dark) + (255,)
     if name == 'pea':
         d = math.hypot(cx, cy)
         return (0, 0, 0, 0) if d > 5 else ((150, 230, 90, 255) if cx + cy < -2 else (70, 160, 40, 255))
@@ -260,14 +265,29 @@ def icon_pixel(name, x, y):
             return (90, 90, 96, 255)
         return (170, 170, 176, 255) if d < 6 else (110, 110, 116, 255)
     if name == 'shooter':
-        if abs(cx) < 1 and 0 < cy < 7:
-            return (150, 100, 50, 255)
-        if abs(abs(cx) - 4) < 1 and -7 < cy < 1:
-            return (150, 100, 50, 255)
-        if -1 < cy < 1 and abs(cx) < 5:
-            return (150, 100, 50, 255)
-        if -6 < cy < -4 and abs(cx) < 4:
-            return (220, 190, 150, 255)
+        # a fat pea pod made into a blowpipe: peas showing through its skin, a wooden
+        # mouthpiece on the left, a leaf on top, and a pea flying out of the right end
+        if math.hypot(cx - 6.0, cy + 5.6) < 1.6:
+            return (200, 255, 130, 255) if cx + cy < 0.6 else (90, 190, 50, 255)
+        along = cx * 0.94 - cy * 0.34       # (tipped up a little to the right)
+        across = cx * 0.34 + cy * 0.94
+        if -7.6 < along < -5.6 and abs(across) < 2.0:
+            return (160, 110, 55, 255) if abs(across) < 1.3 and along > -7.2 else (90, 60, 30, 255)
+        width = 2.9 + 0.6 * math.cos((along + 3.5) * 2.1)
+        if -5.8 < along < 4.4 and abs(across) < width:
+            for pa in (-3.5, -0.5, 2.5):
+                d = math.hypot(along - pa, across + 0.2)
+                if d < 1.5:
+                    return (200, 250, 140, 255) if d < 0.7 and along - pa < 0 else (150, 225, 100, 255)
+            if abs(across) > width - 0.9:
+                return (35, 100, 35, 255)
+            return (75, 160, 55, 255)
+        if 4.4 <= along < 5.3 and abs(across) < 1.5:
+            return (35, 100, 35, 255)
+        if -3.0 < along < 0.5 and -width - 2.4 < across < -width + 0.2:
+            leaf = ((along + 1.2) / 1.9) ** 2 + ((across + width + 1.1) / 1.1) ** 2
+            if leaf < 1:
+                return (120, 210, 80, 255) if leaf < 0.5 else (60, 140, 50, 255)
         return (0, 0, 0, 0)
     if name == 'ember':
         d = abs(cx) * 1.3 + abs(cy + 1) * 0.9

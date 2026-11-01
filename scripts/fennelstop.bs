@@ -1,0 +1,30 @@
+@strict @3d
+# fennelstop.bs - in front of the bridge out of Sprouthollow, where Fennel waits. Before the
+# Great Crock is cleared she stops Sprig (and sends him back into the village); after it, the
+# first time he comes she gives him her reed pipe. (Tagged "loadzone": sprig.bs tells it he's in.)
+
+var game: entity
+var cool: number = 0
+
+func start() -> void { game = find("Game") }
+
+func update(dt: number) -> void { cool = max(0, cool - dt) }
+
+func entered(other: entity) -> void {
+    if cool > 0 or game.state != "play" { return }
+    if game.flag("crock_done") and game.has_item("pipe") { return }
+    cool = 1.5
+    var fennel: entity = find("Fennel")
+    if fennel != nil { look_at(fennel, vec3(other.x, fennel.y, other.z)) }
+    if not game.flag("crock_done") {
+        other.position = vec3(other.x, other.y, self.z - 2.2)        # (back from the bridge)
+        if not game.flag("talked_fennel") {
+            game.set_flag("talked_fennel")
+            game.talk("fennel_1", "")
+        } else {
+            game.talk("fennel_stop", "")
+        }
+        return
+    }
+    game.talk("fennel_bridge", "pipe")
+}

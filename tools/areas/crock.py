@@ -184,12 +184,12 @@ def build():
              tags('focusable', 'shootable'), script('scripts/eyeswitch.bs', id='crock_eye'))
     a.entity('Eye Pupil', t3((0, eye_y, -11.66), (0, 0, 0), (0.28, 0.28, 0.1)), mesh('sphere', '#c02020ff', lit=False),
              script('scripts/blocker.bs', until='crock_eye'))
-    a.blocker(0, F1, -12.25, (3.0, 3.0, 0.3), 'crock_eye')
+    a.blocker(0, F1, -12.25, (2.98, 2.98, 0.3), 'crock_eye')        # (doors fill their doorways)
     # the locked door to the Boss Key room (2F, north) and the big door west (2F)
-    a.entity('Locked Door', t3((0, F2 + 1.4, -12.25), (0, 0, 0), (2.6, 2.8, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
+    a.entity('Locked Door', t3((0, F2 + 1.49, -12.25), (0, 0, 0), (2.58, 2.98, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='crock_bk'))
     a.entity('Lock', t3((0, F2 + 1.3, -12.05), (0, 0, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
-    a.entity('Boss Door', t3((-10.25, F2 + 1.5, -10), (0, 90, 0), (2.6, 3.0, 0.4)), mesh('cube', '#8a3a2aff', 'art/planks.png'),
+    a.entity('Boss Door', t3((-10.25, F2 + 1.49, -10), (0, 90, 0), (2.58, 2.98, 0.4)), mesh('cube', '#8a3a2aff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='crock_boss_door', boss=True))
     a.entity('Boss Lock', t3((-10.0, F2 + 1.4, -10), (0, 90, 0), (0.8, 0.9, 0.2)), mesh('cube', '#c84040ff'), tags('lock'))
     # things about the hall
@@ -210,7 +210,7 @@ def build():
     box_room(a, 'dough', 'dough_wall', 27.5, 2, 29, 4, F1, 2.6, sides='nse')         # the key's alcove
     crate(a, 18.6, F1, -0.8)
     a.floorswitch(18.6, F1, -5.6, 'crock_sw_crate')
-    a.switchdoor(27.2, F1, 3.0, (0.3, 2.6, 2.0), 'crock_sw_crate', material='planks', color='#a08060ff')     # (open only while weighed down)
+    a.switchdoor(27.2, F1, 3.0, (0.3, 2.58, 1.98), 'crock_sw_crate', material='planks', color='#a08060ff')     # (open only while weighed down)
     a.chest(28.3, F1, 3.0, 90, 'key', 'crock_key1')
     for (x, z) in [(22.0, 3.0), (16.0, 4.5)]:
         a.enemy('fuzzball', x, F1 + 0.1, z, hp=2, group='crate')
@@ -222,7 +222,7 @@ def build():
 
     # ================= the Proofing Room (west, locked) =================
     box_room(a, 'dough', 'dough_wall', -12.5, -1.5, -10.5, 1.5, F1, 3.0, sides='ns')
-    a.entity('Locked Door', t3((-11.5, F1 + 1.4, 0), (0, 90, 0), (2.6, 2.8, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
+    a.entity('Locked Door', t3((-11.5, F1 + 1.49, 0), (0, 90, 0), (2.98, 2.98, 0.3)), mesh('cube', '#ffffffff', 'art/planks.png'),
              collider('box'), tags('interact'), script('scripts/lockdoor.bs', id='crock_proof'))
     a.entity('Lock', t3((-11.3, F1 + 1.3, 0), (0, 90, 0), (0.5, 0.6, 0.2)), mesh('cube', '#c8a040ff'), tags('lock'))
     box_room(a, None, 'dough_wall', -29, -6, -13, 10, F1, 9.0, doors=[('e', 0, 3.0, F1, F1 + 3.0)])
@@ -272,7 +272,7 @@ def build():
     a.floorswitch(-2.4, F2, -21.2, 'crock_sw_a')
     a.floorswitch(4.0, F2, -19.6, 'crock_sw_b')
     a.entity('Two Switches', t3((0, F2, -18)), script('scripts/allflags.bs', a='crock_sw_a', b='crock_sw_b', out='crock_bk_gate'))
-    a.switchdoor(0, F2, -24.2, (3.0, 3.0, 0.3), 'crock_bk_gate', material='planks', color='#a08060ff')
+    a.switchdoor(0, F2, -24.2, (2.98, 2.98, 0.3), 'crock_bk_gate', material='planks', color='#a08060ff')
     a.chest(0, F2, -25.4, 180, 'bosskey_crock', 'crock_bosskey', big=True)
     a.point_light(0, F2 + 3.0, -18, '#ffd090ff', 1.1, 11)
     a.sign(4.6, F2, -13.2, 0, 'crock_bkroom')

@@ -821,7 +821,11 @@ func update(dt: number) -> void {
         carry_on_platform()
         vel = move_and_slide(self, vel)
         var now_floor: bool = is_on_floor(self)
-        if was_floor and not now_floor and vel.y <= 0.5 and st == "free" and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() and not game.flag("hover_on") {
+        if was_floor and not now_floor and vel.y <= 0.5 and (st == "free" or st == "roll") and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() and not game.flag("hover_on") {
+            if st == "roll" {                           # (rolling off: up out of the roll into the hop)
+                st = "free"
+                pitch = 0
+            }
             vel.y = HOP                                 # off a ledge at a run: a hop
             play_sound("sfx/hop.wav", 0.5)
             play_animation(body, "jump", 1, false)
@@ -884,6 +888,9 @@ func update(dt: number) -> void {
         }
     }
 }
+
+# Shield up without focusing: down behind it, turning on the spot (focusing: stepping about).
+func crouching() -> bool { return shielding and not focusing and target == nil }
 
 func vel_want(dir: vec3, mv: vec2) -> vec3 {
     var speed: number = RUN
@@ -1264,7 +1271,10 @@ func update_context() -> void {
         to.y = 0
         var d: number = length(to)
         var reach: number = e.reach
-        if e == target { reach = max(reach, 4) }
+        if e == target {                       # (focused on: further - and someone to talk to, from well off)
+            reach = max(reach, 4)
+            if e.prompt == "Talk" { reach = max(reach + 4, 8) }
+        }
         if d > reach { continue }
         if abs(e.focus_point().y - (self.y + 0.7)) > 2.4 { continue }          # (not things on a ledge above, or below)
         if d > 0.3 and dot(normalize(to), fwd) < 0.4 and e != target { continue }
@@ -1312,7 +1322,7 @@ func place_gear(dt: number) -> void {
             weapon.rotation = vec3(28, 8, 0)
         }
     } else {
-        weapon.position = vec3(0.02, 0.62, 0.19)          # on his back
+        weapon.position = vec3(0.02, 0.62, 0.125)         # on his back (the body's back is at z 0.1)
         weapon.rotation = vec3(115, 0, -25)
     }
     var placed: bool = false
@@ -1322,7 +1332,7 @@ func place_gear(dt: number) -> void {
         placed = place_on_bone(lid, body, "hand_l", vec3(0.05, -0.1, 0), vec3(0, 0, -90))     # (on his arm, facing out)
     }
     if not placed {
-        lid.position = vec3(0, 0.6, 0.16)                  # on his back
+        lid.position = vec3(0, 0.6, 0.15)                  # on his back, over the spoon
         lid.rotation = vec3(90, 0, 0)
     }
     # the Pea Shooter, out while he aims it
@@ -1359,6 +1369,8 @@ func animate() -> void {
     } elif st == "free" {
         if not is_on_floor(self) and abs(vel.y) > 1.5 {
             play_animation(body, "jump", 1, false)
+        } elif shielding and crouching() {
+            play_animation(body, "crouch", 1, true)
         } elif shielding {
             play_animation(body, "shield", 1, true)
         } elif move_amount > 0.6 {

@@ -118,6 +118,13 @@ func talk(id: string) -> list {
                 p("FENNEL", "It's okay. We'll always be friends, whatever you are. Here - take my reed pipe."),
                 p("FENNEL", "Play it and think of me, okay?")]
     }
+    if id == "fennel_stop" {
+        if game.flag("starter_open") {
+            return [p("FENNEL", "Sprig, Mother Starter opened her mouth for you! Whatever's inside her, you can't just walk away now.")]
+        }
+        return [p("FENNEL", "Whoa, where are you going? Nobody leaves Sprouthollow without Mother Starter's say-so."),
+                p("FENNEL", "Go and see her - the grove's at the north end of the village. Chive's guarding the path.")]
+    }
     if id == "sprout_exit_block" {
         return [p("FLICKER", "Sprig, wait! Mother Starter wants to see you first. Her grove is at the north end of the village!")]
     }
@@ -1063,6 +1070,10 @@ func area_started(area: string) -> void {
     if area == "crock" and not game.flag("crock_entered") {
         game.set_flag("crock_entered")
         game.talk("crock_enter", "")
+    }
+    # out of the Great Crock, the curse broken: Mother Starter speaks at once
+    if area == "sprouthollow" and game.flag("crock_done") and not game.flag("starter_farewell") and game.spawn == "grove" {
+        game.talk("starter_farewell", "ember")
     }
 }
 

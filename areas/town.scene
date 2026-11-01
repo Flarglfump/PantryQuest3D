@@ -2031,9 +2031,11 @@ entity
   Name
     text = "Weevil Glint"
   Transform3D
-    position = 6 1.1 32
+    position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
+  Parent
+    entity = 121
   Particles
     rate = 3
     max = 6
@@ -2075,9 +2077,11 @@ entity
   Name
     text = "Weevil Glint"
   Transform3D
-    position = -4 3.3222 -31
+    position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
+  Parent
+    entity = 123
   Particles
     rate = 3
     max = 6

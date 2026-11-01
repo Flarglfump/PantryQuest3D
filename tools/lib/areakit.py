@@ -472,9 +472,9 @@ class Area:
         kw = {'id': id}
         if night:
             kw['night'] = True
-        self.entity('Golden Weevil', t3((x, y, z), (0, 0, 0), 0.5), mesh('model', '#f0c030ff', file='models/bean.obj', lit=False),
-                    collider('sphere', radius=0.6, trigger=True), tags('focusable', 'shootable'), script('scripts/weevil.bs', **kw))
-        self.entity('Weevil Glint', t3((x, y, z)), particles(rate=3, max=6, lifetime=0.8, speed=0.3, spread=90, size_start=0.15, size_end=0,
+        w = self.entity('Golden Weevil', t3((x, y, z), (0, 0, 0), 0.5), mesh('model', '#f0c030ff', file='models/bean.obj', lit=False),
+                        collider('sphere', radius=0.6, trigger=True), tags('focusable', 'shootable'), script('scripts/weevil.bs', **kw))
+        self.entity('Weevil Glint', t3((0, 0, 0)), ('Parent', [('entity', w)]), particles(rate=3, max=6, lifetime=0.8, speed=0.3, spread=90, size_start=0.15, size_end=0,
                                                            color_start='#fff0a0ff', color_end='#ffc00000', blend='add'))
 
     def hammerswitch(self, x, y, z, id):

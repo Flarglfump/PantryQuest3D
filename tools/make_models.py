@@ -175,6 +175,13 @@ def standard_anims(m, b, s=1.0, hero=False):
         b['arm_r']: [(0, R(x=20, z=-15)), (1, R(x=20, z=-15))],
         b['leg_l']: [(0, R(x=20)), (1, R(x=20))], b['leg_r']: [(0, R(x=-15)), (1, R(x=-15))],
         b['shin_l']: [(0, R(x=-20)), (1, R(x=-20))]})
+    m.animation('crouch', rotations={      # down behind the shield (raised without focusing): knees bent
+        b['arm_l']: [(0, R(x=80, z=-30)), (1, R(x=80, z=-30))], b['hand_l']: [(0, R(x=10)), (1, R(x=10))],
+        b['arm_r']: [(0, R(x=30, z=-15)), (1, R(x=30, z=-15))],
+        b['spine']: [(0, R(x=18)), (1, R(x=18))], b['head']: [(0, R(x=-14)), (1, R(x=-14))],
+        b['leg_l']: [(0, R(x=70)), (1, R(x=70))], b['leg_r']: [(0, R(x=70)), (1, R(x=70))],
+        b['shin_l']: [(0, R(x=-110)), (1, R(x=-110))], b['shin_r']: [(0, R(x=-110)), (1, R(x=-110))]},
+        translations={b['hips']: [(0, (0, -0.21 * s, 0)), (1, (0, -0.21 * s, 0))]})
     m.animation('climb', rotations={
         b['arm_l']: cycle(4, 0.8, lambda p: R(x=150 + 20 * math.sin(2 * math.pi * p))),
         b['arm_r']: cycle(4, 0.8, lambda p: R(x=150 - 20 * math.sin(2 * math.pi * p))),

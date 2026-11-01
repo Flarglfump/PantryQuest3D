@@ -36,6 +36,6 @@ func update(dt: number) -> void {
     if stay and game.flag(when) { latched = true }
     var was: number = up
     if up < want { up = min(1, up + dt * 1.5) }
-    if up > want { up = max(0, up - dt * 1.5) }
+    if up > want { up = max(0, up - dt * 8) }      # (it drops shut fast: no slipping under it as it comes down)
     if up != was { place() }
 }

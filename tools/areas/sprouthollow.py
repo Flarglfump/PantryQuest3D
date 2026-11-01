@@ -267,8 +267,12 @@ def build():
     a.sign(-4, height(-4, -2), -2, 300, 'sign_roll')
 
     # ---- people ----
-    a.npc('fennel', -3.5, height(-3.5, 4), 4, 150, until='crock_done')
-    a.npc('fennel', 2.2, height(2.2, 30.5), 30.5, 200, needs='crock_done')
+    # Fennel at the bridge out: she won't let Sprig leave before the Crock (fennelstop.bs), and
+    # gives him her pipe after it; then she steps aside
+    a.npc('fennel', 1.0, height(1.0, 31.4), 31.4, 0, until='fennel_bridge')
+    a.npc('fennel', 3.2, height(3.2, 30.2), 30.2, 220, needs='fennel_bridge')
+    a.entity('Fennel Stop', t3((0, 1.0, 30.6)), collider('box', (5.0, 2.0, 1.2), trigger=True), tags('loadzone'),
+             script('scripts/fennelstop.bs'))
     a.npc('mint', -15, height(-15, -2.5), -2.5, 220)
     a.npc('dill', -13.8, height(-13.8, -3.6), -3.6, 230)
     a.npc('parsley', 8, height(8, 6), 6, 250)
@@ -300,7 +304,6 @@ def build():
 
     # ---- ways out ----
     a.loadzone(0, 0, 45, 4, 3, 1, to='fields', at='sprouthollow', needs='crock_done')
-    a.loadzone(0, 0, 44.4, 4, 3, 1, to='', say='sprout_exit_block', until='crock_done')
     a.spawn_point('fields', 0, height(0, 30) + 0.1, 30, 0)
     a.spawn_point('start', 0, height(0, 26) + 0.1, 26, 0)
     a.spawn_point('crock', 0, gy + 0.1, cz + 8, 0)

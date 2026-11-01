@@ -34,11 +34,14 @@ func hit(amount: int, how: string, from: vec3) -> void {
     spawn("prefabs/poof.scene", self.position)
     play_sound("sfx/bean.wav", 0.8, 0.8)
     play_sound("sfx/secret.wav", 0.5, 1.4)
-    game.talk("weevil_got", "")
+    self.Mesh.visible = false                  # (gone at once - with its glint, a child of it - before the talk)
+    remove_tag(self, "focusable")
     destroy(self)
+    game.talk("weevil_got", "")
 }
 
 func update(dt: number) -> void {
+    if got { return }
     t += dt
     var on: bool = out()
     self.Mesh.visible = on

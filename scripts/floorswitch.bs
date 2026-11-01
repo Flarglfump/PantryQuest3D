@@ -30,5 +30,5 @@ func update(dt: number) -> void {
         play_sound("sfx/switch.wav", 0.6, 0.8)
         if down { game.set_flag(id) } else { game.clear_flag(id) }
     }
-    if down { self.y = base_y - 0.08 } else { self.y = base_y }
+    if down { self.y = base_y - 0.06 } else { self.y = base_y }      # (pressed, its top still 2cm over the floor: no flicker)
 }

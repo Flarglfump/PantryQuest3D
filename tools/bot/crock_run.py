@@ -27,7 +27,10 @@ class Run:
 
     def flag(self, f):
         fl = self.g.var('Game', 'flags')[0]
-        return f in fl if isinstance(fl, str) else False
+        if not isinstance(fl, str):
+            return False
+        got = [x.strip() for x in fl.strip('[]').split(',')]
+        return f in got or 'chest:' + f in got            # (whole flags: "crock_boss" isn't "chest:crock_bosskey")
 
     def keys(self, kind):
         c = self.g.var('Game', 'counters')[0]
@@ -382,6 +385,14 @@ def main():
     g.frames(200)
     r.advance_talk()
     r.need(r.flag('crock_boss'), 'Queen Mildewmite beaten')
+    # ---- into the blue light, back to Mother Starter: she speaks at once
+    r.goto(-19.0, -10.0, near=0.5, limit=900)
+    for i in range(40):
+        g.frames(10)
+        sc = g.scenes()
+        if any('sprouthollow' in x for x in sc) and any('dialogue' in x for x in sc):
+            break
+    r.need(any('dialogue' in x for x in g.scenes()), 'out by the blue light: Mother Starter speaks at once')
     print('the Great Crock: all the way through. errors:', g.errors)
 
 

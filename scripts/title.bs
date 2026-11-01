@@ -104,6 +104,17 @@ func bind_menus() -> void {
     unbind("m_erase"); bind("m_erase", menu_key(chosen, "m_erase"), "pad:y")
 }
 
+# A little heart (6 by 5), small enough for a journey's line.
+func mini_heart(at: vec2) -> void {
+    var red: list = [230, 50, 60, 255]
+    draw_rect(at + vec2(0, 0), vec2(2, 1), red)
+    draw_rect(at + vec2(3, 0), vec2(2, 1), red)
+    draw_rect(at + vec2(0, 1), vec2(5, 2), red)
+    draw_rect(at + vec2(1, 3), vec2(3, 1), red)
+    draw_rect(at + vec2(2, 4), vec2(1, 1), red)
+    draw_rect(at + vec2(1, 1), vec2(1, 1), [255, 170, 170, 255])
+}
+
 func inside(p: vec2, at: vec2, size: vec2) -> bool {
     return p.x >= at.x and p.y >= at.y and p.x < at.x + size.x and p.y < at.y + size.y
 }
@@ -169,7 +180,7 @@ func draw() -> void {
         } else {
             draw_text("JOURNEY " + (i + 1), vec2(80, y + 3), col)
             var hearts: int = floor(s[3] / 4)
-            for h in min(hearts, 10) { draw_image("art/icons/heart4.png", vec2(84 + h * 9, y + 15)) }
+            for h in min(hearts, 20) { mini_heart(vec2(80 + h * 7, y + 13)) }
             var secs: int = floor(s[10])
             draw_text(str(floor(secs / 3600)) + "h" + (floor(secs / 60) % 60) + "m", vec2(200, y + 3), col)
         }

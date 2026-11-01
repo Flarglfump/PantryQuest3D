@@ -3017,8 +3017,8 @@ entity
   Name
     text = "Fennel"
   Transform3D
-    position = -3.5 -0.05 4
-    rotation = 0 150 0
+    position = 1 -0.0214 31.4
+    rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
@@ -3042,14 +3042,14 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"fennel\", until = \"crock_done\""
+    vars = "who = \"fennel\", until = \"fennel_bridge\""
 
 entity
   Name
     text = "Fennel"
   Transform3D
-    position = 2.2 -0.0281 30.5
-    rotation = 0 200 0
+    position = 3.2 -0.0297 30.2
+    rotation = 0 220 0
     scale = 1 1 1
   Mesh
     shape = model
@@ -3073,7 +3073,25 @@ entity
     list = "npc, interact, focusable"
   Script
     file = "scripts/npc.bs"
-    vars = "who = \"fennel\", needs = \"crock_done\""
+    vars = "who = \"fennel\", needs = \"fennel_bridge\""
+
+entity
+  Name
+    text = "Fennel Stop"
+  Transform3D
+    position = 0 1 30.6
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 5 2 1.2
+    radius = 0.5
+    friction = 0.8
+    trigger = true
+  Tags
+    list = "loadzone"
+  Script
+    file = "scripts/fennelstop.bs"
 
 entity
   Name
@@ -3683,25 +3701,6 @@ entity
 
 entity
   Name
-    text = "Load Zone"
-  Transform3D
-    position = 0 1.5 44.4
-    rotation = 0 0 0
-    scale = 1 1 1
-  Collider3D
-    shape = box
-    size = 4 3 1
-    radius = 0.5
-    friction = 0.8
-    trigger = true
-  Tags
-    list = "loadzone"
-  Script
-    file = "scripts/loadzone.bs"
-    vars = "to = \"\", at = \"start\", until = \"crock_done\", say = \"sprout_exit_block\""
-
-entity
-  Name
     text = "spawn_fields"
   Transform3D
     position = 0 0.1 30
@@ -3753,9 +3752,11 @@ entity
   Name
     text = "Weevil Glint"
   Transform3D
-    position = 3 1.1 24
+    position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
+  Parent
+    entity = 185
   Particles
     rate = 3
     max = 6
@@ -3797,9 +3798,11 @@ entity
   Name
     text = "Weevil Glint"
   Transform3D
-    position = -3 1.1 28
+    position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
+  Parent
+    entity = 187
   Particles
     rate = 3
     max = 6
