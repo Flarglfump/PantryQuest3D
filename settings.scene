@@ -1,0 +1,11 @@
+# The settings page: the volume sliders (pushed over the title or the pause menu).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Settings"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/settings.bs"

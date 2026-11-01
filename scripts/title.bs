@@ -1,7 +1,7 @@
 @strict
 # title.bs - the title screen, over a slow flight round Sprouthollow. Three journeys: an
 # empty one starts a new game in Sprig's tree-house; a saved one carries on from where it
-# was saved. Delete (or Y) erases the chosen journey, after asking. Under them, CONTROLS.
+# was saved. Delete (or Y) erases the chosen journey, after asking. Under them, CONTROLS and SETTINGS.
 # The mouse works too: point and click (a right click on a journey erases it).
 
 var draw_layer: int = 80
@@ -15,6 +15,7 @@ var last_mouse: vec2 = vec2(-1, -1)
 
 func start() -> void {
     lock_mouse(false)
+    apply_volumes()
     bind_menus()
     for i in 3 { push(slots, load_data("slot" + i)) }
     play_music("music/title.wav", 0.7, 1.0)
@@ -54,20 +55,24 @@ func update(dt: number) -> void {
         play_sound("sfx/cursor.wav", 0.4)
     }
     if action_pressed("m_up") {
-        cur = (cur + 3) % 4
+        if cur >= 3 { cur = 2 } elif cur == 0 { cur = 3 } else { cur -= 1 }
         play_sound("sfx/cursor.wav", 0.4)
     }
     if action_pressed("m_down") {
-        cur = (cur + 1) % 4
+        if cur >= 3 { cur = 0 } else { cur += 1 }
+        play_sound("sfx/cursor.wav", 0.4)
+    }
+    if cur >= 3 and (action_pressed("m_left") or action_pressed("m_right")) {
+        cur = 7 - cur                            # (CONTROLS <-> SETTINGS)
         play_sound("sfx/cursor.wav", 0.4)
     }
     if (action_pressed("m_erase") or (mouse_pressed(1) and row >= 0 and row < 3 and row == cur)) and cur < 3 and slots[cur] != nil {
         confirm = true
         play_sound("sfx/cursor.wav", 0.4)
     }
-    if (action_pressed("m_ok") or click) and cur == 3 {
+    if (action_pressed("m_ok") or click) and cur >= 3 {
         play_sound("sfx/select.wav", 0.6)
-        push_scene("controls.scene", true, false)
+        if cur == 3 { push_scene("controls.scene", true, false) } else { push_scene("settings.scene", true, false) }
         return
     }
     if action_pressed("m_ok") or click {
@@ -119,12 +124,13 @@ func inside(p: vec2, at: vec2, size: vec2) -> bool {
     return p.x >= at.x and p.y >= at.y and p.x < at.x + size.x and p.y < at.y + size.y
 }
 
-# Which row the mouse is over: a journey (0-2), CONTROLS (3), or -1.
+# Which row the mouse is over: a journey (0-2), CONTROLS (3), SETTINGS (4), or -1.
 func row_at(p: vec2) -> int {
     for i in 3 {
         if inside(p, vec2(70, journey_y(i)), vec2(180, 22)) { return i }
     }
-    if inside(p, vec2(110, 196), vec2(100, 14)) { return 3 }
+    if inside(p, vec2(70, 196), vec2(88, 14)) { return 3 }
+    if inside(p, vec2(162, 196), vec2(88, 14)) { return 4 }
     return -1
 }
 
@@ -185,15 +191,19 @@ func draw() -> void {
             draw_text(str(floor(secs / 3600)) + "h" + (floor(secs / 60) % 60) + "m", vec2(200, y + 3), col)
         }
     }
-    # CONTROLS
-    var csel: bool = cur == 3
-    var cbg: list = [20, 16, 30, 190]
-    if csel { cbg = [50, 40, 70, 220] }
-    draw_rect(vec2(110, 196), vec2(100, 14), cbg)
-    if csel { draw_rect(vec2(110, 196), vec2(100, 14), [255, 220, 120, 255], false) }
-    var ccol: list = [220, 210, 190]
-    if csel { ccol = [255, 236, 150] }
-    draw_text("CONTROLS", vec2(160 - text_size("CONTROLS").x / 2, 199), ccol)
+    # CONTROLS and SETTINGS
+    var labels: list = ["CONTROLS", "SETTINGS"]
+    for k in 2 {
+        var bx: number = 70 + k * 92
+        var csel: bool = cur == 3 + k
+        var cbg: list = [20, 16, 30, 190]
+        if csel { cbg = [50, 40, 70, 220] }
+        draw_rect(vec2(bx, 196), vec2(88, 14), cbg)
+        if csel { draw_rect(vec2(bx, 196), vec2(88, 14), [255, 220, 120, 255], false) }
+        var ccol: list = [220, 210, 190]
+        if csel { ccol = [255, 236, 150] }
+        draw_text(labels[k], vec2(bx + 44 - text_size(labels[k]).x / 2, 199), ccol)
+    }
     if confirm {
         draw_rect(vec2(60, 200), vec2(200, 22), [80, 10, 10, 230])
         draw_text("Erase journey " + (cur + 1) + "? ENTER: yes", vec2(68, 207), [255, 255, 255])
@@ -204,4 +214,10 @@ func draw() -> void {
     }
     draw_text("2026", vec2(290, 230), [120, 110, 100])
     if leaving >= 0 { draw_rect(vec2(0, 0), vec2(320, 240), [0, 0, 0, floor(min(1, leaving / 0.8) * 255)]) }
+}
+
+# The volume settings (the SETTINGS page keeps them in the saved data "settings").
+func apply_volumes() -> void {
+    for kv in load_data("settings", []) { set_volume(kv[0], kv[1]) }
+    set_global("volumes_set", true)
 }

@@ -45,6 +45,7 @@ func start() -> void {
     load_state()
     sprig = find("Sprig")
     story = find("Story")
+    if not global("volumes_set", false) { apply_volumes() }
     if not global("bound", false) {
         bind_controls()
         set_global("bound", true)
@@ -577,4 +578,10 @@ func draw() -> void {
         draw_text(area_name, vec2(160 - w / 2 + 1, 69 - 4 * sc), [40, 30, 10, floor(a * 255)], sc)
         draw_text(area_name, vec2(160 - w / 2, 68 - 4 * sc), [255, 236, 170, floor(a * 255)], sc)
     }
+}
+
+# The volume settings (the SETTINGS page keeps them in the saved data "settings").
+func apply_volumes() -> void {
+    for kv in load_data("settings", []) { set_volume(kv[0], kv[1]) }
+    set_global("volumes_set", true)
 }

@@ -19,7 +19,7 @@ var last_mouse: vec2 = vec2(-1, -1)
 var map_floor: int = -1                 # the floor the MAP page shows (-1: Sprig's)
 
 const PAGES: list = ["ITEMS", "EQUIPMENT", "QUEST", "MAP", "SYSTEM"]
-const SYSTEM: list = ["SAVE", "SAVE AND QUIT", "CONTROLS", "BACK TO THE GAME"]
+const SYSTEM: list = ["SAVE", "SAVE AND QUIT", "CONTROLS", "SETTINGS", "BACK TO THE GAME"]
 # the items that go on item buttons
 const ITEM_GRID: list = ["shooter", "bombs", "boomerang", "bow", "lash", "hammer", "pipe", "lens", "jar1", "jar2"]
 const COLS: int = 5
@@ -250,6 +250,8 @@ func system(i: int) -> void {
         }
     } elif i == 2 {
         push_scene("controls.scene", true, false)
+    } elif i == 3 {
+        push_scene("settings.scene", true, false)
     } else {
         close()
     }

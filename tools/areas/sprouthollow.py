@@ -68,11 +68,12 @@ def build():
             if cz >= 48 and abs(cx + 6) > 12:
                 continue                       # (beyond the rim: only behind the way out)
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 6, 6, height, uvs=0.25,
-                                                   keep=lambda x, z: not (33.4 < z < 41.6 and abs(x) < 36))
-    # the ravine's sides (cliff faces) and floor (it closes up before x reaches 36 either way)
+                                                   keep=lambda x, z: not (32 < z < 42 and abs(x) < 36))
+    # the ravine's sides (cliff faces) and floor (it closes up before x reaches 36 either way),
+    # from z 32: the grass's 2m cells would slope its lip down from there under the bridge's end
     for cx in range(-36, 36, 12):
         o = a.geo('cliff', cx + 6, 37)
-        o.ground(cx, 33.0, cx + 12, 42.0, 6, 9, height, uvs=0.3)
+        o.ground(cx, 32.0, cx + 12, 42.0, 6, 10, height, uvs=0.3)
     # dirt paths: thin strips just above the ground
     def path_strip(points, width):
         for (x0, z0), (x1, z1) in zip(points, points[1:]):
@@ -109,7 +110,10 @@ def build():
         o.quad(P(t0, -1), P(t1, -1), P(t1, 1), P(t0, 1), (0, t0 * 20), (0, t1 * 20), (1, t1 * 20), (1, t0 * 20))
     # small plank bridges over the stream where the paths cross
     # the bridge over the ravine
-    a.geo('planks', 0, 37).box((-1.4, -0.25, 32.5), (1.4, 0.05, 42.5), uvs=0.6)
+    a.geo('planks', 0, 37).box((-1.4, -0.25, 31.8), (1.4, 0.05, 42.8), uvs=0.6)
+    # stone footings under both ends, bedded in the banks
+    for (z0, z1) in [(31.8, 33.8), (40.6, 42.8)]:
+        a.geo('stone', 0, (z0 + z1) / 2).box((-1.7, -4.5, z0), (1.7, -0.3, z1), uvs=0.4)
     for zz in (32.6, 37.5, 42.4):
         for xx in (-1.5, 1.5):
             a.geo('bark', xx, zz).cylinder((xx, -0.3, zz), 0.12, 1.2, 6, uvs=1)
