@@ -151,6 +151,20 @@ def main():
     check(any('pause' in sc for sc in g.scenes()), 'Back (Select) opens the menu, on the MAP')
     g.pad_press('back', 10)
     g.quit()
+    # ---- TARGETING: TOGGLE: a press focuses until the next press, on a target or on nothing
+    for what in ('something', 'nothing'):
+        g = Game(test_scene=test_scene('crock', items=items, flags=['crock_entered'], targeting='toggle'))
+        g.frames(30)
+        if what == 'nothing':          # (back in the way in, away from the fuzzballs)
+            goto(g, 0, 16, near=0.5)
+            goto(g, 0, 19, near=0.5)
+        g.press('shift', 30)
+        on = g.var('Sprig', 'focusing', 'toggled')
+        aimed = g.var('Sprig', 'target')[0] != 'nil'
+        g.press('shift', 10)
+        off = g.var('Sprig', 'focusing', 'toggled')
+        check(aimed == (what == 'something') and on == [1.0, 1.0] and off == [0.0, 0.0], 'TOGGLE, focused on %s: a press keeps the focus (%s), the next lets it go (%s)' % (what, on, off))
+        g.quit()
     # ---- a locked door's lock goes with it
     g = Game(test_scene=test_scene('crock', items=items, flags=['crock_entered', 'chest:crock_key1'], spawn='t_proof'))
     g.frames(30)
