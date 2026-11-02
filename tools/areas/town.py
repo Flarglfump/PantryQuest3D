@@ -114,7 +114,7 @@ def build(era='fresh'):
     a.entity('Well Ring', t3((0, 0.45, 6)), collider('capsule', (1, 1, 1), 1.4), tags('seethrough'))
     for xx in (-1.2, 1.2):
         a.geo('bark', xx, 6).cylinder((xx, 0.9, 6), 0.08, 1.6, 5)
-    a.entity('Well Roof', t3((0, 2.8, 6), (0, 0, 0), (3.2, 0.12, 1.6)), mesh('cube', '#ffffffff', 'art/thatch.png'))
+    a.entity('Well Roof', t3((0, 0.9 + 1.6 + 0.06, 6), (0, 0, 0), (3.2, 0.12, 1.6)), mesh('cube', '#ffffffff', 'art/thatch.png'))
     stall(a, -9, 12, 0, '#d84a4aff')
     stall(a, -9, 0, 0, '#4a8ad8ff', yaw=180)
     stall(a, 9, 12, 0, '#e0b040ff')

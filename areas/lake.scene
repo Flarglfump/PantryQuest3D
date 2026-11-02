@@ -2705,7 +2705,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 31.9, cz = -99.7, r = 11.8"
+    vars = "cx = 32.5, cz = -100.4, r = 12.7"
 
 entity
   Name
@@ -2759,7 +2759,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 15, cz = -112.6, r = 12.2"
+    vars = "cx = 15.6, cz = -113.9, r = 13.1"
 
 entity
   Name
@@ -2795,7 +2795,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 11.4, cz = -78.7, r = 13.9"
+    vars = "cx = 11.7, cz = -78.7, r = 14.2"
 
 entity
   Name
@@ -2813,7 +2813,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 29.9, cz = -112.6, r = 3.2"
+    vars = "cx = 32.1, cz = -114, r = 5.8"
 
 entity
   Name
@@ -2831,7 +2831,73 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 31.6, cz = -107.2, r = 7.4"
+    vars = "cx = 32.2, cz = -107.2, r = 7.8"
+
+entity
+  Name
+    text = "preview_water 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/lake/preview_water_0_-4.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 4.2, cz = -92.1, r = 29.4"
+
+entity
+  Name
+    text = "preview_water 1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/lake/preview_water_1_-6.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 10.5, cz = -103.8, r = 41.2"
+
+entity
+  Name
+    text = "preview_water 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/lake/preview_water_1_-5.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 10.5, cz = -100.7, r = 39"
 
 entity
   Name

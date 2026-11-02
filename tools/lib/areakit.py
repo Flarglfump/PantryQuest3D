@@ -36,6 +36,19 @@ def surface_y(tris, x, z, near):
     return best
 
 
+def up_faces(tris):
+    """The triangles of tris facing up (ground to stand on, not a wall or an underside)."""
+    out = []
+    for P in tris:
+        e1 = [P[1][k] - P[0][k] for k in range(3)]
+        e2 = [P[2][k] - P[0][k] for k in range(3)]
+        n = (e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0])
+        L = math.sqrt(n[0] ** 2 + n[1] ** 2 + n[2] ** 2) or 1
+        if n[1] / L > 0.5:
+            out.append(P)
+    return out
+
+
 def clip_face(o, P, T, N, f, _):
     """Adds to o the part of triangle P (texture coordinates T, normals N) where f(p) <= 0."""
     ds = [f(p) for p in P]
@@ -425,6 +438,9 @@ class Area:
     # here), so the view through a gate or down a road shows where it goes, not the sky ----
     PREVIEW_DEPTH, PREVIEW_HALF = 46.0, 46.0
     PREVIEW_DEPTHS = {'town': 90.0, 'castle': 80.0, 'fields': 80.0}     # (walled places, seen right across: all of them)
+    SKIRTED = ('grass', 'flowers', 'dirt', 'cobble', 'sand', 'rot', 'mould', 'ice')     # (the ground's materials; not a path, laid on one)
+    SKIRT = 2.5                 # (how far the skirts under the cut's edges hang)
+    SEAM_BLEND = 10.0           # (theirs bent to meet ours all along the cut, over this far in)
     PREVIEW_FROM = 3.5          # (ours stays this far past the way out: a gate or an archway just past it)
     PREVIEW_ENTITIES = ('Tree', 'Leaves', 'Awning', 'Well Roof', 'Door')
 
@@ -493,8 +509,8 @@ class Area:
                 return dx * out[0] + dz * out[1] - self.PREVIEW_FROM
             # (the ground at the cut, ours: theirs is set to meet it there)
             cut_x, cut_z = zx + out[0] * self.PREVIEW_FROM, zz + out[1] * self.PREVIEW_FROM
-            ours_y = surface_y([[o.v[c[0] - 1] for c in f] for k, o in self.chunks.objs.items()
-                                if not k[0].startswith('preview_') and not k[0].startswith('far_') and mat_info(k[0])[2] for f in o.f],
+            ours_y = surface_y(up_faces([[o.v[c[0] - 1] for c in f] for k, o in self.chunks.objs.items()
+                                         if not k[0].startswith('preview_') and not k[0].startswith('far_') and mat_info(k[0])[2] for f in o.f]),
                                cut_x, cut_z, zy)
             for key, obj in list(self.chunks.objs.items()):
                 if key[0].startswith('preview_') or key[0].startswith('far_'):
@@ -536,7 +552,7 @@ class Area:
                     elif line.startswith('f '):
                         idx = [tuple(int(k) for k in c.split('/')) for c in line.split()[1:]]
                         P = [V[c[0] - 1] for c in idx]
-                        if not all(inside(p) for p in P):
+                        if not any(inside(p) for p in P):          # (one across the slice's start is cut to it below)
                             continue
                         e1 = [P[1][k] - P[0][k] for k in range(3)]
                         e2 = [P[2][k] - P[0][k] for k in range(3)]
@@ -545,7 +561,7 @@ class Area:
                         theirs.append((mat, base, P, [T[c[1] - 1] for c in idx], [N[c[2] - 1] for c in idx]))
             # their ground at the cut (the same spot, in their frame) set to ours there: no step, no gap
             tx, tz = back[0] + inn[0] * self.PREVIEW_FROM, back[2] + inn[1] * self.PREVIEW_FROM
-            their_y = surface_y([t[2] for t in theirs if MATERIALS[t[1]][2]], tx, tz, back[1])
+            their_y = surface_y(up_faces([t[2] for t in theirs if MATERIALS[t[1]][2]]), tx, tz, back[1])
             if ours_y is not None and their_y is not None:
                 lift = ours_y - their_y
             else:
@@ -553,8 +569,37 @@ class Area:
             def move(p, back=back, ca=ca, sa=sa, zx=zx, zz=zz, lift=lift):
                 dx, dz = p[0] - back[0], p[2] - back[2]
                 return (zx + dx * ca - dz * sa, p[1] + lift, zz + dx * sa + dz * ca)
+            # Their ground and ours only meet at the one spot measured above: elsewhere along the
+            # cut (the ground sloping one way here, another there) they'd part, and the sky would
+            # show between. So theirs is bent to ours along the whole cut, less and less going in,
+            # all of it within SEAM_BLEND - ground, walls, trees alike.
+            def ground_tris(items):
+                out_ = []
+                for P_ in items:
+                    e1 = [P_[1][k] - P_[0][k] for k in range(3)]
+                    e2 = [P_[2][k] - P_[0][k] for k in range(3)]
+                    ny = e1[2] * e2[0] - e1[0] * e2[2]
+                    L_ = math.sqrt(sum((e1[(k + 1) % 3] * e2[(k + 2) % 3] - e1[(k + 2) % 3] * e2[(k + 1) % 3]) ** 2 for k in range(3))) or 1
+                    if abs(ny) / L_ > 0.5 and min(side(q_) for q_ in P_) < 2.0 and max(side(q_) for q_ in P_) > -2.0:
+                        out_.append(P_)
+                return out_
+            our_ground = ground_tris([[o.v[c[0] - 1] for c in f] for k, o in self.chunks.objs.items()
+                                      if not k[0].startswith('preview_') and not k[0].startswith('far_') and mat_info(k[0])[2] for f in o.f])
+            their_ground = ground_tris([[move(p_) for p_ in t[2]] for t in theirs if MATERIALS[t[1]][2]])
+            seam = {}
+            def warp(q_, side=side, out=out, our_ground=our_ground, their_ground=their_ground, seam=seam):
+                d = max(0.0, side(q_))
+                if d >= self.SEAM_BLEND:
+                    return q_
+                px, pz = q_[0] - out[0] * side(q_), q_[2] - out[1] * side(q_)
+                key_ = (round(px * 2), round(pz * 2), round(q_[1]))
+                if key_ not in seam:
+                    yo = surface_y(our_ground, px, pz, q_[1])
+                    yt = surface_y(their_ground, px, pz, q_[1])
+                    seam[key_] = 0.0 if yo is None or yt is None or abs(yo - yt) > 6 else yo - yt
+                return (q_[0], q_[1] + seam[key_] * (1 - d / self.SEAM_BLEND), q_[2])
             for (mat, base, P, Tt, Nn) in theirs:
-                Q = [move(p) for p in P]
+                Q = [warp(move(p)) for p in P]
                 o = self.geo('preview_' + mat, (Q[0][0] + Q[1][0] + Q[2][0]) / 3, (Q[0][2] + Q[1][2] + Q[2][2]) / 3)
                 clip_face(o, Q, Tt, [turn(n) for n in Nn], lambda p: -side(p), None)
             # ... and their trees, rocks and such (just to look at)
@@ -569,7 +614,7 @@ class Area:
                 pos = tuple(float(v) for v in p.groups())
                 if not inside(pos):
                     continue
-                q = move(pos)
+                q = warp(move(pos))
                 rot = tuple(float(v) for v in r.groups()) if r else (0, 0, 0)
                 lines = blk.split('\n')
                 k = lines.index('  Mesh')
@@ -595,6 +640,31 @@ class Area:
                 self.scene.lines.append('    vars = "cx = %g, cz = %g, r = 3"' % (round(q[0], 1), round(q[2], 1)))
                 self.scene.lines.append('')
                 self.scene.count += 1
+            # ... and a skirt hung under each edge of the ground along the cut, ours and theirs:
+            # where the two don't quite meet, the gap shows ground, not the sky beneath
+            for key, obj in list(self.chunks.objs.items()):
+                base = key[0][8:] if key[0].startswith('preview_') else key[0]
+                if base not in self.SKIRTED:
+                    continue
+                back_ = 0.03 if key[0].startswith('preview_') else -0.03     # (ours a hair this side, theirs that: not one plane)
+                for f in list(obj.f):
+                    P = [obj.v[c[0] - 1] for c in f]
+                    e1 = [P[1][k] - P[0][k] for k in range(3)]
+                    e2 = [P[2][k] - P[0][k] for k in range(3)]
+                    if e1[2] * e2[0] - e1[0] * e2[2] <= 0:
+                        continue                         # (ground faces up)
+                    T = [obj.vt[c[1] - 1] for c in f]
+                    for i in range(3):
+                        a_, b_ = P[i], P[(i + 1) % 3]
+                        if abs(side(a_)) > 0.002 or abs(side(b_)) > 0.002 or math.dist(a_, b_) < 0.01:
+                            continue
+                        ta, tb = T[i], T[(i + 1) % 3]
+                        a_ = (a_[0] + out[0] * back_, a_[1], a_[2] + out[1] * back_)
+                        b_ = (b_[0] + out[0] * back_, b_[1], b_[2] + out[1] * back_)
+                        lo_a, lo_b = (a_[0], a_[1] - self.SKIRT, a_[2]), (b_[0], b_[1] - self.SKIRT, b_[2])
+                        o = self.geo(key[0], (a_[0] + b_[0]) / 2, (a_[2] + b_[2]) / 2)
+                        o.quad(a_, b_, lo_b, lo_a, ta, tb, (tb[0], tb[1] - 0.3), (ta[0], ta[1] - 0.3))      # (both ways round:
+                        o.quad(b_, a_, lo_a, lo_b, tb, ta, (ta[0], ta[1] - 0.3), (tb[0], tb[1] - 0.3))      #  seen from either side)
 
     def two_sided_open_faces(self):
         """Faces drawn one side only vanish seen from behind: fine on a closed shape (a box: its

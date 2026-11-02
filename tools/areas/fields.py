@@ -84,8 +84,11 @@ def build(era='fresh'):
              collider('box'), ('RigidBody3D', [('type', 'kinematic')]), script('scripts/gate.bs'))
     a.loadzone(0, height(0, -HALF + 1), -HALF + 0.5, 10, 4, 1.5, to='town', at='fields')
     a.sign(-5, height(-5, wz + 8), wz + 8, 180, 'gate_shut')
-    # Castle Larder over the town, on the skyline to the north: a landmark from across the field
-    castle_skyline(a, 0, 8, -140, 1.4)
+    # Castle Larder over the town, on the skyline to the north: a landmark from across the field.
+    # It stands where the town's own skyline castle is (town.py: (0, 6, -78) there), with the
+    # town as the preview past the gate lays it out (town z 39 at our gate, its ground at ours):
+    # behind the market, not on top of it
+    castle_skyline(a, 0, height(0, -HALF + 1) + 6, -HALF + 0.5 - 39.1 - 78, 1.2)
 
     # ---- Buttercup Dairy's hill: a fence round the top, the gate on the west ----
     hx, hz, hr = 46, 4, 10.5

@@ -709,7 +709,7 @@ entity
   Name
     text = "Preview Well Roof"
   Transform3D
-    position = 0 0.1228 79.5
+    position = 0 -0.1172 79.5
     rotation = 0 0 0
     scale = 3.2 0.12 1.6
   Mesh
@@ -1029,6 +1029,26 @@ entity
 
 entity
   Name
+    text = "grass -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/grass_-2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
     text = "grass -1 -2"
   Transform3D
     position = 0 0 0
@@ -1177,6 +1197,26 @@ entity
   Mesh
     shape = model
     file = "models/areas/castle/grass_0_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "grass 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/grass_1_1.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -1477,7 +1517,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -27.5, cz = 108.5, r = 13.3"
+    vars = "cx = -28.2, cz = 108.5, r = 13.9"
 
 entity
   Name
@@ -1495,7 +1535,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -9.9, cz = 39.2, r = 10"
+    vars = "cx = -10.1, cz = 39.2, r = 10.2"
 
 entity
   Name
@@ -2093,6 +2133,42 @@ entity
 
 entity
   Name
+    text = "preview_stone -3 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_-3_3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -40, cz = 75.7, r = 37.8"
+
+entity
+  Name
+    text = "preview_stone -3 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_-3_4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -40, cz = 75.7, r = 37.8"
+
+entity
+  Name
     text = "preview_stone -3 5"
   Transform3D
     position = 0 0 0
@@ -2143,7 +2219,25 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -27, cz = 73.5, r = 6.7"
+    vars = "cx = -31.6, cz = 75.7, r = 38.9"
+
+entity
+  Name
+    text = "preview_stone -2 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_-2_4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -40, cz = 75.7, r = 37.8"
 
 entity
   Name
@@ -2377,7 +2471,25 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 26, cz = 69.5, r = 10.6"
+    vars = "cx = 29.9, cz = 75.7, r = 39.3"
+
+entity
+  Name
+    text = "preview_stone 1 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_1_4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 40, cz = 75.7, r = 37.8"
 
 entity
   Name
@@ -2396,6 +2508,42 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = 21.9, cz = 113.5, r = 18.9"
+
+entity
+  Name
+    text = "preview_stone 2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_2_3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 40, cz = 75.7, r = 37.8"
+
+entity
+  Name
+    text = "preview_stone 2 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/castle/preview_stone_2_4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 40, cz = 75.7, r = 37.8"
 
 entity
   Name

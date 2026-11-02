@@ -3816,7 +3816,7 @@ entity
   Name
     text = "Preview Well Roof"
   Transform3D
-    position = 0 2.6347 -128.6
+    position = 0 2.3947 -128.6
     rotation = 0 0 0
     scale = 3.2 0.12 1.6
   Mesh
@@ -4403,7 +4403,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 71.0219 1.9982 -109.555
+    position = 71.0219 3.0675 -109.555
     rotation = 0 -4.248 0
     scale = 0.7007 3.0363 0.7007
   Mesh
@@ -4419,7 +4419,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 71.0219 4.3338 -109.555
+    position = 71.0219 5.4031 -109.555
     rotation = 0 29.752 0
     scale = 3.0363 2.3357 3.0363
   Mesh
@@ -4819,14 +4819,14 @@ entity
 
 entity
   Name
-    text = "far_roof 0 -4"
+    text = "far_roof 0 -6"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/fields/far_roof_0_-4.obj"
+    file = "models/areas/fields/far_roof_0_-6.obj"
     texture = "art/planks.png"
     color = #5868a8ff
     uv_scale = 1 1
@@ -4834,14 +4834,14 @@ entity
 
 entity
   Name
-    text = "far_stone 0 -4"
+    text = "far_stone 0 -6"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/fields/far_stone_0_-4.obj"
+    file = "models/areas/fields/far_stone_0_-6.obj"
     texture = "art/stone.png"
     color = #e8e0d0ff
     uv_scale = 1 1
@@ -5909,7 +5909,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -43.1, cz = 132, r = 9.6"
+    vars = "cx = -43.4, cz = 132.7, r = 10.3"
 
 entity
   Name
@@ -6053,7 +6053,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 42.9, cz = 130.4, r = 11.1"
+    vars = "cx = 43.4, cz = 130.4, r = 11.3"
 
 entity
   Name
@@ -6071,7 +6071,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -122.5, cz = 23, r = 9.7"
+    vars = "cx = -122.5, cz = 22, r = 10.6"
 
 entity
   Name
@@ -6125,7 +6125,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -110, cz = 27, r = 17"
+    vars = "cx = -110, cz = 26, r = 17.8"
 
 entity
   Name
@@ -6305,7 +6305,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -19.2, cz = -111.3, r = 22.8"
+    vars = "cx = -20.7, cz = -111.3, r = 24.1"
 
 entity
   Name
@@ -6359,7 +6359,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 19.2, cz = -111.3, r = 22.8"
+    vars = "cx = 20.5, cz = -111.3, r = 23.9"
 
 entity
   Name
@@ -6467,7 +6467,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -110, cz = 27, r = 17"
+    vars = "cx = -110, cz = 26, r = 17.8"
 
 entity
   Name
@@ -6521,7 +6521,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -43, cz = 109.8, r = 11.2"
+    vars = "cx = -44, cz = 109.8, r = 11.5"
 
 entity
   Name
@@ -6539,7 +6539,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -43, cz = 130.5, r = 10.4"
+    vars = "cx = -44, cz = 131.5, r = 11.7"
 
 entity
   Name
@@ -6575,7 +6575,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -20, cz = 130.5, r = 22.4"
+    vars = "cx = -20, cz = 131.5, r = 22.8"
 
 entity
   Name
@@ -6611,7 +6611,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 20, cz = 130.5, r = 22.4"
+    vars = "cx = 20, cz = 131.5, r = 22.8"
 
 entity
   Name
@@ -6629,7 +6629,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 72.1, cz = -133.5, r = 17.9"
+    vars = "cx = 72.1, cz = -135.5, r = 19.6"
 
 entity
   Name
@@ -6665,7 +6665,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 43, cz = 109.8, r = 11.2"
+    vars = "cx = 44, cz = 109.8, r = 11.5"
 
 entity
   Name
@@ -6683,7 +6683,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 43, cz = 130.5, r = 10.4"
+    vars = "cx = 44, cz = 131.5, r = 11.7"
 
 entity
   Name
@@ -6701,7 +6701,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 100.1, cz = -130.2, r = 25.6"
+    vars = "cx = 100.3, cz = -132.2, r = 26.7"
 
 entity
   Name
@@ -6773,7 +6773,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 126.2, cz = -123.5, r = 9.2"
+    vars = "cx = 128.2, cz = -125.4, r = 12"
 
 entity
   Name
@@ -6791,7 +6791,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 123.8, cz = -103.9, r = 17.4"
+    vars = "cx = 127.7, cz = -103.7, r = 19.2"
 
 entity
   Name
@@ -6809,7 +6809,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 129.8, cz = 24.7, r = 20.3"
+    vars = "cx = 131.5, cz = 24.7, r = 21.3"
 
 entity
   Name
@@ -6827,7 +6827,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 129.8, cz = 53, r = 19"
+    vars = "cx = 131.5, cz = 53, r = 20.1"
 
 entity
   Name
@@ -6845,7 +6845,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 31, cz = 135.8, r = 9.3"
+    vars = "cx = 31, cz = 140.3, r = 12.6"
 
 entity
   Name
@@ -6899,7 +6899,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 129.5, cz = 26, r = 17.2"
+    vars = "cx = 131.5, cz = 26, r = 18.4"
 
 entity
   Name
@@ -6953,7 +6953,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -7.2, cz = 129.9, r = 12.8"
+    vars = "cx = -7.2, cz = 130.9, r = 13.6"
 
 entity
   Name
@@ -6989,7 +6989,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 12.7, cz = 130.5, r = 16.7"
+    vars = "cx = 12.7, cz = 131.1, r = 17.1"
 
 entity
   Name
@@ -7025,7 +7025,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 103.5, cz = -125.9, r = 10.8"
+    vars = "cx = 105, cz = -127.8, r = 13.2"
 
 entity
   Name
@@ -7317,6 +7317,24 @@ entity
 
 entity
   Name
+    text = "preview_stone -2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/preview_stone_-2_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -40, cz = -136.8, r = 37.8"
+
+entity
+  Name
     text = "preview_stone -1 -5"
   Transform3D
     position = 0 0 0
@@ -7349,7 +7367,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -17.2, cz = -144.1, r = 26.5"
+    vars = "cx = -18.8, cz = -136.8, r = 43.7"
 
 entity
   Name
@@ -7403,7 +7421,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 17.2, cz = -144.1, r = 26.5"
+    vars = "cx = 18.8, cz = -136.8, r = 43.7"
 
 entity
   Name
@@ -7443,6 +7461,24 @@ entity
 
 entity
   Name
+    text = "preview_stone 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/preview_stone_1_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 40, cz = -136.8, r = 37.8"
+
+entity
+  Name
     text = "preview_stone 2 -4"
   Transform3D
     position = 0 0 0
@@ -7457,7 +7493,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 116.7, cz = -129.9, r = 1.8"
+    vars = "cx = 116.7, cz = -130.2, r = 1.9"
 
 entity
   Name
@@ -7638,6 +7674,50 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = 123.6, cz = -115.7, r = 5.5"
+
+entity
+  Name
+    text = "preview_water -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/preview_water_-3_0.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -109.5, cz = 29.5, r = 67"
+
+entity
+  Name
+    text = "preview_water -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/preview_water_-3_1.obj"
+    texture = "art/water.png"
+    color = #ffffffc8
+    uv_scale = 1 1
+    lit = false
+    cull = false
+    cast_shadow = false
+  Tags
+    list = "seethrough"
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -109.3, cz = 46.9, r = 49.8"
 
 entity
   Name
