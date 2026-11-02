@@ -225,18 +225,17 @@ entity
 
 entity
   Name
-    text = "crust_2s 0 0"
+    text = "crust 0 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/vault/crust_2s_0_0.obj"
+    file = "models/areas/vault/crust_0_0.obj"
     texture = "art/crust.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -265,27 +264,6 @@ entity
 
 entity
   Name
-    text = "dough_2s 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/vault/dough_2s_0_0.obj"
-    texture = "art/dough.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "stone 0 0"
   Transform3D
     position = 0 0 0
@@ -305,29 +283,9 @@ entity
 
 entity
   Name
-    text = "stone_2s 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/vault/stone_2s_0_0.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "Map Info"
   Transform
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "base = \"art/maps/vault_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -9.161, z0 = -9.161, ppm = 6.2222, w = 114, h = 114"
+    vars = "base = \"art/maps/vault_\", names = [\"1F\", \"2F\"], lows = [-999, 3.7], highs = [3.7, 999], x0 = -9.161, z0 = -9.161, ppm = 6.2222, w = 114, h = 114"

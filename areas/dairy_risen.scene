@@ -170,7 +170,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -14 0.9 -9.97
+    position = -14 0.9 -9.95
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -183,7 +183,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -17 1.6 -9.97
+    position = -17 1.6 -9.95
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -197,7 +197,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -11 1.6 -9.97
+    position = -11 1.6 -9.95
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -211,7 +211,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 14 0.9 -12.97
+    position = 14 0.9 -12.95
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -224,7 +224,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 11.9 1.6 -12.97
+    position = 11.9 1.6 -12.95
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -238,7 +238,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 16.1 1.6 -12.97
+    position = 16.1 1.6 -12.95
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -481,27 +481,6 @@ entity
 
 entity
   Name
-    text = "grass_2s 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/dairy_risen/grass_2s_0_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "planks -2 0"
   Transform3D
     position = 0 0 0
@@ -654,58 +633,17 @@ entity
 
 entity
   Name
-    text = "planks_2s -1 -1"
+    text = "thatch -1 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/dairy_risen/planks_2s_-1_-1.obj"
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "planks_2s 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/dairy_risen/planks_2s_0_-1.obj"
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "thatch_2s -1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/dairy_risen/thatch_2s_-1_-1.obj"
+    file = "models/areas/dairy_risen/thatch_-1_-1.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -714,18 +652,17 @@ entity
 
 entity
   Name
-    text = "thatch_2s 0 -1"
+    text = "thatch 0 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/dairy_risen/thatch_2s_0_-1.obj"
+    file = "models/areas/dairy_risen/thatch_0_-1.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1

@@ -801,126 +801,6 @@ entity
 
 entity
   Name
-    text = "bark_2s -2 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_-2_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_-1_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_-1_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_0_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_0_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/bark_2s_1_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "preview_planks 3 -2"
   Transform3D
     position = 0 0 0
@@ -957,25 +837,6 @@ entity
 
 entity
   Name
-    text = "preview_planks_2s 3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_planks_2s_3_-2.obj"
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 72, cz = -34, r = 0.4"
-
-entity
-  Name
     text = "preview_sand -5 -2"
   Transform3D
     position = 0 0 0
@@ -990,7 +851,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -90, cz = -25.2, r = 4.7"
+    vars = "cx = -90, cz = -25.3, r = 4.8"
 
 entity
   Name
@@ -1027,6 +888,24 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = -88.2, cz = 10.7, r = 10.8"
+
+entity
+  Name
+    text = "preview_sand -5 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/preview_sand_-5_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -87.6, cz = 22.8, r = 2.2"
 
 entity
   Name
@@ -1098,7 +977,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -76.8, cz = 31.2, r = 16.6"
+    vars = "cx = -76.7, cz = 31.2, r = 16.7"
 
 entity
   Name
@@ -1116,7 +995,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -58.2, cz = -26.9, r = 10.6"
+    vars = "cx = -58.3, cz = -26.9, r = 10.6"
 
 entity
   Name
@@ -1170,7 +1049,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -56.9, cz = 30.6, r = 15.2"
+    vars = "cx = -56.8, cz = 30.6, r = 15.3"
 
 entity
   Name
@@ -1188,7 +1067,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 44.1, cz = -32.2, r = 10.3"
+    vars = "cx = 44.1, cz = -33, r = 11"
 
 entity
   Name
@@ -1242,7 +1121,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 55.8, cz = -33, r = 15.6"
+    vars = "cx = 55.7, cz = -33, r = 15.6"
 
 entity
   Name
@@ -1278,7 +1157,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 55.8, cz = 11, r = 15.6"
+    vars = "cx = 55.7, cz = 11, r = 15.6"
 
 entity
   Name
@@ -1336,348 +1215,6 @@ entity
 
 entity
   Name
-    text = "preview_sand_2s -5 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-5_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -90.1, cz = -26.7, r = 3.5"
-
-entity
-  Name
-    text = "preview_sand_2s -5 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-5_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -89.3, cz = -11.7, r = 12.2"
-
-entity
-  Name
-    text = "preview_sand_2s -5 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-5_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -88.2, cz = 10.8, r = 10.7"
-
-entity
-  Name
-    text = "preview_sand_2s -5 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-5_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -87.6, cz = 22.8, r = 2.2"
-
-entity
-  Name
-    text = "preview_sand_2s -4 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-4_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -76.7, cz = -28.8, r = 12.2"
-
-entity
-  Name
-    text = "preview_sand_2s -4 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-4_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -76.6, cz = 33.3, r = 15.3"
-
-entity
-  Name
-    text = "preview_sand_2s -3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-3_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -58.3, cz = -27.3, r = 10.5"
-
-entity
-  Name
-    text = "preview_sand_2s -3 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-3_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -48.6, cz = -12.1, r = 10.8"
-
-entity
-  Name
-    text = "preview_sand_2s -3 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-3_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -47.4, cz = 10.2, r = 12"
-
-entity
-  Name
-    text = "preview_sand_2s -3 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_-3_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -56.5, cz = 31.6, r = 14.4"
-
-entity
-  Name
-    text = "preview_sand_2s 1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_1_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.1, cz = -33, r = 11"
-
-entity
-  Name
-    text = "preview_sand_2s 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_1_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.1, cz = -11, r = 11"
-
-entity
-  Name
-    text = "preview_sand_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_1_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.1, cz = 11, r = 11"
-
-entity
-  Name
-    text = "preview_sand_2s 2 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_2_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 55.8, cz = -42.6, r = 11.1"
-
-entity
-  Name
-    text = "preview_sand_2s 2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_2_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 55.8, cz = 20.6, r = 11.1"
-
-entity
-  Name
-    text = "preview_sand_2s 3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_3_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 76.4, cz = -33, r = 14.6"
-
-entity
-  Name
-    text = "preview_sand_2s 3 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_3_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 84.6, cz = -11, r = 11.1"
-
-entity
-  Name
-    text = "preview_sand_2s 3 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_sand_2s_3_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 76.4, cz = 11, r = 14.6"
-
-entity
-  Name
     text = "preview_stone -4 -2"
   Transform3D
     position = 0 0 0
@@ -1714,6 +1251,42 @@ entity
 
 entity
   Name
+    text = "preview_stone 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/preview_stone_1_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 44.5, cz = -6, r = 1.8"
+
+entity
+  Name
+    text = "preview_stone 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/flats/preview_stone_1_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 44.5, cz = 6, r = 1.8"
+
+entity
+  Name
     text = "preview_stone 2 -1"
   Transform3D
     position = 0 0 0
@@ -1743,101 +1316,6 @@ entity
     texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.5, cz = 6, r = 1.8"
-
-entity
-  Name
-    text = "preview_stone_2s -4 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_stone_2s_-4_-1.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -79.2, cz = -18.3, r = 5"
-
-entity
-  Name
-    text = "preview_stone_2s 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_stone_2s_1_-1.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.5, cz = -6, r = 1.8"
-
-entity
-  Name
-    text = "preview_stone_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_stone_2s_1_0.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.5, cz = 6, r = 1.8"
-
-entity
-  Name
-    text = "preview_stone_2s 2 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_stone_2s_2_-1.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 44.5, cz = -6, r = 1.8"
-
-entity
-  Name
-    text = "preview_stone_2s 2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/preview_stone_2s_2_0.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -2236,300 +1714,6 @@ entity
     texture = "art/sand.png"
     color = #ffffffff
     uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-3_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -3 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-3_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -3 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-3_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -3 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-3_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -2 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-2_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-2_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-1_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_-1_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_0_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 0 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_0_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_1_-2.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_1_-1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_1_0.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "sand_2s 1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/flats/sand_2s_1_1.obj"
-    texture = "art/sand.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Collider3D
     shape = mesh

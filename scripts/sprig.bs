@@ -79,6 +79,7 @@ var motion: vec2 = vec2(0, 0)
 var toggled: bool = false          # focused by a press, in the TARGETING: TOGGLE setting
 var rs_was: number = 0             # the right stick's x a step ago
 var shooter: entity                # the Pea Shooter in his hand, while aiming
+var trail: entity                  # the streak at the spoon's tip (on while he swings)
 
 func start() -> void {
     game = find("Game")
@@ -91,6 +92,7 @@ func start() -> void {
         weapon = spawn("prefabs/spoon.scene", vec3(0, 0.6, 0.15), body)
     }
     lid = spawn("prefabs/potlid.scene", vec3(0, 0.6, 0.18), body)
+    trail = spawn("prefabs/swingtrail.scene", vec3(0, 0, -0.6), weapon)
     safe_pos = self.position
 }
 
@@ -1420,6 +1422,10 @@ func place_gear(dt: number) -> void {
         weapon.position = vec3(0.02, 0.62, 0.125)         # on his back (the body's back is at z 0.1)
         weapon.rotation = vec3(115, 0, -25)
     }
+    # the streak: through the sweep of a swing (not the wind-up or the recovery), all through a spin
+    var sweep: bool = st == "spin" or (st == "jumpatk" and st_t > 0.12) or (st == "crouchstab" and st_t > 0.02 and st_t < 0.16)
+    if (st == "slash" or st == "slash2" or st == "thrust") and st_t > 0.04 and st_t < 0.23 { sweep = true }
+    trail.Particles.emitting = sweep and out and has_spoon()
     var placed: bool = false
     if shielding {
         placed = place_on_bone(lid, body, "hand_l", vec3(0, -0.2, 0), vec3(180, 0, 0))       # (its face (+y) out along his raised arm)

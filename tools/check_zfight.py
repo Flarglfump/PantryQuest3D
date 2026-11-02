@@ -181,7 +181,9 @@ def check(area):
             parts.append(('%s#%d' % (name, k), tris))
     buckets = {}
     for pi, (pname, tris) in enumerate(parts):
-        for t in tris:
+        both = pname.startswith('water_') or pname.startswith('canopy_')
+        # (drawn from both sides: its back fights too, with anything facing the other way there)
+        for t in tris + ([(t[0], t[2], t[1]) for t in tris] if both else []):
             pl = plane(t)
             if not pl:
                 continue

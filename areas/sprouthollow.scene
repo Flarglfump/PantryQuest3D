@@ -4079,6 +4079,101 @@ entity
 
 entity
   Name
+    text = "bark -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_-2_-2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_-2_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_-2_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_-2_1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_-1_-2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
     text = "bark -1 -1"
   Transform3D
     position = 0 0 0
@@ -4125,6 +4220,25 @@ entity
   Mesh
     shape = model
     file = "models/areas/sprouthollow/bark_-1_1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/sprouthollow/bark_0_-2.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -4193,18 +4307,17 @@ entity
 
 entity
   Name
-    text = "bark_2s -2 -2"
+    text = "bark 1 -2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/bark_2s_-2_-2.obj"
+    file = "models/areas/sprouthollow/bark_1_-2.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -4213,18 +4326,17 @@ entity
 
 entity
   Name
-    text = "bark_2s -2 -1"
+    text = "bark 1 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/bark_2s_-2_-1.obj"
+    file = "models/areas/sprouthollow/bark_1_-1.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -4233,18 +4345,17 @@ entity
 
 entity
   Name
-    text = "bark_2s -2 0"
+    text = "bark 1 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/bark_2s_-2_0.obj"
+    file = "models/areas/sprouthollow/bark_1_0.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -4253,258 +4364,17 @@ entity
 
 entity
   Name
-    text = "bark_2s -2 1"
+    text = "bark 1 1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/bark_2s_-2_1.obj"
+    file = "models/areas/sprouthollow/bark_1_1.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_-1_-2.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_-1_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_-1_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_-1_1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_0_-2.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_0_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_0_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 0 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_0_1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_1_-2.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_1_-1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_1_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "bark_2s 1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/bark_2s_1_1.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -4737,48 +4607,6 @@ entity
 
 entity
   Name
-    text = "cliff_2s -2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/cliff_2s_-2_1.obj"
-    texture = "art/stone.png"
-    color = #c8d0b8ff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "cliff_2s 1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/cliff_2s_1_1.obj"
-    texture = "art/stone.png"
-    color = #c8d0b8ff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "crock 0 -2"
   Transform3D
     position = 0 0 0
@@ -4790,26 +4618,6 @@ entity
     texture = "art/crock.png"
     color = #ffffffff
     uv_scale = 1 1
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "crock_2s 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/crock_2s_0_-2.obj"
-    texture = "art/crock.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -5198,300 +5006,6 @@ entity
 
 entity
   Name
-    text = "grass_2s -2 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-2_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -2 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-2_-1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-2_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-2_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-1_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-1_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -1 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_-1_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_0_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 0 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_0_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 0 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_0_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_1_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_1_-1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_1_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/grass_2s_1_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "hedge -2 -1"
   Transform3D
     position = 0 0 0
@@ -5810,18 +5324,17 @@ entity
 
 entity
   Name
-    text = "preview_bark_2s -1 2"
+    text = "preview_bark -1 2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/preview_bark_2s_-1_2.obj"
+    file = "models/areas/sprouthollow/preview_bark_-1_2.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -5829,18 +5342,17 @@ entity
 
 entity
   Name
-    text = "preview_bark_2s -1 3"
+    text = "preview_bark -1 3"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/preview_bark_2s_-1_3.obj"
+    file = "models/areas/sprouthollow/preview_bark_-1_3.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -6057,196 +5569,6 @@ entity
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 35.8, cz = 108, r = 16.2"
-
-entity
-  Name
-    text = "preview_grass_2s -2 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_-2_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -35.8, cz = 59.2, r = 13.8"
-
-entity
-  Name
-    text = "preview_grass_2s -2 3"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_-2_3.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -42.2, cz = 82, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s -2 4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_-2_4.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -35.7, cz = 108, r = 16.2"
-
-entity
-  Name
-    text = "preview_grass_2s -1 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_-1_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -13, cz = 52.8, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s -1 4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_-1_4.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -13, cz = 117.8, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s 0 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_0_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 13, cz = 52.8, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s 0 4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_0_4.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 13, cz = 117.8, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s 1 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_1_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 35.8, cz = 62.5, r = 16.3"
-
-entity
-  Name
-    text = "preview_grass_2s 1 3"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_1_3.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = 42.3, cz = 85.2, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s 1 4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/preview_grass_2s_1_4.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"

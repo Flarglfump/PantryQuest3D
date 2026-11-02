@@ -1538,26 +1538,6 @@ entity
 
 entity
   Name
-    text = "bark_2s 2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/bark_2s_2_0.obj"
-    texture = "art/bark.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "canopy -3 -1"
   Transform3D
     position = 0 0 0
@@ -2272,342 +2252,6 @@ entity
 
 entity
   Name
-    text = "grass_2s -3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-3_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -3 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-3_-1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -3 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-3_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -3 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-3_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -2 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-2_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-2_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-1_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_-1_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 0 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_0_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 0 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_0_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_1_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_1_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 2 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_2_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 2 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_2_-1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_2_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "grass_2s 2 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/grass_2s_2_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "hedge -3 -2"
   Transform3D
     position = 0 0 0
@@ -2912,58 +2556,17 @@ entity
 
 entity
   Name
-    text = "hedge_2s -3 -1"
+    text = "preview_bark -6 -2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/hedge_2s_-3_-1.obj"
-    texture = "art/hedge.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "hedge_2s -3 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/hedge_2s_-3_0.obj"
-    texture = "art/hedge.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "preview_bark_2s -6 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_bark_2s_-6_-2.obj"
+    file = "models/areas/thicket/preview_bark_-6_-2.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3331,227 +2934,17 @@ entity
 
 entity
   Name
-    text = "preview_grass_2s -7 -2"
+    text = "preview_grass -3 -2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_grass_2s_-7_-2.obj"
+    file = "models/areas/thicket/preview_grass_-3_-2.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -124.8, cz = -30.2, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -7 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-7_-1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -124.8, cz = -10.8, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -7 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-7_0.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -124.8, cz = 8.8, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -7 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-7_1.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -124.8, cz = 28.2, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -7 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-7_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -124.8, cz = 41.2, r = 4.6"
-
-entity
-  Name
-    text = "preview_grass_2s -6 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-6_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -111.8, cz = -36.8, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -6 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-6_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -111.8, cz = 41.2, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -5 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-5_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -92.2, cz = -36.8, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -5 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-5_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -89, cz = 41.2, r = 13.4"
-
-entity
-  Name
-    text = "preview_grass_2s -4 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-4_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -72.8, cz = -36.8, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -4 2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-4_2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -66.2, cz = 41.2, r = 10.3"
-
-entity
-  Name
-    text = "preview_grass_2s -3 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_grass_2s_-3_-2.obj"
-    texture = "art/grass.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3559,18 +2952,17 @@ entity
 
 entity
   Name
-    text = "preview_grass_2s -3 -1"
+    text = "preview_grass -3 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_grass_2s_-3_-1.obj"
+    file = "models/areas/thicket/preview_grass_-3_-1.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3578,18 +2970,17 @@ entity
 
 entity
   Name
-    text = "preview_grass_2s -3 0"
+    text = "preview_grass -3 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_grass_2s_-3_0.obj"
+    file = "models/areas/thicket/preview_grass_-3_0.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3597,18 +2988,17 @@ entity
 
 entity
   Name
-    text = "preview_grass_2s -3 1"
+    text = "preview_grass -3 1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_grass_2s_-3_1.obj"
+    file = "models/areas/thicket/preview_grass_-3_1.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3616,18 +3006,17 @@ entity
 
 entity
   Name
-    text = "preview_grass_2s -3 2"
+    text = "preview_grass -3 2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_grass_2s_-3_2.obj"
+    file = "models/areas/thicket/preview_grass_-3_2.obj"
     texture = "art/grass.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3887,56 +3276,17 @@ entity
 
 entity
   Name
-    text = "preview_planks_2s -6 -3"
+    text = "preview_thatch -5 -2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/thicket/preview_planks_2s_-6_-3.obj"
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -106.1, cz = -45.5, r = 0.2"
-
-entity
-  Name
-    text = "preview_planks_2s -5 -3"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_planks_2s_-5_-3.obj"
-    texture = "art/planks.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
-    cast_shadow = false
-  Script
-    file = "scripts/preview.bs"
-    vars = "cx = -96.9, cz = -45.5, r = 0.2"
-
-entity
-  Name
-    text = "preview_thatch_2s -5 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/preview_thatch_2s_-5_-2.obj"
+    file = "models/areas/thicket/preview_thatch_-5_-2.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
-    cull = false
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
@@ -3955,26 +3305,6 @@ entity
     texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "stone_2s 2 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/thicket/stone_2s_2_0.obj"
-    texture = "art/stone.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1

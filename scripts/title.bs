@@ -220,5 +220,6 @@ func draw() -> void {
 func apply_volumes() -> void {
     for kv in load_data("settings", []) { set_volume(kv[0], kv[1]) }
     set_global("target_toggle", load_data("targeting", "hold") == "toggle")     # (TARGETING, on the SETTINGS page)
+    set_global("show_fps", load_data("show_fps", false))                       # (SHOW FPS)
     set_global("volumes_set", true)
 }

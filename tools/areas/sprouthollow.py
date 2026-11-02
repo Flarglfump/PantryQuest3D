@@ -130,7 +130,6 @@ def build():
         A, B = (fl[0], y0, fl[2] + dz0), (fr[0], y0, fr[2] + dz0)
         C, D = (fr[0], y1, fr[2] + dz1), (fl[0], y1, fl[2] + dz1)
         o.quad(A, B, C, D, (0, 0), (1, 0), (1, 3), (0, 3))
-        o.quad(D, C, B, A, (0, 3), (1, 3), (1, 0), (0, 0))     # (seen from either side)
     a.entity('Falls Spray', t3((fx_, -8.4, fz_ + 1.6)), particles(rate=14, max=40, lifetime=1.0, speed=1.6, spread=60, area=(2.2, 0.6), gravity=2,
                                                                 size_start=0.35, size_end=0.8, color_start='#ffffffb0', color_end='#ffffff00'))
     a.entity('Falls Mist', t3((fx_, -0.1, fz_ + 0.2)), particles(rate=5, max=14, lifetime=1.2, speed=0.5, spread=40, area=(2.4, 0.4), gravity=-0.2,

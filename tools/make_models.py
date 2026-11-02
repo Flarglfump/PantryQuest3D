@@ -140,19 +140,39 @@ def standard_anims(m, b, s=1.0, hero=False):
     if not hero:
         return
     # the hero's moves. The weapon is its own entity, swung by sprig.bs in time with these.
-    m.animation('slash', rotations={       # right arm from the right shoulder across to the left
-        b['arm_r']: [(0, R(x=60, y=0, z=-80)), (0.08, R(x=85, z=-60)), (0.18, R(x=80, z=40)), (0.3, R(x=40, z=10))],
-        b['spine']: [(0, R(y=-30)), (0.1, R(y=-10)), (0.2, R(y=30)), (0.3, R(y=10))],
-        b['arm_l']: [(0, R(x=40, z=20)), (0.3, R(x=30, z=10))],
-        b['leg_l']: [(0, R(x=25)), (0.3, R(x=20))], b['leg_r']: [(0, R(x=-20)), (0.3, R(x=-15))]})
-    m.animation('slash2', rotations={      # back the other way
-        b['arm_r']: [(0, R(x=80, z=40)), (0.08, R(x=85, z=10)), (0.18, R(x=70, z=-70)), (0.3, R(x=40, z=-40))],
-        b['spine']: [(0, R(y=30)), (0.1, R(y=10)), (0.2, R(y=-30)), (0.3, R(y=-10))],
-        b['leg_l']: [(0, R(x=25)), (0.3, R(x=20))], b['leg_r']: [(0, R(x=-20)), (0.3, R(x=-15))]})
-    m.animation('thrust', rotations={      # straight ahead
-        b['arm_r']: [(0, R(x=40, z=-10)), (0.1, R(x=95)), (0.3, R(x=70))],
-        b['spine']: [(0, R(x=0)), (0.1, R(x=-10)), (0.3, R(x=-4))],
-        b['leg_l']: [(0, R(x=10)), (0.1, R(x=35)), (0.3, R(x=25))], b['leg_r']: [(0, R()), (0.1, R(x=-25)), (0.3, R(x=-15))]})
+    # The swings are big on purpose: a wind-up past the shoulder, a fast sweep, a long follow-through
+    # with the whole body turning and the front knee bent (sprig.bs strikes from 0.05 to 0.2 s).
+    lunge = {b['leg_l']: [(0, R(x=20)), (0.08, R(x=45)), (0.22, R(x=48)), (0.3, R(x=30))],
+             b['leg_r']: [(0, R(x=-15)), (0.08, R(x=-35)), (0.22, R(x=-38)), (0.3, R(x=-20))],
+             b['shin_l']: [(0, R()), (0.08, R(x=-40)), (0.22, R(x=-42)), (0.3, R(x=-20))],
+             b['shin_r']: [(0, R()), (0.08, R(x=-15)), (0.3, R(x=-5))]}
+    dip = {b['hips']: [(0, (0, 0, 0)), (0.08, (0, -0.07 * s, 0)), (0.22, (0, -0.08 * s, 0)), (0.3, (0, -0.03 * s, 0))]}
+    m.animation('slash', rotations=({       # right arm from behind the right shoulder right across to the left
+        b['arm_r']: [(0, R(x=60, z=-90)), (0.05, R(x=75, z=-125)), (0.1, R(x=90, z=-45)), (0.16, R(x=88, z=50)),
+                     (0.22, R(x=72, z=85)), (0.3, R(x=45, z=30))],
+        b['hand_r']: [(0, R(y=-20)), (0.05, R(y=-35)), (0.16, R(y=25)), (0.3, R())],
+        b['spine']: [(0, R(y=-40)), (0.05, R(y=-55, x=-5)), (0.12, R(y=0, x=8)), (0.2, R(y=50, x=10)), (0.3, R(y=20, x=4))],
+        b['head']: [(0, R(y=25)), (0.12, R()), (0.22, R(y=-25)), (0.3, R(y=-8))],
+        b['arm_l']: [(0, R(x=50, z=30)), (0.12, R(x=20, z=50)), (0.22, R(x=-20, z=55)), (0.3, R(x=20, z=20))]} | lunge),
+        translations=dip)
+    m.animation('slash2', rotations=({      # back the other way, from over the left shoulder
+        b['arm_r']: [(0, R(x=80, z=60)), (0.05, R(x=95, z=85)), (0.1, R(x=92, z=20)), (0.16, R(x=78, z=-80)),
+                     (0.22, R(x=60, z=-115)), (0.3, R(x=40, z=-50))],
+        b['hand_r']: [(0, R(y=25)), (0.05, R(y=35)), (0.16, R(y=-25)), (0.3, R())],
+        b['spine']: [(0, R(y=40)), (0.05, R(y=55, x=-5)), (0.12, R(y=0, x=8)), (0.2, R(y=-50, x=10)), (0.3, R(y=-20, x=4))],
+        b['head']: [(0, R(y=-25)), (0.12, R()), (0.22, R(y=25)), (0.3, R(y=8))],
+        b['arm_l']: [(0, R(x=-10, z=50)), (0.12, R(x=30, z=40)), (0.22, R(x=55, z=25)), (0.3, R(x=30, z=15))]} | lunge),
+        translations=dip)
+    m.animation('thrust', rotations={      # pulled right back, then a full-length lunge straight ahead
+        b['arm_r']: [(0, R(x=20, z=-20)), (0.06, R(x=-15, z=-25)), (0.12, R(x=98, z=-2)), (0.22, R(x=96)), (0.3, R(x=65, z=-8))],
+        b['arm_l']: [(0, R(x=30, z=20)), (0.06, R(x=60, z=25)), (0.12, R(x=-45, z=30)), (0.3, R(x=10, z=15))],
+        b['spine']: [(0, R(y=-10)), (0.06, R(x=-8, y=-35)), (0.12, R(x=22, y=15)), (0.22, R(x=24, y=15)), (0.3, R(x=8, y=5))],
+        b['leg_l']: [(0, R(x=10)), (0.06, R(x=5)), (0.12, R(x=60)), (0.22, R(x=62)), (0.3, R(x=30))],
+        b['leg_r']: [(0, R()), (0.06, R(x=-5)), (0.12, R(x=-45)), (0.22, R(x=-48)), (0.3, R(x=-20))],
+        b['shin_l']: [(0, R()), (0.12, R(x=-60)), (0.22, R(x=-62)), (0.3, R(x=-25))],
+        b['shin_r']: [(0, R()), (0.12, R(x=-5)), (0.3, R())]},
+        translations={b['hips']: [(0, (0, 0, 0)), (0.06, (0, -0.02 * s, 0.05 * s)), (0.12, (0, -0.12 * s, -0.12 * s)),
+                                  (0.22, (0, -0.12 * s, -0.13 * s)), (0.3, (0, -0.04 * s, -0.04 * s))]})
     m.animation('jumpslash', rotations={   # the jump attack: up over his head in the air, then straight down as he lands (0.5 s)
         b['arm_r']: [(0, R(x=90, z=-10)), (0.16, R(x=200, z=-8)), (0.32, R(x=212, z=-6)), (0.46, R(x=45, z=-4)), (0.6, R(x=28, z=-6)), (0.8, R(x=30, z=-8))],
         b['arm_l']: [(0, R(x=40, z=20)), (0.16, R(x=150, z=25)), (0.32, R(x=160, z=25)), (0.46, R(x=50, z=20)), (0.8, R(x=30, z=15))],
@@ -163,12 +183,17 @@ def standard_anims(m, b, s=1.0, hero=False):
         b['shin_l']: [(0, R()), (0.16, R(x=-80)), (0.4, R(x=-75)), (0.5, R(x=-40)), (0.8, R(x=-20))],
         b['shin_r']: [(0, R()), (0.16, R(x=-35)), (0.4, R(x=-30)), (0.5, R(x=-10)), (0.8, R())]})
     m.animation('charge', rotations={      # arm back, ready to spin
-        b['arm_r']: [(0, R(x=50, z=-90)), (1, R(x=50, z=-95))], b['spine']: [(0, R(y=-45)), (1, R(y=-48))],
+        b['arm_r']: [(0, R(x=55, z=-115)), (1, R(x=55, z=-120))], b['spine']: [(0, R(x=10, y=-65)), (1, R(x=10, y=-68))],
+        b['arm_l']: [(0, R(x=40, z=40)), (1, R(x=40, z=40))],
         b['leg_l']: [(0, R(x=30)), (1, R(x=30))], b['leg_r']: [(0, R(x=-25)), (1, R(x=-25))],
         b['shin_l']: [(0, R(x=-30)), (1, R(x=-30))]})
-    m.animation('spin', rotations={
-        b['arm_r']: [(0, R(x=85, z=-80)), (0.5, R(x=85, z=-80))], b['arm_l']: [(0, R(x=20, z=60)), (0.5, R(x=20, z=60))],
-        b['spine']: [(0, R(y=0)), (0.5, R(y=0))]})
+    m.animation('spin', rotations={       # arm flung straight out, leaning into the turn, low
+        b['arm_r']: [(0, R(x=88, z=-95)), (0.5, R(x=88, z=-95))], b['arm_l']: [(0, R(x=10, z=80)), (0.5, R(x=10, z=80))],
+        b['hand_r']: [(0, R(y=-30)), (0.5, R(y=-30))],
+        b['spine']: [(0, R(x=15, z=-12)), (0.5, R(x=15, z=-12))], b['head']: [(0, R(x=-10)), (0.5, R(x=-10))],
+        b['leg_l']: [(0, R(x=45, z=10)), (0.5, R(x=45, z=10))], b['leg_r']: [(0, R(x=-30, z=-10)), (0.5, R(x=-30, z=-10))],
+        b['shin_l']: [(0, R(x=-55)), (0.5, R(x=-55))], b['shin_r']: [(0, R(x=-20)), (0.5, R(x=-20))]},
+        translations={b['hips']: [(0, (0, -0.1 * s, 0)), (0.5, (0, -0.1 * s, 0))]})
     m.animation('roll', rotations={        # tuck: the script turns the whole body over
         b['spine']: [(0, R(x=60)), (0.4, R(x=60))], b['head']: [(0, R(x=40)), (0.4, R(x=40))],
         b['leg_l']: [(0, R(x=110)), (0.4, R(x=110))], b['leg_r']: [(0, R(x=110)), (0.4, R(x=110))],

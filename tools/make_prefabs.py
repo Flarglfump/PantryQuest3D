@@ -31,6 +31,10 @@ def main():
             ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.12)])))
     prefab('spoon', "The wooden spoon (sprig.bs places it).",
            ('Spoon', t3((0, 0, 0)), mesh('model', '#d8a868ff', file='models/spoon.obj', cast=False)))
+    prefab('swingtrail', "The streak a swung spoon or cleaver leaves (sprig.bs puts it at the tip and turns it on while he swings).",
+           ('Swing Trail', t3((0, 0, 0)), particles(emitting=False, rate=420, max=200, lifetime=0.16, speed=0, spread=0,
+                                                   size_start=0.17, size_end=0.02, color_start='#fff8e0a8',
+                                                   color_end='#ffd08000', blend='add')))
     prefab('shooter_held', "The Pea Shooter in Sprig's hand, while he aims (sprig.bs places it).",
            ('Shooter', t3((0, 0, 0)), mesh('model', '#a07040ff', file='models/shooter.obj', cast=False)))
     prefab('potlid', "The pot-lid shield (sprig.bs places it).",

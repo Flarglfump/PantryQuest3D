@@ -4,7 +4,8 @@
 # while it's held; TOGGLE: a press to take a target, another to let go). Up and down choose,
 # left and right (or a click or drag on a slider, or the mouse wheel over it) change it.
 # Kept in the saved data "settings" ([[bus, volume], ...]) and "targeting" ("hold" or
-# "toggle"); title.bs and game.bs set them up from those.
+# "toggle"), and SHOW FPS (the frame rate in a corner; saved as "show_fps"); title.bs and
+# game.bs set them up from those.
 
 var draw_layer: int = 98
 var cur: int = 0
@@ -15,11 +16,14 @@ var last_mouse: vec2 = vec2(-1, -1)
 var dragging: int = -1
 var blip_t: number = 0
 var toggle: bool = false                 # TARGETING: TOGGLE (else HOLD)
+var fps: bool = false                    # SHOW FPS
 
 # bus, name, its usual volume
 const SLIDERS: list = [["master", "MASTER VOLUME", 1.0], ["music", "MUSIC", 0.8], ["sfx", "SOUND EFFECTS", 1.0]]
 const TOP: number = 56
-const ROW: number = 31
+const ROW: number = 28
+# the two-way choices, after the sliders: name, its two options, the help line
+const CHOICES: list = [["TARGETING", "HOLD", "TOGGLE", "Hold Focus, or press it once"], ["SHOW FPS", "OFF", "ON", "The frame rate, in a corner"]]
 const BAR_X: number = 64
 const BAR_W: number = 192
 
@@ -34,15 +38,21 @@ func start() -> void {
         push(vols, v)
     }
     toggle = load_data("targeting", "hold") == "toggle"
+    fps = load_data("show_fps", false)
 }
 
-func rows() -> int { return len(SLIDERS) + 3 }     # (and TARGETING, RESET, BACK)
-func choice_row() -> int { return len(SLIDERS) }
+func rows() -> int { return len(SLIDERS) + len(CHOICES) + 2 }     # (and the choices, RESET, BACK)
+func choice_row() -> int { return len(SLIDERS) }              # (the first choice's)
+func is_choice(i: int) -> bool { return i >= choice_row() and i < choice_row() + len(CHOICES) }
+func choice_on(k: int) -> bool {
+    if k == 0 { return toggle }
+    return fps
+}
 
 func row_y(i: int) -> number {
     if i < len(SLIDERS) { return TOP + i * ROW }
-    if i == choice_row() { return TOP + len(SLIDERS) * ROW + 2 }
-    return TOP + len(SLIDERS) * ROW + 24 + (i - len(SLIDERS) - 1) * 16
+    if is_choice(i) { return TOP + len(SLIDERS) * ROW + 2 + (i - choice_row()) * 15 }
+    return TOP + len(SLIDERS) * ROW + 2 + len(CHOICES) * 15 + 6 + (i - choice_row() - len(CHOICES)) * 16
 }
 
 func row_at(p: vec2) -> int {
@@ -74,10 +84,12 @@ func save() -> void {
     if toggle { mode = "toggle" }
     save_data("targeting", mode)
     set_global("target_toggle", toggle)
+    save_data("show_fps", fps)
+    set_global("show_fps", fps)
 }
 
-func flip_targeting() -> void {
-    toggle = not toggle
+func flip(k: int) -> void {
+    if k == 0 { toggle = not toggle } else { fps = not fps }
     play_sound("sfx/cursor.wav", 0.6)
     save()
 }
@@ -121,8 +133,8 @@ func update(dt: number) -> void {
         cur = (cur + 1) % rows()
         play_sound("sfx/cursor.wav", 0.3)
     }
-    if cur == choice_row() and (action_pressed("m_left") or key_pressed("left") or action_pressed("m_right") or key_pressed("right")) {
-        flip_targeting()
+    if is_choice(cur) and (action_pressed("m_left") or key_pressed("left") or action_pressed("m_right") or key_pressed("right")) {
+        flip(cur - choice_row())
     }
     if cur < len(SLIDERS) {
         var d: number = 0
@@ -139,17 +151,20 @@ func update(dt: number) -> void {
     }
     if action_pressed("m_ok") or key_pressed("enter") or (mouse_pressed(0) and row >= len(SLIDERS)) {
         if mouse_pressed(0) and row >= 0 { cur = row }
-        if cur == choice_row() {
-            if not mouse_pressed(0) or (mp.x >= BAR_X + 148) != toggle { flip_targeting() }     # (a click: on HOLD or TOGGLE)
-        } elif cur == choice_row() + 1 {
+        var after: int = choice_row() + len(CHOICES)
+        if is_choice(cur) {
+            var k: int = cur - choice_row()
+            if not mouse_pressed(0) or (mp.x >= BAR_X + 148) != choice_on(k) { flip(k) }     # (a click: on one option or the other)
+        } elif cur == after {
             for i in len(SLIDERS) {
                 vols[i] = SLIDERS[i][2]
                 set_volume(SLIDERS[i][0], vols[i])
             }
             toggle = false
+            fps = false
             save()
             play_sound("sfx/select.wav", 0.5)
-        } elif cur == choice_row() + 2 {
+        } elif cur == after + 1 {
             close()
         }
     }
@@ -191,28 +206,31 @@ func draw() -> void {
             draw_text(">", vec2(BAR_X + BAR_W + 8, gy - 1), c)
         }
     }
-    # TARGETING: HOLD / TOGGLE
-    var cy: number = row_y(choice_row())
-    var csel: bool = cur == choice_row()
-    if csel { draw_rect(vec2(22, cy - 3), vec2(276, 15), [60, 46, 80, 255]) }
-    var cc: list = [210, 200, 180]
-    if csel { cc = [255, 236, 150] }
-    draw_text("TARGETING", vec2(BAR_X, cy + 1), cc)
-    var opts: list = ["HOLD", "TOGGLE"]
-    for k in 2 {
-        var on: bool = (k == 1) == toggle
-        var bx: number = BAR_X + 92 + k * 58
-        var bg: list = [20, 14, 28, 255]
-        if on { bg = [120, 200, 90, 255] }
-        draw_rect(vec2(bx, cy - 1), vec2(54, 11), bg)
-        draw_rect(vec2(bx, cy - 1), vec2(54, 11), [140, 120, 90, 255], false)
-        var oc: list = [170, 160, 140]
-        if on { oc = [20, 30, 10] }
-        draw_text(opts[k], vec2(bx + 27 - text_size(opts[k]).x / 2, cy + 1), oc)
+    # the choices: TARGETING (HOLD / TOGGLE), SHOW FPS (OFF / ON)
+    for k in len(CHOICES) {
+        var ci: int = choice_row() + k
+        var cy: number = row_y(ci)
+        var csel: bool = cur == ci
+        if csel { draw_rect(vec2(22, cy - 3), vec2(276, 15), [60, 46, 80, 255]) }
+        var cc: list = [210, 200, 180]
+        if csel { cc = [255, 236, 150] }
+        draw_text(CHOICES[k][0], vec2(BAR_X, cy + 1), cc)
+        for j in 2 {
+            var on: bool = (j == 1) == choice_on(k)
+            var bx: number = BAR_X + 92 + j * 58
+            var bg: list = [20, 14, 28, 255]
+            if on { bg = [120, 200, 90, 255] }
+            draw_rect(vec2(bx, cy - 1), vec2(54, 11), bg)
+            draw_rect(vec2(bx, cy - 1), vec2(54, 11), [140, 120, 90, 255], false)
+            var oc: list = [170, 160, 140]
+            if on { oc = [20, 30, 10] }
+            var label: string = CHOICES[k][1 + j]
+            draw_text(label, vec2(bx + 27 - text_size(label).x / 2, cy + 1), oc)
+        }
     }
     var names: list = ["RESET TO THE USUAL", "BACK"]
     for k in 2 {
-        var i: int = choice_row() + 1 + k
+        var i: int = choice_row() + len(CHOICES) + k
         var y2: number = row_y(i)
         var c2: list = [210, 200, 180]
         if i == cur {
@@ -222,6 +240,6 @@ func draw() -> void {
         draw_text(names[k], vec2(BAR_X, y2), c2)
     }
     var help: string = "LEFT/RIGHT, drag: change"
-    if cur == choice_row() { help = "Hold Focus, or press it once" }
-    draw_text(help, vec2(160 - text_size(help).x / 2, 208), [200, 190, 170])
+    if is_choice(cur) { help = CHOICES[cur - choice_row()][3] }
+    draw_text(help, vec2(160 - text_size(help).x / 2, 209), [200, 190, 170])
 }

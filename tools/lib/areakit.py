@@ -598,31 +598,115 @@ class Area:
 
     def two_sided_open_faces(self):
         """Faces drawn one side only vanish seen from behind: fine on a closed shape (a box: its
-        back faces are inside it), wrong on an open one (a cone roof seen from under its eaves, a
+        back faces are inside it), wrong on an open one (a roof's underside under the eaves, a
         single sheet of wall, a slope's edge). Every face with an edge no other face shares the
-        other way round is open: they move to a '<material>_2s' mesh drawn from both sides."""
+        other way round is open: it gets a back face of its own, turned round with its normal
+        reversed (so it's lit as the side it is, not as its front)."""
         key = lambda p: (round(p[0], 3), round(p[1], 3), round(p[2], 3))
         edges = set()
-        objs = [(k, o) for k, o in self.chunks.objs.items() if mat_info(k[0])[5] and not k[0].endswith('_2s') and k[0] not in ('path', 'preview_path')]
+        objs = [(k, o) for k, o in self.chunks.objs.items() if mat_info(k[0])[5] and k[0] != 'path' and not k[0].startswith('preview_')]   # (a preview's faces have their backs already, from their place)
         for k, o in objs:
             for f in o.f:
                 P = [key(o.v[c[0] - 1]) for c in f]
                 for i in range(3):
                     edges.add((P[i], P[(i + 1) % 3]))
-        for (mat, cx, cz), o in objs:
-            keep, opened = [], []
+        # every face by its plane: a back face isn't added where something already lies in that
+        # plane facing that way (a door on a wall, a hedge against a hedge): it'd only fight it
+        planes = {}
+        def plane_of(P):
+            e1 = [P[1][i] - P[0][i] for i in range(3)]
+            e2 = [P[2][i] - P[0][i] for i in range(3)]
+            n = (e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0])
+            l = math.sqrt(sum(c * c for c in n))
+            if l < 1e-9:
+                return None
+            n = tuple(c / l for c in n)
+            return n, sum(n[i] * P[0][i] for i in range(3))
+        for k, o in self.chunks.objs.items():
+            if not mat_info(k[0])[2] and not k[0].startswith('preview_'):
+                continue
             for f in o.f:
+                P = [o.v[c[0] - 1] for c in f]
+                pl = plane_of(P)
+                if pl:
+                    n, d = pl
+                    planes.setdefault((round(n[0], 1), round(n[1], 1), round(n[2], 1), round(d / 0.05)), []).append((P, n, d))
+        for P, n, d in self.extra_planes():
+            planes.setdefault((round(n[0], 1), round(n[1], 1), round(n[2], 1), round(d / 0.05)), []).append((P, n, d))
+
+        def covered(P, n, d):
+            ax = max(range(3), key=lambda i: abs(n[i]))
+            u, v = [i for i in range(3) if i != ax]
+            pts = [tuple(sum(P[j][i] * w[j] for j in range(3)) for i in range(3))
+                   for w in ((1 / 3, 1 / 3, 1 / 3), (0.6, 0.2, 0.2), (0.2, 0.6, 0.2), (0.2, 0.2, 0.6))]
+            for dd in (-1, 0, 1):
+                for Q, m, e in planes.get((round(n[0], 1), round(n[1], 1), round(n[2], 1), round(d / 0.05) + dd), []):
+                    if sum(m[i] * n[i] for i in range(3)) < 0.999 or abs(e - d) > 0.004:
+                        continue
+                    for p in pts:
+                        (x0, y0), (x1, y1), (x2, y2) = [(q[u], q[v]) for q in Q]
+                        den = (y1 - y2) * (x0 - x2) + (x2 - x1) * (y0 - y2)
+                        if abs(den) < 1e-12:
+                            continue
+                        l1 = ((y1 - y2) * (p[u] - x2) + (x2 - x1) * (p[v] - y2)) / den
+                        l2 = ((y2 - y0) * (p[u] - x2) + (x0 - x2) * (p[v] - y2)) / den
+                        if l1 > 0.001 and l2 > 0.001 and 1 - l1 - l2 > 0.001:
+                            return True
+            return False
+
+        for (mat, cx, cz), o in objs:
+            for f in list(o.f):
                 P = [key(o.v[c[0] - 1]) for c in f]
                 if all((P[(i + 1) % 3], P[i]) in edges for i in range(3)):
-                    keep.append(f)
-                else:
-                    opened.append(f)
-            if not opened:
+                    continue
+                pl = plane_of([o.v[c[0] - 1] for c in f])
+                if pl is None or covered([o.v[c[0] - 1] for c in f], tuple(-c for c in pl[0]), -pl[1]):
+                    continue
+                a_, b_, c_ = f
+                n = lambda k: tuple(-x for x in o.vn[k[2] - 1])
+                off = tuple(-c * 0.012 for c in pl[0])            # (a hair out behind it: never in another face's plane)
+                mv = lambda k: tuple(o.v[k[0] - 1][i] + off[i] for i in range(3))
+                o.tri(mv(a_), mv(c_), mv(b_), o.vt[a_[1] - 1], o.vt[c_[1] - 1], o.vt[b_[1] - 1], n(a_), n(c_), n(b_))
+
+    def extra_planes(self):
+        """The faces of the scene's plain cube entities (doors, windows, signs...), by plane."""
+        out = []
+        txt = '\n'.join(self.scene.lines)
+        for blk in txt.split('\nentity\n'):
+            if 'shape = cube' not in blk or '\n  Parent' in blk:
                 continue
-            o.f = keep
-            t = self.chunks.objs.setdefault((mat + '_2s', cx, cz), kit.Obj('%s chunk %d %d (both sides)' % (mat, cx, cz)))
-            for f in opened:
-                t.tri(*[o.v[c[0] - 1] for c in f], *[o.vt[c[1] - 1] for c in f], *[o.vn[c[2] - 1] for c in f])
+            p = re.search(r'position = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+            r = re.search(r'rotation = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+            sc = re.search(r'scale = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+            if not (p and r and sc):
+                continue
+            pos = [float(v) for v in p.groups()]
+            rx, ry, rz = [math.radians(float(v)) for v in r.groups()]
+            hs = [float(v) / 2 for v in sc.groups()]
+            def rot(q):
+                x, y, z = q
+                x, y = x * math.cos(rz) - y * math.sin(rz), x * math.sin(rz) + y * math.cos(rz)
+                y, z = y * math.cos(rx) - z * math.sin(rx), y * math.sin(rx) + z * math.cos(rx)
+                x, z = x * math.cos(ry) + z * math.sin(ry), -x * math.sin(ry) + z * math.cos(ry)
+                return (x, y, z)
+            for ax in range(3):
+                for sgn in (-1, 1):
+                    u, v = [i for i in range(3) if i != ax]
+                    corners = []
+                    for cu, cv in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
+                        q = [0.0, 0.0, 0.0]
+                        q[ax] = sgn * hs[ax]
+                        q[u] = cu * hs[u]
+                        q[v] = cv * hs[v]
+                        w = rot(q)
+                        corners.append((w[0] + pos[0], w[1] + pos[1], w[2] + pos[2]))
+                    nn = [0.0, 0.0, 0.0]
+                    nn[ax] = float(sgn)
+                    n = rot(nn)
+                    d = sum(n[i] * corners[0][i] for i in range(3))
+                    out.append(([corners[0], corners[1], corners[2]], n, d))
+                    out.append(([corners[0], corners[2], corners[3]], n, d))
+        return out
 
     MAP_COLOURS = {   # how each material looks on an area map, from above
         'grass': (104, 160, 76), 'flowers': (120, 170, 90), 'dirt': (168, 128, 84), 'path': (184, 146, 96), 'cobble': (178, 170, 150),
@@ -1136,7 +1220,7 @@ def town_house(a, x, z, w, d, h, ground_y, wall='planks', roof='thatch', door_si
     g = a.geo(wall, x, z)
     g.tri((x0, top, z0), (x0, top, z1), (x0, top + rh - 0.1, z))                              # gables
     g.tri((x1, top, z1), (x1, top, z0), (x1, top + rh - 0.1, z))
-    door_at = {'s': (x, z1 + 0.03, 180), 'n': (x, z0 - 0.03, 0), 'e': (x1 + 0.03, z, -90), 'w': (x0 - 0.03, z, 90)}[door_side]
+    door_at = {'s': (x, z1 + 0.05, 180), 'n': (x, z0 - 0.05, 0), 'e': (x1 + 0.05, z, -90), 'w': (x0 - 0.05, z, 90)}[door_side]   # (off the wall: not in its plane, front or back)
     a.entity('Door', t3((door_at[0], y + 0.3 + 0.9, door_at[1]), (0, door_at[2], 0), (1.1, 1.8, 0.08)), mesh('cube', '#5a3a20ff', 'art/planks.png'))
     for side in (-1, 1):
         if door_side in 'ns':

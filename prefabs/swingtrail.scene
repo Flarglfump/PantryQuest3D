@@ -1,0 +1,23 @@
+# The streak a swung spoon or cleaver leaves (sprig.bs puts it at the tip and turns it on while he swings).
+# Made by tools/make_prefabs.py.
+bronto_scene 1
+
+entity
+  Name
+    text = "Swing Trail"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    emitting = false
+    rate = 420
+    max = 200
+    lifetime = 0.16
+    speed = 0
+    spread = 0
+    size_start = 0.17
+    size_end = 0.02
+    color_start = #fff8e0a8
+    color_end = #ffd08000
+    blend = add
