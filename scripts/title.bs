@@ -216,8 +216,9 @@ func draw() -> void {
     if leaving >= 0 { draw_rect(vec2(0, 0), vec2(320, 240), [0, 0, 0, floor(min(1, leaving / 0.8) * 255)]) }
 }
 
-# The volume settings (the SETTINGS page keeps them in the saved data "settings").
+# The SETTINGS page's choices: the volumes (saved data "settings") and TARGETING ("targeting").
 func apply_volumes() -> void {
     for kv in load_data("settings", []) { set_volume(kv[0], kv[1]) }
+    set_global("target_toggle", load_data("targeting", "hold") == "toggle")     # (TARGETING, on the SETTINGS page)
     set_global("volumes_set", true)
 }

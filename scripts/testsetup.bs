@@ -7,8 +7,13 @@ var flags: list = []
 var spawn: string = ""
 var clock: number = -1
 var era: string = ""
+var targeting: string = ""             # (the SETTINGS page's TARGETING: "hold" or "toggle")
 
 func start() -> void {
+    if targeting != "" {
+        save_data("targeting", targeting)
+        set_global("target_toggle", targeting == "toggle")
+    }
     var s: list = global("save", [])
     if len(s) < 12 { s = [[], [], 12, 12, 0, 0, ["", "", ""], [], "", "start", 0, "fresh"] }
     var fl: list = s[0]

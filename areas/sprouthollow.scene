@@ -122,6 +122,46 @@ entity
 
 entity
   Name
+    text = "Falls Spray"
+  Transform3D
+    position = 16.8 -8.4 34.8
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 14
+    max = 40
+    lifetime = 1
+    speed = 1.6
+    spread = 60
+    area = 2.2 0.6
+    gravity = 2
+    size_start = 0.35
+    size_end = 0.8
+    color_start = #ffffffb0
+    color_end = #ffffff00
+
+entity
+  Name
+    text = "Falls Mist"
+  Transform3D
+    position = 16.8 -0.1 33.4
+    rotation = 0 0 0
+    scale = 1 1 1
+  Particles
+    rate = 5
+    max = 14
+    lifetime = 1.2
+    speed = 0.5
+    spread = 40
+    area = 2.4 0.4
+    gravity = -0.2
+    size_start = 0.2
+    size_end = 0.5
+    color_start = #ffffff80
+    color_end = #ffffff00
+
+entity
+  Name
     text = "Rail"
   Transform3D
     position = -1.5 0.8 37.5
@@ -298,7 +338,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 11.9042 0.6755 15.21
+    position = 11.9042 0.8398 15.21
     rotation = 0 120 0
     scale = 1 1.5 0.08
   Mesh
@@ -311,7 +351,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 11.8067 1.5255 12.9773
+    position = 11.8067 1.6898 12.9773
     rotation = 0 65 0
     scale = 0.55 0.55 0.06
   Mesh
@@ -325,7 +365,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 13.7891 1.5255 16.4108
+    position = 13.7891 1.6898 16.4108
     rotation = 0 175 0
     scale = 0.55 0.55 0.06
   Mesh
@@ -503,7 +543,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = -5.4 0.1909 18.4
+    position = -5.4 0.4221 18.4
     rotation = 0 30 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -521,7 +561,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = -5.4 0.5909 18.4
+    position = -5.4 0.8221 18.4
     rotation = 0 30 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -615,25 +655,25 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = -8 1.3466 18.2
+    position = -8 1.566 18.2
     rotation = 0 180 0
-    scale = 1 3.5942 0.04
+    scale = 1 3.1554 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
     color = #7ac060ff
-    uv_scale = 1 3.5942
+    uv_scale = 1 3.1554
 
 entity
   Name
     text = "Vine Climb"
   Transform3D
-    position = -8 1.3466 18.5
+    position = -8 1.566 18.5
     rotation = 0 180 0
     scale = 1 1 1
   Collider3D
     shape = box
-    size = 1 4.1942 0.7
+    size = 1 3.7554 0.7
     radius = 0.5
     friction = 0.8
     trigger = true
@@ -641,7 +681,7 @@ entity
     list = "climbable"
   Script
     file = "scripts/vine.bs"
-    vars = "out = vec3(0, 0, 1), top = 3.1437, bottom = -0.4505"
+    vars = "out = vec3(0, 0, 1), top = 3.1437, bottom = -0.0117"
 
 entity
   Name
@@ -690,7 +730,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 41
+    entity = 43
 
 entity
   Name
@@ -1179,7 +1219,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 65
+    entity = 67
 
 entity
   Name
@@ -1656,7 +1696,7 @@ entity
   Name
     text = "Tree"
   Transform3D
-    position = 14 1.3272 30
+    position = 11 1.3074 30
     rotation = 0 0 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -1679,8 +1719,8 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = 14 3.3272 30
-    rotation = 0 158 0
+    position = 11 3.3074 30
+    rotation = 0 47 0
     scale = 2.6 2 2.6
   Mesh
     shape = sphere
@@ -1900,8 +1940,8 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 20.1578 -0.005 24.0982
-    rotation = 0 38.0334 0
+    position = 8.4667 -0.0521 13.191
+    rotation = 0 312.981 0
     scale = 0.55 0.45 0.55
   Mesh
     shape = cone
@@ -2061,6 +2101,29 @@ entity
   Name
     text = "Grass"
   Transform3D
+    position = 26.9519 -0.086 9.7738
+    rotation = 0 154.6069 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
     position = -10.988 0.0141 -3.971
     rotation = 0 70.1313 0
     scale = 0.55 0.45 0.55
@@ -2153,6 +2216,29 @@ entity
   Name
     text = "Grass"
   Transform3D
+    position = 32.471 -0.0106 5.0542
+    rotation = 0 6.8816 0
+    scale = 0.55 0.45 0.55
+  Mesh
+    shape = cone
+    color = #5aa848ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = sphere
+    size = 1 1 1
+    radius = 0.6
+    friction = 0.8
+    offset = 0 0.4 0
+    trigger = true
+  Script
+    file = "scripts/cuttable.bs"
+    vars = "kind = \"grass\", drops = 0.3"
+
+entity
+  Name
+    text = "Grass"
+  Transform3D
     position = -9.5976 0.0143 -14.8127
     rotation = 0 319.5107 0
     scale = 0.55 0.45 0.55
@@ -2224,29 +2310,6 @@ entity
   Transform3D
     position = -19.941 0.0092 20.6331
     rotation = 0 13.89 0
-    scale = 0.55 0.45 0.55
-  Mesh
-    shape = cone
-    color = #5aa848ff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = sphere
-    size = 1 1 1
-    radius = 0.6
-    friction = 0.8
-    offset = 0 0.4 0
-    trigger = true
-  Script
-    file = "scripts/cuttable.bs"
-    vars = "kind = \"grass\", drops = 0.3"
-
-entity
-  Name
-    text = "Grass"
-  Transform3D
-    position = 22.0377 0.0493 21.0083
-    rotation = 0 85.1372 0
     scale = 0.55 0.45 0.55
   Mesh
     shape = cone
@@ -2477,29 +2540,6 @@ entity
   Transform3D
     position = 11.5622 -0.0366 26.0377
     rotation = 0 335.4365 0
-    scale = 0.55 0.45 0.55
-  Mesh
-    shape = cone
-    color = #5aa848ff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = sphere
-    size = 1 1 1
-    radius = 0.6
-    friction = 0.8
-    offset = 0 0.4 0
-    trigger = true
-  Script
-    file = "scripts/cuttable.bs"
-    vars = "kind = \"grass\", drops = 0.3"
-
-entity
-  Name
-    text = "Grass"
-  Transform3D
-    position = 20.3258 0.0022 17.2577
-    rotation = 0 290.6491 0
     scale = 0.55 0.45 0.55
   Mesh
     shape = cone
@@ -3682,6 +3722,23 @@ entity
 
 entity
   Name
+    text = "Heart Pie"
+  Transform3D
+    position = 2.8 3.3 -40.8
+    rotation = 0 0 0
+    scale = 2 2 2
+  Mesh
+    shape = model
+    file = "models/heart.obj"
+    color = #ff3048ff
+    uv_scale = 1 1
+    lit = false
+  Script
+    file = "scripts/pickup.bs"
+    vars = "kind = \"heartpie\", id = \"crock_pie\", when = \"crock_done\""
+
+entity
+  Name
     text = "Load Zone"
   Transform3D
     position = 0 1.5 45
@@ -3756,7 +3813,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 185
+    entity = 188
   Particles
     rate = 3
     max = 6
@@ -3802,7 +3859,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 187
+    entity = 190
   Particles
     rate = 3
     max = 6
@@ -5157,25 +5214,6 @@ entity
 
 entity
   Name
-    text = "water -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/water_-1_0.obj"
-    texture = "art/water.png"
-    color = #ffffffc8
-    uv_scale = 1 1
-    lit = false
-    cull = false
-    cast_shadow = false
-  Tags
-    list = "seethrough"
-
-entity
-  Name
     text = "water 0 0"
   Transform3D
     position = 0 0 0
@@ -5195,14 +5233,14 @@ entity
 
 entity
   Name
-    text = "water 1 -1"
+    text = "water 0 1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/water_1_-1.obj"
+    file = "models/areas/sprouthollow/water_0_1.obj"
     texture = "art/water.png"
     color = #ffffffc8
     uv_scale = 1 1

@@ -18,14 +18,36 @@ def smooth(t):
     return t * t * (3 - 2 * t)
 
 
+# The stream: out of the east bank, round the east side of the village (clear of its houses
+# and paths), and over the lip into the ravine in a little waterfall.
+STREAM_KEYS = [(38.5, 18.0), (31.0, 18.5), (24.0, 17.0), (20.0, 20.5), (18.0, 26.0), (17.0, 31.0), (16.8, 33.2)]
+
+
+def _stream_line(n=12):
+    """STREAM_KEYS smoothed (Catmull-Rom), n points a span."""
+    k = [STREAM_KEYS[0]] + STREAM_KEYS + [STREAM_KEYS[-1]]
+    out = []
+    for i in range(1, len(k) - 2):
+        p0, p1, p2, p3 = k[i - 1], k[i], k[i + 1], k[i + 2]
+        for j in range(n):
+            t = j / n
+            out.append(tuple(0.5 * (2 * p1[c] + (-p0[c] + p2[c]) * t + (2 * p0[c] - 5 * p1[c] + 4 * p2[c] - p3[c]) * t * t
+                                    + (-p0[c] + 3 * p1[c] - 3 * p2[c] + p3[c]) * t ** 3) for c in range(2)))
+    out.append(STREAM_KEYS[-1])
+    return out
+
+
+STREAM = _stream_line()
+
+
 def stream_d(x, z):
-    """Distance from the stream's middle line (it runs from the east edge, curving south-west)."""
+    """Distance from the stream's middle line."""
     best = 99.0
-    for i in range(41):
-        t = i / 40
-        sx = 42 - t * 50
-        sz = -6 + 30 * t + 6 * math.sin(t * 5)
-        best = min(best, math.hypot(x - sx, z - sz))
+    for (ax, az), (bx, bz) in zip(STREAM, STREAM[1:]):
+        dx, dz = bx - ax, bz - az
+        L2 = dx * dx + dz * dz or 1e-9
+        t = max(0.0, min(1.0, ((x - ax) * dx + (z - az) * dz) / L2))
+        best = min(best, math.hypot(x - ax - dx * t, z - az - dz * t))
     return best
 
 
@@ -82,18 +104,37 @@ def build():
     a.path([(-2, 8), (-12, 6), (-22, 2), (-25, 0)], 1.8)
     a.path([(-2, 8), (-8, 15)], 1.6)
     a.path([(0, 20), (14, 14)], 1.6)
-    # the stream's water
-    for i in range(40):
-        t0, t1 = i / 40, (i + 1) / 40
-        def P(t, side):
-            sx = 42 - t * 50
-            sz = -6 + 30 * t + 6 * math.sin(t * 5)
-            tx, tz = -50, 30 + 30 * math.cos(t * 5)
-            L = math.hypot(tx, tz)
-            return (sx - tz / L * 1.4 * side, -0.22, sz + tx / L * 1.4 * side)
-        o = a.geo('water', 42 - t0 * 50, -6 + 30 * t0)
-        o.quad(P(t0, -1), P(t1, -1), P(t1, 1), P(t0, 1), (0, t0 * 20), (0, t1 * 20), (1, t1 * 20), (1, t0 * 20))
-    # small plank bridges over the stream where the paths cross
+    # the stream's water (a ribbon along its line), and its fall into the ravine
+    W2 = 1.4
+    sides = []
+    for i, (x, z) in enumerate(STREAM):
+        (ax, az), (bx, bz) = STREAM[max(0, i - 1)], STREAM[min(len(STREAM) - 1, i + 1)]
+        L = math.hypot(bx - ax, bz - az) or 1
+        nx, nz = -(bz - az) / L * W2, (bx - ax) / L * W2
+        sides.append(((x - nx, -0.22, z - nz), (x + nx, -0.22, z + nz)))
+    run = 0.0
+    for i in range(len(STREAM) - 1):
+        (l0, r0), (l1, r1) = sides[i], sides[i + 1]
+        seg = math.hypot(STREAM[i + 1][0] - STREAM[i][0], STREAM[i + 1][1] - STREAM[i][1])
+        o = a.geo('water', STREAM[i][0], STREAM[i][1])
+        q4 = [l0, l1, r1, r0]
+        if (q4[1][0] - q4[0][0]) * (q4[2][2] - q4[0][2]) - (q4[1][2] - q4[0][2]) * (q4[2][0] - q4[0][0]) > 0:
+            q4 = q4[::-1]                             # (facing up)
+        uv = {id(l0): (0, run / 3), id(r0): (1, run / 3), id(l1): (0, (run + seg) / 3), id(r1): (1, (run + seg) / 3)}
+        o.quad(*q4, *[uv[id(v)] for v in q4])
+        run += seg
+    fx_, fz_ = STREAM[-1]
+    (fl, fr) = sides[-1]
+    o = a.geo('water', fx_, fz_ + 1)
+    for (y0, y1, dz0, dz1) in [(-0.22, -8.6, 0.0, 1.3)]:      # (down the ravine's north face, leaning out a little)
+        A, B = (fl[0], y0, fl[2] + dz0), (fr[0], y0, fr[2] + dz0)
+        C, D = (fr[0], y1, fr[2] + dz1), (fl[0], y1, fl[2] + dz1)
+        o.quad(A, B, C, D, (0, 0), (1, 0), (1, 3), (0, 3))
+        o.quad(D, C, B, A, (0, 3), (1, 3), (1, 0), (0, 0))     # (seen from either side)
+    a.entity('Falls Spray', t3((fx_, -8.4, fz_ + 1.6)), particles(rate=14, max=40, lifetime=1.0, speed=1.6, spread=60, area=(2.2, 0.6), gravity=2,
+                                                                size_start=0.35, size_end=0.8, color_start='#ffffffb0', color_end='#ffffff00'))
+    a.entity('Falls Mist', t3((fx_, -0.1, fz_ + 0.2)), particles(rate=5, max=14, lifetime=1.2, speed=0.5, spread=40, area=(2.4, 0.4), gravity=-0.2,
+                                                               size_start=0.2, size_end=0.5, color_start='#ffffff80', color_end='#ffffff00'))
     # the bridge over the ravine
     a.geo('planks', 0, 37).box((-1.4, -0.25, 31.8), (1.4, 0.05, 42.8), uvs=0.6)
     # stone footings under both ends, bedded in the banks
@@ -233,7 +274,7 @@ def build():
 
     # ---- trees, grass and pots round the village ----
     trees = [(-14, -18, 1.2, 'bean5'), (10, -18, 1.1, 'bean5'), (22, 8, 1.0, 'heart'), (-24, 20, 1.2, 'bean1'), (26, 22, 1.1, 'bean5'),
-             (-30, 26, 1.0, ''), (32, 12, 1.2, 'bean5'), (18, -18, 1.0, 'bean5'), (-14, 28, 1.0, 'bean1'), (14, 30, 1.0, '')]
+             (-30, 26, 1.0, ''), (32, 12, 1.2, 'bean5'), (18, -18, 1.0, 'bean5'), (-14, 28, 1.0, 'bean1'), (11, 30, 1.0, '')]
     for x, z, s, drop in trees:
         a.tree(x, height(x, z), z, s, drop)
     spots = []
@@ -290,6 +331,10 @@ def build():
                                                                 color_start='#f0f0e0c0', color_end='#a0a09000'))
     a.loadzone(cx, gy, cz + 4.6, 1.8, 1.8, 0.8, to='crock', at='start', needs='starter_open', until='crock_done')
     a.spawn_point('grove', 0, gy + 0.1, cz + 9, 0)
+    # the Crock's Heart Pie, if Sprig left the Queen's lair without it (the Crock's shut after):
+    # it waits beside Mother Starter's mouth (the same id: found in one place, gone from both)
+    a.entity('Heart Pie', t3((cx + 2.8, gy + 0.8, cz + 6.2), (0, 0, 0), 2.0), mesh('model', '#ff3048ff', file='models/heart.obj', lit=False),
+             script('scripts/pickup.bs', kind='heartpie', id='crock_pie', when='crock_done'))
 
     # ---- ways out ----
     a.loadzone(0, 0, 45, 4, 3, 1, to='fields', at='sprouthollow', needs='crock_done')

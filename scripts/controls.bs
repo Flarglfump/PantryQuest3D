@@ -42,8 +42,8 @@ const MENU_ROWS: list = [["m_up", "Up", "w", "UP", "D-pad"], ["m_down", "Down", 
                          ["m_erase", "Erase save", "delete", "", "Y"]]
 const TABS: list = ["ADVENTURE", "MENUS"]
 const TOP: number = 56
-const ROW_H: number = 10
-const SHOWN: int = 14                    # rows shown at once (the list scrolls)
+const ROW_H: number = 14                 # (tall enough for the key and button pictures, 12 high)
+const SHOWN: int = 10                    # rows shown at once (the list scrolls)
 
 func start() -> void {
     lock_mouse(false)
@@ -157,7 +157,9 @@ func row_at(p: vec2) -> int {
     for i in row_count() {
         if not row_shown(i) { continue }
         var y: number = row_y(i)
-        if p.y >= y - 1 and p.y < y + ROW_H - 1 { return i }
+        var h: number = ROW_H
+        if i >= len(rows()) { h = 11 }
+        if p.y >= y - 1 and p.y < y + h - 1 { return i }
     }
     return -1
 }
@@ -329,30 +331,34 @@ func draw() -> void {
         if not row_shown(i) { continue }
         var y: number = row_y(i)
         var sel: bool = i == cur
-        if sel { draw_rect(vec2(16, y - 1), vec2(288, ROW_H), [70, 55, 90, 255]) }
+        if sel {
+            var sh: number = ROW_H
+            if i >= len(list_rows) { sh = 11 }
+            draw_rect(vec2(16, y - 1), vec2(288, sh), [70, 55, 90, 255])
+        }
         var c: list = [210, 200, 180]
         if sel { c = [255, 236, 150] }
         if i < len(list_rows) {
             var r: list = list_rows[i]
-            draw_text(r[1], vec2(18, y + 1), c)
+            draw_text(r[1], vec2(18, y + 3), c)
             var k: string = label(key_of(r[0]))
             if sel and waiting {
                 k = "PRESS..."
                 if floor(t * 3) % 2 == 1 { k = "" }
             }
-            draw_text(k, vec2(136, y + 1), [255, 255, 255])
+            draw_text(k, vec2(136, y + 3), [255, 255, 255])
             if tab == 0 {
-                if substr(r[3], 0, 6) == "mouse:" { draw_glyph(r[3], vec2(212, y + 4)) } else { draw_text(r[3], vec2(196, y + 1), [170, 170, 190]) }
-                if r[4] != "" { draw_glyph("pad:" + pad_of(r[0]), vec2(266, y + 4)) } elif r[0] == "cam_left" or r[0] == "cam_right" {
-                    draw_text("R-stick", vec2(244, y + 1), [170, 170, 190])
+                if substr(r[3], 0, 6) == "mouse:" { draw_glyph(r[3], vec2(212, y + 6)) } else { draw_text(r[3], vec2(196, y + 3), [170, 170, 190]) }
+                if r[4] != "" { draw_glyph("pad:" + pad_of(r[0]), vec2(266, y + 6)) } elif r[0] == "cam_left" or r[0] == "cam_right" {
+                    draw_text("R-stick", vec2(244, y + 3), [170, 170, 190])
                 } elif r[0] == "cam_center" {
-                    draw_text("Focus", vec2(244, y + 1), [170, 170, 190])
+                    draw_text("Focus", vec2(244, y + 3), [170, 170, 190])
                 } else {
-                    draw_text("L-stick", vec2(244, y + 1), [170, 170, 190])
+                    draw_text("L-stick", vec2(244, y + 3), [170, 170, 190])
                 }
             } else {
-                draw_text(r[3], vec2(196, y + 1), [170, 170, 190])
-                draw_text(r[4], vec2(244, y + 1), [170, 170, 190])
+                draw_text(r[3], vec2(196, y + 3), [170, 170, 190])
+                draw_text(r[4], vec2(244, y + 3), [170, 170, 190])
             }
         } elif i == len(list_rows) {
             draw_text("RESET TO THE USUAL KEYS", vec2(18, y + 1), c)
@@ -361,8 +367,8 @@ func draw() -> void {
         }
     }
     # the list scrolls: arrows when there's more above or below
-    if scroll > 0 { draw_text("^", vec2(296, TOP), [255, 220, 130]) }
-    if scroll + SHOWN < len(list_rows) { draw_text("v", vec2(296, TOP + (SHOWN - 1) * ROW_H), [255, 220, 130]) }
+    if scroll > 0 { draw_text("^", vec2(296, TOP + 3), [255, 220, 130]) }
+    if scroll + SHOWN < len(list_rows) { draw_text("v", vec2(296, TOP + (SHOWN - 1) * ROW_H + 3), [255, 220, 130]) }
     var help: string = "ENTER/click: change  Q/E: page"
     if waiting {
         help = "Press a key (ESC, click: cancel)"

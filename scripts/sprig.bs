@@ -75,6 +75,8 @@ var grabbed: entity                # the crust block he's holding (st "grab")...
 var grab_axis: vec3                # ... from him into it
 var grab_t: number = 0
 var switch_acc: number = 0         # the mouse moved sideways while focused (to switch target)
+var motion: vec2 = vec2(0, 0)
+var toggled: bool = false          # focused by a press, in the TARGETING: TOGGLE setting
 var rs_was: number = 0             # the right stick's x a step ago
 var shooter: entity                # the Pea Shooter in his hand, while aiming
 
@@ -555,6 +557,7 @@ func use_item(name: string) -> void {
 
 # ---- every step ----
 func update(dt: number) -> void {
+    motion = mouse_motion()                  # (the mouse's move this frame: taken once, used below and in update_aim)
     invuln = max(0, invuln - dt)
     flash = max(0, flash - dt)
     drawn = max(0, drawn - dt)
@@ -566,10 +569,25 @@ func update(dt: number) -> void {
     var dir: vec3 = world_dir(mv)
 
     # focus (hold to keep it)
-    if playing and action_pressed("focus") and st != "dead" and st != "aim" { acquire() }
-    if not action_down("focus") or not playing {
+    # (the SETTINGS page's TARGETING: "hold" keeps the focus while Focus is held, as in the
+    # later games; "toggle" keeps it on a target after a press, until the next press, as in Ocarina)
+    var toggle: bool = global("target_toggle", false)
+    if playing and action_pressed("focus") and st != "dead" and st != "aim" {
+        if toggle and toggled and target != nil {
+            target = nil
+            focusing = false
+            toggled = false
+            play_sound("sfx/focus.wav", 0.35, 0.8)
+        } else {
+            acquire()
+            toggled = toggle and target != nil
+        }
+    }
+    if not toggle { toggled = false }
+    if (not action_down("focus") and not toggled) or not playing {
         target = nil
         focusing = false
+        toggled = false
     }
     # focused on something: the camera's left / right (keys, right stick, mouse) moves to the next
     if target != nil and playing {
@@ -580,9 +598,9 @@ func update(dt: number) -> void {
         if rx < -0.6 and rs_was >= -0.6 { way = -1 }
         if rx > 0.6 and rs_was <= 0.6 { way = 1 }
         if mouse_locked() {
-            switch_acc = switch_acc * max(0, 1 - dt * 3) + mouse_motion().x
-            if switch_acc < -28 { way = -1 }
-            if switch_acc > 28 { way = 1 }
+            switch_acc = switch_acc * max(0, 1 - dt * 4) + motion.x      # (a flick sideways, in game pixels: like the right stick's)
+            if switch_acc < -14 { way = -1 }
+            if switch_acc > 14 { way = 1 }
         }
         if way != 0 {
             switch_acc = 0
@@ -596,6 +614,10 @@ func update(dt: number) -> void {
     if target != nil and target.alive and has_tag(target, "hookable") { keep = 23 }
     if target != nil and (not target.alive or has_tag(target, "hidden") or distance(target.global_position, self.position) > keep) {
         target = nil
+    }
+    if toggled and target == nil {             # (a toggled focus ends with its target: gone, or too far)
+        toggled = false
+        focusing = action_down("focus")
     }
 
     var on_floor: bool = is_on_floor(self)
@@ -1081,7 +1103,7 @@ func update_aim(dt: number, mv: vec2) -> void {
     if abs(rs.x) > 0.15 { turn += rs.x * 110 * dt }
     if abs(rs.y) > 0.15 { tilt -= rs.y * 80 * dt }
     if mouse_locked() {
-        var mm: vec2 = mouse_motion()
+        var mm: vec2 = motion
         turn += mm.x * 0.35
         tilt -= mm.y * 0.35
     }
