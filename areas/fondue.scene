@@ -135,7 +135,7 @@ entity
   Name
     text = "Cheese Pool"
   Transform3D
-    position = -8 17.1313 -20
+    position = -8 16.3773 -20
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -151,7 +151,7 @@ entity
   Name
     text = "Steam"
   Transform3D
-    position = -8 17.0313 -20
+    position = -8 16.2773 -20
     rotation = 0 0 0
     scale = 1 1 1
   Particles
@@ -171,7 +171,7 @@ entity
   Name
     text = "Cheese Pool"
   Transform3D
-    position = 12 15.1259 -10
+    position = 12 15.0624 -10
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -187,7 +187,7 @@ entity
   Name
     text = "Steam"
   Transform3D
-    position = 12 15.0259 -10
+    position = 12 14.9624 -10
     rotation = 0 0 0
     scale = 1 1 1
   Particles
@@ -226,7 +226,7 @@ entity
   Name
     text = "spawn_start"
   Transform3D
-    position = 0 0.1 40
+    position = 0 0.7667 40
     rotation = 0 0 0
     scale = 1 1 1
 
@@ -275,7 +275,7 @@ entity
   Name
     text = "City Door"
   Transform3D
-    position = -23.1 8.5 6
+    position = -23.1 8.3944 6
     rotation = 0 90 0
     scale = 2.6 3 0.1
   Mesh
@@ -288,7 +288,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = -22.9 8.5 6
+    position = -22.9 8.3944 6
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -315,7 +315,7 @@ entity
   Name
     text = "Hardtack"
   Transform3D
-    position = -16.5 7 9.2
+    position = -16.5 6.5858 9.2
     rotation = 0 150 0
     scale = 1 1 1
   Mesh
@@ -346,7 +346,7 @@ entity
   Name
     text = "Cave Mouth"
   Transform3D
-    position = 27.1 18.6 -30
+    position = 27.1 18.6824 -30
     rotation = 0 -90 0
     scale = 3 3.2 0.1
   Mesh
@@ -382,7 +382,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = 26.9 18.5 -30
+    position = 26.9 18.5824 -30
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -409,7 +409,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 19.5 17.45 -26.5
+    position = 19.5 17.5324 -26.5
     rotation = 0 90 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -427,7 +427,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 19.5 17.85 -26.5
+    position = 19.5 17.9324 -26.5
     rotation = 0 90 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -450,7 +450,7 @@ entity
   Name
     text = "Bomb Flower"
   Transform3D
-    position = 21 17.75 -33.5
+    position = 21 17.4615 -33.5
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -516,7 +516,7 @@ entity
   Name
     text = "Biscotti"
   Transform3D
-    position = 21 17 -34.5
+    position = 21 17.7582 -34.5
     rotation = 0 -60 0
     scale = 1 1 1
   Mesh
@@ -547,7 +547,7 @@ entity
   Name
     text = "Boulder"
   Transform3D
-    position = 20.8 20.9 -46
+    position = 20.8 21.4155 -46
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -564,13 +564,13 @@ entity
     type = kinematic
   Script
     file = "scripts/roller.bs"
-    vars = "a = vec3(20.8, 20.9, -46), b = vec3(20.8, 19.7214, -38.5), speed = 5, size = 1.6, damage = 4"
+    vars = "a = vec3(20.8, 21.4155, -46), b = vec3(20.8, 19.7214, -38.5), speed = 5, size = 1.6, damage = 4"
 
 entity
   Name
     text = "Boulder"
   Transform3D
-    position = 23.2 20.9 -46
+    position = 23.2 21.4155 -46
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -587,13 +587,13 @@ entity
     type = kinematic
   Script
     file = "scripts/roller.bs"
-    vars = "a = vec3(23.2, 20.9, -46), b = vec3(23.2, 19.7214, -38.5), speed = 6, size = 1.6, damage = 4"
+    vars = "a = vec3(23.2, 21.4155, -46), b = vec3(23.2, 19.7214, -38.5), speed = 6, size = 1.6, damage = 4"
 
 entity
   Name
     text = "Load Zone"
   Transform3D
-    position = 22 22 -48
+    position = 22 23.0088 -48
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -612,7 +612,7 @@ entity
   Name
     text = "Roller"
   Transform3D
-    position = -12 11.1 -14
+    position = -12 11.3097 -14
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -645,7 +645,7 @@ entity
   Name
     text = "Roller"
   Transform3D
-    position = 6 13.8175 -14
+    position = 6 13.9951 -14
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -696,7 +696,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 3.2 2.3785 32
+    position = 3.2 2.3815 32
     rotation = 0 30.0782 0
     scale = 1.5139 1.0598 1.5139
   Mesh
@@ -732,7 +732,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -4.9646 4.806 20.1926
+    position = -4.9646 4.6859 20.1926
     rotation = 0 46.9091 0
     scale = 1.2241 0.8568 1.2241
   Mesh
@@ -750,7 +750,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -7.0354 5.7384 10.4741
+    position = -7.0354 5.7885 10.4741
     rotation = 0 160.0465 0
     scale = 0.9536 0.6675 0.9536
   Mesh
@@ -768,7 +768,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -16.9646 6.7442 10.8593
+    position = -16.9646 6.8034 10.8593
     rotation = 0 163.8119 0
     scale = 0.9768 0.6838 0.9768
   Mesh
@@ -804,7 +804,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -14.8 8.842 -2
+    position = -14.8 9.096 -2
     rotation = 0 151.6494 0
     scale = 1.368 0.9576 1.368
   Mesh
@@ -822,7 +822,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -21.2 9.8025 -7.3333
+    position = -21.2 10.334 -7.3333
     rotation = 0 264.3153 0
     scale = 1.2101 0.8471 1.2101
   Mesh
@@ -840,7 +840,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -15.0119 10.9385 -14.3691
+    position = -15.0119 11.9179 -14.3691
     rotation = 0 20.7196 0
     scale = 1.0872 0.761 1.0872
   Mesh
@@ -858,7 +858,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -4.9881 12.3566 -10.9642
+    position = -4.9881 12.6749 -10.9642
     rotation = 0 212.0845 0
     scale = 1.4265 0.9985 1.4265
   Mesh
@@ -876,7 +876,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 0.9881 13.6649 -19.7025
+    position = 0.9881 13.9348 -19.7025
     rotation = 0 223.5569 0
     scale = 1.3263 0.9284 1.3263
   Mesh
@@ -894,7 +894,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 6.7467 14.8941 -22.56
+    position = 6.7467 14.9033 -22.56
     rotation = 0 130.6053 0
     scale = 1.5766 1.1036 1.5766
   Mesh
@@ -912,7 +912,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 15.92 15.852 -21.44
+    position = 15.92 16.0956 -21.44
     rotation = 0 132.7262 0
     scale = 1.4078 0.9855 1.4078
   Mesh
@@ -930,7 +930,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 17.4133 16.8144 -30.56
+    position = 17.4133 17.8565 -30.56
     rotation = 0 237.7916 0
     scale = 1.2576 0.8803 1.2576
   Mesh
@@ -948,7 +948,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 18.8 17.7629 -32.3333
+    position = 18.8 17.966 -32.3333
     rotation = 0 30.865 0
     scale = 1.0515 0.7361 1.0515
   Mesh
@@ -966,7 +966,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 25.2 18.7948 -37
+    position = 25.2 18.8228 -37
     rotation = 0 258.449 0
     scale = 1.1793 0.8255 1.1793
   Mesh
@@ -984,7 +984,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 18.8 19.8181 -41.6667
+    position = 18.8 20.309 -41.6667
     rotation = 0 161.0826 0
     scale = 1.2725 0.8907 1.2725
   Mesh
@@ -1002,7 +1002,7 @@ entity
   Name
     text = "Golden Weevil"
   Transform3D
-    position = 2.5 1.1 37
+    position = 2.5 2.2667 37
     rotation = 0 0 0
     scale = 0.5 0.5 0.5
   Mesh
@@ -1048,7 +1048,7 @@ entity
   Name
     text = "Golden Weevil"
   Transform3D
-    position = -19 8.1 8.5
+    position = -19 7.9942 8.5
     rotation = 0 0 0
     scale = 0.5 0.5 0.5
   Mesh

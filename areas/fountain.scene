@@ -495,7 +495,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 17.6108 0.2979 18.8209
+    position = 17.6108 1.423 18.8209
     rotation = 0 173.3281 0
     scale = 0.55 0.45 0.55
   Mesh

@@ -9,7 +9,7 @@ import math
 import random
 
 from areakit import Area, town_house
-from kit import t3, mesh, collider, tags, script, particles
+from kit import drawn, t3, mesh, collider, tags, script, particles
 
 HALF = 70.0
 SURF = 0.0
@@ -35,6 +35,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(53)
     risen = era == 'risen'
     a = Area('lake', 'Lake Brine', music='music/brine.wav', kill_y=-20, sky='#b8e0f8ff' if not risen else '#a0b0c0ff', fog=(34, 80),
@@ -45,6 +46,7 @@ def build(era='fresh'):
             r = math.hypot(cx + 7 - CX, cz + 7 - CZ)
             mat = 'sand' if r < 46 else 'grass'
             a.geo(mat, cx + 7, cz + 7).ground(cx, cz, cx + 14, cz + 14, 5, 5, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     a.water(-48, -54, 48, 40, SURF, depth=9)
     a.water(-7, -70, 7, -54, SURF, depth=4)
     # ---- the way in from Brine Valley (north) ----

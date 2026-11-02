@@ -9,6 +9,7 @@ An area script makes an Area, adds geometry and things, and saves it:
     a.tree(4, 0, 6)
     a.save()
 """
+import inspect
 import math
 import os
 
@@ -157,7 +158,8 @@ class Area:
         for k, (spawn, dx, dz, night) in enumerate(WEEVILS.get(self.file_id, [])):
             if spawn in spawns:
                 x, y, z, _ = spawns[spawn]
-                self.weevil(x + dx, y + 1.0, z + dz, '%s_%d' % (self.file_id, k), night=night)
+                gy = self.on_ground(x + dx, y - 0.1, z + dz)          # (over the ground there, not the spawn's height)
+                self.weevil(x + dx, gy + 1.1, z + dz, '%s_%d' % (self.file_id, k), night=night)
 
     def save(self):
         self.place_weevils()
@@ -354,6 +356,25 @@ class Area:
                                                      x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3), ppm=round(ppm, 4), w=W, h=H))
 
     # ---- things ----
+    GROUND_SOLID = None
+
+    def on_ground(self, x, y, z, off=0.0):
+        """y, or the drawn ground's height there (plus off) if y was meant for the ground: within
+        a hand's breadth of it, or under it (never left buried), and not on something built
+        there (a deck, a step: a surface of level geometry at y)."""
+        g = kit.ground_height(x, z)
+        if g is None:
+            return y
+        g += off
+        if abs(y - g) < 1e-4 or not (y < g or abs(y - g) < 0.35):
+            return y
+        for (material, cx, cz), obj in self.chunks.items():
+            if not MATERIALS[material][2]:
+                continue                                    # (things not stood on: leaves, water...)
+            if obj.surface_near(x, z, y - off, 0.06):
+                return y
+        return g
+
     def spawn_point(self, name, x, y, z, yaw=0):
         self.scene.entity('spawn_' + name, t3((x, y, z), (0, yaw, 0)))
         self.spawns = getattr(self, 'spawns', {})
@@ -739,3 +760,22 @@ def stall(a, x, z, ground_y, color, yaw=0):
     a.entity('Awning', t3((x, y + 2.4, z + (0.4 if yaw == 0 else -0.4)), (-14 if yaw == 0 else 14, yaw, 0), (3.0, 0.1, 2.0)), mesh('cube', color, 'art/thatch.png'))
     for dx in (-1.3, 1.3):
         a.entity('Pole', t3((x + dx, y + 1.2, z), (0, 0, 0), (0.1, 2.4, 0.1)), mesh('cylinder', '#ffffffff', 'art/bark.png'))
+
+
+# The helpers that set something on the ground at y: it is moved onto the ground as drawn
+# (Area.on_ground) when y was meant for it, so nothing floats or sinks where the ground's
+# triangles part from the curve they were made from.
+def _grounded(fn, off=0.0):
+    sig = inspect.signature(fn)
+
+    def wrapper(self, *args, **kw):
+        b = sig.bind(self, *args, **kw)
+        b.arguments['y'] = self.on_ground(b.arguments['x'], b.arguments['y'], b.arguments['z'], off)
+        return fn(*b.args, **b.kwargs)
+    wrapper.__doc__ = fn.__doc__
+    return wrapper
+
+
+for _name in ('tree', 'grass', 'pot', 'sign', 'npc', 'chest', 'enemy', 'bombflower', 'dummy', 'cracked'):
+    setattr(Area, _name, _grounded(getattr(Area, _name)))
+Area.spawn_point = _grounded(Area.spawn_point, off=0.1)

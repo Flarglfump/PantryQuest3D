@@ -8,7 +8,7 @@ import math
 import random
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles
+from kit import drawn, t3, mesh, collider, tags, script, particles
 
 
 SURF = -0.3
@@ -29,6 +29,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(41)
     risen = era == 'risen'
     a = Area('fountain', 'Fizzwater Fountain', music='music/fizz.wav' if not risen else 'music/castle.wav', kill_y=-20,
@@ -39,6 +40,7 @@ def build(era='fresh'):
     for cz in range(-42, 30, 12):
         for cx in range(-36, 36, 12):
             a.geo('fizzrock', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 6, 6, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     if risen:      # frozen over: walk on it
         a.geo('ice', 0, -20).box((-34, SURF - 0.5, -40), (34, SURF, -1), uvs=0.2, sides=('py',))
         a.entity('Ice Sheet', t3((0, SURF - 0.25, -20.5)), collider('box', (68, 0.5, 39)))

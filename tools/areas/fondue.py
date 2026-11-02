@@ -9,7 +9,7 @@ import math
 import random
 
 from areakit import Area, box_wall
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 
 def smooth(t):
@@ -49,6 +49,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(23)
     risen = era == 'risen'
     a = Area('fondue', 'Mount Fondue', music='music/fondue.wav', kill_y=-25, sky='#e8b080ff', fog=(26, 54),
@@ -57,6 +58,7 @@ def build(era='fresh'):
     for cz in range(-52, 52, 13):
         for cx in range(-36, 40, 13):
             a.geo('rock', cx + 6.5, cz + 6.5).ground(cx, cz, cx + 13, cz + 13, 4, 4, height, uvs=0.22)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # molten cheese pools beside the second leg (they hurt)
     for (x, z, r) in [(-8, -20, 3.5), (12, -10, 3.0)]:
         y = height(x, z) - 0.6

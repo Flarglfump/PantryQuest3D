@@ -8,7 +8,7 @@ import math
 import random
 
 from areakit import Area, box_wall, town_house
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import ground_height, t3, mesh, collider, tags, script, particles, q
 
 
 def build(era='fresh'):
@@ -33,11 +33,11 @@ def build(era='fresh'):
         if k in (9, 10):
             continue
         box_wall(a, 'planks', px + math.cos(a0) * 9, pz + math.sin(a0) * 9, px + math.cos(a1) * 9, pz + math.sin(a1) * 9, -0.3, 1.1 + 0.025 * (k % 2), thick=0.3)   # (tops a hair apart where they meet)
-    a.entity('Custard', t3((px, 0, pz), (0, 0, 0), 1.6), mesh('model', '#f8e0a0ff', file='models/custard.glb', shadow=True),
+    a.entity('Custard', t3((px, ground_height(px, pz, 0.0), pz), (0, 0, 0), 1.6), mesh('model', '#f8e0a0ff', file='models/custard.glb', shadow=True),
              ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
              collider('capsule', (1, 1.0, 1), 0.5, offset=(0, 0.5, 0)), tags('focusable'), script('scripts/pony.bs'))
     for x, z in [(-8, 6), (-12, 10), (-6, 12)]:
-        a.entity('Cow', t3((x, 0, z), (0, random.uniform(0, 360), 0), 1.3), mesh('model', '#ffffffff', file='models/cow.glb', shadow=True),
+        a.entity('Cow', t3((x, ground_height(x, z, 0.0), z), (0, random.uniform(0, 360), 0), 1.3), mesh('model', '#ffffffff', file='models/cow.glb', shadow=True),
                  ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
                  collider('capsule', (1, 1.0, 1), 0.5, offset=(0, 0.5, 0)))
     if risen:

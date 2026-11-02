@@ -189,7 +189,7 @@ entity
   Name
     text = "spawn_castle"
   Transform3D
-    position = 0 2.3222 -34
+    position = 0 2.1767 -34
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -216,7 +216,7 @@ entity
   Name
     text = "Guard"
   Transform3D
-    position = -3.2 2.7778 -36
+    position = -3.2 2.5281 -36
     rotation = 0 160 0
     scale = 1 1 1
   Mesh
@@ -247,7 +247,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 3.4 0.509 -27
+    position = 3.4 0.369 -27
     rotation = 0 180 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -265,7 +265,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 3.4 0.909 -27
+    position = 3.4 0.769 -27
     rotation = 0 180 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -2052,7 +2052,7 @@ entity
   Name
     text = "Golden Weevil"
   Transform3D
-    position = -4 3.3222 -31
+    position = -4 3.3931 -31
     rotation = 0 0 0
     scale = 0.5 0.5 0.5
   Mesh

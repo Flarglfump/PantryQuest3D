@@ -8,7 +8,7 @@ import math
 import random
 
 from areakit import Area, stump_house, box_wall
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 R_EDGE = 40.0
 
@@ -59,6 +59,7 @@ def ground_y(x, z):
 
 
 def build():
+    global height
     random.seed(7)
     a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav', kill_y=-6, sky='#b8e0f0ff', fog=(26, 58),
              fog_color='#c8e8d8ff', ambient=('#8898b8ff', 0.55))
@@ -74,6 +75,7 @@ def build():
     for cx in range(-36, 36, 12):
         o = a.geo('cliff', cx + 6, 37)
         o.ground(cx, 32.0, cx + 12, 42.0, 6, 10, height, uvs=0.3)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # dirt paths: thin strips just above the ground
     a.path([(0, 32), (0, 20), (-2, 8), (0, -4), (0, -16), (0, -27), (0, -36)], 2.4)
     a.path([(0, -4), (12, -6), (22, -6), (28, -4)], 1.8)

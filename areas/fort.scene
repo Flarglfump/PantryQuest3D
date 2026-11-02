@@ -124,7 +124,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = 46 4.457 0
+    position = 46 5.3281 0
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -143,7 +143,7 @@ entity
   Name
     text = "spawn_start"
   Transform3D
-    position = 40 0.3968 0
+    position = 40 0.3857 0
     rotation = 0 90 0
     scale = 1 1 1
 
@@ -151,7 +151,7 @@ entity
   Name
     text = "spawn_gorge"
   Transform3D
-    position = 40 0.3968 0
+    position = 40 0.3857 0
     rotation = 0 90 0
     scale = 1 1 1
 
@@ -159,7 +159,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 38 0.6305 3
+    position = 38 0.6224 3
     rotation = 0 90 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -177,7 +177,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 38 1.0305 3
+    position = 38 1.0224 3
     rotation = 0 90 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -301,7 +301,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = -38 0.45 5
+    position = -38 0.4316 5
     rotation = 0 90 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -319,7 +319,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = -38 0.85 5
+    position = -38 0.8316 5
     rotation = 0 90 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -342,7 +342,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = -46 4.2097 0
+    position = -46 5.0885 0
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -361,7 +361,7 @@ entity
   Name
     text = "spawn_flats"
   Transform3D
-    position = -38 -0.1904 0
+    position = -38 -0.1841 0
     rotation = 0 -90 0
     scale = 1 1 1
 
@@ -369,7 +369,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = 20 0.4825 6
+    position = 20 0.485 6
     rotation = 0 223.2106 0
     scale = 1.7238 1.2066 1.7238
   Mesh
@@ -387,7 +387,7 @@ entity
   Name
     text = "Rock"
   Transform3D
-    position = -24 0.2012 -7
+    position = -24 0.2168 -7
     rotation = 0 353.8288 0
     scale = 1.4085 0.9859 1.4085
   Mesh

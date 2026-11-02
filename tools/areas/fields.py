@@ -9,7 +9,7 @@ import math
 import random
 
 from areakit import Area, box_wall
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 HALF = 96.0
 
@@ -55,6 +55,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(11)
     risen = era == 'risen'
     a = Area('fields', 'Breadbasket Fields', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(30, 64),
@@ -64,6 +65,7 @@ def build(era='fresh'):
         for cx in range(-104, 104, 26):
             a.geo('grass', cx + 13, cz + 13).ground(cx, cz, cx + 26, cz + 26, 4, 4, height, uvs=0.2)
 
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     a.path([(0, 100), (0, 60), (-2, 30), (0, 0), (2, -40), (0, -100)], 3.2)
     a.path([(0, 8), (16, 6), (30, 5), (38, 4)], 2.6)
     a.path([(-1, 58), (-30, 62), (-60, 58), (-100, 60)], 2.6)

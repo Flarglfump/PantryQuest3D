@@ -7,7 +7,7 @@ import math
 import random
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles
+from kit import drawn, t3, mesh, collider, tags, script, particles
 
 PATH = [(36, 0), (20, 10), (4, -6), (-12, 8), (-26, -6), (-40, 4)]
 
@@ -17,12 +17,14 @@ def height(x, z):
 
 
 def build():
+    global height
     random.seed(73)
     a = Area('flats', 'Haunted Flats', music='music/castle.wav', kill_y=-20, sky='#d8b888ff', fog=(6, 22), fog_color='#d8b888ff',
              ambient=('#c0a080ff', 0.65), sun=('#ffe8c0ff', 0.7), chunk=22)
     for cz in range(-33, 33, 11):
         for cx in range(-55, 55, 11):
             a.geo('sand', cx + 5.5, cz + 5.5).ground(cx, cz, cx + 11, cz + 11, 4, 4, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     a.entity('Sandstorm', t3((0, 3, 0)), particles(rate=60, max=200, lifetime=2.5, speed=8, spread=10, angle=0, area=(90, 50), gravity=0,
                                                  size_start=0.12, size_end=0.08, color_start='#f0d8a0a0', color_end='#f0d8a000'))
     a.spawn_point('start', 36, height(36, 0) + 0.1, 0, 90)

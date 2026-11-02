@@ -6,7 +6,7 @@ crosses the Haunted Flats; the temple door is at the statue's feet; Cinder waits
 import math
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles
+from kit import drawn, t3, mesh, collider, tags, script, particles
 
 
 def height(x, z):
@@ -16,11 +16,13 @@ def height(x, z):
 
 
 def build():
+    global height
     a = Area('idol', 'Salt Idol', music='music/castle.wav', kill_y=-20, sky='#f0c890ff', fog=(26, 60), fog_color='#e8c090ff',
              ambient=('#c0a080ff', 0.6), sun=('#fff0d0ff', 1.0), chunk=22)
     for cz in range(-36, 36, 12):
         for cx in range(-36, 36, 12):
             a.geo('sand', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 4, 4, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the Idol: a seated giantess of rock salt
     a.geo('stone', 0, -22).box((-6, -0.5, -28), (6, 8, -20), uvs=0.2)
     a.geo('stone', 0, -24).box((-5, 8, -27), (5, 20, -21), uvs=0.2)

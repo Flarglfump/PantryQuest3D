@@ -252,7 +252,7 @@ entity
   Name
     text = "Custard"
   Transform3D
-    position = 12 0 8
+    position = 12 -0.0006 8
     rotation = 0 0 0
     scale = 1.6 1.6 1.6
   Mesh
@@ -282,7 +282,7 @@ entity
   Name
     text = "Cow"
   Transform3D
-    position = -8 0 6
+    position = -8 -0.0613 6
     rotation = 0 30.0674 0
     scale = 1.3 1.3 1.3
   Mesh
@@ -308,7 +308,7 @@ entity
   Name
     text = "Cow"
   Transform3D
-    position = -12 0 10
+    position = -12 0.0501 10
     rotation = 0 62.0548 0
     scale = 1.3 1.3 1.3
   Mesh
@@ -334,7 +334,7 @@ entity
   Name
     text = "Cow"
   Transform3D
-    position = -6 0 12
+    position = -6 0.1375 12
     rotation = 0 246.1722 0
     scale = 1.3 1.3 1.3
   Mesh
@@ -360,7 +360,7 @@ entity
   Name
     text = "Creme_risen"
   Transform3D
-    position = 2 0 -10
+    position = 2 0.0225 -10
     rotation = 0 180 0
     scale = 1 1 1
   Mesh
@@ -391,7 +391,7 @@ entity
   Name
     text = "Grubb"
   Transform3D
-    position = 6 0 2
+    position = 6 0.1468 2
     rotation = 0 200 0
     scale = 1 1 1
   Mesh
@@ -422,7 +422,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = -3 0.45 24
+    position = -3 0.4418 24
     rotation = 0 0 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -440,7 +440,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = -3 0.85 24
+    position = -3 0.8418 24
     rotation = 0 0 0
     scale = 0.8 0.5 0.08
   Mesh

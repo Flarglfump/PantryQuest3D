@@ -9,7 +9,7 @@ import math
 import random
 
 from areakit import Area, box_wall, town_house, stall
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 HALF = 40.0
 
@@ -35,6 +35,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(5)
     risen = era == 'risen'
     if risen:
@@ -49,6 +50,7 @@ def build(era='fresh'):
         for cx in range(-44, 44, 11):
             fine = 5 if cz in (-33, -22) else 1
             a.geo(ground, cx + 5.5, cz + 5.5).ground(cx, cz, cx + 11, cz + 11, 2 * fine, 2 * fine, height, uvs=0.3)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the moat and the castle road's bridge over it
     a.water(-37, MOAT - 2.6, 37, MOAT + 2.6, MOAT_SURF, depth=3)
     a.geo('planks', 0, MOAT).box((-3, -0.4, MOAT - 2.8), (3, 0.05, MOAT + 2.8), uvs=0.5)

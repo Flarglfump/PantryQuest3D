@@ -134,7 +134,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = -30 1.8936 43.5
+    position = -30 1.8873 43.5
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -177,7 +177,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = -24 0.6 34
+    position = -24 0.597 34
     rotation = 0 200 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -195,7 +195,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = -24 1 34
+    position = -24 0.997 34
     rotation = 0 200 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -218,7 +218,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -6 0.6735 -2.65
+    position = -6 0.7012 -2.65
     rotation = 0 0 0
     scale = 1.2 2 0.1
   Mesh
@@ -231,7 +231,7 @@ entity
   Name
     text = "Sails"
   Transform3D
-    position = -6 7.6735 -3.1
+    position = -6 7.7012 -3.1
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -249,7 +249,7 @@ entity
   Name
     text = "Risen_miller"
   Transform3D
-    position = -2.8 -0.3265 -1.5
+    position = -2.8 -0.1857 -1.5
     rotation = 0 160 0
     scale = 1 1 1
   Mesh
@@ -280,7 +280,7 @@ entity
   Name
     text = "Well Ring"
   Transform3D
-    position = 6 0.7765 6
+    position = 6 0.7488 6
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -295,7 +295,7 @@ entity
   Name
     text = "Well"
   Transform3D
-    position = 6 0.9265 6
+    position = 6 0.8988 6
     rotation = 0 0 0
     scale = 1 1 1
   Tags
@@ -308,7 +308,7 @@ entity
   Name
     text = "Well Water"
   Transform3D
-    position = 6 0.8265 6
+    position = 6 0.7988 6
     rotation = 0 0 0
     scale = 2.1 0.05 2.1
   Mesh
@@ -324,7 +324,7 @@ entity
   Name
     text = "spawn_well"
   Transform3D
-    position = 6 0.3459 9
+    position = 6 0.3267 9
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -332,7 +332,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -20.47 0.7719 6
+    position = -20.47 0.7745 6
     rotation = 0 -90 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -345,7 +345,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -20.47 1.4719 4.2
+    position = -20.47 1.4745 4.2
     rotation = 0 -90 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -359,7 +359,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -20.47 1.4719 7.8
+    position = -20.47 1.4745 7.8
     rotation = 0 -90 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -414,7 +414,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 14 0.6518 16.97
+    position = 14 0.6589 16.97
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -427,7 +427,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 11.9 1.3518 16.97
+    position = 11.9 1.3589 16.97
     rotation = 0 0 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -441,7 +441,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 16.1 1.3518 16.97
+    position = 16.1 1.3589 16.97
     rotation = 0 0 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -455,7 +455,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -10 1.3124 20.97
+    position = -10 1.3005 20.97
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -468,7 +468,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -11.8 2.0124 20.97
+    position = -11.8 2.0005 20.97
     rotation = 0 0 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -482,7 +482,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -8.2 2.0124 20.97
+    position = -8.2 2.0005 20.97
     rotation = 0 0 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -496,7 +496,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 18 0.6924 -16.97
+    position = 18 0.6984 -16.97
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -509,7 +509,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 15.9 1.3924 -16.97
+    position = 15.9 1.3984 -16.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -523,7 +523,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 20.1 1.3924 -16.97
+    position = 20.1 1.3984 -16.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -537,7 +537,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 18 0.4255 -16.2
+    position = 18 0.4249 -16.2
     rotation = 0 0 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -555,7 +555,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 18 0.8255 -16.2
+    position = 18 0.8249 -16.2
     rotation = 0 0 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -578,7 +578,7 @@ entity
   Name
     text = "Weevil_house"
   Transform3D
-    position = 14 -0.4398 24
+    position = 14 -0.4272 24
     rotation = 0 180 0
     scale = 1 1 1
   Mesh
@@ -609,7 +609,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 16.5 0.0441 24
+    position = 16.5 0.0489 24
     rotation = 0 180 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -627,7 +627,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 16.5 0.4441 24
+    position = 16.5 0.4489 24
     rotation = 0 180 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -650,7 +650,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 26 0.5047 -12
+    position = 26 0.5046 -12
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -673,7 +673,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 26 0.509 -8
+    position = 26 0.5088 -8
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -696,7 +696,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 26 0.5119 -4
+    position = 26 0.5116 -4
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -719,7 +719,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 30 0.4038 -12
+    position = 30 0.4065 -12
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -742,7 +742,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 30 0.315 -8
+    position = 30 0.3203 -8
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -765,7 +765,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 30 0.2554 -4
+    position = 30 0.2625 -4
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -788,7 +788,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 34 0.3246 -12
+    position = 34 0.3297 -12
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -811,7 +811,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 34 0.1628 -8
+    position = 34 0.1725 -8
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -834,7 +834,7 @@ entity
   Name
     text = "Grave"
   Transform3D
-    position = 34 0.0542 -4
+    position = 34 0.067 -4
     rotation = 0 0 0
     scale = 0.9 1 0.25
   Mesh
@@ -857,7 +857,7 @@ entity
   Name
     text = "Crypt Door"
   Transform3D
-    position = 30 1.5078 -16.4
+    position = 30 1.5075 -16.4
     rotation = 0 0 0
     scale = 2.4 3 0.2
   Mesh
@@ -880,7 +880,7 @@ entity
   Name
     text = "Crypt Dark"
   Transform3D
-    position = 30 1.5078 -16.47
+    position = 30 1.5075 -16.47
     rotation = 0 0 0
     scale = 2.44 3.04 0.1
   Mesh
@@ -893,7 +893,7 @@ entity
   Name
     text = "Load Zone"
   Transform3D
-    position = 30 1.5078 -16.2
+    position = 30 1.5075 -16.2
     rotation = 0 0 0
     scale = 1 1 1
   Collider3D
@@ -912,7 +912,7 @@ entity
   Name
     text = "spawn_crypt"
   Transform3D
-    position = 30 0.1078 -14.2
+    position = 30 0.0396 -14.2
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -920,7 +920,7 @@ entity
   Name
     text = "spawn_graveyard"
   Transform3D
-    position = 30 -0.1537 3
+    position = 30 -0.1401 3
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -928,7 +928,7 @@ entity
   Name
     text = "Cinder"
   Transform3D
-    position = 33 -0.4115 3.5
+    position = 33 -0.398 3.5
     rotation = 0 200 0
     scale = 1 1 1
   Mesh
@@ -959,7 +959,7 @@ entity
   Name
     text = "Ghost"
   Transform3D
-    position = 30 -0.0636 -1.2
+    position = 30 -0.0548 -1.2
     rotation = 0 180 0
     scale = 1 1 1
   Mesh
@@ -982,7 +982,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 27 0.3937 3
+    position = 27 0.399 3
     rotation = 0 180 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -1000,7 +1000,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 27 0.7937 3
+    position = 27 0.799 3
     rotation = 0 180 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -1042,7 +1042,7 @@ entity
   Name
     text = "Tree"
   Transform3D
-    position = -34 1.4615 18
+    position = -34 1.4831 18
     rotation = 0 0 0
     scale = 0.7253 3.1429 0.7253
   Mesh
@@ -1065,7 +1065,7 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = -34 3.8791 18
+    position = -34 3.9007 18
     rotation = 0 182 0
     scale = 3.1429 2.4176 3.1429
   Mesh
@@ -1153,7 +1153,7 @@ entity
   Name
     text = "Tree"
   Transform3D
-    position = 34 1.4908 12
+    position = 34 1.4959 12
     rotation = 0 0 0
     scale = 0.769 3.3324 0.769
   Mesh
@@ -1176,7 +1176,7 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = 34 4.0542 12
+    position = 34 4.0592 12
     rotation = 0 178 0
     scale = 3.3324 2.5634 3.3324
   Mesh
@@ -1190,7 +1190,7 @@ entity
   Name
     text = "Tree"
   Transform3D
-    position = -14 1.9558 -26
+    position = -14 1.9296 -26
     rotation = 0 0 0
     scale = 0.6668 2.8894 0.6668
   Mesh
@@ -1213,7 +1213,7 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = -14 4.1784 -26
+    position = -14 4.1523 -26
     rotation = 0 202 0
     scale = 2.8894 2.2226 2.8894
   Mesh
@@ -1264,7 +1264,7 @@ entity
   Name
     text = "Tree"
   Transform3D
-    position = -38 0.9311 30
+    position = -38 0.9599 30
     rotation = 0 0 0
     scale = 0.7007 3.0363 0.7007
   Mesh
@@ -1287,7 +1287,7 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = -38 3.2667 30
+    position = -38 3.2955 30
     rotation = 0 34 0
     scale = 3.0363 2.3357 3.0363
   Mesh
@@ -1324,7 +1324,7 @@ entity
   Name
     text = "Pot"
   Transform3D
-    position = -20.8 -0.3202 4.8
+    position = -20.8 -0.309 4.8
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -1347,7 +1347,7 @@ entity
   Name
     text = "Pot"
   Transform3D
-    position = 12 -0.1352 18
+    position = 12 -0.1325 18
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -1370,7 +1370,7 @@ entity
   Name
     text = "Pot"
   Transform3D
-    position = -8 0.2893 22
+    position = -8 0.2835 22
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -1393,7 +1393,7 @@ entity
   Name
     text = "Pot"
   Transform3D
-    position = 16 -0.1281 -18
+    position = 16 -0.1255 -18
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
@@ -1416,7 +1416,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 22.9804 0.016 14.9936
+    position = 22.9804 0.0335 14.9936
     rotation = 0 32.8533 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1439,7 +1439,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 14.017 -0.2671 20.3534
+    position = 14.017 -0.257 20.3534
     rotation = 0 8.9116 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1462,7 +1462,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -27.5469 0.0588 9.2758
+    position = -27.5469 0.065 9.2758
     rotation = 0 137.7054 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1485,7 +1485,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -27.369 -0.0666 24.664
+    position = -27.369 -0.0579 24.664
     rotation = 0 48.731 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1508,7 +1508,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -23.0611 0.2184 30.4995
+    position = -23.0611 0.2103 30.4995
     rotation = 0 16.2557 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1531,7 +1531,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 14.1231 0.5277 -4.8137
+    position = 14.1231 0.5056 -4.8137
     rotation = 0 306.6935 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1554,7 +1554,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -28.614 -0.0687 19.7977
+    position = -28.614 -0.0629 19.7977
     rotation = 0 260.0205 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1577,7 +1577,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -32.7424 0.4251 0.2192
+    position = -32.7424 0.4154 0.2192
     rotation = 0 68.3767 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1600,7 +1600,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 10.6533 0.1868 12.3963
+    position = 10.6533 0.1799 12.3963
     rotation = 0 55.3641 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1623,7 +1623,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 13.8784 0.5972 0.1551
+    position = 13.8784 0.5785 0.1551
     rotation = 0 18.1948 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1646,7 +1646,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -5.1086 -0.1691 10.589
+    position = -5.1086 -0.1745 10.589
     rotation = 0 269.2589 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1669,7 +1669,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 30.1628 0.1461 21.2888
+    position = 30.1628 0.1516 21.2888
     rotation = 0 160.5394 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1692,7 +1692,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -34.1775 0.4416 4.5432
+    position = -34.1775 0.4281 4.5432
     rotation = 0 65.8253 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1715,7 +1715,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 6.0858 -0.336 -25.6699
+    position = 6.0858 -0.3105 -25.6699
     rotation = 0 246.1613 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1738,7 +1738,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -7.1852 0.1258 -18.5063
+    position = -7.1852 0.1322 -18.5063
     rotation = 0 24.578 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1761,7 +1761,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -21.7479 -0.162 -10.0915
+    position = -21.7479 -0.1719 -10.0915
     rotation = 0 115.8045 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1784,7 +1784,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 34.7598 0.3142 -22.2808
+    position = 34.7598 0.2937 -22.2808
     rotation = 0 23.4978 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1807,7 +1807,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -33.1179 0.2972 -8.369
+    position = -33.1179 0.2845 -8.369
     rotation = 0 262.478 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1830,7 +1830,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 18.8117 -0.4202 27.0332
+    position = 18.8117 -0.3983 27.0332
     rotation = 0 16.5865 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1853,7 +1853,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -18.9869 -0.3681 -6.3131
+    position = -18.9869 -0.3577 -6.3131
     rotation = 0 326.3716 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1876,7 +1876,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -11.5656 -0.0374 -15.0735
+    position = -11.5656 -0.0325 -15.0735
     rotation = 0 210.7765 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1899,7 +1899,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -30.8474 0.1504 10.7944
+    position = -30.8474 0.152 10.7944
     rotation = 0 348.5942 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1922,7 +1922,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -34.1524 -0.4053 37.3941
+    position = -34.1524 -0.3946 37.3941
     rotation = 0 265.6207 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1945,7 +1945,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -36.5396 -0.3184 21.6574
+    position = -36.5396 -0.3069 21.6574
     rotation = 0 231.5742 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1968,7 +1968,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -22.93 -0.133 -9.4831
+    position = -22.93 -0.1355 -9.4831
     rotation = 0 63.4994 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -1991,7 +1991,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 18.8628 -0.1828 19.7798
+    position = 18.8628 -0.1754 19.7798
     rotation = 0 255.9856 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -2014,7 +2014,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 36.3721 0.4906 26.2531
+    position = 36.3721 0.4766 26.2531
     rotation = 0 214.0238 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -2037,7 +2037,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = -24.0702 0.1215 37.7054
+    position = -24.0702 0.1186 37.7054
     rotation = 0 85.2701 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -2060,7 +2060,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 35.0283 0.0822 17.2838
+    position = 35.0283 0.0838 17.2838
     rotation = 0 350.325 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -2083,7 +2083,7 @@ entity
   Name
     text = "Grass"
   Transform3D
-    position = 30.9607 0.2117 -22.7854
+    position = 30.9607 0.1978 -22.7854
     rotation = 0 173.5629 0
     scale = 0.55 0.45 0.55
   Mesh
@@ -2106,7 +2106,7 @@ entity
   Name
     text = "Golden Weevil"
   Transform3D
-    position = 33 0.8463 1
+    position = 33 0.683 1
     rotation = 0 0 0
     scale = 0.5 0.5 0.5
   Mesh

@@ -8,7 +8,7 @@ import math
 import random
 
 from areakit import Area, box_wall
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 
 def smooth(t):
@@ -29,12 +29,14 @@ def height(x, z):
 
 
 def build():
+    global height
     random.seed(71)
     a = Area('fort', 'Raider Fort', music='music/castle.wav', kill_y=-20, sky='#f0d0a0ff', fog=(26, 60), fog_color='#e8c898ff',
              ambient=('#c0a080ff', 0.6), sun=('#fff0d0ff', 1.0), chunk=22)
     for cz in range(-44, 22, 11):
         for cx in range(-55, 55, 11):
             a.geo('sand', cx + 5.5, cz + 5.5).ground(cx, cz, cx + 11, cz + 11, 4, 4, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the way back east
     a.loadzone(46, height(45, 0), 0, 1.5, 4, 8, to='gorge', at='fort')
     a.spawn_point('start', 40, height(40, 0) + 0.1, 0, 90)

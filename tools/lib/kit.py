@@ -39,6 +39,18 @@ def ground_height(x, z, default=None):
     return default
 
 
+def drawn(height):
+    """height(x, z), but the ground as drawn where a heightfield covers x, z (ground_height):
+    for setting things on the ground, so they stand on it, not on the curve behind it."""
+    height = getattr(height, 'original', height)
+
+    def f(x, z):
+        h = ground_height(x, z)
+        return height(x, z) if h is None else h
+    f.original = height
+    return f
+
+
 def ground_triangles(xa, za, xb, zb):
     """The drawn ground's triangles (each [(x, y, z) * 3], counter-clockwise from above) over the
     rectangle xa..xb, za..zb, with the height function behind each (for normals). Where two
@@ -255,6 +267,26 @@ class Obj:
     def __init__(self, comment=''):
         self.comment = comment
         self.v, self.vt, self.vn, self.f = [], [], [], []
+        self.ground_faces = []           # [(first, end)]: faces made by ground() (not things built on it)
+
+    def surface_near(self, x, z, y, tol):
+        """Whether an upward face (not the ground's) passes within tol of height y at x, z."""
+        skip = self.ground_faces
+        for k, face in enumerate(self.f):
+            if any(a <= k < b for a, b in skip):
+                continue
+            a, b, c = (self.v[face[i][0] - 1] for i in range(3))
+            d = (b[2] - c[2]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[2] - c[2])
+            if abs(d) < 1e-9:
+                continue                 # (edge-on from above: a wall)
+            l1 = ((b[2] - c[2]) * (x - c[0]) + (c[0] - b[0]) * (z - c[2])) / d
+            l2 = ((c[2] - a[2]) * (x - c[0]) + (a[0] - c[0]) * (z - c[2])) / d
+            l3 = 1 - l1 - l2
+            if min(l1, l2, l3) < -1e-6:
+                continue
+            if abs(l1 * a[1] + l2 * b[1] + l3 * c[1] - y) <= tol:
+                return True
+        return False
 
     def empty(self):
         return not self.f
@@ -381,7 +413,9 @@ class Obj:
         """A heightfield over a rectangle: height(x, z) gives y. keep(x, z) can drop cells
         (for holes). Normals are smoothed from the height function."""
         sx, sz = (x1 - x0) / cells_x, (z1 - z0) / cells_z
+        height = getattr(height, 'original', height)          # (the curve itself, not drawn(): see below)
         GROUNDS.append((x0, z0, x1, z1, cells_x, cells_z, height, keep))
+        first = len(self.f)
 
         def N(x, z):
             e = 0.1
@@ -400,6 +434,7 @@ class Obj:
                 Nn = [N(x, z) for x, z in pts]
                 self.tri(P[0], P[1], P[2], U[0], U[1], U[2], Nn[0], Nn[1], Nn[2])
                 self.tri(P[0], P[2], P[3], U[0], U[2], U[3], Nn[0], Nn[2], Nn[3])
+        self.ground_faces.append((first, len(self.f)))
 
     def bounds(self):
         if not self.v:

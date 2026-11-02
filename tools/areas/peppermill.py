@@ -8,7 +8,7 @@ import math
 import random
 
 from areakit import Area, box_wall, town_house
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 HALF = 44.0
 
@@ -29,6 +29,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(17)
     risen = era == 'risen'
     a = Area('peppermill', 'Peppermill Village', music='music/peppermill.wav', kill_y=-20, sky='#b0dcf0ff', fog=(28, 58),
@@ -38,6 +39,7 @@ def build(era='fresh'):
         for cx in range(-48, 48, 12):
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 3, 3, height, uvs=0.25)
 
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     a.path([(-30, 46), (-24, 30), (-10, 14), (0, 4), (0, -20), (0, -46)], 3.0)
     a.path([(0, 4), (22, 0), (30, -6)], 2.2)
 

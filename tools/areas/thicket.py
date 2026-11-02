@@ -10,7 +10,7 @@ import math
 import random
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles
+from kit import drawn, t3, mesh, collider, tags, script, particles
 
 PATHS = [[(-50, 0), (-20, 0), (-20, -20), (10, -20), (10, 10), (32, 10), (40, 0)],
          [(-20, -10), (-36, -10), (-36, -22)],          # a dead end (a chest)
@@ -45,6 +45,7 @@ def height(x, z):
 
 
 def build(era='fresh'):
+    global height
     random.seed(61)
     risen = era == 'risen'
     a = Area('thicket', 'Thicket of Thyme', music='music/sprouthollow.wav', kill_y=-20, sky='#5a7a50ff', fog=(12, 36),
@@ -55,6 +56,7 @@ def build(era='fresh'):
     for cz in range(-32, 28, 10):
         for cx in range(-56, 56, 10):
             a.geo('grass', cx + 5, cz + 5).ground(cx, cz, cx + 10, cz + 10, 3, 3, height, uvs=0.3)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # hedges fill everything that isn't path or glade (only the blocks that face a path are built)
     S = 4.0
     for i in range(-14, 14):

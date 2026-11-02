@@ -6,7 +6,7 @@ import math
 import random
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 
 def height(x, z):
@@ -15,12 +15,14 @@ def height(x, z):
 
 
 def build():
+    global height
     random.seed(81)
     a = Area('ruins', 'Castle Ruins', music='music/boss.wav', kill_y=-20, sky='#100808ff', fog=(18, 46), fog_color='#201010ff',
              ambient=('#a07070ff', 0.6), sun=('#ffa080ff', 0.4), chunk=20)
     for cz in range(-30, 30, 10):
         for cx in range(-30, 30, 10):
             a.geo('rot', cx + 5, cz + 5).ground(cx, cz, cx + 10, cz + 10, 4, 4, height, uvs=0.3)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     for k in range(10):
         ang = k * 36 + random.uniform(-8, 8)
         x, z = math.cos(math.radians(ang)) * 20, math.sin(math.radians(ang)) * 20
@@ -33,6 +35,6 @@ def build():
              ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]),
              collider('capsule', (1, 2.0, 1), 0.5, offset=(0, 1.0, 0)), ('RigidBody3D', [('type', 'kinematic')]),
              tags('enemy', 'focusable', 'boss'), script('scripts/gorgemold.bs'))
-    a.entity('Saffron', t3((-10, 0, 10), (0, -130, 0), 1.3), mesh('model', file='models/saffron.glb'),
+    a.entity('Saffron', t3((-10, height(-10, 10), 10), (0, -130, 0), 1.3), mesh('model', file='models/saffron.glb'),
              ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]))
     a.save()

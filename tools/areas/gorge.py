@@ -9,7 +9,7 @@ import math
 import random
 
 from areakit import Area
-from kit import t3, mesh, collider, tags, script, particles, q
+from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 SURF = -1.2          # the river's surface
 BED = -4.2
@@ -43,6 +43,7 @@ def height(x, z):
 
 
 def build():
+    global height
     random.seed(31)
     a = Area('gorge', 'Brine Valley', music='music/brine.wav', kill_y=-20, sky='#a8d8f0ff', fog=(26, 60),
              ambient=('#8898b8ff', 0.55), chunk=20)
@@ -52,6 +53,7 @@ def build():
             mat = 'cliff' if cx in (-20, 10) and not (cx == 10 and 30 <= cz <= 42) and not (cx == -20 and 12 <= cz <= 24) else 'grass'
             fine = 2 if cz < -56 else 1
             a.geo(mat, cx + 5, cz + 6).ground(cx, cz, cx + 10, cz + 12, 5 * fine, 6 * fine, height, uvs=0.25)
+    height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the river
     a.water(-9, -64, 9, 76, SURF, depth=5)
     a.entity('Current', t3((0, SURF + 0.05, 20)), particles(rate=6, max=40, lifetime=4, speed=3, spread=5, area=(4, 60),
