@@ -77,6 +77,7 @@ var grab_t: number = 0
 var switch_acc: number = 0         # the mouse moved sideways while focused (to switch target)
 var motion: vec2 = vec2(0, 0)
 var toggled: bool = false          # focused by a press, in the TARGETING: TOGGLE setting
+var last_target: entity            # (the last thing focused on: taken up again by a held Focus)
 var lost_ok: bool = false          # (toggled on with nothing to target: it stays on without one)
 var rs_was: number = 0             # the right stick's x a step ago
 var shooter: entity                # the Pea Shooter in his hand, while aiming
@@ -630,6 +631,13 @@ func update(dt: number) -> void {
         }
     }
     if not toggle { toggled = false }
+    # HOLD: focused all the while Focus is held - if it was let go of anyhow (a talk, a cutscene,
+    # a press missed), holding it is enough to take it up again, on the same target if it's there
+    if playing and not toggle and action_down("focus") and not focusing and st != "dead" and st != "aim" {
+        var was: entity = last_target
+        acquire()
+        if was != nil and was.alive and focusable(was) { target = was }
+    }
     if (not action_down("focus") and not toggled) or not playing {
         target = nil
         focusing = false
@@ -661,6 +669,7 @@ func update(dt: number) -> void {
     if target != nil and (not target.alive or has_tag(target, "hidden") or distance(target.global_position, self.position) > keep) {
         target = nil
     }
+    if target != nil { last_target = target }
     if toggled and target == nil and not lost_ok {     # (a toggled focus on a target ends with it: gone, or too far)
         toggled = false
         focusing = action_down("focus")
