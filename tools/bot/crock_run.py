@@ -67,6 +67,8 @@ class Run:
         stuck, last = 0, None
         for i in range(limit // 3):
             me = self.at()
+            if not isinstance(me, tuple) or not any('crock' in sc for sc in self.g.scenes()):
+                return True                     # (somewhere else now: taken out by the blue light)
             dx, dz = x - me[0], z - me[2]
             d = math.hypot(dx, dz)
             if d < near:

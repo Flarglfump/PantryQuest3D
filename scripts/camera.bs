@@ -47,6 +47,7 @@ func snap_behind() -> void {
 func update(dt: number) -> void {
     if sprig == nil { return }
     if not sprig.alive { return }
+    if speaker_shot(dt) { return }
     if sprig.st == "aim" {
         # aiming: just over his right shoulder, looking along the shot
         var d: vec3 = sprig.aim_dir()
@@ -118,6 +119,101 @@ func update(dt: number) -> void {
     if t != nil { want.y += 0.4 }
     pos = lerp(pos, want, min(1, dt * 10))
     place(pos)
+}
+
+# ---- in a talk: looking at whoever's speaking, over Sprig's shoulder ----
+const ALIASES: list = [["hootenanny", "owl"], ["mother starter", "mother starter"]]
+var talk_pos: vec3
+var talk_look: vec3
+var talking: bool = false
+
+func lower_text(t: string) -> string {
+    var lo: string = "abcdefghijklmnopqrstuvwxyz"
+    var hi: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var out: string = ""
+    for k in len(t) {
+        var c: string = t[k]
+        for j in 26 {
+            if hi[j] == c { c = lo[j] }
+        }
+        out = out + c
+    }
+    return out
+}
+
+func has_text(big: string, small: string) -> bool {
+    if small == "" or len(small) > len(big) { return false }
+    for i in len(big) - len(small) + 1 {
+        if substr(big, i, len(small)) == small { return true }
+    }
+    return false
+}
+
+# The speaker's entity, if one's about: an NPC (or Mother Starter) whose name, or who, is in
+# the name the text box shows ("NANNY KIMCHI": Kimchi).
+func speaker_entity(name: string) -> entity {
+    var said: string = lower_text(name)
+    for al in ALIASES {
+        if has_text(said, al[0]) { said = said + " " + al[1] }
+    }
+    var best: entity = nil
+    var best_d: number = 30
+    for e in find_tagged("npc") {
+        if not e.alive { continue }
+        var n: string = lower_text(e.name)
+        if not has_text(said, n) { continue }
+        var d: number = distance(e.position, sprig.position)
+        if d < best_d {
+            best_d = d
+            best = e
+        }
+    }
+    return best
+}
+
+# Under the text box the area waits, but the camera still turns to whoever's speaking.
+func paused_update(dt: number) -> void {
+    if sprig != nil and sprig.alive { speaker_shot(dt) }
+}
+
+func speaker_shot(dt: number) -> bool {
+    var game: entity = find("Game")
+    var who: string = global("talk_speaker", "")
+    if game == nil or game.state != "talk" or who == "" {
+        if talking {                                   # (back behind him, from there)
+            talking = false
+            pos = self.position
+        }
+        return false
+    }
+    var e: entity = speaker_entity(who)
+    if e == nil {
+        talking = false
+        return false
+    }
+    var head: vec3 = e.position + vec3(0, 1.1, 0)
+    head = e.focus_point()                    # (npc.bs, starter.bs: where to look)
+    var me := vec3(sprig.x, sprig.y, sprig.z)
+    var to: vec3 = head - me
+    to.y = 0
+    if length(to) < 0.3 { to = sprig.forward_of(sprig.facing) }
+    var f: vec3 = normalize(to)
+    var right := vec3(-f.z, 0, f.x)
+    # over his shoulder (behind him, to one side, a little above), the speaker framed past him
+    var want: vec3 = me - f * 2.4 + right * 1.1 + vec3(0, 1.75, 0)
+    var hit: any = raycast(me + vec3(0, 1.2, 0), want, sprig)
+    if hit != nil and not has_tag(hit[0], "seethrough") { want = hit[1] + (me + vec3(0, 1.2, 0) - hit[1]) * 0.2 }
+    var look: vec3 = lerp(me + vec3(0, 1.0, 0), head, 0.75)
+    if not talking {
+        talking = true
+        talk_pos = self.position
+        talk_look = look
+    }
+    talk_pos = lerp(talk_pos, want, min(1, dt * 5))
+    talk_look = lerp(talk_look, look, min(1, dt * 6))
+    self.position = talk_pos
+    look_at(self, talk_look)
+    return true
 }
 
 func place(p: vec3) -> void {

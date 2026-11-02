@@ -300,6 +300,27 @@ func talk_ended() -> void {
     if st == "hold" or st == "talk" { st = "free" }
 }
 
+# A talk or a scene begins: out of whatever he was doing (a roll, a swing, a hop) and standing
+# as he usually does - on a vine or in the water he stays as he is.
+func stand_for_talk() -> void {
+    if st == "hold" or st == "talk" or st == "climb" or st == "swim" or st == "dive" or st == "dead" { return }
+    st = "talk"
+    pitch = 0
+    spin_angle = 0
+    charge = 0
+    combo = 0
+    queued = false
+    shielding = false
+    vel = vec3(0, min(vel.y, 0), 0)
+    play_animation(body, "idle", 1, true)
+    animate()
+}
+
+# While the area waits under the text box (or a menu): stood ready for the talk, not frozen mid-roll.
+func paused_update(dt: number) -> void {
+    if game != nil and game.state == "talk" { stand_for_talk() }
+}
+
 # ---- the spoon ----
 func start_slash(kind: string) -> void {
     st = kind
@@ -639,7 +660,9 @@ func update(dt: number) -> void {
     if st == "dead" {
         if st_t > 1.6 and game.state == "play" { game.game_over() }
     } elif not playing {
-        if st != "hold" { st = "talk" }
+        # a talk or a scene begins: out of whatever he was doing (a roll, a swing, a hop) and
+        # standing as he usually does - on a vine or in the water he stays as he is
+        stand_for_talk()
     } elif st == "talk" {
         st = "free"
     }

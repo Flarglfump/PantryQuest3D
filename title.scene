@@ -369,9 +369,9 @@ entity
   Name
     text = "Blanket"
   Transform3D
-    position = -8.6 3.5437 14.6
+    position = -8.45 3.5437 14.6598
     rotation = 0 30 0
-    scale = 0.95 0.1 1.2
+    scale = 1.02 0.1 1.16
   Mesh
     shape = cube
     color = #7ab868ff
@@ -379,16 +379,28 @@ entity
 
 entity
   Name
+    text = "Pillow"
+  Transform3D
+    position = -8.91 3.5737 13.8631
+    rotation = 0 30 0
+    scale = 0.7 0.12 0.4
+  Mesh
+    shape = cube
+    color = #f0ead8ff
+    uv_scale = 1 1
+
+entity
+  Name
     text = "Vines"
   Transform3D
-    position = -8 1.566 18.2
+    position = -8 1.5664 18.035
     rotation = 0 180 0
-    scale = 1 3.1554 0.04
+    scale = 1 3.1545 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
     color = #7ac060ff
-    uv_scale = 1 3.1554
+    uv_scale = 1 3.1545
 
 entity
   Name

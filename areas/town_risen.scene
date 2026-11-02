@@ -159,7 +159,7 @@ entity
   Name
     text = "spawn_castle"
   Transform3D
-    position = 0 2.1767 -34
+    position = 0 2.3205 -34
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -167,7 +167,7 @@ entity
   Name
     text = "Blocker"
   Transform3D
-    position = 0 3.9871 -36
+    position = 0 4.2682 -36
     rotation = 0 0 0
     scale = 7.6 3 0.6
   Mesh
@@ -188,7 +188,7 @@ entity
   Name
     text = "Rainbow Bridge"
   Transform3D
-    position = 0 3.0974 -39
+    position = 0 3.1901 -39
     rotation = 0 0 0
     scale = 3.4 0.2 4
   Mesh
@@ -224,7 +224,7 @@ entity
   Name
     text = "spawn_spire"
   Transform3D
-    position = 0 2.1767 -34
+    position = 0 2.3205 -34
     rotation = 0 180 0
     scale = 1 1 1
 
@@ -247,7 +247,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 3.4 -0.9342 -27
+    position = 3.4 -1.0045 -27
     rotation = 0 180 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -265,7 +265,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 3.4 -0.5342 -27
+    position = 3.4 -0.6045 -27
     rotation = 0 180 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -1120,7 +1120,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -28 0.9 -14.47
+    position = -28 0.9 -10.47
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -1133,7 +1133,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -30.4 1.6 -14.47
+    position = -30.4 1.6 -10.47
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1147,7 +1147,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -25.6 1.6 -14.47
+    position = -25.6 1.6 -10.47
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1161,7 +1161,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 28 0.9 -16.47
+    position = 34 0.9 -12.97
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -1174,7 +1174,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 25.6 1.6 -16.47
+    position = 32.2 1.6 -12.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1188,7 +1188,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 30.4 1.6 -16.47
+    position = 35.8 1.6 -12.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1202,7 +1202,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = -14 0.9 -16.97
+    position = -14 0.9 -10.97
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -1215,7 +1215,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -15.8 1.6 -16.97
+    position = -15.8 1.6 -10.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1229,7 +1229,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = -12.2 1.6 -16.97
+    position = -12.2 1.6 -10.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1243,7 +1243,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 14 0.9 -16.97
+    position = 14 0.9 -10.97
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -1256,7 +1256,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 12.2 1.6 -16.97
+    position = 12.2 1.6 -10.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1270,7 +1270,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 15.8 1.6 -16.97
+    position = 15.8 1.6 -10.97
     rotation = 0 180 0
     scale = 0.7 0.6 0.06
   Mesh
@@ -1987,7 +1987,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 35.7433 2.4457 105.567
+    position = 35.7433 -5.0525 105.567
     rotation = 0 0 0
     scale = 0.6689 2.8986 0.6689
   Mesh
@@ -2003,7 +2003,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 35.7433 4.6753 105.567
+    position = 35.7433 -2.8229 105.567
     rotation = 0 242.5 0
     scale = 2.8986 2.2297 2.8986
   Mesh
@@ -2020,7 +2020,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -43.6213 2.4992 69.5758
+    position = -43.6213 -4.999 69.5758
     rotation = 0 0 0
     scale = 0.618 2.6779 0.618
   Mesh
@@ -2036,7 +2036,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -43.6213 4.5591 69.5758
+    position = -43.6213 -2.9391 69.5758
     rotation = 0 186.013 0
     scale = 2.6779 2.0599 2.6779
   Mesh
@@ -2053,7 +2053,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -43.0862 2.0372 84.4865
+    position = -43.0862 -5.461 84.4865
     rotation = 0 0 0
     scale = 0.8218 3.5613 0.8218
   Mesh
@@ -2069,7 +2069,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -43.0862 4.7766 84.4865
+    position = -43.0862 -2.7216 84.4865
     rotation = 0 205.809 0
     scale = 3.5613 2.7394 3.5613
   Mesh
@@ -4314,6 +4314,25 @@ entity
   Mesh
     shape = model
     file = "models/areas/town_risen/stone_-2_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town_risen/stone_-1_-2.obj"
     texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1

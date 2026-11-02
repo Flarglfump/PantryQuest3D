@@ -1918,7 +1918,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 48.6767 -2.6568 73.2459
+    position = 48.6767 -2.5524 73.2459
     rotation = 0 37.875 0
     scale = 0.7851 3.4023 0.7851
   Mesh
@@ -1934,7 +1934,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 48.6767 -0.0397 73.2459
+    position = 48.6767 0.0647 73.2459
     rotation = 0 67.875 0
     scale = 3.4023 2.6171 3.4023
   Mesh
@@ -1951,7 +1951,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -4.2976 -2.6581 109.381
+    position = -4.2976 -2.5537 109.381
     rotation = 0 37.875 0
     scale = 0.7369 3.1934 0.7369
   Mesh
@@ -1967,7 +1967,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -4.2976 -0.2016 109.381
+    position = -4.2976 -0.0972 109.381
     rotation = 0 219.875 0
     scale = 3.1934 2.4565 3.1934
   Mesh

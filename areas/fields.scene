@@ -3816,7 +3816,7 @@ entity
   Name
     text = "Preview Well Roof"
   Transform3D
-    position = 0 2.7018 -128.6
+    position = 0 2.6347 -128.6
     rotation = 0 0 0
     scale = 3.2 0.12 1.6
   Mesh
@@ -3832,7 +3832,7 @@ entity
   Name
     text = "Preview Awning"
   Transform3D
-    position = -9 2.3018 -122.2
+    position = -9 2.2347 -122.2
     rotation = -14 0 0
     scale = 3 0.1 2
   Mesh
@@ -3848,7 +3848,7 @@ entity
   Name
     text = "Preview Awning"
   Transform3D
-    position = -9 2.3018 -135
+    position = -9 2.2347 -135
     rotation = 14 180 0
     scale = 3 0.1 2
   Mesh
@@ -3864,7 +3864,7 @@ entity
   Name
     text = "Preview Awning"
   Transform3D
-    position = 9 2.3018 -122.2
+    position = 9 2.2347 -122.2
     rotation = -14 0 0
     scale = 3 0.1 2
   Mesh
@@ -3880,7 +3880,7 @@ entity
   Name
     text = "Preview Awning"
   Transform3D
-    position = 9 2.3018 -135
+    position = 9 2.2347 -135
     rotation = 14 180 0
     scale = 3 0.1 2
   Mesh
@@ -3896,7 +3896,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -28 0.8018 -107.63
+    position = -28 0.7347 -107.63
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3912,7 +3912,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -14 0.8018 -107.63
+    position = -14 0.7347 -107.63
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3928,7 +3928,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 14 0.8018 -107.63
+    position = 14 0.7347 -107.63
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3944,7 +3944,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 28 0.8018 -107.63
+    position = 28 0.7347 -107.63
     rotation = 0 0 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3960,7 +3960,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -26.97 0.8018 -120.6
+    position = -26.97 0.7347 -120.6
     rotation = 0 -90 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3976,7 +3976,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 26.97 0.8018 -120.6
+    position = 26.97 0.7347 -120.6
     rotation = 0 90 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -3992,7 +3992,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -28 0.8018 -149.07
+    position = -28 0.7347 -145.07
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4002,13 +4002,13 @@ entity
     uv_scale = 1 1
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -28, cz = -149.1, r = 3"
+    vars = "cx = -28, cz = -145.1, r = 3"
 
 entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 28 0.8018 -151.07
+    position = 34 0.7347 -147.57
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4018,13 +4018,13 @@ entity
     uv_scale = 1 1
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 28, cz = -151.1, r = 3"
+    vars = "cx = 34, cz = -147.6, r = 3"
 
 entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -14 0.8018 -151.57
+    position = -14 0.7347 -145.57
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4034,13 +4034,13 @@ entity
     uv_scale = 1 1
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -14, cz = -151.6, r = 3"
+    vars = "cx = -14, cz = -145.6, r = 3"
 
 entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 14 0.8018 -151.57
+    position = 14 0.7347 -145.57
     rotation = 0 180 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4050,13 +4050,13 @@ entity
     uv_scale = 1 1
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 14, cz = -151.6, r = 3"
+    vars = "cx = 14, cz = -145.6, r = 3"
 
 entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -22.47 0.8018 -134.6
+    position = -22.47 0.7347 -134.6
     rotation = 0 -90 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4072,7 +4072,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -20 1.2018 -112.6
+    position = -20 1.1347 -112.6
     rotation = 0 0 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4088,7 +4088,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -20 3.2018 -112.6
+    position = -20 3.1347 -112.6
     rotation = 0 340 0
     scale = 2.6 2 2.6
   Mesh
@@ -4105,7 +4105,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 20 1.2018 -112.6
+    position = 20 1.1347 -112.6
     rotation = 0 0 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4121,7 +4121,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 20 3.2018 -112.6
+    position = 20 3.1347 -112.6
     rotation = 0 20 0
     scale = 2.6 2 2.6
   Mesh
@@ -4164,7 +4164,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -101 0.1329 30
+    position = -101 -0.1838 30
     rotation = 0 0 0
     scale = 0.5429 2.3528 0.5429
   Mesh
@@ -4180,7 +4180,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -101 1.9427 30
+    position = -101 1.626 30
     rotation = 0 296 0
     scale = 2.3528 1.8098 2.3528
   Mesh
@@ -4197,7 +4197,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -117 0.5285 48
+    position = -117 0.2118 48
     rotation = 0 0 0
     scale = 0.7234 3.1345 0.7234
   Mesh
@@ -4213,7 +4213,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -117 2.9396 48
+    position = -117 2.6229 48
     rotation = 0 64 0
     scale = 3.1345 2.4112 3.1345
   Mesh
@@ -4256,7 +4256,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 90.2813 1.9493 -132.191
+    position = 90.2813 1.8128 -132.191
     rotation = 0 -94.248 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4272,7 +4272,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 123.844 1.8337 -118.698
+    position = 123.844 1.6972 -118.698
     rotation = 0 -4.248 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4288,7 +4288,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 99.6138 2.4753 -116.487
+    position = 99.6138 2.3388 -116.487
     rotation = 0 -4.248 0
     scale = 1.1 1.8 0.08
   Mesh
@@ -4304,7 +4304,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 75.8997 2.6579 -121.226
+    position = 75.8997 2.5214 -121.226
     rotation = 0 -4.248 0
     scale = 0.7253 3.1429 0.7253
   Mesh
@@ -4320,7 +4320,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 75.8997 5.0755 -121.226
+    position = 75.8997 4.939 -121.226
     rotation = 0 177.752 0
     scale = 3.1429 2.4176 3.1429
   Mesh
@@ -4337,7 +4337,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 75.5346 3.4849 -143.314
+    position = 75.5346 3.3484 -143.314
     rotation = 0 -4.248 0
     scale = 0.8305 3.5989 0.8305
   Mesh
@@ -4353,7 +4353,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 75.5346 6.2533 -143.314
+    position = 75.5346 6.1168 -143.314
     rotation = 0 103.752 0
     scale = 3.5989 2.7684 3.5989
   Mesh
@@ -4370,7 +4370,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 120.736 2.0104 -103.858
+    position = 120.736 1.8739 -103.858
     rotation = 0 -4.248 0
     scale = 0.6597 2.8589 0.6597
   Mesh
@@ -4386,7 +4386,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 120.736 4.2095 -103.858
+    position = 120.736 4.073 -103.858
     rotation = 0 79.752 0
     scale = 2.8589 2.1991 2.8589
   Mesh
@@ -4403,7 +4403,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 71.0219 2.1347 -109.555
+    position = 71.0219 1.9982 -109.555
     rotation = 0 -4.248 0
     scale = 0.7007 3.0363 0.7007
   Mesh
@@ -4419,7 +4419,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 71.0219 4.4703 -109.555
+    position = 71.0219 4.3338 -109.555
     rotation = 0 29.752 0
     scale = 3.0363 2.3357 3.0363
   Mesh
@@ -4488,7 +4488,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -11.9042 0.938 125.29
+    position = -11.9042 0.9551 125.29
     rotation = 0 -60 0
     scale = 1 1.5 0.08
   Mesh
@@ -4504,7 +4504,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = -7.2407 0.9205 114.414
+    position = -7.2407 0.9376 114.414
     rotation = 0 -20 0
     scale = 1 1.5 0.08
   Mesh
@@ -4520,7 +4520,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 17.0774 0.8121 126.39
+    position = 17.0774 0.8292 126.39
     rotation = 0 60 0
     scale = 1 1.5 0.08
   Mesh
@@ -4536,7 +4536,7 @@ entity
   Name
     text = "Preview Door"
   Transform3D
-    position = 9.11 0.8919 127.423
+    position = 9.11 0.909 127.423
     rotation = 0 -150 0
     scale = 1 1.5 0.08
   Mesh
@@ -4552,7 +4552,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -22 1.3641 132.5
+    position = -22 1.3812 132.5
     rotation = 0 -180 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4568,7 +4568,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -22 3.3641 132.5
+    position = -22 3.3812 132.5
     rotation = 0 -86 0
     scale = 2.6 2 2.6
   Mesh
@@ -4585,7 +4585,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 24 1.5885 120.5
+    position = 24 1.6056 120.5
     rotation = 0 -180 0
     scale = 0.72 3.12 0.72
   Mesh
@@ -4601,7 +4601,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 24 3.9885 120.5
+    position = 24 4.0056 120.5
     rotation = 0 12 0
     scale = 3.12 2.4 3.12
   Mesh
@@ -4618,7 +4618,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -26 1.6388 118.5
+    position = -26 1.6559 118.5
     rotation = 0 -180 0
     scale = 0.66 2.86 0.66
   Mesh
@@ -4634,7 +4634,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -26 3.8388 118.5
+    position = -26 3.8559 118.5
     rotation = 0 62 0
     scale = 2.86 2.2 2.86
   Mesh
@@ -4651,7 +4651,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 30 1.3871 114.5
+    position = 30 1.4042 114.5
     rotation = 0 -180 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4667,7 +4667,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 30 3.3871 114.5
+    position = 30 3.4042 114.5
     rotation = 0 150 0
     scale = 2.6 2 2.6
   Mesh
@@ -4684,7 +4684,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -32 1.715 128.5
+    position = -32 1.7321 128.5
     rotation = 0 -180 0
     scale = 0.72 3.12 0.72
   Mesh
@@ -4700,7 +4700,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -32 4.115 128.5
+    position = -32 4.1321 128.5
     rotation = 0 -76 0
     scale = 3.12 2.4 3.12
   Mesh
@@ -4717,7 +4717,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = 14 1.4306 112.5
+    position = 14 1.4477 112.5
     rotation = 0 -180 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4733,7 +4733,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = 14 3.4306 112.5
+    position = 14 3.4477 112.5
     rotation = 0 22 0
     scale = 2.6 2 2.6
   Mesh
@@ -4750,7 +4750,7 @@ entity
   Name
     text = "Preview Tree"
   Transform3D
-    position = -11 1.4056 110.5
+    position = -11 1.4227 110.5
     rotation = 0 -180 0
     scale = 0.6 2.6 0.6
   Mesh
@@ -4766,7 +4766,7 @@ entity
   Name
     text = "Preview Leaves"
   Transform3D
-    position = -11 3.4056 110.5
+    position = -11 3.4227 110.5
     rotation = 0 -133 0
     scale = 2.6 2 2.6
   Mesh
@@ -4856,6 +4856,52 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "far_roof 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/far_roof_0_-4.obj"
+    texture = "art/planks.png"
+    color = #5868a8ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "far_stone 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/far_stone_0_-4.obj"
+    texture = "art/stone.png"
+    color = #e8e0d0ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "far_stone_2s 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields/far_stone_2s_0_-4.obj"
+    texture = "art/stone.png"
+    color = #e8e0d0ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
 
 entity
   Name
@@ -6861,7 +6907,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -41.2, cz = -166.5, r = 7.1"
+    vars = "cx = -41.8, cz = -168.6, r = 8.9"
 
 entity
   Name
@@ -7005,7 +7051,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 41.2, cz = -168.6, r = 9.1"
+    vars = "cx = 41.8, cz = -168.6, r = 8.9"
 
 entity
   Name
@@ -7042,7 +7088,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -41.2, cz = -168.6, r = 9.1"
+    vars = "cx = -41.8, cz = -168.6, r = 8.9"
 
 entity
   Name
@@ -7099,7 +7145,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -21.3, cz = -171.8, r = 22"
+    vars = "cx = -20.2, cz = -176.8, r = 20.2"
 
 entity
   Name
@@ -7156,7 +7202,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 20.4, cz = -171.8, r = 21"
+    vars = "cx = 20.4, cz = -176.8, r = 20.4"
 
 entity
   Name
@@ -7213,7 +7259,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 41.2, cz = -168.6, r = 9.1"
+    vars = "cx = 41.8, cz = -168.6, r = 8.9"
 
 entity
   Name
@@ -8392,7 +8438,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -0.1, cz = -161.4, r = 3.1"
+    vars = "cx = -0.1, cz = -158.6, r = 5.4"
 
 entity
   Name
@@ -8410,7 +8456,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -15, cz = -139, r = 28.7"
+    vars = "cx = -15, cz = -139.8, r = 29.4"
 
 entity
   Name
@@ -8464,7 +8510,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 0.1, cz = -161.4, r = 3.1"
+    vars = "cx = 0.1, cz = -158.6, r = 5.4"
 
 entity
   Name
@@ -8482,7 +8528,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 14.5, cz = -139, r = 28.4"
+    vars = "cx = 17, cz = -139.8, r = 30.6"
 
 entity
   Name
@@ -8537,7 +8583,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -22, cz = -137.1, r = 23.3"
+    vars = "cx = -22, cz = -134.3, r = 20.9"
 
 entity
   Name
@@ -8594,7 +8640,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 22, cz = -137.3, r = 23.5"
+    vars = "cx = 24, cz = -135.1, r = 22.6"
 
 entity
   Name
@@ -9059,7 +9105,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -22, cz = -139.3, r = 21.9"
+    vars = "cx = -22, cz = -136.6, r = 19.6"
 
 entity
   Name
@@ -9097,7 +9143,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = 22.4, cz = -139.6, r = 22.3"
+    vars = "cx = 24, cz = -137.3, r = 21.4"
 
 entity
   Name

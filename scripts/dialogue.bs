@@ -43,6 +43,7 @@ func start() -> void {
 }
 
 func open_page() -> void {
+    set_global("talk_speaker", pages[page][0])      # (the camera turns to whoever's speaking: camera.bs)
     shown = 0
     choice = 0
     total = 0
@@ -196,6 +197,7 @@ func update(dt: number) -> void {
         page += 1
         if page >= len(pages) {
             closing = true
+            set_global("talk_speaker", "")
             pop_scene()
             return
         }

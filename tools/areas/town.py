@@ -27,10 +27,10 @@ def height(x, z):
     h = 0.0
     if abs(z - MOAT) < 2.9 and abs(x) < 37:   # (the moat: a stone-lined trench; its walls stand over the ground's step)
         return -3.2
-    if z < -26 and abs(x) < 4:                 # the castle road climbs
+    if z < -27.6 and abs(x) < 4:               # the castle road climbs (between stone walls: see build)
         h = 3.0 * smooth((-26 - z) / 12)
-    elif z < -26:
-        h = 3.0 * smooth((-26 - z) / 2)
+    elif z < -27.6:                            # the terraces either side of it, 3 m up behind their walls
+        h = 3.0
     return h
 
 
@@ -48,7 +48,7 @@ def build(era='fresh'):
     ground = 'rot' if risen else 'cobble'
     for cz in range(-44, 44, 11):
         for cx in range(-44, 44, 11):
-            fine = 5 if cz in (-33, -22) else 1
+            fine = 5 if cz in (-44, -33, -22) else 1          # (the moat, the castle road and its terraces: 1.1 m cells)
             a.geo(ground, cx + 5.5, cz + 5.5).ground(cx, cz, cx + 11, cz + 11, 2 * fine, 2 * fine, height, uvs=0.3)
     height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the moat and the castle road's bridge over it
@@ -62,9 +62,17 @@ def build(era='fresh'):
     for xx in (-37, 37):
         x0, x1 = sorted((xx - 0.7 * (1 if xx > 0 else -1), xx + 0.7 * (1 if xx > 0 else -1)))
         a.geo('stone', xx, MOAT).box((x0, -3.4, MOAT - 2.3), (x1, 0.12, MOAT + 2.3), uvs=0.35)
-    a.geo('planks', 0, MOAT).box((-3, -0.4, MOAT - 2.8), (3, 0.05, MOAT + 2.8), uvs=0.5)
+    # the terraces' stone fronts over the moat, and the walls either side of the castle road (each
+    # standing over the ground's step, so it's a wall face, not a steep slope with gaps under it)
+    for sx in (-1, 1):
+        x0, x1 = sorted((sx * 4.4, sx * 37.6))
+        a.geo('stone', (x0 + x1) / 2, -28).box((x0, -0.5, -28.7), (x1, 3.12, -27.4), uvs=0.3)
+        x0, x1 = sorted((sx * 3.3, sx * 4.6))
+        a.geo('stone', sx * 4, -34).box((x0, -0.5, -39.2), (x1, 3.1, -27.45), uvs=0.3)   # (a hair behind the terrace front's face)
+    # the bridge, right across: from the street on one side to the castle road on the other (past the walls)
+    a.geo('planks', 0, MOAT).box((-3, -0.4, MOAT - 4.4), (3, 0.05, MOAT + 4.4), uvs=0.5)
     for xx in (-3, 3):
-        a.geo('planks', xx, MOAT).box((xx - 0.12, 0.05, MOAT - 2.8), (xx + 0.12, 0.8, MOAT + 2.8), uvs=0.5)
+        a.geo('planks', xx, MOAT).box((xx - 0.12, 0.05, MOAT - 3.8), (xx + 0.12, 0.8, MOAT + 3.8), uvs=0.5)
     # the town wall round it all (gaps: south gate, the castle road north)
     for (x0, z0, x1, z1) in [(-HALF, HALF, -3, HALF), (3, HALF, HALF, HALF), (-HALF, -HALF, -3, -HALF), (3, -HALF, HALF, -HALF),
                              (-HALF, -HALF, -HALF, HALF), (HALF, -HALF, HALF, HALF)]:
@@ -89,7 +97,7 @@ def build(era='fresh'):
     else:
         castle_skyline(a, 0, 6, -78, 1.2)     # (Castle Larder up the road, over the town wall)
         a.loadzone(0, height(0, -HALF + 1), -HALF + 0.9, 5, 4, 1.2, to='castle', at='start', until='storm_now')
-        a.npc('guard', -3.2, height(-3.2, -36), -36, 160, until='storm_now')
+        a.npc('guard', -2.5, height(-2.5, -36), -36, 160, until='storm_now')
         a.sign(3.4, height(3.4, -27), -27, 180, 'sign_castle')
         # the night of the storm (storm.bs): the runners wait out of sight
         a.entity('Storm', t3((0, 0, 0)), script('scripts/storm.bs'))
@@ -127,8 +135,8 @@ def build(era='fresh'):
 
     # ---- houses ----
     for x, z, w, d, side in [(-28, 30, 8, 6, 'n'), (-14, 30, 7, 6, 'n'), (14, 30, 7, 6, 'n'), (28, 30, 8, 6, 'n'),
-                             (-30, 14, 6, 8, 'e'), (30, 14, 6, 8, 'w'), (-28, -18, 8, 7, 's'), (28, -20, 8, 7, 's'),
-                             (-14, -20, 6, 6, 's'), (14, -20, 6, 6, 's')]:
+                             (-30, 14, 6, 8, 'e'), (30, 14, 6, 8, 'w'), (-28, -14, 8, 7, 's'), (34, -16, 6, 6, 's'),
+                             (-14, -14, 6, 6, 's'), (14, -14, 6, 6, 's')]:      # (the south row clear of the moat, z -20.4)
         town_house(a, x, z, w, d, 4.0, 0, wall='planks', roof='thatch', door_side=side)
     # the Royal Kitchens (west): Pip at the door
     town_house(a, -27, 0, 9, 10, 5.0, 0, wall='stone', roof='thatch', door_side='e')

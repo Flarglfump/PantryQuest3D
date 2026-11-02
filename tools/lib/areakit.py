@@ -17,6 +17,25 @@ import re
 from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path, write_png)
 import kit
 
+def surface_y(tris, x, z, near):
+    """The height of the upward-facing triangle over (x, z) nearest the height near (None: none)."""
+    best = None
+    for P in tris:
+        (ax, ay, az), (bx, by, bz), (cx, cy, cz) = P
+        d = (bz - cz) * (ax - cx) + (cx - bx) * (az - cz)
+        if abs(d) < 1e-9:
+            continue
+        l1 = ((bz - cz) * (x - cx) + (cx - bx) * (z - cz)) / d
+        l2 = ((cz - az) * (x - cx) + (ax - cx) * (z - cz)) / d
+        l3 = 1 - l1 - l2
+        if min(l1, l2, l3) < -1e-6:
+            continue
+        y = l1 * ay + l2 * by + l3 * cy
+        if best is None or abs(y - near) < abs(best - near):
+            best = y
+    return best
+
+
 def clip_face(o, P, T, N, f, _):
     """Adds to o the part of triangle P (texture coordinates T, normals N) where f(p) <= 0."""
     ds = [f(p) for p in P]
@@ -457,9 +476,6 @@ class Area:
             # their frame -> ours: turn their way in onto our way out, their zone onto ours
             ang = math.atan2(out[1], out[0]) - math.atan2(inn[1], inn[0])
             ca, sa = math.cos(ang), math.sin(ang)
-            def move(p, back=back, ca=ca, sa=sa, zx=zx, zy=zy, zz=zz):
-                dx, dz = p[0] - back[0], p[2] - back[2]
-                return (zx + dx * ca - dz * sa, p[1] - back[1] + zy, zz + dx * sa + dz * ca)
             def turn(n, ca=ca, sa=sa):
                 return (n[0] * ca - n[2] * sa, n[1], n[0] * sa + n[2] * ca)
             depth = self.PREVIEW_DEPTHS.get(to, self.PREVIEW_DEPTH)
@@ -475,9 +491,14 @@ class Area:
                 if abs(-dx * out[1] + dz * out[0]) > self.PREVIEW_HALF:
                     return -1.0                      # (off to the side: ours stays)
                 return dx * out[0] + dz * out[1] - self.PREVIEW_FROM
+            # (the ground at the cut, ours: theirs is set to meet it there)
+            cut_x, cut_z = zx + out[0] * self.PREVIEW_FROM, zz + out[1] * self.PREVIEW_FROM
+            ours_y = surface_y([[o.v[c[0] - 1] for c in f] for k, o in self.chunks.objs.items()
+                                if not k[0].startswith('preview_') and not k[0].startswith('far_') and mat_info(k[0])[2] for f in o.f],
+                               cut_x, cut_z, zy)
             for key, obj in list(self.chunks.objs.items()):
-                if key[0].startswith('preview_'):
-                    continue
+                if key[0].startswith('preview_') or key[0].startswith('far_'):
+                    continue                         # (nor far scenery: a castle on the skyline stays)
                 keep, cut = [], []
                 for f in obj.f:
                     ds = [side(obj.v[c[0] - 1]) for c in f]
@@ -498,6 +519,7 @@ class Area:
                 bz = zz + out[1] * 1.2 + out[0] * sgn * mid
                 self.scene.entity('Edge', t3((bx, zy + 5, bz), (0, yaw_deg, 0)), collider('box', (self.PREVIEW_HALF - half, 40, 0.6)))
             # theirs: the level geometry's chunks (not their own previews, nor far scenery)
+            theirs = []
             for f in sorted(set(re.findall(r'file = "(models/areas/%s/[^"]+\.obj)"' % re.escape(to), sc))):
                 mat = re.sub(r'_-?\d+_-?\d+\.obj$', '', os.path.basename(f))
                 base = mat[:-3] if mat.endswith('_2s') else mat
@@ -520,9 +542,21 @@ class Area:
                         e2 = [P[2][k] - P[0][k] for k in range(3)]
                         if sum((e1[(k + 1) % 3] * e2[(k + 2) % 3] - e1[(k + 2) % 3] * e2[(k + 1) % 3]) ** 2 for k in range(3)) < 0.01:
                             continue                     # (details too small to see from here)
-                        Q = [move(p) for p in P]
-                        o = self.geo('preview_' + mat, (Q[0][0] + Q[1][0] + Q[2][0]) / 3, (Q[0][2] + Q[1][2] + Q[2][2]) / 3)
-                        clip_face(o, Q, [T[c[1] - 1] for c in idx], [turn(N[c[2] - 1]) for c in idx], lambda p: -side(p), None)
+                        theirs.append((mat, base, P, [T[c[1] - 1] for c in idx], [N[c[2] - 1] for c in idx]))
+            # their ground at the cut (the same spot, in their frame) set to ours there: no step, no gap
+            tx, tz = back[0] + inn[0] * self.PREVIEW_FROM, back[2] + inn[1] * self.PREVIEW_FROM
+            their_y = surface_y([t[2] for t in theirs if MATERIALS[t[1]][2]], tx, tz, back[1])
+            if ours_y is not None and their_y is not None:
+                lift = ours_y - their_y
+            else:
+                lift = zy - back[1]
+            def move(p, back=back, ca=ca, sa=sa, zx=zx, zz=zz, lift=lift):
+                dx, dz = p[0] - back[0], p[2] - back[2]
+                return (zx + dx * ca - dz * sa, p[1] + lift, zz + dx * sa + dz * ca)
+            for (mat, base, P, Tt, Nn) in theirs:
+                Q = [move(p) for p in P]
+                o = self.geo('preview_' + mat, (Q[0][0] + Q[1][0] + Q[2][0]) / 3, (Q[0][2] + Q[1][2] + Q[2][2]) / 3)
+                clip_face(o, Q, Tt, [turn(n) for n in Nn], lambda p: -side(p), None)
             # ... and their trees, rocks and such (just to look at)
             for blk in blocks:
                 m = re.search(r'text = "([^"]*)"', blk)
