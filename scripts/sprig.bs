@@ -314,6 +314,18 @@ func start_slash(kind: string) -> void {
     play_sound("sfx/swing.wav", 0.6, 0.9 + random() * 0.2)
 }
 
+# A low jab from behind the raised shield (attack while crouching): quick, and the shield
+# stays up through it.
+func start_crouchstab() -> void {
+    st = "crouchstab"
+    st_t = 0
+    hit_list = []
+    queued = false
+    drawn = 3
+    play_animation(body, "crouchstab", 1, false)
+    play_sound("sfx/swing.wav", 0.5, 1.2 + random() * 0.15)
+}
+
 # Hits whatever is in a sphere (once per swing).
 func strike(centre: vec3, radius: number, amount: int, kind: string) -> void {
     for e in overlap_sphere(centre, radius) {
@@ -701,6 +713,16 @@ func update(dt: number) -> void {
                 combo = 0
             }
         }
+    } elif st == "crouchstab" {
+        shielding = has_lid() and action_down("shield")
+        if action_pressed("attack") and st_t > 0.08 { queued = true }
+        if st_t > 0.04 and st_t < 0.15 {
+            strike(self.position + vec3(0, 0.35, 0) + forward_of(facing) * 0.95, 0.55, damage(), "blade")
+        }
+        if st_t >= 0.25 {
+            st = "free"
+            if queued and shielding { start_crouchstab() }     # (again, as fast as he's asked)
+        }
     } elif st == "charge" {
         charge += dt
         drawn = 3
@@ -992,6 +1014,10 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
             play_sound("sfx/roll.wav", 0.6)
             return
         }
+    }
+    if action_pressed("attack") and has_spoon() and carrying == nil and crouching() {
+        start_crouchstab()                       # (crouched behind the shield: a low jab past it)
+        return
     }
     if action_pressed("attack") and has_spoon() and carrying == nil {
         combo = 0
@@ -1331,7 +1357,7 @@ func place_gear(dt: number) -> void {
     weapon.Mesh.visible = has_spoon()
     lid.Mesh.visible = has_lid()
     var busy: bool = st == "climb" or st == "swim" or st == "dive" or st == "grab" or st == "aim" or st == "hold" or carrying != nil
-    var swinging: bool = st == "slash" or st == "slash2" or st == "thrust" or st == "jumpatk" or st == "spin" or st == "charge"
+    var swinging: bool = st == "slash" or st == "slash2" or st == "thrust" or st == "jumpatk" or st == "spin" or st == "charge" or st == "crouchstab"
     var out: bool = (drawn > 0 or focusing or swinging) and not busy
     if st == "hammer" {
         if hammer == nil or not hammer.alive { hammer = spawn("prefabs/hammer.scene", vec3(0, 0, 0), body) }

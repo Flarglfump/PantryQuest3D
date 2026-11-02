@@ -184,6 +184,13 @@ def standard_anims(m, b, s=1.0, hero=False):
         b['arm_r']: [(0, R(x=20, z=-15)), (1, R(x=20, z=-15))],
         b['leg_l']: [(0, R(x=20)), (1, R(x=20))], b['leg_r']: [(0, R(x=-15)), (1, R(x=-15))],
         b['shin_l']: [(0, R(x=-20)), (1, R(x=-20))]})
+    m.animation('crouchstab', rotations={  # crouched behind the shield, a quick low jab past it (0.25 s)
+        b['arm_l']: [(0, R(x=80, z=-30)), (0.25, R(x=80, z=-30))], b['hand_l']: [(0, R(x=10)), (0.25, R(x=10))],
+        b['arm_r']: [(0, R(x=10, z=-25)), (0.06, R(x=60, z=-8)), (0.13, R(x=64, z=-6)), (0.25, R(x=30, z=-15))],      # (with the spine's lean: straight ahead, low)
+        b['spine']: [(0, R(x=18)), (0.06, R(x=26, y=12)), (0.13, R(x=26, y=12)), (0.25, R(x=18))], b['head']: [(0, R(x=-14)), (0.25, R(x=-14))],
+        b['leg_l']: [(0, R(x=70)), (0.25, R(x=70))], b['leg_r']: [(0, R(x=70)), (0.25, R(x=70))],
+        b['shin_l']: [(0, R(x=-110)), (0.25, R(x=-110))], b['shin_r']: [(0, R(x=-110)), (0.25, R(x=-110))]},
+        translations={b['hips']: [(0, (0, -0.21 * s, 0)), (0.25, (0, -0.21 * s, 0))]})
     m.animation('crouch', rotations={      # down behind the shield (raised without focusing): knees bent
         b['arm_l']: [(0, R(x=80, z=-30)), (1, R(x=80, z=-30))], b['hand_l']: [(0, R(x=10)), (1, R(x=10))],
         b['arm_r']: [(0, R(x=30, z=-15)), (1, R(x=30, z=-15))],
