@@ -25,8 +25,8 @@ MOAT_SURF = -0.5
 
 def height(x, z):
     h = 0.0
-    if abs(z - MOAT) < 2.6 and abs(x) < 37:
-        return -3.2 + 3.2 * smooth((abs(z - MOAT) - 1.6) / 1.0)
+    if abs(z - MOAT) < 2.9 and abs(x) < 37:   # (the moat: a stone-lined trench; its walls stand over the ground's step)
+        return -3.2
     if z < -26 and abs(x) < 4:                 # the castle road climbs
         h = 3.0 * smooth((-26 - z) / 12)
     elif z < -26:
@@ -52,7 +52,16 @@ def build(era='fresh'):
             a.geo(ground, cx + 5.5, cz + 5.5).ground(cx, cz, cx + 11, cz + 11, 2 * fine, 2 * fine, height, uvs=0.3)
     height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     # the moat and the castle road's bridge over it
-    a.water(-37, MOAT - 2.6, 37, MOAT + 2.6, MOAT_SURF, depth=3)
+    a.water(-36.3, MOAT - 2.3, 36.3, MOAT + 2.3, MOAT_SURF, depth=3)
+    # its stone walls: straight up from the bottom to a kerb just over the street, so a swimmer
+    # can always climb out on to their flat tops (and the ground's own step is hidden inside them)
+    for side in (-1, 1):
+        z0, z1 = sorted((MOAT + side * 2.3, MOAT + side * 3.6))
+        for (x0, x1, top) in [(-37.7, -3.2, 0.12), (-3.2, 3.2, -0.42), (3.2, 37.7, 0.12)]:     # (under the bridge: below its deck)
+            a.geo('stone', (x0 + x1) / 2, (z0 + z1) / 2).box((x0, -3.4, z0), (x1, top, z1), uvs=0.35)
+    for xx in (-37, 37):
+        x0, x1 = sorted((xx - 0.7 * (1 if xx > 0 else -1), xx + 0.7 * (1 if xx > 0 else -1)))
+        a.geo('stone', xx, MOAT).box((x0, -3.4, MOAT - 2.3), (x1, 0.12, MOAT + 2.3), uvs=0.35)
     a.geo('planks', 0, MOAT).box((-3, -0.4, MOAT - 2.8), (3, 0.05, MOAT + 2.8), uvs=0.5)
     for xx in (-3, 3):
         a.geo('planks', xx, MOAT).box((xx - 0.12, 0.05, MOAT - 2.8), (xx + 0.12, 0.8, MOAT + 2.8), uvs=0.5)

@@ -29,8 +29,8 @@ def height(x, z):
     if abs(x) < 7 and z < -HALF + 18:                            # the river coming in
         h = min(h, -2.5 + 3.7 * smooth((abs(x) - 4) / 3))
     d = max(abs(x), abs(z)) - (HALF - 6)
-    if d > 0 and not (abs(x) < 12 and z < 0):
-        h += 10 * smooth(d / 4)
+    if d > 0:                                      # (the river's gap: gently banked)
+        h += 10 * smooth(d / 4) * (smooth((abs(x) - 11) / 6) if z < 0 else 1.0)
     return h + 0.3 * math.sin(x * 0.3) * math.cos(z * 0.25) * smooth((r - 46) / 4)
 
 

@@ -291,6 +291,24 @@ class Obj:
     def empty(self):
         return not self.f
 
+    def add_backs(self):
+        """For a model shown one side only: each open face (one with an edge no other face
+        shares the other way round: a pot's rim, a sail, a sheet) gets a back face as well,
+        turned round with its normal reversed, so it's there seen from behind too."""
+        key = lambda i: tuple(round(c, 3) for c in self.v[i - 1])
+        edges = set()
+        for f in self.f:
+            P = [key(c[0]) for c in f]
+            for i in range(3):
+                edges.add((P[i], P[(i + 1) % 3]))
+        for f in list(self.f):
+            P = [key(c[0]) for c in f]
+            if all((P[(i + 1) % 3], P[i]) in edges for i in range(3)):
+                continue
+            a, b, c = f
+            n = lambda k: tuple(-x for x in self.vn[k[2] - 1])
+            self.tri(self.v[a[0] - 1], self.v[c[0] - 1], self.v[b[0] - 1], self.vt[a[1] - 1], self.vt[c[1] - 1], self.vt[b[1] - 1], n(a), n(c), n(b))
+
     def tri_count(self):
         return len(self.f)
 

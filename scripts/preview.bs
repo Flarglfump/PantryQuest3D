@@ -1,0 +1,31 @@
+@strict @3d
+# preview.bs - on each piece of a preview (a slice of the next place, past a way out: made by
+# Area.make_previews in tools/lib/areakit.py): shown only while the camera is near enough to
+# look through the way out at it, so the far-off ones cost nothing to draw.
+
+var cx: number = 0                     # where the piece is (its middle, x and z) ...
+var cz: number = 0
+var r: number = 0                      # ... and how far it reaches from there
+var t: number = 0
+var cam: entity
+
+const RANGE: number = 90               # (metres, from the camera to the piece's edge)
+
+func start() -> void {
+    cam = find("Camera")
+    t = random() * 0.25
+    check()
+}
+
+func update(dt: number) -> void {
+    t += dt
+    if t < 0.25 { return }
+    t = 0
+    check()
+}
+
+func check() -> void {
+    if cam == nil { return }
+    var d: number = sqrt((cam.x - cx) * (cam.x - cx) + (cam.z - cz) * (cam.z - cz)) - r
+    self.Mesh.visible = d < RANGE
+}

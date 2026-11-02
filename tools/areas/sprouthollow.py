@@ -150,7 +150,7 @@ def build():
     for xx in (-2.3, 2.3):
         a.geo('bark', xx, 47.9).box((xx - 0.35, -0.3, 47.55), (xx + 0.35, 3.4, 48.25), uvs=0.6)
     a.geo('bark', 0, 47.9).box((-2.9, 3.4, 47.5), (2.9, 4.1, 48.3), uvs=0.6)
-    a.entity('Way Out', t3((0, 1.6, 48.05), (0, 0, 0), (3.9, 3.8, 0.1)), mesh('cube', '#0c0a06ff', lit=False, cast=False))
+    # (through it: the fields, the slice of them Area.make_previews puts past the way out)
 
     # ---- the giant herb stalks round the hollow, and a canopy far overhead ----
     for i in range(30):
@@ -341,4 +341,6 @@ def build():
     a.spawn_point('fields', 0, height(0, 30) + 0.1, 30, 0)
     a.spawn_point('start', 0, height(0, 26) + 0.1, 26, 0)
     a.spawn_point('crock', 0, gy + 0.1, cz + 8, 0)
+    a.area_map([('FIELDS', 0, 46, 's'), ('MOTHER STARTER', 0, -44, ''), ('HOME', -8, 18, ''), ("SAGE'S", 13, 3, ''),
+                ('TRAINING', 30, -19, ''), ('GARDEN', -31, 2, '')], bounds=(-42, -50, 42, 46))
     a.save()

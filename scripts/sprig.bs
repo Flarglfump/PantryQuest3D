@@ -1042,15 +1042,19 @@ func update_swim(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> vec3 {
             return forward_of(facing) * 1.5
         }
         if move_amount > 0.3 and is_on_wall(self) {
-            var from: vec3 = self.position + forward_of(facing) * 0.7 + vec3(0, SWIM_Y + 1.6, 0)
-            var bank: any = raycast(from, vec3(from.x, water.surface - 0.6, from.z), self)
-            if bank != nil and bank[1].y - water.surface < 1.5 and bank[1].y > water.surface - 0.5 {
-                self.position = bank[1] + vec3(0, 0.1, 0)
-                st = "free"
-                pitch = 0
-                vel = vec3(0, 0, 0)
-                play_sound("sfx/hop.wav", 0.5)
-                return vec3(0, 0, 0)
+            # up on to the bank: somewhere flat enough to stand, a little way in (not on the
+            # bank's steep face, where he'd only slide back in)
+            for reach in [0.7, 1.0, 1.4, 1.8] {
+                var from: vec3 = self.position + forward_of(facing) * reach + vec3(0, SWIM_Y + 1.6, 0)
+                var bank: any = raycast(from, vec3(from.x, water.surface - 0.6, from.z), self)
+                if bank != nil and bank[1].y - water.surface < 1.5 and bank[1].y > water.surface - 0.2 and bank[2].y > 0.75 {
+                    self.position = bank[1] + vec3(0, 0.1, 0)
+                    st = "free"
+                    pitch = 0
+                    vel = vec3(0, 0, 0)
+                    play_sound("sfx/hop.wav", 0.5)
+                    return vec3(0, 0, 0)
+                }
             }
         }
         if move_amount > 0.1 { play_animation(body, "run", 0.5, true) } else { play_animation(body, "idle", 0.6, true) }

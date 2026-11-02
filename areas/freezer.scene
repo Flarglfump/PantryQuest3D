@@ -602,46 +602,6 @@ entity
 
 entity
   Name
-    text = "ice -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/freezer/ice_-1_-2.obj"
-    texture = "art/ice.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "ice -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/freezer/ice_-1_0.obj"
-    texture = "art/ice.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "ice 0 -2"
   Transform3D
     position = 0 0 0
@@ -650,26 +610,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/freezer/ice_0_-2.obj"
-    texture = "art/ice.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "ice 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/freezer/ice_0_-1.obj"
     texture = "art/ice.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -702,6 +642,111 @@ entity
 
 entity
   Name
+    text = "ice_2s -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_2s_-1_-2.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "ice_2s -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_2s_-1_0.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "ice_2s 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_2s_0_-2.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "ice_2s 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_2s_0_-1.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "ice_2s 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_2s_0_0.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
     text = "stone -1 -1"
   Transform3D
     position = 0 0 0
@@ -713,6 +758,26 @@ entity
     texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone_2s -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/stone_2s_-1_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1

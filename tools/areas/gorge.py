@@ -34,8 +34,9 @@ def height(x, z):
         h = max(h, LEDGE * smooth((-14 - z) / 34))
     # the cliffs either side, with a gap east for the road from the field
     side = abs(x) - 11
-    if side > 0 and not (x > 0 and abs(z - 40) < 4) and not (x < 0 and abs(z - 20) < 4):
-        h += 12 * smooth(side / 3)
+    if side > 0:                                   # (the gaps' sides gently banked, not sheer)
+        gap = smooth((abs(z - 40) - 3) / 6) if x > 0 else smooth((abs(z - 20) - 3) / 6)
+        h += 12 * smooth(side / 3) * gap
     # the cliff behind the falls
     if z < -58:
         h = max(h, BED + (16 - BED) * smooth((-58 - z) / 3)) if abs(x - river_x(z)) > 3.5 or z < -63 else h

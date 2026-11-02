@@ -1268,26 +1268,6 @@ entity
 
 entity
   Name
-    text = "flesh -2 -4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_-2_-4.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "flesh -2 -3"
   Transform3D
     position = 0 0 0
@@ -1328,86 +1308,6 @@ entity
 
 entity
   Name
-    text = "flesh -1 -5"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_-1_-5.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "flesh -1 -3"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_-1_-3.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "flesh -1 -2"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_-1_-2.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "flesh -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_-1_0.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "flesh 0 -5"
   Transform3D
     position = 0 0 0
@@ -1416,26 +1316,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/gulp/flesh_0_-5.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "flesh 0 -4"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_0_-4.obj"
     texture = "art/flesh.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -1488,26 +1368,6 @@ entity
 
 entity
   Name
-    text = "flesh 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/gulp/flesh_0_-1.obj"
-    texture = "art/flesh.png"
-    color = #ffffffff
-    uv_scale = 1 1
-    cast_shadow = false
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
     text = "flesh 0 0"
   Transform3D
     position = 0 0 0
@@ -1548,18 +1408,313 @@ entity
 
 entity
   Name
-    text = "lava 1 -2"
+    text = "flesh_2s -2 -4"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/gulp/lava_1_-2.obj"
+    file = "models/areas/gulp/flesh_2s_-2_-4.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-2_-3.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-2_-2.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-1_-5.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-1_-3.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-1_-2.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_-1_0.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_-5.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_-4.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_-3.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_-2.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_-1.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_0_0.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "flesh_2s 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/flesh_2s_1_-2.obj"
+    texture = "art/flesh.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "lava_2s 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/gulp/lava_2s_1_-2.obj"
     texture = "art/lavacheese.png"
     color = #ffffffff
     uv_scale = 1 1
     lit = false
+    cull = false
     cast_shadow = false
 
 entity

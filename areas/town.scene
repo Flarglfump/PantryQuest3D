@@ -140,7 +140,7 @@ entity
     scale = 1 1 1
   Collider3D
     shape = box
-    size = 74 3 5.2
+    size = 72.6 3 4.6
     radius = 0.5
     friction = 0.8
     trigger = true
@@ -247,7 +247,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = 3.4 0.369 -27
+    position = 3.4 -0.9342 -27
     rotation = 0 180 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -265,7 +265,7 @@ entity
   Name
     text = "Sign Board"
   Transform3D
-    position = 3.4 0.769 -27
+    position = 3.4 -0.5342 -27
     rotation = 0 180 0
     scale = 0.8 0.5 0.08
   Mesh
@@ -2096,6 +2096,157 @@ entity
 
 entity
   Name
+    text = "Edge"
+  Transform3D
+    position = 24.25 5 40.3
+    rotation = 0 -180 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 43.5 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = -24.25 5 40.3
+    rotation = 0 -180 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 43.5 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Preview Tree"
+  Transform3D
+    position = 35.7433 2.4457 105.567
+    rotation = 0 0 0
+    scale = 0.6689 2.8986 0.6689
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 35.7, cz = 105.6, r = 3"
+
+entity
+  Name
+    text = "Preview Leaves"
+  Transform3D
+    position = 35.7433 4.6753 105.567
+    rotation = 0 242.5 0
+    scale = 2.8986 2.2297 2.8986
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 35.7, cz = 105.6, r = 3"
+
+entity
+  Name
+    text = "Preview Tree"
+  Transform3D
+    position = -43.6213 2.4992 69.5758
+    rotation = 0 0 0
+    scale = 0.618 2.6779 0.618
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -43.6, cz = 69.6, r = 3"
+
+entity
+  Name
+    text = "Preview Leaves"
+  Transform3D
+    position = -43.6213 4.5591 69.5758
+    rotation = 0 186.013 0
+    scale = 2.6779 2.0599 2.6779
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -43.6, cz = 69.6, r = 3"
+
+entity
+  Name
+    text = "Preview Tree"
+  Transform3D
+    position = -43.0862 2.0372 84.4865
+    rotation = 0 0 0
+    scale = 0.8218 3.5613 0.8218
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -43.1, cz = 84.5, r = 3"
+
+entity
+  Name
+    text = "Preview Leaves"
+  Transform3D
+    position = -43.0862 4.7766 84.4865
+    rotation = 0 205.809 0
+    scale = 3.5613 2.7394 3.5613
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -43.1, cz = 84.5, r = 3"
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = -24.25 8 -40.3
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 43.5 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = 24.25 8 -40.3
+    rotation = 0 0 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 43.5 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
     text = "bark -1 0"
   Transform3D
     position = 0 0 0
@@ -2126,6 +2277,46 @@ entity
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark_2s -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/bark_2s_-1_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "bark_2s 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/bark_2s_0_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -2454,33 +2645,297 @@ entity
 
 entity
   Name
-    text = "far_roof 0 -4"
+    text = "cobble_2s -2 -2"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/far_roof_0_-4.obj"
-    texture = "art/planks.png"
-    color = #5868a8ff
+    file = "models/areas/town/cobble_2s_-2_-2.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
     uv_scale = 1 1
+    cull = false
     cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
 
 entity
   Name
-    text = "far_stone 0 -4"
+    text = "cobble_2s -2 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/far_stone_0_-4.obj"
-    texture = "art/stone.png"
-    color = #e8e0d0ff
+    file = "models/areas/town/cobble_2s_-2_-1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
     uv_scale = 1 1
+    cull = false
     cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_-2_0.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_-2_1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_-1_-2.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_-1_-1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_-1_1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_0_-2.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_0_-1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_0_1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_1_-2.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_1_-1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_1_0.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "cobble_2s 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/cobble_2s_1_1.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
 
 entity
   Name
@@ -2712,6 +3167,2158 @@ entity
 
 entity
   Name
+    text = "planks_2s -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_-2_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_-2_0.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_-2_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_-1_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_-1_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_0_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_0_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_1_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_1_0.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "planks_2s 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/planks_2s_1_1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "preview_grass -3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 53.4, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass -3 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-3_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 69.6, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass -3 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-3_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 89.1, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass -3 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-3_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 108.6, r = 7.3"
+
+entity
+  Name
+    text = "preview_grass -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 53.4, r = 13.8"
+
+entity
+  Name
+    text = "preview_grass -2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-2_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 69.6, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass -2 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-2_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 89.1, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass -2 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-2_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 108.6, r = 11.7"
+
+entity
+  Name
+    text = "preview_grass -1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -108.5, r = 15"
+
+entity
+  Name
+    text = "preview_grass -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_-5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -90.5, r = 15"
+
+entity
+  Name
+    text = "preview_grass -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -69.5, r = 17"
+
+entity
+  Name
+    text = "preview_grass -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -53, r = 15.9"
+
+entity
+  Name
+    text = "preview_grass -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 53.4, r = 13.8"
+
+entity
+  Name
+    text = "preview_grass -1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 69.6, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass -1 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 89.1, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass -1 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_-1_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 108.6, r = 11.7"
+
+entity
+  Name
+    text = "preview_grass 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -108.5, r = 12.7"
+
+entity
+  Name
+    text = "preview_grass 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_-5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -90.5, r = 12.7"
+
+entity
+  Name
+    text = "preview_grass 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -69.5, r = 15"
+
+entity
+  Name
+    text = "preview_grass 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -53, r = 13.8"
+
+entity
+  Name
+    text = "preview_grass 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 53.4, r = 13.8"
+
+entity
+  Name
+    text = "preview_grass 0 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 69.6, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass 0 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 89.1, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass 0 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_0_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 108.6, r = 11.7"
+
+entity
+  Name
+    text = "preview_grass 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 53.4, r = 13.8"
+
+entity
+  Name
+    text = "preview_grass 1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_1_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 69.6, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass 1 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_1_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 89.1, r = 16.2"
+
+entity
+  Name
+    text = "preview_grass 1 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_1_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 108.6, r = 11.7"
+
+entity
+  Name
+    text = "preview_grass 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 53.4, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass 2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 69.6, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass 2 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 89.1, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass 2 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 108.6, r = 7.3"
+
+entity
+  Name
+    text = "preview_grass_2s -3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 50.1, r = 7.3"
+
+entity
+  Name
+    text = "preview_grass_2s -3 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-3_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 66.3, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s -3 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-3_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 89.1, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass_2s -3 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-3_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -42.2, cz = 108.6, r = 7.3"
+
+entity
+  Name
+    text = "preview_grass_2s -2 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -108.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s -2 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_-5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -90.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s -2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -72.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -53, r = 10.9"
+
+entity
+  Name
+    text = "preview_grass_2s -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 46.9, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s -2 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-2_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -29.2, cz = 111.8, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s -1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -108.5, r = 15"
+
+entity
+  Name
+    text = "preview_grass_2s -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_-5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -90.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21, cz = -69.5, r = 12.4"
+
+entity
+  Name
+    text = "preview_grass_2s -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -12, cz = -50, r = 14.1"
+
+entity
+  Name
+    text = "preview_grass_2s -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 46.9, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s -1 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_-1_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -9.8, cz = 111.8, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_0_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -114.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_0_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9, cz = -44, r = 9.1"
+
+entity
+  Name
+    text = "preview_grass_2s 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_0_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 46.9, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 0 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_0_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 111.8, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_-6.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21, cz = -108.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_-5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21, cz = -90.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_grass_2s 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21, cz = -69.5, r = 12.4"
+
+entity
+  Name
+    text = "preview_grass_2s 1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21, cz = -53, r = 10.9"
+
+entity
+  Name
+    text = "preview_grass_2s 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 46.9, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 1 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_1_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 29.2, cz = 111.8, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 53.4, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_2_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 72.8, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 2 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_2_4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 92.3, r = 10.3"
+
+entity
+  Name
+    text = "preview_grass_2s 2 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_grass_2s_2_5.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.2, cz = 108.6, r = 7.3"
+
+entity
+  Name
+    text = "preview_hedge -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_-1_-5.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 2.5, cz = -89.5, r = 17.5"
+
+entity
+  Name
+    text = "preview_hedge -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_-1_-4.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 0, cz = -71.5, r = 21.1"
+
+entity
+  Name
+    text = "preview_hedge -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_-1_-3.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -2.5, cz = -53.5, r = 17.5"
+
+entity
+  Name
+    text = "preview_hedge 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_0_-5.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 2.5, cz = -89.5, r = 17.5"
+
+entity
+  Name
+    text = "preview_hedge 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_0_-4.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 0, cz = -71.5, r = 21.1"
+
+entity
+  Name
+    text = "preview_hedge 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_0_-3.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -2.5, cz = -53.5, r = 17.5"
+
+entity
+  Name
+    text = "preview_hedge 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_1_-5.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -89.5, r = 0.6"
+
+entity
+  Name
+    text = "preview_hedge 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_hedge_1_-4.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -65.5, r = 0.6"
+
+entity
+  Name
+    text = "preview_path -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_-1_2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -0.7, cz = 52.5, r = 9.9"
+
+entity
+  Name
+    text = "preview_path -1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_-1_3.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -0.3, cz = 69.6, r = 13"
+
+entity
+  Name
+    text = "preview_path -1 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_-1_5.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -0.3, cz = 108.8, r = 6.3"
+
+entity
+  Name
+    text = "preview_path 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_0_2.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 1.2, cz = 52.9, r = 10.3"
+
+entity
+  Name
+    text = "preview_path 0 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_0_3.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 1.5, cz = 70.8, r = 11.9"
+
+entity
+  Name
+    text = "preview_path 0 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_0_4.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 9.8, cz = 90.6, r = 15"
+
+entity
+  Name
+    text = "preview_path 0 5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_0_5.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 5.3, cz = 108.3, r = 10.7"
+
+entity
+  Name
+    text = "preview_path 1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_1_3.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 38.2, cz = 78.6, r = 3.6"
+
+entity
+  Name
+    text = "preview_path 1 4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_1_4.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 28.4, cz = 86.2, r = 11.4"
+
+entity
+  Name
+    text = "preview_path 2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_path_2_3.obj"
+    texture = "art/dirt.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 42.3, cz = 74.9, r = 4.5"
+
+entity
+  Name
+    text = "preview_stone -2 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_-2_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20, cz = -113.5, r = 0.8"
+
+entity
+  Name
+    text = "preview_stone -2 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_-2_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone -1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_-1_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -0.4, cz = -108.8, r = 21.2"
+
+entity
+  Name
+    text = "preview_stone -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_-1_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -11.7, cz = -78, r = 36.6"
+
+entity
+  Name
+    text = "preview_stone -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_-1_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -1.5, cz = 43.4, r = 7.5"
+
+entity
+  Name
+    text = "preview_stone 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_0_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 0.4, cz = -108.8, r = 21.2"
+
+entity
+  Name
+    text = "preview_stone 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_0_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 11.7, cz = -78, r = 36.6"
+
+entity
+  Name
+    text = "preview_stone 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_0_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 1.5, cz = 43.4, r = 7.5"
+
+entity
+  Name
+    text = "preview_stone 1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_1_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -113.5, r = 1.1"
+
+entity
+  Name
+    text = "preview_stone 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_1_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s -2 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-2_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s -2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-2_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s -1 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-1_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -0.3, cz = -108.9, r = 20.3"
+
+entity
+  Name
+    text = "preview_stone_2s -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-1_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -19.2, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-1_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_-1_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -4.5, cz = 43.4, r = 4.6"
+
+entity
+  Name
+    text = "preview_stone_2s 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_0_-6.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 0.3, cz = -108.9, r = 20.3"
+
+entity
+  Name
+    text = "preview_stone_2s 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_0_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_0_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_0_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 1.5, cz = 43.4, r = 7.5"
+
+entity
+  Name
+    text = "preview_stone_2s 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_1_-5.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20.8, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_stone_2s 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_stone_2s_1_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20, cz = -78, r = 35.5"
+
+entity
+  Name
+    text = "preview_thatch -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_thatch_-1_2.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -7.5, cz = 43.8, r = 2.7"
+
+entity
+  Name
+    text = "preview_thatch 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_thatch_0_2.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 7.5, cz = 43.8, r = 2.7"
+
+entity
+  Name
+    text = "preview_thatch_2s -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_thatch_2s_-1_2.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -6.3, cz = 43.4, r = 1.5"
+
+entity
+  Name
+    text = "preview_thatch_2s 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/preview_thatch_2s_0_2.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 8.7, cz = 43.4, r = 1.5"
+
+entity
+  Name
     text = "stone -2 -2"
   Transform3D
     position = 0 0 0
@@ -2777,6 +5384,25 @@ entity
   Mesh
     shape = model
     file = "models/areas/town/stone_-1_2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "stone 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/stone_0_-2.obj"
     texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -2921,17 +5547,18 @@ entity
 
 entity
   Name
-    text = "thatch -2 -1"
+    text = "stone_2s -2 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_-2_-1.obj"
-    texture = "art/thatch.png"
+    file = "models/areas/town/stone_2s_-2_0.obj"
+    texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -2940,17 +5567,18 @@ entity
 
 entity
   Name
-    text = "thatch -2 0"
+    text = "stone_2s 0 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_-2_0.obj"
-    texture = "art/thatch.png"
+    file = "models/areas/town/stone_2s_0_-1.obj"
+    texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -2959,17 +5587,18 @@ entity
 
 entity
   Name
-    text = "thatch -2 1"
+    text = "stone_2s 0 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_-2_1.obj"
-    texture = "art/thatch.png"
+    file = "models/areas/town/stone_2s_0_0.obj"
+    texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -2978,36 +5607,18 @@ entity
 
 entity
   Name
-    text = "thatch -1 -1"
+    text = "stone_2s 1 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_-1_-1.obj"
-    texture = "art/thatch.png"
+    file = "models/areas/town/stone_2s_1_-1.obj"
+    texture = "art/stone.png"
     color = #ffffffff
     uv_scale = 1 1
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "thatch -1 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/town/thatch_-1_1.obj"
-    texture = "art/thatch.png"
-    color = #ffffffff
-    uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -3024,44 +5635,6 @@ entity
   Mesh
     shape = model
     file = "models/areas/town/thatch_-1_2.obj"
-    texture = "art/thatch.png"
-    color = #ffffffff
-    uv_scale = 1 1
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "thatch 0 -1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/town/thatch_0_-1.obj"
-    texture = "art/thatch.png"
-    color = #ffffffff
-    uv_scale = 1 1
-  Collider3D
-    shape = mesh
-    size = 1 1 1
-    radius = 0.5
-    friction = 0.9
-
-entity
-  Name
-    text = "thatch 0 1"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/town/thatch_0_1.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -3092,17 +5665,18 @@ entity
 
 entity
   Name
-    text = "thatch 1 -1"
+    text = "thatch_2s -2 -1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_1_-1.obj"
+    file = "models/areas/town/thatch_2s_-2_-1.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -3111,17 +5685,18 @@ entity
 
 entity
   Name
-    text = "thatch 1 0"
+    text = "thatch_2s -2 0"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_1_0.obj"
+    file = "models/areas/town/thatch_2s_-2_0.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1
@@ -3130,17 +5705,158 @@ entity
 
 entity
   Name
-    text = "thatch 1 1"
+    text = "thatch_2s -2 1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/town/thatch_1_1.obj"
+    file = "models/areas/town/thatch_2s_-2_1.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_-1_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_-1_1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_0_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_0_1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s 1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_1_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_1_0.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "thatch_2s 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/thatch_2s_1_1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
   Collider3D
     shape = mesh
     size = 1 1 1

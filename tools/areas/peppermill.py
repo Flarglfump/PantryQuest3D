@@ -20,11 +20,16 @@ def smooth(t):
 
 def height(x, z):
     h = 0.6 * math.sin(x * 0.12) * math.cos(z * 0.1)
-    if z < -30:                                   # the foot of the mountain
-        h += 6 * smooth((-30 - z) / 10) * smooth((abs(x) - 3) / 3)
+    if z < -30:                                   # the foot of the mountain (the trail up its middle)
+        h += 6 * smooth((-30 - z) / 10) * smooth((abs(x) - 3) / 7)
     d = max(abs(x), abs(z)) - (HALF - 4)
-    if d > 0 and not (abs(x + 30) < 5 and z > 30) and not (abs(x) < 4 and z < -30):
-        h += 8 * smooth(d / 4)
+    if d > 0:                                     # the rim, with gaps for the roads: gently banked either side
+        gap = 1.0
+        if z > 30:
+            gap = min(gap, smooth((abs(x + 30) - 4) / 7))
+        if z < -30:
+            gap = min(gap, smooth((abs(x) - 3) / 7))
+        h += 8 * smooth(d / 4) * gap
     return h
 
 
@@ -40,7 +45,7 @@ def build(era='fresh'):
             a.geo('grass', cx + 6, cz + 6).ground(cx, cz, cx + 12, cz + 12, 3, 3, height, uvs=0.25)
 
     height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
-    a.path([(-30, 46), (-24, 30), (-10, 14), (0, 4), (0, -20), (0, -46)], 3.0)
+    a.path([(-30, 46), (-30, 36), (-24, 30), (-10, 14), (0, 4), (0, -20), (0, -46)], 3.0)
     a.path([(0, 4), (22, 0), (30, -6)], 2.2)
 
     # ---- the way in from the field (south-west) ----

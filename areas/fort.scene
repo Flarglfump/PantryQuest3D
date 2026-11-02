@@ -421,6 +421,124 @@ entity
 
 entity
   Name
+    text = "Edge"
+  Transform3D
+    position = 47.2 8.3281 -25
+    rotation = 0 -90 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 42 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = 47.2 8.3281 25
+    rotation = 0 -90 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 42 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Preview Tree"
+  Transform3D
+    position = 67.5 4.4998 -10
+    rotation = 0 0 0
+    scale = 0.5429 2.3528 0.5429
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -10, r = 3"
+
+entity
+  Name
+    text = "Preview Leaves"
+  Transform3D
+    position = 67.5 6.3096 -10
+    rotation = 0 296 0
+    scale = 2.3528 1.8098 2.3528
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -10, r = 3"
+
+entity
+  Name
+    text = "Preview Tree"
+  Transform3D
+    position = 51.5 4.8954 8
+    rotation = 0 0 0
+    scale = 0.7234 3.1345 0.7234
+  Mesh
+    shape = cylinder
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 2
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 51.5, cz = 8, r = 3"
+
+entity
+  Name
+    text = "Preview Leaves"
+  Transform3D
+    position = 51.5 7.3065 8
+    rotation = 0 64 0
+    scale = 3.1345 2.4112 3.1345
+  Mesh
+    shape = sphere
+    texture = "art/leaves.png"
+    color = #ffffffff
+    uv_scale = 2 2
+    shadow = true
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 51.5, cz = 8, r = 3"
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = -47.2 8.0885 25
+    rotation = 0 90 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 42 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
+    text = "Edge"
+  Transform3D
+    position = -47.2 8.0885 -25
+    rotation = 0 90 0
+    scale = 1 1 1
+  Collider3D
+    shape = box
+    size = 42 40 0.6
+    radius = 0.5
+    friction = 0.8
+
+entity
+  Name
     text = "planks -1 -2"
   Transform3D
     position = 0 0 0
@@ -494,6 +612,1295 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "preview_bark 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 58.8, cz = 10.6, r = 2.7"
+
+entity
+  Name
+    text = "preview_bark_2s -5 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_-5_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.9, cz = 3.3, r = 0.2"
+
+entity
+  Name
+    text = "preview_bark_2s -4 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_-4_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -80.2, cz = -3.3, r = 6.1"
+
+entity
+  Name
+    text = "preview_bark_2s -4 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_-4_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -69.5, cz = 4.7, r = 0.2"
+
+entity
+  Name
+    text = "preview_bark_2s -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_-3_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -60.2, cz = 7.5, r = 4.9"
+
+entity
+  Name
+    text = "preview_bark_2s 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_2_-1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 59.5, cz = -16, r = 6.4"
+
+entity
+  Name
+    text = "preview_bark_2s 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_bark_2s_2_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 58.8, cz = 10.6, r = 2.7"
+
+entity
+  Name
+    text = "preview_cliff 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_-3.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = -45, r = 1"
+
+entity
+  Name
+    text = "preview_cliff 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_-2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = -33, r = 11"
+
+entity
+  Name
+    text = "preview_cliff 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_-1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = -15, r = 7"
+
+entity
+  Name
+    text = "preview_cliff 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_0.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = 19, r = 3"
+
+entity
+  Name
+    text = "preview_cliff 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = 33, r = 11"
+
+entity
+  Name
+    text = "preview_cliff 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 49.5, cz = 45, r = 1"
+
+entity
+  Name
+    text = "preview_cliff 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_-3.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 74.5, cz = -45, r = 5.1"
+
+entity
+  Name
+    text = "preview_cliff 3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_-2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 74.5, cz = -33, r = 12.1"
+
+entity
+  Name
+    text = "preview_cliff 3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_-1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 73, cz = -11, r = 11.5"
+
+entity
+  Name
+    text = "preview_cliff 3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_0.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 73, cz = 8, r = 8.7"
+
+entity
+  Name
+    text = "preview_cliff 3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 73, cz = 36, r = 8.7"
+
+entity
+  Name
+    text = "preview_cliff 3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_3_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 73, cz = 45, r = 3.6"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_-3.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 74.5, cz = -45, r = 5.1"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_-2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 77.5, cz = -33, r = 11.2"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_-1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 76, cz = -11, r = 11"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_0.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 76, cz = 8, r = 8"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 76, cz = 36, r = 8"
+
+entity
+  Name
+    text = "preview_cliff_2s 3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_cliff_2s_3_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 73, cz = 45, r = 3.6"
+
+entity
+  Name
+    text = "preview_grass 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = -45, r = 8.1"
+
+entity
+  Name
+    text = "preview_grass 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = -33, r = 13.6"
+
+entity
+  Name
+    text = "preview_grass 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = -11, r = 13.6"
+
+entity
+  Name
+    text = "preview_grass 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = 11, r = 13.6"
+
+entity
+  Name
+    text = "preview_grass 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = 33, r = 13.6"
+
+entity
+  Name
+    text = "preview_grass 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = 45, r = 8.1"
+
+entity
+  Name
+    text = "preview_grass 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -45, r = 2.2"
+
+entity
+  Name
+    text = "preview_grass 3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -33, r = 11.2"
+
+entity
+  Name
+    text = "preview_grass 3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -11, r = 11.2"
+
+entity
+  Name
+    text = "preview_grass 3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 71, cz = 11, r = 12.3"
+
+entity
+  Name
+    text = "preview_grass 3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 71, cz = 33, r = 12.3"
+
+entity
+  Name
+    text = "preview_grass 3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = 45, r = 2.2"
+
+entity
+  Name
+    text = "preview_grass_2s 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = -45, r = 8.1"
+
+entity
+  Name
+    text = "preview_grass_2s 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 57.5, cz = 45, r = 8.1"
+
+entity
+  Name
+    text = "preview_grass_2s 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_3_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = -45, r = 2.2"
+
+entity
+  Name
+    text = "preview_grass_2s 3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_3_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 76, cz = 19, r = 3"
+
+entity
+  Name
+    text = "preview_grass_2s 3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_3_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 76, cz = 25, r = 3"
+
+entity
+  Name
+    text = "preview_grass_2s 3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_grass_2s_3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67.5, cz = 45, r = 2.2"
+
+entity
+  Name
+    text = "preview_planks 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_planks_2_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 59.5, cz = -16, r = 7.7"
+
+entity
+  Name
+    text = "preview_planks 3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_planks_3_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 67, cz = -16, r = 1.6"
+
+entity
+  Name
+    text = "preview_sand -5 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-5_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = -27.5, r = 5.7"
+
+entity
+  Name
+    text = "preview_sand -5 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-5_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = -11, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand -5 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-5_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = 11, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand -5 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-5_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = 27.5, r = 5.7"
+
+entity
+  Name
+    text = "preview_sand -4 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-4_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = -27.5, r = 12.3"
+
+entity
+  Name
+    text = "preview_sand -4 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-4_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = -11, r = 15.6"
+
+entity
+  Name
+    text = "preview_sand -4 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-4_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = 11, r = 15.6"
+
+entity
+  Name
+    text = "preview_sand -4 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-4_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = 27.5, r = 12.3"
+
+entity
+  Name
+    text = "preview_sand -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-3_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = -27.5, r = 10.2"
+
+entity
+  Name
+    text = "preview_sand -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-3_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = -11, r = 14"
+
+entity
+  Name
+    text = "preview_sand -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-3_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = 11, r = 14"
+
+entity
+  Name
+    text = "preview_sand -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_-3_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = 27.5, r = 10.2"
+
+entity
+  Name
+    text = "preview_sand_2s -5 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-5_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = -27.5, r = 5.7"
+
+entity
+  Name
+    text = "preview_sand_2s -5 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-5_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = -11, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand_2s -5 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-5_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = 11, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand_2s -5 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-5_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -90.1, cz = 27.5, r = 5.7"
+
+entity
+  Name
+    text = "preview_sand_2s -4 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-4_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = -31.6, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand_2s -4 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-4_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -77.8, cz = 31.6, r = 11.1"
+
+entity
+  Name
+    text = "preview_sand_2s -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-3_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = -27.5, r = 10.2"
+
+entity
+  Name
+    text = "preview_sand_2s -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-3_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -49.9, cz = -11, r = 11"
+
+entity
+  Name
+    text = "preview_sand_2s -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-3_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -49.9, cz = 11, r = 11"
+
+entity
+  Name
+    text = "preview_sand_2s -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_sand_2s_-3_1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -58.1, cz = 27.5, r = 10.2"
+
+entity
+  Name
+    text = "preview_stone 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_stone_2_-3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 53.1, cz = -45, r = 0.2"
+
+entity
+  Name
+    text = "preview_stone 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_stone_2_-2.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 53.1, cz = -40.5, r = 4.5"
+
+entity
+  Name
+    text = "preview_stone_2s 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/preview_stone_2s_2_-3.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 53.1, cz = -45, r = 0.2"
 
 entity
   Name
@@ -848,6 +2255,300 @@ entity
     texture = "art/sand.png"
     color = #ffffffff
     uv_scale = 1 1
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-3_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-3_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-3_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-2_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-2_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_-1_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_0_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_0_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_1_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_1_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_2_-2.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_2_-1.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
+    cast_shadow = false
+  Collider3D
+    shape = mesh
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.9
+
+entity
+  Name
+    text = "sand_2s 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fort/sand_2s_2_0.obj"
+    texture = "art/sand.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cull = false
     cast_shadow = false
   Collider3D
     shape = mesh

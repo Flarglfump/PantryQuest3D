@@ -12,9 +12,45 @@ An area script makes an Area, adds geometry and things, and saves it:
 import inspect
 import math
 import os
+import re
 
 from kit import (Scene, Obj, Chunked, t3, t2, mesh, collider, kinematic, tags, script, particles, light, q, path, write_png)
 import kit
+
+def clip_face(o, P, T, N, f, _):
+    """Adds to o the part of triangle P (texture coordinates T, normals N) where f(p) <= 0."""
+    ds = [f(p) for p in P]
+    if all(d <= 0 for d in ds):
+        o.tri(P[0], P[1], P[2], T[0], T[1], T[2], N[0], N[1], N[2])
+        return
+    poly = []
+    for i in range(3):
+        j = (i + 1) % 3
+        if ds[i] <= 0:
+            poly.append((P[i], T[i], N[i]))
+        if (ds[i] <= 0) != (ds[j] <= 0):
+            t = ds[i] / (ds[i] - ds[j])
+            lerp = lambda a, b: tuple(a[k] + (b[k] - a[k]) * t for k in range(len(a)))
+            poly.append((lerp(P[i], P[j]), lerp(T[i], T[j]), lerp(N[i], N[j])))
+    for k in range(1, len(poly) - 1):
+        a, b, c = poly[0], poly[k], poly[k + 1]
+        o.tri(a[0], b[0], c[0], a[1], b[1], c[1], a[2], b[2], c[2])
+
+
+def mat_info(material):
+    """MATERIALS[material]; a preview_<m> (another place's, seen past a way out) looks like <m>
+    but is only to look at: not solid, no shadows."""
+    if material.endswith('_2s'):                         # (its open faces: drawn from both sides)
+        t, c, solid, cast, lit, cull = mat_info(material[:-3])
+        return (t, c, solid, cast, lit, False)
+    if material.startswith('preview_'):
+        t, c, solid, cast, lit, cull = MATERIALS[material[8:]]
+        return (t, c, False, False, lit, cull)
+    return MATERIALS[material]
+
+
+# The outdoor places (their ways out to each other show a slice of the next: Area.make_previews).
+OUTDOOR = {'fields', 'town', 'castle', 'sprouthollow', 'gorge', 'peppermill', 'thicket', 'lake', 'fort', 'flats', 'idol', 'fondue', 'fountain'}
 
 MATERIALS = {
     # material: (texture, colour, solid, cast shadows, lit, cull)
@@ -165,19 +201,25 @@ class Area:
 
     def save(self):
         self.place_weevils()
+        self.make_previews()
+        self.two_sided_open_faces()
         n = 0
         tris = 0
         for (material, cx, cz), obj in self.chunks.items():
             if obj.empty():
                 continue
-            texture, color, solid, cast, lit, cull = MATERIALS[material]
+            texture, color, solid, cast, lit, cull = mat_info(material)
             file = 'models/areas/%s/%s_%d_%d.obj' % (self.file_id, material, cx, cz)
             obj.save(file)
             comps = [t3((0, 0, 0)), mesh('model', color, texture, file=file, cast=cast, lit=lit, cull=cull)]
             if solid:
                 comps.append(collider('mesh', friction=0.9))
-            if material == 'canopy' or material == 'water':
+            if material.replace('preview_', '') in ('canopy', 'water'):
                 comps.append(tags('seethrough'))
+            if material.startswith('preview_'):              # (shown only from near enough to see it: preview.bs)
+                lo, hi = obj.bounds()
+                comps.append(script('scripts/preview.bs', cx=round((lo[0] + hi[0]) / 2, 1), cz=round((lo[2] + hi[2]) / 2, 1),
+                                    r=round(math.hypot(hi[0] - lo[0], hi[2] - lo[2]) / 2, 1)))
             self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
             n += 1
             tris += obj.tri_count()
@@ -249,7 +291,7 @@ class Area:
     def make_map(self, max_w=200, max_h=112):
         tris, walls = [], []          # floors (and wall tops) seen from above; the walls' upright faces
         for (material, cx, cz), obj in self.chunks.items():
-            if obj.empty() or not MATERIALS[material][2] or material == 'ceiling':
+            if obj.empty() or not mat_info(material)[2] or material.startswith('ceiling'):
                 continue
             wall = 'wall' in material
             for f in obj.f:
@@ -359,20 +401,212 @@ class Area:
                                                      lows=[round(max(-999, f[1]), 1) for f in floors], highs=[round(min(999, f[2]), 1) for f in floors],
                                                      x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3), ppm=round(ppm, 4), w=W, h=H))
 
+    # ---- previews: past each way out to another outdoor place, a slice of that place (its
+    # level geometry near where Sprig comes in, turned and moved to line up with the way out
+    # here), so the view through a gate or down a road shows where it goes, not the sky ----
+    PREVIEW_DEPTH, PREVIEW_HALF = 46.0, 46.0
+    PREVIEW_DEPTHS = {'town': 90.0, 'castle': 80.0, 'fields': 80.0}     # (walled places, seen right across: all of them)
+    PREVIEW_FROM = 3.5          # (ours stays this far past the way out: a gate or an archway just past it)
+    PREVIEW_ENTITIES = ('Tree', 'Leaves', 'Awning', 'Well Roof', 'Door')
+
+    def make_previews(self):
+        for (zx, zy, zz, to, at, zw, zd) in getattr(self, 'zones', []):
+            if to not in OUTDOOR or self.id not in OUTDOOR or to == self.id:
+                continue
+            spawns = getattr(self, 'spawns', {})
+            ours = spawns.get(to)                   # (where one comes in from there: just inside it)
+            if ours is None and spawns:
+                ours = min(spawns.values(), key=lambda sp: math.hypot(sp[0] - zx, sp[2] - zz))
+            other = os.path.join('areas', to + '.scene')
+            if ours is None or not os.path.exists(other):
+                continue
+            out = (zx - ours[0], zz - ours[2])
+            L = math.hypot(*out)
+            if L < 0.5:
+                continue
+            out = (out[0] / L, out[1] / L)
+            sc = open(other).read()
+            blocks = sc.split('\nentity\n')
+            spawn, back = None, None
+            for blk in blocks:
+                m = re.search(r'text = "([^"]*)"', blk)
+                p = re.search(r'position = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                if not m or not p:
+                    continue
+                pos = tuple(float(v) for v in p.groups())
+                if m.group(1) == 'spawn_' + at:
+                    spawn = pos
+            if spawn is None:
+                continue
+            best = None
+            for blk in blocks:
+                if 'text = "Load Zone"' not in blk or ('to = \\"%s\\"' % self.id) not in blk:
+                    continue
+                p = re.search(r'position = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                hs = re.search(r'size = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                pos = tuple(float(v) for v in p.groups())
+                d = math.hypot(pos[0] - spawn[0], pos[2] - spawn[2])
+                if best is None or d < best[0]:
+                    best = (d, (pos[0], pos[1] - float(hs.group(2)) / 2, pos[2]))
+            if best is None:
+                continue
+            back = best[1]
+            inn = (spawn[0] - back[0], spawn[2] - back[2])
+            Li = math.hypot(*inn) or 1
+            inn = (inn[0] / Li, inn[1] / Li)
+            # their frame -> ours: turn their way in onto our way out, their zone onto ours
+            ang = math.atan2(out[1], out[0]) - math.atan2(inn[1], inn[0])
+            ca, sa = math.cos(ang), math.sin(ang)
+            def move(p, back=back, ca=ca, sa=sa, zx=zx, zy=zy, zz=zz):
+                dx, dz = p[0] - back[0], p[2] - back[2]
+                return (zx + dx * ca - dz * sa, p[1] - back[1] + zy, zz + dx * sa + dz * ca)
+            def turn(n, ca=ca, sa=sa):
+                return (n[0] * ca - n[2] * sa, n[1], n[0] * sa + n[2] * ca)
+            depth = self.PREVIEW_DEPTHS.get(to, self.PREVIEW_DEPTH)
+            def inside(p, inn=inn, back=back, depth=depth):   # (in their frame: the slice in from their way out)
+                dx, dz = p[0] - back[0], p[2] - back[2]
+                d = dx * inn[0] + dz * inn[1]
+                lat = -dx * inn[1] + dz * inn[0]
+                return -0.5 <= d <= depth and abs(lat) <= self.PREVIEW_HALF
+            # ours past the way out goes (the slice stands there instead): cut at the line
+            # across the way out, as theirs is, so the two meet without overlapping
+            def side(p, out=out, zx=zx, zz=zz):
+                dx, dz = p[0] - zx, p[2] - zz
+                if abs(-dx * out[1] + dz * out[0]) > self.PREVIEW_HALF:
+                    return -1.0                      # (off to the side: ours stays)
+                return dx * out[0] + dz * out[1] - self.PREVIEW_FROM
+            for key, obj in list(self.chunks.objs.items()):
+                if key[0].startswith('preview_'):
+                    continue
+                keep, cut = [], []
+                for f in obj.f:
+                    ds = [side(obj.v[c[0] - 1]) for c in f]
+                    if all(d <= 0 for d in ds):
+                        keep.append(f)
+                    elif any(d < 0 for d in ds):
+                        cut.append(f)
+                obj.f = keep
+                for f in cut:
+                    clip_face(obj, [obj.v[c[0] - 1] for c in f], [obj.vt[c[1] - 1] for c in f], [obj.vn[c[2] - 1] for c in f], side, obj)
+            # an unseen wall across the way out, either side of the load zone: the ground past it
+            # is only to look at, and there's none of ours left to stand on
+            half = (zw if abs(out[1]) > abs(out[0]) else zd) / 2
+            yaw_deg = math.degrees(math.atan2(-out[0], -out[1]))
+            for sgn in (-1, 1):
+                mid = half + (self.PREVIEW_HALF - half) / 2
+                bx = zx + out[0] * 1.2 + (-out[1]) * sgn * mid
+                bz = zz + out[1] * 1.2 + out[0] * sgn * mid
+                self.scene.entity('Edge', t3((bx, zy + 5, bz), (0, yaw_deg, 0)), collider('box', (self.PREVIEW_HALF - half, 40, 0.6)))
+            # theirs: the level geometry's chunks (not their own previews, nor far scenery)
+            for f in sorted(set(re.findall(r'file = "(models/areas/%s/[^"]+\.obj)"' % re.escape(to), sc))):
+                mat = re.sub(r'_-?\d+_-?\d+\.obj$', '', os.path.basename(f))
+                base = mat[:-3] if mat.endswith('_2s') else mat
+                if mat.startswith('preview_') or mat.startswith('far_') or base == 'canopy' or base not in MATERIALS:
+                    continue
+                V, T, N = [], [], []
+                for line in open(f):
+                    if line.startswith('v '):
+                        V.append(tuple(float(x) for x in line.split()[1:4]))
+                    elif line.startswith('vt '):
+                        T.append(tuple(float(x) for x in line.split()[1:3]))
+                    elif line.startswith('vn '):
+                        N.append(tuple(float(x) for x in line.split()[1:4]))
+                    elif line.startswith('f '):
+                        idx = [tuple(int(k) for k in c.split('/')) for c in line.split()[1:]]
+                        P = [V[c[0] - 1] for c in idx]
+                        if not all(inside(p) for p in P):
+                            continue
+                        e1 = [P[1][k] - P[0][k] for k in range(3)]
+                        e2 = [P[2][k] - P[0][k] for k in range(3)]
+                        if sum((e1[(k + 1) % 3] * e2[(k + 2) % 3] - e1[(k + 2) % 3] * e2[(k + 1) % 3]) ** 2 for k in range(3)) < 0.01:
+                            continue                     # (details too small to see from here)
+                        Q = [move(p) for p in P]
+                        o = self.geo('preview_' + mat, (Q[0][0] + Q[1][0] + Q[2][0]) / 3, (Q[0][2] + Q[1][2] + Q[2][2]) / 3)
+                        clip_face(o, Q, [T[c[1] - 1] for c in idx], [turn(N[c[2] - 1]) for c in idx], lambda p: -side(p), None)
+            # ... and their trees, rocks and such (just to look at)
+            for blk in blocks:
+                m = re.search(r'text = "([^"]*)"', blk)
+                if not m or m.group(1) not in self.PREVIEW_ENTITIES or '\n  Mesh\n' not in blk:
+                    continue
+                if '\n  Parent' in blk:
+                    continue
+                p = re.search(r'position = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                r = re.search(r'rotation = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                pos = tuple(float(v) for v in p.groups())
+                if not inside(pos):
+                    continue
+                q = move(pos)
+                rot = tuple(float(v) for v in r.groups()) if r else (0, 0, 0)
+                lines = blk.split('\n')
+                k = lines.index('  Mesh')
+                body = [lines[k]]
+                for line in lines[k + 1:]:
+                    if not line.startswith('    '):
+                        break
+                    body.append(line)
+                body = '\n'.join(body)
+                sc_ = re.search(r'scale = ([-\d.e]+) ([-\d.e]+) ([-\d.e]+)', blk)
+                scale = tuple(float(v) for v in sc_.groups()) if sc_ else (1, 1, 1)
+                self.scene.lines.append('entity')
+                self.scene.lines.append('  Name')
+                self.scene.lines.append('    text = "Preview %s"' % m.group(1))
+                self.scene.lines.append('  Transform3D')
+                self.scene.lines.append('    position = %g %g %g' % tuple(round(v, 4) for v in q))
+                self.scene.lines.append('    rotation = %g %g %g' % (rot[0], round(rot[1] - math.degrees(ang), 3), rot[2]))
+                self.scene.lines.append('    scale = %g %g %g' % scale)
+                for line in body.strip('\n').split('\n'):
+                    self.scene.lines.append(line)
+                self.scene.lines.append('  Script')
+                self.scene.lines.append('    file = "scripts/preview.bs"')
+                self.scene.lines.append('    vars = "cx = %g, cz = %g, r = 3"' % (round(q[0], 1), round(q[2], 1)))
+                self.scene.lines.append('')
+                self.scene.count += 1
+
+    def two_sided_open_faces(self):
+        """Faces drawn one side only vanish seen from behind: fine on a closed shape (a box: its
+        back faces are inside it), wrong on an open one (a cone roof seen from under its eaves, a
+        single sheet of wall, a slope's edge). Every face with an edge no other face shares the
+        other way round is open: they move to a '<material>_2s' mesh drawn from both sides."""
+        key = lambda p: (round(p[0], 3), round(p[1], 3), round(p[2], 3))
+        edges = set()
+        objs = [(k, o) for k, o in self.chunks.objs.items() if mat_info(k[0])[5] and not k[0].endswith('_2s') and k[0] not in ('path', 'preview_path')]
+        for k, o in objs:
+            for f in o.f:
+                P = [key(o.v[c[0] - 1]) for c in f]
+                for i in range(3):
+                    edges.add((P[i], P[(i + 1) % 3]))
+        for (mat, cx, cz), o in objs:
+            keep, opened = [], []
+            for f in o.f:
+                P = [key(o.v[c[0] - 1]) for c in f]
+                if all((P[(i + 1) % 3], P[i]) in edges for i in range(3)):
+                    keep.append(f)
+                else:
+                    opened.append(f)
+            if not opened:
+                continue
+            o.f = keep
+            t = self.chunks.objs.setdefault((mat + '_2s', cx, cz), kit.Obj('%s chunk %d %d (both sides)' % (mat, cx, cz)))
+            for f in opened:
+                t.tri(*[o.v[c[0] - 1] for c in f], *[o.vt[c[1] - 1] for c in f], *[o.vn[c[2] - 1] for c in f])
+
     MAP_COLOURS = {   # how each material looks on an area map, from above
         'grass': (104, 160, 76), 'flowers': (120, 170, 90), 'dirt': (168, 128, 84), 'path': (184, 146, 96), 'cobble': (178, 170, 150),
         'rock': (150, 128, 108), 'cliff': (130, 136, 120), 'stone': (160, 156, 146), 'bark': (112, 82, 56), 'planks': (156, 112, 70),
         'thatch': (206, 172, 92), 'leaves': (64, 124, 56), 'hedge': (52, 108, 54), 'water': (74, 146, 214), 'sand': (222, 202, 150),
         'fizzrock': (150, 190, 210), 'ice': (200, 230, 240), 'rot': (110, 100, 80), 'lava': (240, 170, 60), 'crust': (190, 140, 80)}
 
-    def area_map(self, labels):
+    def area_map(self, labels, bounds=None):
         """This (outdoor) area gets a map for the pause menu: its ground from above (north up),
         with labels [(text, x, z, side), ...]: side n, s, e or w for a way out (written outside
         the map's edge there, with an arrow), '' for a place on it. A "/" breaks a line."""
         self.map_labels = labels
+        self.map_bounds = bounds          # (x0, z0, x1, z1): the part to show (else all the ground made)
 
     def make_area_map(self, max_w=190, max_h=108):
-        if kit.GROUNDS:                                   # (the bounds of the ground made: where Sprig can be)
+        if getattr(self, 'map_bounds', None):
+            x0, z0, x1, z1 = self.map_bounds
+        elif kit.GROUNDS:                                 # (the bounds of the ground made: where Sprig can be)
             x0, z0 = min(g[0] for g in kit.GROUNDS), min(g[1] for g in kit.GROUNDS)
             x1, z1 = max(g[2] for g in kit.GROUNDS), max(g[3] for g in kit.GROUNDS)
         else:
@@ -384,7 +618,7 @@ class Area:
             if 0 <= px < W and 0 <= py < H and (top[py][px] is None or h > top[py][px][0]):
                 top[py][px] = (h, c)
         for (material, cx, cz), obj in self.chunks.items():
-            col = self.MAP_COLOURS.get(material)
+            col = self.MAP_COLOURS.get(material[:-3] if material.endswith('_2s') else material)
             if col is None or obj.empty():
                 continue
             for f in obj.f:
@@ -409,7 +643,7 @@ class Area:
                         if min(w0, w1, w2) < -0.05:
                             continue
                         h = ah * w0 + bh * w1 + qh * w2
-                        if material == 'path':
+                        if material.startswith('path'):
                             h += 0.3                      # (over the grass it lies on)
                         put(px, py, h, col)
         for (tx, tz, size) in getattr(self, 'trees', []):   # the trees: leafy dots
@@ -450,7 +684,7 @@ class Area:
         if abs(y - g) < 1e-4 or not (y < g or abs(y - g) < 0.35):
             return y
         for (material, cx, cz), obj in self.chunks.items():
-            if not MATERIALS[material][2]:
+            if not mat_info(material)[2]:
                 continue                                    # (things not stood on: leaves, water...)
             if obj.surface_near(x, z, y - off, 0.06):
                 return y
@@ -561,6 +795,7 @@ class Area:
             kw['say'] = say
         if needs:
             kw['needs'] = needs
+        self.zones = getattr(self, 'zones', []) + [(x, y, z, to, at, w, d)]  # (for the previews past them)
         self.entity('Load Zone', t3((x, y + h / 2, z), (0, yaw, 0)), collider('box', (w, h, d), trigger=True),
                     tags('loadzone'), script('scripts/loadzone.bs', **kw))
 
@@ -815,8 +1050,8 @@ def castle_skyline(a, x, y, z, s=1.0):
         st.box((x + k * 2 * s - 0.9 * s, y + 22 * s, z + 8 * s), (x + k * 2 * s + 0.9 * s, y + 24 * s, z + 9.01 * s), uvs=0.2)
     for dx, dz in [(-13, -10), (13, -10), (-13, 10), (13, 10)]:                                   # the corner towers
         tx, tz = x + dx * s, z + dz * s
-        st.cylinder((tx, y - 4, tz), 4 * s, 34 * s + 4, 10, uvs=0.08)
-        rf.cone((tx, y + 30 * s, tz), 5 * s, 9 * s, 10, uvs=0.1)
+        st.cylinder((tx, y - 4, tz), 4 * s, 34 * s + 4, 10, uvs=0.08)                            # (its top at y + 34 s ...)
+        rf.cone((tx, y + 34 * s + 0.02, tz), 5 * s, 9 * s, 10, uvs=0.1)                           # (... and the roof on it, overhanging)
     st.cylinder((x, y + 20 * s, z), 5 * s, 22 * s, 12, uvs=0.08)                                   # the great tower
     rf.cone((x, y + 42 * s, z), 6.5 * s, 14 * s, 12, uvs=0.1)
 

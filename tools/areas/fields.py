@@ -33,8 +33,8 @@ def rim(x, z):
         near = abs(z - ez) < 14 if side in 'ns' else abs(x - ex) < 14
         if near and along < w:
             return 0.0
-        if near and along < w + 4:
-            d *= (along - w) / 4
+        if near and along < w + 10:
+            d *= smooth((along - w) / 10)          # (the gap's sides: a gentle bank, not a cliff)
     return d
 
 
@@ -68,9 +68,9 @@ def build(era='fresh'):
     height = drawn(height)        # (from here on, things are set on the ground as drawn: none float or sink)
     a.path([(0, 100), (0, 60), (-2, 30), (0, 0), (2, -40), (0, -100)], 3.2)
     a.path([(0, 8), (16, 6), (30, 5), (38, 4)], 2.6)
-    a.path([(-1, 58), (-30, 62), (-60, 58), (-100, 60)], 2.6)
-    a.path([(1, -30), (30, -50), (60, -72), (78, -100)], 2.6)
-    a.path([(0, 78), (40, 60), (70, 44), (100, 40)], 2.6)
+    a.path([(-1, 58), (-30, 62), (-60, 58), (-84, 60), (-100, 60)], 2.6)
+    a.path([(1, -30), (30, -50), (60, -72), (78, -84), (78, -100)], 2.6)     # (straight out through the gap, not up its bank)
+    a.path([(0, 78), (40, 60), (70, 44), (84, 40), (100, 40)], 2.6)
 
     # ---- Larder Town's wall and gate, at the north end ----
     wz = -HALF + 4
