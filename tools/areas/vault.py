@@ -23,4 +23,5 @@ def build():
              particles(rate=20, max=40, lifetime=1.5, speed=1.2, spread=10, area=(1.6, 1.6), size_start=0.15, size_end=0,
                        color_start='#c0e0ffff', color_end='#4080ff00', blend='add'),
              script('scripts/warp.bs', to='temple', at='block', when='met_mozz'))
+    a.floor_map()         # (the MAP page shows its floors, no DUNGEON MAP needed)
     a.save()

@@ -322,3 +322,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "base = \"art/maps/vault_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -9.161, z0 = -9.161, ppm = 6.2222, w = 114, h = 114"

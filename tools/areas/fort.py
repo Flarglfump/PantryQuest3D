@@ -68,4 +68,5 @@ def build():
         s = random.uniform(1.4, 2.4)
         a.entity('Rock', t3((x, height(x, z) + s * 0.25, z), (0, random.uniform(0, 360), 0), (s, s * 0.7, s)),
                  mesh('sphere', '#e0b080ff', 'art/stone.png'), collider('sphere', radius=0.5))
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()

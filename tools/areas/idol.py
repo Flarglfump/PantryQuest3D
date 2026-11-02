@@ -43,4 +43,5 @@ def build():
         x, z = math.cos(k) * 18, math.sin(k * 1.3) * 16
         a.entity('Rock', t3((x, height(x, z) + 0.4, z), (0, k * 50, 0), (2.0, 1.4, 2.0)), mesh('sphere', '#e8c8a0ff', 'art/stone.png'),
                  collider('sphere', radius=0.5))
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()

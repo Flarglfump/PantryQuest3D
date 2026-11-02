@@ -420,7 +420,8 @@ func draw_map() -> void {
         draw_area_map()
         return
     }
-    if dun == "" {
+    var free: bool = dun == "" and len(global("dmap", [])) == 7      # (a cave's or a tower's floors: no DUNGEON MAP needed)
+    if dun == "" and not free {
         # the kingdom: a box for each region, the one Sprig is in lit up
         var here: string = global("area", "")
         var regions: list = [["FIZZLINGS", 30, 92, ["fizzdomain", "fountain"]], ["VALLEY", 30, 112, ["gorge"]], ["LAKE", 30, 132, ["lake"]],
@@ -444,8 +445,8 @@ func draw_map() -> void {
         }
         return
     }
-    var hm: bool = has("map_" + dun)
-    var hc: bool = has("compass_" + dun)
+    var hm: bool = free or has("map_" + dun)
+    var hc: bool = not free and has("compass_" + dun)
     var names: list = [["crock", "THE GREAT CROCK"], ["hardcaves", "HARDTACK CAVERNS"], ["gulp", "INSIDE LORD GULP"],
                        ["thymetemple", "THYME TEMPLE"], ["forge", "FONDUE FORGE"], ["brinetemple", "FIZZWATER TEMPLE"],
                        ["crypt", "COMPOST CRYPT"], ["idoltemple", "SALT IDOL"]]
@@ -467,6 +468,7 @@ func draw_map() -> void {
         var origin: vec2 = c - vec2(floor(w / 2), floor(h / 2))
         # the floors, top floor at the top: this one lit, Sprig's marked, the compass's dots
         var n: int = len(floors)
+        if n == 1 and not hc { n = 0 }               # (one floor: no floor list to choose from)
         for k in n {
             var i: int = n - 1 - k
             var fy: number = 134 - n * 7 + k * 14
@@ -523,9 +525,10 @@ func draw_map() -> void {
         draw_text("chest", vec2(176, 196), [230, 200, 140])
         draw_circle(vec2(228, 200), 3, [220, 40, 40, 255])
         draw_text("boss", vec2(234, 196), [230, 200, 140])
-    } elif hm {
+    } elif hm and not free {
         draw_text("No compass yet", vec2(168, 196), [150, 140, 120])
     }
+    if free { return }
     var keys: int = 0
     for c in s[7] {
         if c[0] == "keys_" + dun { keys = c[1] }
@@ -549,6 +552,7 @@ func draw_area_map() -> void {
     for lb in om[6] {
         var p: vec2 = origin + vec2((lb[1] - om[1]) * om[3], (lb[2] - om[2]) * om[3])
         var lines: list = split_bar(lb[0])
+        if lb[3] == "n" or lb[3] == "s" { lines = [join_lines(lines)] }      # (over and under the map: one line, no room for two)
         var tw: number = 0
         for ln in lines { tw = max(tw, text_size(ln).x) }
         var th: number = len(lines) * 9
@@ -605,6 +609,15 @@ func draw_area_map() -> void {
     draw_text("S", rc + vec2(-2, 14), [200, 190, 160])
     draw_text("W", rc + vec2(-21, -3), [200, 190, 160])
     draw_text("E", rc + vec2(16, -3), [200, 190, 160])
+}
+
+func join_lines(lines: list) -> string {
+    var out: string = ""
+    for k in len(lines) {
+        if k > 0 { out = out + " " }
+        out = out + lines[k]
+    }
+    return out
 }
 
 # "a/b" -> ["a", "b"] (a map label's lines).

@@ -3980,3 +3980,23 @@ entity
     cast_shadow = false
   Tags
     list = "seethrough"
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/lake_area.png\", x0 = -70, z0 = -70, ppm = 0.7714, w = 108, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"BRINE/VALLEY\", x0 = -9.5, z0 = -68.5, side = \"n\""

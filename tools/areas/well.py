@@ -29,4 +29,5 @@ def build():
     a.chest(0, 0, -23, 0 + 180, 'lens', 'well_lens', appear='clear:well_s', big=True)
     a.point_light(0, 3, 0, '#ffe0a0ff', 1.2, 10)
     a.point_light(0, 3, -18, '#c0a0ffff', 1.0, 10)
+    a.floor_map()         # (the MAP page shows its floors, no DUNGEON MAP needed)
     a.save()

@@ -47,6 +47,7 @@ def build(era='fresh'):
         a.npc('creme', 2, 0, -10, 180, model='mint', reach=2.4)
         a.npc('grubb_lazy', -14, 0, -8.5, 160, model='baker', reach=2.4)
     a.sign(-3, 0, 24, 0, 'sign_dairy2')
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()
 
 

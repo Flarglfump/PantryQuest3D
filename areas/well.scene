@@ -550,3 +550,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Map Info"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/mapinfo.bs"
+    vars = "base = \"art/maps/well_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -7.286, z0 = -25.286, ppm = 3.5, w = 51, h = 114"

@@ -45,4 +45,5 @@ def build():
         a.enemy('crustling', x, 0.1, z, hp=4, damage=4)
     a.npc('cinder', -3.5, 0, -24.5, 160, needs='chest:frz_boots', reach=2.4)
     a.point_light(0, 4, -23, '#c0e0ffff', 1.2, 12)
+    a.floor_map()         # (the MAP page shows its floors, no DUNGEON MAP needed)
     a.save()

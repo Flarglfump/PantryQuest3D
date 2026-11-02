@@ -41,4 +41,5 @@ def build():
                      script('scripts/secret.bs', kind='invisible'))
     a.entity('Lost', t3((0, 0, 0)), script('scripts/lost.bs', path=[(x, 0, z) for x, z in PATH], width=7))
     a.loadzone(-44, height(-44, 4), 4, 1.5, 4, 8, to='idol', at='start')
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()

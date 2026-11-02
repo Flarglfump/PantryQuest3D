@@ -223,9 +223,9 @@ class Area:
             self.scene.entity('%s %d %d' % (material, cx, cz), *comps)
             n += 1
             tris += obj.tri_count()
-        if self.dungeon:
+        if self.dungeon or getattr(self, 'free_map', False):
             self.make_map()
-        elif getattr(self, 'map_labels', None) is not None:
+        elif hasattr(self, 'map_labels'):
             self.make_area_map()
         written = {'%s_%d_%d.obj' % (m, cx, cz) for (m, cx, cz), obj in self.chunks.items() if not obj.empty()}
         folder = os.path.join('models', 'areas', self.file_id)
@@ -596,21 +596,47 @@ class Area:
         'thatch': (206, 172, 92), 'leaves': (64, 124, 56), 'hedge': (52, 108, 54), 'water': (74, 146, 214), 'sand': (222, 202, 150),
         'fizzrock': (150, 190, 210), 'ice': (200, 230, 240), 'rot': (110, 100, 80), 'lava': (240, 170, 60), 'crust': (190, 140, 80)}
 
-    def area_map(self, labels, bounds=None):
+    SHORT_NAMES = {'fields': 'FIELDS', 'town': 'LARDER TOWN', 'castle': 'CASTLE', 'sprouthollow': 'SPROUTHOLLOW', 'gorge': 'BRINE/VALLEY',
+                   'peppermill': 'PEPPERMILL', 'thicket': 'THICKET', 'lake': 'LAKE BRINE', 'fort': 'RAIDER FORT', 'flats': 'HAUNTED/FLATS',
+                   'idol': 'SALT IDOL', 'fondue': 'MT FONDUE', 'fountain': 'FOUNTAIN', 'dairy': 'DAIRY', 'ruins': 'RUINS',
+                   'fizzdomain': 'FIZZLING/DOMAIN', 'hardtack': 'HARDTACK/CITY', 'spire': 'SPIRE', 'freezer': 'FREEZER/CAVES',
+                   'well': 'THE WELL', 'vault': 'VAULT', 'temple': 'TEMPLE', 'chamber': 'CHAMBER', 'crock': 'GREAT CROCK',
+                   'brinetemple': 'FIZZWATER/TEMPLE', 'hardcaves': 'HARDTACK/CAVERNS', 'thymetemple': 'THYME/TEMPLE',
+                   'idoltemple': 'IDOL TEMPLE', 'gulp': 'LORD GULP', 'forge': 'FONDUE/FORGE', 'crypt': 'COMPOST/CRYPT', 'ending': 'GARDEN'}
+
+    def floor_map(self):
+        """A place with floors (a cave, a tower) that shows its map without needing a DUNGEON
+        MAP: the same pictures as a dungeon's, a floor at a time."""
+        self.free_map = True
+
+    def area_map(self, labels=None, bounds=None, places=()):
         """This (outdoor) area gets a map for the pause menu: its ground from above (north up),
         with labels [(text, x, z, side), ...]: side n, s, e or w for a way out (written outside
         the map's edge there, with an arrow), '' for a place on it. A "/" breaks a line."""
-        self.map_labels = labels
+        self.map_labels = labels          # (None: the ways out, from the load zones, named; and places too)
+        self.map_places = list(places)
         self.map_bounds = bounds          # (x0, z0, x1, z1): the part to show (else all the ground made)
 
-    def make_area_map(self, max_w=190, max_h=108):
+    def make_area_map(self, max_w=150, max_h=108):
         if getattr(self, 'map_bounds', None):
             x0, z0, x1, z1 = self.map_bounds
         elif kit.GROUNDS:                                 # (the bounds of the ground made: where Sprig can be)
             x0, z0 = min(g[0] for g in kit.GROUNDS), min(g[1] for g in kit.GROUNDS)
             x1, z1 = max(g[2] for g in kit.GROUNDS), max(g[3] for g in kit.GROUNDS)
-        else:
-            return
+        else:                                             # (no ground made: all the solid geometry's)
+            ps = [o.v[c[0] - 1] for (m, cx, cz), o in self.chunks.objs.items() if mat_info(m)[2] and not m.startswith('preview_') for f in o.f for c in f]
+            if not ps:
+                return
+            x0, z0, x1, z1 = min(p[0] for p in ps), min(p[2] for p in ps), max(p[0] for p in ps), max(p[2] for p in ps)
+        if self.map_labels is None:                       # the ways out, named; on the edge they're near
+            labels, seen = [], []
+            for (zx, zy, zz, to, at, zw, zd) in getattr(self, 'zones', []):
+                if not to or any(t == to and math.hypot(zx - sx, zz - sz) < 8 for (t, sx, sz) in seen):
+                    continue
+                seen.append((to, zx, zz))
+                edge = min([(zx - x0, 'w'), (x1 - zx, 'e'), (zz - z0, 'n'), (z1 - zz, 's')])
+                labels.append((self.SHORT_NAMES.get(to, to.upper()), zx, zz, edge[1] if edge[0] < 10 else ''))
+            self.map_labels = labels + self.map_places
         ppm = min(max_w / (x1 - x0), max_h / (z1 - z0))
         W, H = int((x1 - x0) * ppm), int((z1 - z0) * ppm)
         top = [[None] * W for _ in range(H)]              # (height, colour) of the highest thing at each pixel

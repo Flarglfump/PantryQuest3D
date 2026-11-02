@@ -74,6 +74,7 @@ def build(era='fresh'):
         a.grass(x, height(x, z), z)
         n += 1
     if risen:
+        a.area_map()
         a.save()
         return
     gi = a.entity('Lord Gulp', t3((0, -2.8, -21.5), (0, 180, 0)), mesh('model', '#a0b4c8ff', 'art/fizzrock.png', file='models/gulp.obj'),
@@ -93,6 +94,7 @@ def build(era='fresh'):
     a.sign(-4, 0, 13, 90, 'gulp_look')
     # Fizzy, home again
     a.npc('fizzy', 3, 0, 4, 200, needs='gulp_done', reach=2.4)
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()
 
 

@@ -1531,3 +1531,23 @@ entity
     cast_shadow = false
   Tags
     list = "seethrough"
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/fountain_area.png\", x0 = -36, z0 = -42, ppm = 1.5, w = 108, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"FIZZLING/DOMAIN\", x0 = 0, z0 = 25.5, side = \"s\""

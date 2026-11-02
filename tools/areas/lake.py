@@ -105,6 +105,7 @@ def build(era='fresh'):
             continue
         a.grass(x, height(x, z), z)
         n += 1
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()
 
 

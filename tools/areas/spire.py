@@ -86,4 +86,5 @@ def build():
     a.spawn_point('top', 0, 0.1, zt + 9, 0)
     stairs(a, 9, zt + 6, 'bottom', needs='escaping')
     a.point_light(0, 7, zt, '#c0e0a0ff', 1.6, 20)
+    a.floor_map()         # (the MAP page shows its floors, no DUNGEON MAP needed)
     a.save()

@@ -37,4 +37,5 @@ def build():
              tags('enemy', 'focusable', 'boss'), script('scripts/gorgemold.bs'))
     a.entity('Saffron', t3((-10, height(-10, 10), 10), (0, -130, 0), 1.3), mesh('model', file='models/saffron.glb'),
              ('Animator', [('clip', q('idle')), ('speed', 1), ('loop', True), ('playing', True), ('blend', 0.2)]))
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()

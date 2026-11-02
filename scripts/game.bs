@@ -473,8 +473,8 @@ func map_for_pause() -> void {
     } else {
         set_global("omap", [])
     }
-    var info: entity = find("Map Info")
-    if info == nil or dungeon == "" {
+    var info: entity = find("Map Info")         # (a dungeon's floors; or a cave's or a tower's, shown free)
+    if info == nil {
         set_global("dmap", [])
         return
     }

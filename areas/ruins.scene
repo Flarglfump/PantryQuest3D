@@ -847,3 +847,12 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/ruins_area.png\", x0 = -30, z0 = -30, ppm = 1.8, w = 108, h = 108"

@@ -119,6 +119,7 @@ def build(era='fresh'):
             s = random.uniform(0.8, 1.6)
             a.entity('Rock', t3((px, height(px, pz) + s * 0.25, pz), (0, random.uniform(0, 360), 0), (s, s * 0.7, s)),
                      mesh('sphere', '#d0a880ff', 'art/stone.png'), collider('sphere', radius=0.5))
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()
 
 

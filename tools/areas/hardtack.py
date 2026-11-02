@@ -82,6 +82,7 @@ def build(era='fresh'):
     for ang in (110, 125):
         x, z = polar(12, ang)
         a.pot(x, 0, z)
+    a.area_map()          # (the MAP page: the ground from above, the ways out named)
     a.save()
 
 

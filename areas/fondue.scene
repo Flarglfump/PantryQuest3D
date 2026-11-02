@@ -2812,3 +2812,45 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/fondue_area.png\", x0 = -36, z0 = -52, ppm = 1.0385, w = 81, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"PEPPERMILL\", x0 = 0, z0 = 45, side = \"s\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"HARDTACK/CITY\", x0 = -22.9, z0 = 6, side = \"\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"HARDTACK/CAVERNS\", x0 = 26.9, z0 = -30, side = \"\""
