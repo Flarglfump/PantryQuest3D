@@ -307,6 +307,9 @@ def build():
     a.npc('fennel', 3.2, height(3.2, 30.2), 30.2, 220, needs='fennel_bridge')
     a.entity('Fennel Stop', t3((0, 1.0, 30.6)), collider('box', (5.0, 2.0, 1.2), trigger=True), tags('loadzone'),
              script('scripts/fennelstop.bs'))
+    # ... and the bridge itself is shut till then: an unseen wall across its end (gone with the Crock)
+    a.entity('Bridge Shut', t3((0, height(0, 31.6) + 1.5, 31.6), (0, 0, 0), (5.0, 3.0, 0.4)), collider('box'),
+             script('scripts/blocker.bs', until='crock_done'))
     a.npc('mint', -15, height(-15, -2.5), -2.5, 220)
     a.npc('dill', -13.8, height(-13.8, -3.6), -3.6, 230)
     a.npc('parsley', 8, height(8, 6), 6, 250)

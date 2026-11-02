@@ -3133,6 +3133,22 @@ entity
 
 entity
   Name
+    text = "Bridge Shut"
+  Transform3D
+    position = 0 1.5 31.6
+    rotation = 0 0 0
+    scale = 5 3 0.4
+  Collider3D
+    shape = box
+    size = 1 1 1
+    radius = 0.5
+    friction = 0.8
+  Script
+    file = "scripts/blocker.bs"
+    vars = "until = \"crock_done\""
+
+entity
+  Name
     text = "Mint"
   Transform3D
     position = -15 0.0866 -2.5
@@ -3811,7 +3827,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 188
+    entity = 189
   Particles
     rate = 3
     max = 6
@@ -3857,7 +3873,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 190
+    entity = 191
   Particles
     rate = 3
     max = 6
