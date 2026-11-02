@@ -10,7 +10,7 @@ from kit import t3, mesh, collider, tags, script, particles
 
 
 def build():
-    a = Area('temple', 'Temple of the First Hearth', music='', kill_y=-20, sky='#100c08ff', fog=(16, 40), fog_color='#1a140cff',
+    a = Area('temple', 'Temple of the First Hearth', music='', kill_y=-20, sky='#100c08ff', fog=(26, 64), fog_color='#1a140cff',
              ambient=('#c0a880ff', 0.6), sun=('#ffe0a0ff', 0.5), sun_rot=(-75, 20, 0), chunk=16)
     W, N, S, H = 7.0, -16.0, 14.0, 9.0
     a.geo('stone', 0, 0).box((-W + 0.02, -0.5, N + 0.02), (W - 0.02, 0.0, S + 0.35), uvs=0.3)     # (its edges in the walls, not in their faces' planes)

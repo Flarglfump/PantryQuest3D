@@ -55,12 +55,12 @@ entity
   Camera3D
     fov = 62
     near_clip = 0.15
-    far_clip = 58
+    far_clip = 122
     clear_color = #b0dcf0ff
     fog = true
     fog_color = #b0dcf0ff
-    fog_start = 28
-    fog_end = 56
+    fog_start = 60
+    fog_end = 120
   Script
     file = "scripts/camera.bs"
 
@@ -2454,6 +2454,36 @@ entity
 
 entity
   Name
+    text = "far_roof 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/far_roof_0_-4.obj"
+    texture = "art/planks.png"
+    color = #5868a8ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "far_stone 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/town/far_stone_0_-4.obj"
+    texture = "art/stone.png"
+    color = #e8e0d0ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "planks -2 -1"
   Transform3D
     position = 0 0 0
@@ -3135,3 +3165,67 @@ entity
     cast_shadow = false
   Tags
     list = "seethrough"
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/town_area.png\", x0 = -44, z0 = -44, ppm = 1.2273, w = 108, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"CASTLE\", x0 = 0, z0 = -44, side = \"n\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"FIELDS\", x0 = 0, z0 = 44, side = \"s\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"MARKET\", x0 = 0, z0 = 2, side = \"\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"TEMPLE\", x0 = 26, z0 = -13, side = \"\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"KITCHENS\", x0 = -25, z0 = 12, side = \"\""

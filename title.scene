@@ -111,7 +111,7 @@ entity
   Name
     text = "Door"
   Transform3D
-    position = 11.9042 0.6755 15.21
+    position = 11.9042 0.8398 15.21
     rotation = 0 120 0
     scale = 1 1.5 0.08
   Mesh
@@ -124,7 +124,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 11.8067 1.5255 12.9773
+    position = 11.8067 1.6898 12.9773
     rotation = 0 65 0
     scale = 0.55 0.55 0.06
   Mesh
@@ -138,7 +138,7 @@ entity
   Name
     text = "Window"
   Transform3D
-    position = 13.7891 1.5255 16.4108
+    position = 13.7891 1.6898 16.4108
     rotation = 0 175 0
     scale = 0.55 0.55 0.06
   Mesh
@@ -316,7 +316,7 @@ entity
   Name
     text = "Sign"
   Transform3D
-    position = -5.4 0.1909 18.4
+    position = -5.4 0.4221 18.4
     rotation = 0 30 0
     scale = 0.1 0.9 0.1
   Mesh
@@ -395,14 +395,14 @@ entity
   Name
     text = "Vines"
   Transform3D
-    position = -8 1.3466 18.2
+    position = -8 1.566 18.2
     rotation = 0 180 0
-    scale = 1 3.5942 0.04
+    scale = 1 3.1554 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
     color = #7ac060ff
-    uv_scale = 1 3.5942
+    uv_scale = 1 3.1554
 
 entity
   Name
@@ -651,8 +651,8 @@ entity
   Name
     text = "Leaves"
   Transform3D
-    position = 14 3.3272 30
-    rotation = 0 158 0
+    position = 11 3.3074 30
+    rotation = 0 47 0
     scale = 2.6 2 2.6
   Mesh
     shape = sphere
@@ -1822,23 +1822,6 @@ entity
 
 entity
   Name
-    text = "water -1 0"
-  Transform3D
-    position = 0 0 0
-    rotation = 0 0 0
-    scale = 1 1 1
-  Mesh
-    shape = model
-    file = "models/areas/sprouthollow/water_-1_0.obj"
-    texture = "art/water.png"
-    color = #ffffffc8
-    uv_scale = 1 1
-    lit = false
-    cull = false
-    cast_shadow = false
-
-entity
-  Name
     text = "water 0 0"
   Transform3D
     position = 0 0 0
@@ -1856,14 +1839,14 @@ entity
 
 entity
   Name
-    text = "water 1 -1"
+    text = "water 0 1"
   Transform3D
     position = 0 0 0
     rotation = 0 0 0
     scale = 1 1 1
   Mesh
     shape = model
-    file = "models/areas/sprouthollow/water_1_-1.obj"
+    file = "models/areas/sprouthollow/water_0_1.obj"
     texture = "art/water.png"
     color = #ffffffc8
     uv_scale = 1 1

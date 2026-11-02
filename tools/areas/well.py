@@ -10,7 +10,7 @@ from kit import t3, mesh, collider, tags, script, particles
 
 
 def build():
-    a = Area('well', 'Bottom of the Well', music='music/caverns.wav', kill_y=-20, sky='#100c08ff', fog=(8, 26), fog_color='#181208ff',
+    a = Area('well', 'Bottom of the Well', music='music/caverns.wav', kill_y=-20, sky='#100c08ff', fog=(13, 42), fog_color='#181208ff',
              ambient=('#a09080ff', 0.55), sun=('#c0b090ff', 0.3), sun_rot=(-80, 0, 0), chunk=16)
     ring_wall(a.geo('rock', 0, 0), 0, 0, 7, -1, 5, 24, [(270, 1.4, 0, 3.0)])
     ceiling_disc(a.geo('rock', 0, 0), 0, 0, 7, 5, 0, 18)

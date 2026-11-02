@@ -965,7 +965,7 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
                 st_t = 0
                 vel.y = 6
                 drawn = 3
-                play_animation(body, "slash", 0.6, false)
+                play_animation(body, "jumpslash", 1, false)      # (up over his head, and down as he lands)
                 play_sound("sfx/jumpatk.wav", 0.7)
             } elif local_fwd < -0.6 {
                 st = "backflip"

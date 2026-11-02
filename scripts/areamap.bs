@@ -1,0 +1,16 @@
+@strict @3d
+# areamap.bs - an outdoor area's map for the pause menu (made by tools/lib/areakit.py: its
+# ground from above, north up): the picture, the world x, z of its top left corner and how
+# many pixels to a metre. The same script on each "Map Label" (tagged map_label) holds one
+# label instead: its text, the world x, z it's at (x0, z0), and its side - n, s, e or w for
+# a way out (written outside the map's edge), "" for a place on the map. game.bs hands
+# them to the pause menu.
+
+var picture: string = ""
+var x0: number = 0
+var z0: number = 0
+var ppm: number = 1
+var w: int = 0
+var h: int = 0
+var label: string = ""
+var side: string = ""

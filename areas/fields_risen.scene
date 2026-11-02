@@ -55,12 +55,12 @@ entity
   Camera3D
     fov = 62
     near_clip = 0.15
-    far_clip = 66
+    far_clip = 322
     clear_color = #b0dcf0ff
     fog = true
     fog_color = #b0dcf0ff
-    fog_start = 30
-    fog_end = 64
+    fog_start = 100
+    fog_end = 320
   Script
     file = "scripts/camera.bs"
 
@@ -3943,6 +3943,36 @@ entity
 
 entity
   Name
+    text = "far_roof 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/far_roof_0_-4.obj"
+    texture = "art/planks.png"
+    color = #5868a8ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "far_stone 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/far_stone_0_-4.obj"
+    texture = "art/stone.png"
+    color = #e8e0d0ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "grass -3 -3"
   Transform3D
     position = 0 0 0
@@ -5030,3 +5060,78 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/fields_risen_area.png\", x0 = -104, z0 = -104, ppm = 0.5192, w = 108, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"LARDER TOWN\", x0 = 0, z0 = -96, side = \"n\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"SPROUTHOLLOW\", x0 = 0, z0 = 96, side = \"s\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"BRINE/VALLEY\", x0 = -96, z0 = 60, side = \"w\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"PEPPERMILL\", x0 = 96, z0 = -88, side = \"e\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"THICKET\", x0 = 96, z0 = 40, side = \"e\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"DAIRY\", x0 = 46, z0 = 15, side = \"\""

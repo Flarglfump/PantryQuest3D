@@ -462,6 +462,17 @@ func pause() -> void {
 # where Sprig is, and for the compass the chests not yet opened and the boss - each with the
 # floor it's on.
 func map_for_pause() -> void {
+    # an outdoor area's map (its Area Map): the picture, where it sits, its labels, and Sprig
+    var am: entity = find("Area Map")
+    if am != nil and dungeon == "" {
+        var me: list = [0, 0, 0]
+        if sprig != nil { me = [sprig.x, sprig.z, sprig.facing] }
+        var labels: list = []
+        for lb in find_tagged("map_label") { push(labels, [lb.label, lb.x0, lb.z0, lb.side]) }
+        set_global("omap", [am.picture, am.x0, am.z0, am.ppm, am.w, am.h, labels, me])
+    } else {
+        set_global("omap", [])
+    }
     var info: entity = find("Map Info")
     if info == nil or dungeon == "" {
         set_global("dmap", [])

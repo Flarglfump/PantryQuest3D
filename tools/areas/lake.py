@@ -38,7 +38,7 @@ def build(era='fresh'):
     global height
     random.seed(53)
     risen = era == 'risen'
-    a = Area('lake', 'Lake Brine', music='music/brine.wav', kill_y=-20, sky='#b8e0f8ff' if not risen else '#a0b0c0ff', fog=(34, 80),
+    a = Area('lake', 'Lake Brine', music='music/brine.wav', kill_y=-20, sky='#b8e0f8ff' if not risen else '#a0b0c0ff', fog=(80, 170),
              ambient=('#8898b8ff', 0.55), chunk=28, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-70, 70, 14):

@@ -412,8 +412,14 @@ func draw_quest() -> void {
 
 func draw_map() -> void {
     var name: string = global("area_name", "")
-    draw_text(name, vec2(160 - text_size(name).x / 2, 70), [255, 255, 255])
+    var name_y: number = 70
+    if global("dungeon", "") == "" and len(global("omap", [])) == 8 { name_y = 64 }      # (room for the labels over the map)
+    draw_text(name, vec2(160 - text_size(name).x / 2, name_y), [255, 255, 255])
     var dun: string = global("dungeon", "")
+    if dun == "" and len(global("omap", [])) == 8 {
+        draw_area_map()
+        return
+    }
     if dun == "" {
         # the kingdom: a box for each region, the one Sprig is in lit up
         var here: string = global("area", "")
@@ -526,6 +532,95 @@ func draw_map() -> void {
     }
     draw_image("art/icons/key.png", vec2(42, 200)); draw_text("x" + keys, vec2(52, 197), [255, 255, 255])
     if has("bosskey_" + dun) { draw_image("art/icons/bosskey.png", vec2(92, 200)); draw_text("Boss Key", vec2(102, 197), [255, 255, 255]) }
+}
+
+# An outdoor area's map: its ground from above, north up (a compass rose to say so), the
+# ways out written round its edges with arrows, places on it labelled, and Sprig blinking
+# where he is, facing his way.
+func draw_area_map() -> void {
+    var om: list = global("omap", [])
+    var w: number = om[4]
+    var h: number = om[5]
+    var c: vec2 = vec2(158, 87 + floor(h / 2))
+    var origin: vec2 = c - vec2(floor(w / 2), floor(h / 2))
+    draw_rect(origin - vec2(2, 2), vec2(w + 4, h + 4), [60, 40, 24, 255])
+    draw_rect(origin - vec2(2, 2), vec2(w + 4, h + 4), [200, 170, 110, 255], false)
+    draw_image(om[0], c)
+    for lb in om[6] {
+        var p: vec2 = origin + vec2((lb[1] - om[1]) * om[3], (lb[2] - om[2]) * om[3])
+        var lines: list = split_bar(lb[0])
+        var tw: number = 0
+        for ln in lines { tw = max(tw, text_size(ln).x) }
+        var th: number = len(lines) * 9
+        var side: string = lb[3]
+        var at: vec2 = vec2(0, 0)
+        var arrow: string = ""
+        if side == "n" {
+            at = vec2(p.x - tw / 2, origin.y - 3 - th)
+            arrow = "^"
+        } elif side == "s" {
+            at = vec2(p.x - tw / 2, origin.y + h + 4)
+            arrow = "v"
+        } elif side == "w" {
+            at = vec2(origin.x - 6 - tw, clamp(p.y - th / 2, origin.y, origin.y + h - th))
+            arrow = "<"
+        } elif side == "e" {
+            at = vec2(origin.x + w + 6, clamp(p.y - th / 2, origin.y, origin.y + h - th))
+            arrow = ">"
+        } else {                                             # a place on the map: a dot, its name by it
+            draw_circle(p, 2, [255, 230, 120, 255])
+            at = vec2(clamp(p.x - tw / 2, origin.x + 1, origin.x + w - tw - 1), clamp(p.y + 3, origin.y + 1, origin.y + h - th))
+            draw_rect(at - vec2(1, 1), vec2(tw + 2, th), [20, 16, 12, 170])
+        }
+        for k in len(lines) {
+            var lc: list = [255, 240, 190]
+            if side == "" { lc = [255, 250, 220] }
+            draw_text(lines[k], at + vec2((tw - text_size(lines[k]).x) / 2, k * 9), lc)
+        }
+        if arrow != "" {                                     # (the arrow at the edge itself)
+            var ap: vec2 = vec2(clamp(p.x, origin.x, origin.x + w), clamp(p.y, origin.y, origin.y + h))
+            var ac: list = [255, 200, 90]
+            if side == "n" { draw_text(arrow, ap + vec2(-2, 1), ac) }
+            if side == "s" { draw_text(arrow, ap + vec2(-2, -8), ac) }
+            if side == "w" { draw_text(arrow, ap + vec2(1, -4), ac) }
+            if side == "e" { draw_text(arrow, ap + vec2(-6, -4), ac) }
+        }
+    }
+    # Sprig: a blinking dot with a line the way he faces
+    var me: list = om[7]
+    var sp: vec2 = origin + vec2((me[0] - om[1]) * om[3], (me[1] - om[2]) * om[3])
+    var sc: list = [80, 200, 255, 255]
+    if floor(t * 3) % 2 == 0 { sc = [255, 255, 255, 255] }
+    var f: vec2 = vec2(-sin(me[2]), -cos(me[2]))
+    draw_line(sp, sp + f * 8, sc)
+    draw_circle(sp, 3, sc)
+    draw_circle(sp, 3, [10, 30, 60, 255], false)
+    # the compass rose, top left: N up, the others round it
+    var rc: vec2 = vec2(44, 108)
+    draw_circle(rc, 12, [30, 24, 18, 220])
+    draw_circle(rc, 12, [200, 170, 110, 255], false)
+    draw_line(rc + vec2(0, 7), rc - vec2(0, 8), [220, 60, 50])
+    draw_line(rc - vec2(7, 0), rc + vec2(7, 0), [200, 190, 160])
+    draw_text("N", rc + vec2(-2, -21), [255, 90, 70])
+    draw_text("S", rc + vec2(-2, 14), [200, 190, 160])
+    draw_text("W", rc + vec2(-21, -3), [200, 190, 160])
+    draw_text("E", rc + vec2(16, -3), [200, 190, 160])
+}
+
+# "a/b" -> ["a", "b"] (a map label's lines).
+func split_bar(text: string) -> list {
+    var out: list = []
+    var cur_line: string = ""
+    for i in len(text) {
+        if text[i] == "/" {
+            push(out, cur_line)
+            cur_line = ""
+        } else {
+            cur_line = cur_line + text[i]
+        }
+    }
+    push(out, cur_line)
+    return out
 }
 
 func draw_system() -> void {

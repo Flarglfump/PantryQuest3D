@@ -22,7 +22,7 @@ def polar(r, a):
 def build(era='fresh'):
     risen = era == 'risen'
     a = Area('fizzdomain', 'Fizzling Domain', music='music/fizz.wav' if not risen else 'music/castle.wav', kill_y=-20, sky='#0c2030ff',
-             fog=(18, 46), fog_color='#183040ff' if not risen else '#c0d8e8ff', ambient=('#a0c8e8ff', 0.7) if not risen else ('#c0d8f0ff', 0.7),
+             fog=(29, 74), fog_color='#183040ff' if not risen else '#c0d8e8ff', ambient=('#a0c8e8ff', 0.7) if not risen else ('#c0d8f0ff', 0.7),
              sun=('#d0f0ffff', 0.45), sun_rot=(-80, 0, 0), chunk=18, variant=era if risen else '')
     holes = [(90, 1.6, 0, 3.2), (270, 1.6, 2.0, 5.2)]
     for k in range(4):

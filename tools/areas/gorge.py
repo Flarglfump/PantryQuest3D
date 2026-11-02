@@ -45,7 +45,7 @@ def height(x, z):
 def build():
     global height
     random.seed(31)
-    a = Area('gorge', 'Brine Valley', music='music/brine.wav', kill_y=-20, sky='#a8d8f0ff', fog=(26, 60),
+    a = Area('gorge', 'Brine Valley', music='music/brine.wav', kill_y=-20, sky='#a8d8f0ff', fog=(60, 130),
              ambient=('#8898b8ff', 0.55), chunk=20)
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-72, 76, 12):

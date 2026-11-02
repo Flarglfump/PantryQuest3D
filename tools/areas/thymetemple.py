@@ -48,7 +48,7 @@ def sister(a, x, y, z, flame, hp=6, arrow_only=False, float_h=0.3, speed=1.6):
 
 def build():
     a = Area('thymetemple', 'Thyme Temple', music='music/castle.wav', dungeon='thymetemple', kill_y=-20, sky='#101810ff',
-             fog=(12, 34), fog_color='#182418ff', ambient=('#a0c098ff', 0.6), sun=('#d0f0c0ff', 0.35), sun_rot=(-80, 0, 0),
+             fog=(19, 54), fog_color='#182418ff', ambient=('#a0c098ff', 0.6), sun=('#d0f0c0ff', 0.35), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16)
     # ---- A: the entry and its broken bridge ----
     for x0, z0, x1, z1 in [(-3, 10.03, -3, -10.03), (3, 10.03, 3, -10.03)]:      # (ends a hair past the floors': not in their plane)

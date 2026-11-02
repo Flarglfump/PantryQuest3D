@@ -33,7 +33,7 @@ def build(era='fresh'):
     random.seed(41)
     risen = era == 'risen'
     a = Area('fountain', 'Fizzwater Fountain', music='music/fizz.wav' if not risen else 'music/castle.wav', kill_y=-20,
-             sky='#c8e8f8ff' if not risen else '#d8e8f0ff', fog=(26, 60), ambient=('#98b8d8ff', 0.6) if not risen else ('#c0d0e0ff', 0.7),
+             sky='#c8e8f8ff' if not risen else '#d8e8f0ff', fog=(60, 130), ambient=('#98b8d8ff', 0.6) if not risen else ('#c0d0e0ff', 0.7),
              chunk=20, variant=era if risen else '')
     if not risen:
         a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=False))

@@ -8,7 +8,7 @@ from kit import t3, mesh, collider, tags, script, particles
 
 
 def build():
-    a = Area('vault', 'The Proofing Vault', music='music/title.wav', kill_y=-20, sky='#140a04ff', fog=(10, 30), fog_color='#2a1608ff',
+    a = Area('vault', 'The Proofing Vault', music='music/title.wav', kill_y=-20, sky='#140a04ff', fog=(16, 48), fog_color='#2a1608ff',
              ambient=('#e0b080ff', 0.6), sun=('#ffd0a0ff', 0.4), sun_rot=(-80, 0, 0), chunk=16)
     ring_wall(a.geo('crust', 0, 0), 0, 0, 9, -0.5, 7, 28)
     ceiling_disc(a.geo('crust', 0, 0), 0, 0, 9, 7, 0, 20)

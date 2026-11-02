@@ -38,7 +38,7 @@ def hall(a, x0, z0, x1, z1):
 
 def build():
     a = Area('brinetemple', 'Fizzwater Temple', music='music/gulp.wav', dungeon='brinetemple', kill_y=-20, sky='#081828ff',
-             fog=(12, 36), fog_color='#103048ff', ambient=('#90c0e0ff', 0.65), sun=('#c0e8ffff', 0.35), sun_rot=(-80, 0, 0),
+             fog=(19, 58), fog_color='#103048ff', ambient=('#90c0e0ff', 0.65), sun=('#c0e8ffff', 0.35), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16)
     # the temple's water (tide.bs)
     a.entity('Temple Water', t3((-10.5, 0, -10)), collider('box', (51, 14, 46), trigger=True), tags('water'), script('scripts/tide.bs'))

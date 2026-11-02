@@ -47,6 +47,8 @@ MATERIALS = {
     'starter': ('art/dough.png', '#f0e0b8e0', False, False, True, False),
     'starter_pool': ('art/dough.png', '#d8c090ff', False, False, True, True),   # (a pit's runny starter: not see-through)
     'deco': ('art/planks.png', '#ffffffff', False, True, True, True),
+    'far_stone': ('art/stone.png', '#e8e0d0ff', False, False, True, True),   # (scenery far off: a castle on the skyline)
+    'far_roof': ('art/planks.png', '#5868a8ff', False, False, True, True),
     'ceiling': ('art/dough.png', '#a89878ff', True, False, True, True),
 }
 
@@ -181,6 +183,8 @@ class Area:
             tris += obj.tri_count()
         if self.dungeon:
             self.make_map()
+        elif getattr(self, 'map_labels', None) is not None:
+            self.make_area_map()
         written = {'%s_%d_%d.obj' % (m, cx, cz) for (m, cx, cz), obj in self.chunks.items() if not obj.empty()}
         folder = os.path.join('models', 'areas', self.file_id)
         for old in os.listdir(folder) if os.path.isdir(folder) else []:
@@ -355,6 +359,83 @@ class Area:
                                                      lows=[round(max(-999, f[1]), 1) for f in floors], highs=[round(min(999, f[2]), 1) for f in floors],
                                                      x0=round(x0 - 1 / ppm, 3), z0=round(z0 - 1 / ppm, 3), ppm=round(ppm, 4), w=W, h=H))
 
+    MAP_COLOURS = {   # how each material looks on an area map, from above
+        'grass': (104, 160, 76), 'flowers': (120, 170, 90), 'dirt': (168, 128, 84), 'path': (184, 146, 96), 'cobble': (178, 170, 150),
+        'rock': (150, 128, 108), 'cliff': (130, 136, 120), 'stone': (160, 156, 146), 'bark': (112, 82, 56), 'planks': (156, 112, 70),
+        'thatch': (206, 172, 92), 'leaves': (64, 124, 56), 'hedge': (52, 108, 54), 'water': (74, 146, 214), 'sand': (222, 202, 150),
+        'fizzrock': (150, 190, 210), 'ice': (200, 230, 240), 'rot': (110, 100, 80), 'lava': (240, 170, 60), 'crust': (190, 140, 80)}
+
+    def area_map(self, labels):
+        """This (outdoor) area gets a map for the pause menu: its ground from above (north up),
+        with labels [(text, x, z, side), ...]: side n, s, e or w for a way out (written outside
+        the map's edge there, with an arrow), '' for a place on it. A "/" breaks a line."""
+        self.map_labels = labels
+
+    def make_area_map(self, max_w=190, max_h=108):
+        if kit.GROUNDS:                                   # (the bounds of the ground made: where Sprig can be)
+            x0, z0 = min(g[0] for g in kit.GROUNDS), min(g[1] for g in kit.GROUNDS)
+            x1, z1 = max(g[2] for g in kit.GROUNDS), max(g[3] for g in kit.GROUNDS)
+        else:
+            return
+        ppm = min(max_w / (x1 - x0), max_h / (z1 - z0))
+        W, H = int((x1 - x0) * ppm), int((z1 - z0) * ppm)
+        top = [[None] * W for _ in range(H)]              # (height, colour) of the highest thing at each pixel
+        def put(px, py, h, c):
+            if 0 <= px < W and 0 <= py < H and (top[py][px] is None or h > top[py][px][0]):
+                top[py][px] = (h, c)
+        for (material, cx, cz), obj in self.chunks.items():
+            col = self.MAP_COLOURS.get(material)
+            if col is None or obj.empty():
+                continue
+            for f in obj.f:
+                P = [obj.v[k[0] - 1] for k in f]
+                e1 = [P[1][i] - P[0][i] for i in range(3)]
+                e2 = [P[2][i] - P[0][i] for i in range(3)]
+                ny = e1[2] * e2[0] - e1[0] * e2[2]
+                ln = math.sqrt(sum((e1[(i + 1) % 3] * e2[(i + 2) % 3] - e1[(i + 2) % 3] * e2[(i + 1) % 3]) ** 2 for i in range(3))) or 1
+                if abs(ny) / ln < 0.35:
+                    continue                              # (upright faces: walls are drawn by their tops)
+                Q = [((p[0] - x0) * ppm, (p[2] - z0) * ppm, p[1]) for p in P]
+                (ax, ay, ah), (bx, by, bh), (qx, qy, qh) = Q
+                den = (by - qy) * (ax - qx) + (qx - bx) * (ay - qy)
+                if abs(den) < 1e-9:
+                    continue
+                for py in range(max(0, int(min(ay, by, qy))), min(H, int(max(ay, by, qy)) + 1)):
+                    for px in range(max(0, int(min(ax, bx, qx))), min(W, int(max(ax, bx, qx)) + 1)):
+                        X, Y = px + 0.5, py + 0.5
+                        w0 = ((by - qy) * (X - qx) + (qx - bx) * (Y - qy)) / den
+                        w1 = ((qy - ay) * (X - qx) + (ax - qx) * (Y - qy)) / den
+                        w2 = 1 - w0 - w1
+                        if min(w0, w1, w2) < -0.05:
+                            continue
+                        h = ah * w0 + bh * w1 + qh * w2
+                        if material == 'path':
+                            h += 0.3                      # (over the grass it lies on)
+                        put(px, py, h, col)
+        for (tx, tz, size) in getattr(self, 'trees', []):   # the trees: leafy dots
+            r = max(1.0, 1.4 * size * ppm)
+            cx, cy = (tx - x0) * ppm, (tz - z0) * ppm
+            for py in range(int(cy - r) - 1, int(cy + r) + 2):
+                for px in range(int(cx - r) - 1, int(cx + r) + 2):
+                    if (px + 0.5 - cx) ** 2 + (py + 0.5 - cy) ** 2 <= r * r:
+                        put(px, py, 99, (56, 112, 48))
+        hs = [c[0] for row in top for c in row if c is not None and c[0] < 90]
+        lo, hi = (min(hs), max(hs)) if hs else (0, 1)
+        def pixel(px, py):
+            c = top[py][px]
+            if c is None:
+                return (40, 34, 30, 255)
+            k = 0.82 + 0.3 * min(1, max(0, (c[0] - lo) / ((hi - lo) or 1)))        # (higher: lighter)
+            if py > 0 and top[py - 1][px] is not None and top[py - 1][px][0] > c[0] + 1.2:
+                k *= 0.7                                                           # (a drop's shadow: walls, cliffs)
+            return tuple(int(min(255, v * k)) for v in c[1]) + (255,)
+        file = 'art/maps/%s_area.png' % self.file_id
+        os.makedirs(os.path.dirname(file), exist_ok=True)
+        write_png(file, W, H, pixel, alpha=True)
+        self.scene.entity('Area Map', t2(), script('scripts/areamap.bs', picture=file, x0=round(x0, 3), z0=round(z0, 3), ppm=round(ppm, 4), w=W, h=H))
+        for (t, x, z, side) in self.map_labels:           # (one entity each: a Script's vars are kept short)
+            self.scene.entity('Map Label', t2(), tags('map_label'), script('scripts/areamap.bs', label=t, x0=round(x, 1), z0=round(z, 1), side=side))
+
     # ---- things ----
     GROUND_SOLID = None
 
@@ -386,6 +467,7 @@ class Area:
     def tree(self, x, y, z, size=1.0, bonk_drop=''):
         """A round tree: a trunk (solid) and a ball of leaves. Rolling into it can shake down a drop."""
         h = 2.6 * size
+        self.trees = getattr(self, 'trees', []) + [(x, z, size)]          # (for the area map)
         self.entity('Tree', t3((x, y + h / 2, z), (0, 0, 0), (0.6 * size, h, 0.6 * size)),
                     mesh('cylinder', '#ffffffff', 'art/bark.png', uv=(1, 2)),
                     collider('capsule', (1, 1, 1), 0.5), tags('tree'),
@@ -722,6 +804,21 @@ def tunnel(o_floor, o_wall, x0, z0, x1, z1, y, w=2.4, h=2.8, uvs=0.35, ceiling=T
         if (q[1][0] - q[0][0]) * (q[2][2] - q[0][2]) - (q[1][2] - q[0][2]) * (q[2][0] - q[0][0]) < 0:
             q = q[::-1]
         o_wall.quad(*q, *[(v[0] * uvs, v[2] * uvs) for v in q])
+
+
+def castle_skyline(a, x, y, z, s=1.0):
+    """Castle Larder seen from afar: a keep, four corner towers and a tall middle one, with
+    blue roofs. Scenery only (nothing to touch): stood out past an area's edge as a landmark."""
+    st, rf = a.geo('far_stone', x, z), a.geo('far_roof', x, z)
+    st.box((x - 12 * s, y - 4, z - 9 * s), (x + 12 * s, y + 22 * s, z + 9 * s), uvs=0.08)          # the keep
+    for k in range(-5, 6, 2):                                                                     # its battlements (south face)
+        st.box((x + k * 2 * s - 0.9 * s, y + 22 * s, z + 8 * s), (x + k * 2 * s + 0.9 * s, y + 24 * s, z + 9.01 * s), uvs=0.2)
+    for dx, dz in [(-13, -10), (13, -10), (-13, 10), (13, 10)]:                                   # the corner towers
+        tx, tz = x + dx * s, z + dz * s
+        st.cylinder((tx, y - 4, tz), 4 * s, 34 * s + 4, 10, uvs=0.08)
+        rf.cone((tx, y + 30 * s, tz), 5 * s, 9 * s, 10, uvs=0.1)
+    st.cylinder((x, y + 20 * s, z), 5 * s, 22 * s, 12, uvs=0.08)                                   # the great tower
+    rf.cone((x, y + 42 * s, z), 6.5 * s, 14 * s, 12, uvs=0.1)
 
 
 def town_house(a, x, z, w, d, h, ground_y, wall='planks', roof='thatch', door_side='s', roof_h=None):

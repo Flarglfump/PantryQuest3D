@@ -37,7 +37,7 @@ def ramp(o, a0, a1, y0, y1, r0, r1, segs=16):
 
 def build(era='fresh'):
     risen = era == 'risen'
-    a = Area('hardtack', 'Hardtack City', music='music/fondue.wav', kill_y=-20, sky='#2a1408ff', fog=(14, 40), fog_color='#2a1408ff',
+    a = Area('hardtack', 'Hardtack City', music='music/fondue.wav', kill_y=-20, sky='#2a1408ff', fog=(22, 64), fog_color='#2a1408ff',
              ambient=('#c09070ff', 0.55), sun=('#ffc080ff', 0.4), sun_rot=(-80, 0, 0), chunk=16, variant=era if risen else '')
     holes = [(90, 1.4, 0, 3.0), (270, 1.4, UP, UP + 3.0)]
     for k in range(4):

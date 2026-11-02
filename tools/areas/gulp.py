@@ -42,7 +42,7 @@ def glow(a, x, z, r=10):
 
 def build():
     a = Area('gulp', 'Inside Lord Gulp', music='music/gulp.wav', dungeon='gulp', kill_y=-20, sky='#200810ff',
-             fog=(12, 34), fog_color='#3a1018ff', ambient=('#d090a0ff', 0.6), sun=('#ffc0c8ff', 0.3), sun_rot=(-80, 0, 0),
+             fog=(19, 54), fog_color='#3a1018ff', ambient=('#d090a0ff', 0.6), sun=('#ffc0c8ff', 0.3), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16)
     # ---- A: the mouth ----
     room(a, 0, 0, 8, [(90, 1.4), (270, 1.4)])

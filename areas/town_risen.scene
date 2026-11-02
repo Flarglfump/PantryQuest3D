@@ -55,12 +55,12 @@ entity
   Camera3D
     fov = 62
     near_clip = 0.15
-    far_clip = 74
+    far_clip = 122
     clear_color = #2a2a30ff
     fog = true
     fog_color = #30302aff
-    fog_start = 20
-    fog_end = 72
+    fog_start = 45
+    fog_end = 120
   Script
     file = "scripts/camera.bs"
 
@@ -2998,3 +2998,67 @@ entity
     cast_shadow = false
   Tags
     list = "seethrough"
+
+entity
+  Name
+    text = "Area Map"
+  Transform
+    position = 0 0
+  Script
+    file = "scripts/areamap.bs"
+    vars = "picture = \"art/maps/town_risen_area.png\", x0 = -44, z0 = -44, ppm = 1.2273, w = 108, h = 108"
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"THE SPIRE\", x0 = 0, z0 = -44, side = \"n\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"FIELDS\", x0 = 0, z0 = 44, side = \"s\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"MARKET\", x0 = 0, z0 = 2, side = \"\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"TEMPLE\", x0 = 26, z0 = -13, side = \"\""
+
+entity
+  Name
+    text = "Map Label"
+  Transform
+    position = 0 0
+  Tags
+    list = "map_label"
+  Script
+    file = "scripts/areamap.bs"
+    vars = "label = \"KITCHENS\", x0 = -25, z0 = 12, side = \"\""

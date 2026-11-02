@@ -52,7 +52,7 @@ def build(era='fresh'):
     global height
     random.seed(23)
     risen = era == 'risen'
-    a = Area('fondue', 'Mount Fondue', music='music/fondue.wav', kill_y=-25, sky='#e8b080ff', fog=(26, 54),
+    a = Area('fondue', 'Mount Fondue', music='music/fondue.wav', kill_y=-25, sky='#e8b080ff', fog=(60, 130),
              fog_color='#d8a070ff', ambient=('#a88870ff', 0.55), sun=('#ffd8a0ff', 0.9), chunk=22, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=False))
     for cz in range(-52, 52, 13):

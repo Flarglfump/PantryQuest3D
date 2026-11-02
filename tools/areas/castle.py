@@ -18,7 +18,7 @@ def flat(x, z):
 
 
 def build():
-    a = Area('castle', 'Castle Larder', music='music/castle.wav', kill_y=-20, sky='#b0dcf0ff', fog=(26, 52),
+    a = Area('castle', 'Castle Larder', music='music/castle.wav', kill_y=-20, sky='#b0dcf0ff', fog=(50, 110),
              ambient=('#8898b8ff', 0.6), chunk=20)
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=False))
     for cz in range(-44, 40, 12):
@@ -69,4 +69,5 @@ def build():
             a.entity('Flowers', t3((x, 0.2, z), (0, 0, 0), (2.4, 0.4, 2.4)), mesh('sphere', '#ffffffff', 'art/flowers.png', uv=(2, 2)))
     a.npc('saffron', 0, 0, -36, 0, until='met_saffron', reach=2.6)
     a.npc('kimchi', 4.5, 0, -36.5, -20, until='met_saffron', reach=2.6)
+    a.area_map([('COURTYARD', 0, -30, ''), ('TOWN', 0, 40, 's')])
     a.save()

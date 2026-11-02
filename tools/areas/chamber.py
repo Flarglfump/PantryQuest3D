@@ -9,7 +9,7 @@ from kit import t3, mesh, collider, tags, script, particles
 
 
 def build():
-    a = Area('chamber', 'Chamber of Keepers', music='music/title.wav', kill_y=-20, sky='#f0f0e0ff', fog=(14, 40), fog_color='#f0e8d0ff',
+    a = Area('chamber', 'Chamber of Keepers', music='music/title.wav', kill_y=-20, sky='#f0f0e0ff', fog=(30, 70), fog_color='#f0e8d0ff',
              ambient=('#fff0d0ff', 0.8), sun=('#ffffffff', 0.5), sun_rot=(-80, 0, 0), chunk=16)
     ring_wall(a.geo('stone', 0, 0), 0, 0, 10, -0.5, 8, 28)
     ring_floor(a.geo('stone', 0, 0), 0, 0, 0, 10, 0, segs=24, thick=0.5)

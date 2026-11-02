@@ -17,7 +17,7 @@ def height(x, z):
 def build():
     global height
     random.seed(81)
-    a = Area('ruins', 'Castle Ruins', music='music/boss.wav', kill_y=-20, sky='#100808ff', fog=(18, 46), fog_color='#201010ff',
+    a = Area('ruins', 'Castle Ruins', music='music/boss.wav', kill_y=-20, sky='#100808ff', fog=(40, 95), fog_color='#201010ff',
              ambient=('#a07070ff', 0.6), sun=('#ffa080ff', 0.4), chunk=20)
     for cz in range(-30, 30, 10):
         for cx in range(-30, 30, 10):

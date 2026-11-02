@@ -32,7 +32,7 @@ def build(era='fresh'):
     global height
     random.seed(17)
     risen = era == 'risen'
-    a = Area('peppermill', 'Peppermill Village', music='music/peppermill.wav', kill_y=-20, sky='#b0dcf0ff', fog=(28, 58),
+    a = Area('peppermill', 'Peppermill Village', music='music/peppermill.wav', kill_y=-20, sky='#b0dcf0ff', fog=(60, 125),
              ambient=('#8898b8ff', 0.55), chunk=22, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-48, 48, 12):

@@ -151,7 +151,7 @@ def pool(a, x0, z0, x1, z1, surface=-0.8, bottom=-4.0, sides='nsew'):
 
 def build():
     a = Area('crock', 'The Great Crock', music='music/crock.wav', dungeon='crock', kill_y=-30, sky='#2a1c10ff',
-             fog=(14, 40), fog_color='#2a1c10ff', ambient=('#a08868ff', 0.6), sun=('#ffe0b0ff', 0.35), sun_rot=(-70, 20, 0),
+             fog=(22, 64), fog_color='#2a1c10ff', ambient=('#a08868ff', 0.6), sun=('#ffe0b0ff', 0.35), sun_rot=(-70, 20, 0),
              shadows=False, chunk=16)
     a.floors = [('B1', -40, -6), ('1F', -6, 2.5), ('2F', 2.5, 40)]       # (the lair; the halls and pools; the balcony's rooms)
 

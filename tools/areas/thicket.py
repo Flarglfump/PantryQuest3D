@@ -48,10 +48,10 @@ def build(era='fresh'):
     global height
     random.seed(61)
     risen = era == 'risen'
-    a = Area('thicket', 'Thicket of Thyme', music='music/sprouthollow.wav', kill_y=-20, sky='#5a7a50ff', fog=(12, 36),
+    a = Area('thicket', 'Thicket of Thyme', music='music/sprouthollow.wav', kill_y=-20, sky='#5a7a50ff', fog=(26, 70),
              fog_color='#4a6a44ff', ambient=('#90b080ff', 0.6), sun=('#e0f0c0ff', 0.6), chunk=20, variant=era if risen else '')
     if risen:
-        a = Area('thicket', 'Thicket of Thyme', music='music/castle.wav', kill_y=-20, sky='#3a4a38ff', fog=(10, 32),
+        a = Area('thicket', 'Thicket of Thyme', music='music/castle.wav', kill_y=-20, sky='#3a4a38ff', fog=(22, 60),
                  fog_color='#2a3a28ff', ambient=('#708868ff', 0.55), sun=('#c0d0a0ff', 0.45), chunk=20, variant='risen')
     for cz in range(-32, 28, 10):
         for cx in range(-56, 56, 10):

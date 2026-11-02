@@ -52,7 +52,7 @@ def cell(a, x, z, yaw, who):
 
 def build():
     a = Area('forge', 'Fondue Forge', music='music/caverns.wav', dungeon='forge', kill_y=-20, sky='#200800ff',
-             fog=(12, 36), fog_color='#3a1004ff', ambient=('#e09060ff', 0.6), sun=('#ffa060ff', 0.4), sun_rot=(-80, 0, 0),
+             fog=(19, 58), fog_color='#3a1004ff', ambient=('#e09060ff', 0.6), sun=('#ffa060ff', 0.4), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16, hot=True)
     # ---- A: the entry bridge ----
     for x0, x1 in [(-7, -7), (7, 7)]:

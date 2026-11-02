@@ -20,7 +20,7 @@ def room(a, cx, cz, r, holes, ceil=7.0):
 
 
 def build():
-    a = Area('freezer', 'Freezer Caves', music='music/caverns.wav', kill_y=-20, sky='#c0e0f0ff', fog=(12, 34), fog_color='#a0c8e0ff',
+    a = Area('freezer', 'Freezer Caves', music='music/caverns.wav', kill_y=-20, sky='#c0e0f0ff', fog=(19, 54), fog_color='#a0c8e0ff',
              ambient=('#c0e0ffff', 0.75), sun=('#e0f4ffff', 0.4), sun_rot=(-80, 0, 0), chunk=16)
     room(a, 0, 0, 9, [(90, 1.4), (270, 1.4)])
     tunnel(a.geo('ice', 0, 11), a.geo('ice', 0, 11), 0, 8.6, 0, 13, 0)

@@ -31,7 +31,7 @@ def hall(a, x0, z0, x1, z1, h=2.8):
 
 
 def build():
-    a = Area('idoltemple', 'Salt Idol', music='music/castle.wav', dungeon='idoltemple', kill_y=-20, sky='#201408ff', fog=(12, 34),
+    a = Area('idoltemple', 'Salt Idol', music='music/castle.wav', dungeon='idoltemple', kill_y=-20, sky='#201408ff', fog=(19, 54),
              fog_color='#302010ff', ambient=('#e0c090ff', 0.6), sun=('#fff0c0ff', 0.4), sun_rot=(-80, 0, 0), shadows=False, chunk=16)
     # ---- A ----
     hall(a, 0, 10, 0, -11.6, h=3.2)

@@ -31,7 +31,7 @@ def hall(a, x0, z0, x1, z1):
 
 
 def build():
-    a = Area('crypt', 'Compost Crypt', music='music/gulp.wav', dungeon='crypt', kill_y=-20, sky='#0a0608ff', fog=(10, 30),
+    a = Area('crypt', 'Compost Crypt', music='music/gulp.wav', dungeon='crypt', kill_y=-20, sky='#0a0608ff', fog=(16, 48),
              fog_color='#140a10ff', ambient=('#a08898ff', 0.55), sun=('#c0a0c0ff', 0.3), sun_rot=(-80, 0, 0), shadows=False, chunk=16)
     # ---- A ----
     room(a, 0, 0, 7, [(90, 1.4), (270, 1.4), (180, 1.4)])

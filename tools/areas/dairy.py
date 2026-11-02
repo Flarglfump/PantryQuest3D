@@ -14,7 +14,7 @@ from kit import ground_height, t3, mesh, collider, tags, script, particles, q
 def build(era='fresh'):
     random.seed(91)
     risen = era == 'risen'
-    a = Area('dairy', 'Buttercup Dairy', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(26, 56),
+    a = Area('dairy', 'Buttercup Dairy', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(60, 115),
              ambient=('#8898b8ff', 0.6), chunk=20, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=False))
     a.geo('grass', 0, 0).ground(-30, -30, 30, 30, 10, 10, lambda x, z: 0.2 * math.sin(x * 0.2) * math.cos(z * 0.2), uvs=0.25)

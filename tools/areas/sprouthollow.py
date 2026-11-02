@@ -83,7 +83,7 @@ def ground_y(x, z):
 def build():
     global height
     random.seed(7)
-    a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav', kill_y=-6, sky='#b8e0f0ff', fog=(26, 58),
+    a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav', kill_y=-6, sky='#b8e0f0ff', fog=(60, 115),
              fog_color='#c8e8d8ff', ambient=('#8898b8ff', 0.55))
     # ---- the ground ----
     for cz in range(-48, 60, 12):

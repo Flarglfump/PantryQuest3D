@@ -8,7 +8,7 @@ and the castle road climbs out of the north side to the castle garden.
 import math
 import random
 
-from areakit import Area, box_wall, town_house, stall
+from areakit import Area, box_wall, town_house, stall, castle_skyline
 from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 HALF = 40.0
@@ -39,10 +39,10 @@ def build(era='fresh'):
     random.seed(5)
     risen = era == 'risen'
     if risen:
-        a = Area('town', 'Larder Town', music='music/castle.wav', kill_y=-20, sky='#2a2a30ff', fog=(20, 72), fog_color='#30302aff',
+        a = Area('town', 'Larder Town', music='music/castle.wav', kill_y=-20, sky='#2a2a30ff', fog=(45, 120), fog_color='#30302aff',
                  ambient=('#707860ff', 0.5), sun=('#a0a890ff', 0.4), chunk=20, variant='risen')
     else:
-        a = Area('town', 'Larder Town', music='music/town.wav', kill_y=-20, sky='#b0dcf0ff', fog=(28, 56),
+        a = Area('town', 'Larder Town', music='music/town.wav', kill_y=-20, sky='#b0dcf0ff', fog=(60, 120),
                  ambient=('#8898b8ff', 0.6), chunk=20)
         a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs', runs=True))
     ground = 'rot' if risen else 'cobble'
@@ -78,6 +78,7 @@ def build(era='fresh'):
         a.entity('Spire', t3((0, -4, -58)), mesh('model', '#5a6a48ff', 'art/mould.png', file='models/spire.obj', cast=False))
         a.sign(3.4, height(3.4, -27), -27, 180, 'spire')
     else:
+        castle_skyline(a, 0, 6, -78, 1.2)     # (Castle Larder up the road, over the town wall)
         a.loadzone(0, height(0, -HALF + 1), -HALF + 0.9, 5, 4, 1.2, to='castle', at='start', until='storm_now')
         a.npc('guard', -3.2, height(-3.2, -36), -36, 160, until='storm_now')
         a.sign(3.4, height(3.4, -27), -27, 180, 'sign_castle')
@@ -151,6 +152,8 @@ def build(era='fresh'):
         a.tree(x, 0, z, 1.0)
     if risen:
         a.loadzone(0, 0, HALF - 0.9, 5, 4, 1.2, to='fields', at='town')
+    a.area_map([('CASTLE' if not risen else 'THE SPIRE', 0, -44, 'n'), ('FIELDS', 0, 44, 's'), ('MARKET', 0, 2, ''), ('TEMPLE', 26, -13, ''),
+                ('KITCHENS', -25, 12, '')])
     a.save()
 
 

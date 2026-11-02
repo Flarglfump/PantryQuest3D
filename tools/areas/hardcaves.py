@@ -39,7 +39,7 @@ def lamp(a, x, y, z):
 
 def build():
     a = Area('hardcaves', 'Hardtack Caverns', music='music/caverns.wav', dungeon='hardcaves', kill_y=-20, sky='#1c0c04ff',
-             fog=(12, 34), fog_color='#2a1206ff', ambient=('#c08060ff', 0.55), sun=('#ffa060ff', 0.35), sun_rot=(-80, 0, 0),
+             fog=(19, 54), fog_color='#2a1206ff', ambient=('#c08060ff', 0.55), sun=('#ffa060ff', 0.35), sun_rot=(-80, 0, 0),
              shadows=False, chunk=16)
     # ---- A: the entrance hall ----
     room(a, 0, 0, 9, [(90, 1.4), (270, 1.4)])

@@ -8,7 +8,7 @@ night Stalebies rise out of the ground.
 import math
 import random
 
-from areakit import Area, box_wall
+from areakit import Area, box_wall, castle_skyline
 from kit import drawn, t3, mesh, collider, tags, script, particles, q
 
 HALF = 96.0
@@ -58,7 +58,7 @@ def build(era='fresh'):
     global height
     random.seed(11)
     risen = era == 'risen'
-    a = Area('fields', 'Breadbasket Fields', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(30, 64),
+    a = Area('fields', 'Breadbasket Fields', music='music/fields.wav', kill_y=-20, sky='#b0dcf0ff', fog=(100, 320),
              ambient=('#8898b8ff', 0.55), chunk=40, variant=era if risen else '')
     a.entity('Sky', t3((0, 0, 0)), script('scripts/sky.bs'))
     for cz in range(-104, 104, 26):
@@ -84,6 +84,8 @@ def build(era='fresh'):
              collider('box'), ('RigidBody3D', [('type', 'kinematic')]), script('scripts/gate.bs'))
     a.loadzone(0, height(0, -HALF + 1), -HALF + 0.5, 10, 4, 1.5, to='town', at='fields')
     a.sign(-5, height(-5, wz + 8), wz + 8, 180, 'gate_shut')
+    # Castle Larder over the town, on the skyline to the north: a landmark from across the field
+    castle_skyline(a, 0, 8, -140, 1.4)
 
     # ---- Buttercup Dairy's hill: a fence round the top, the gate on the west ----
     hx, hz, hr = 46, 4, 10.5
@@ -186,6 +188,8 @@ def build(era='fresh'):
             a.enemy('stalebie', x, height(x, z), z, hp=4, damage=4, model='stalebie')
         for x, z in [(-30, 30), (40, -50), (-50, -30), (20, 60)]:
             a.enemy('fuzzball', x, height(x, z) + 0.1, z, hp=3, damage=2)
+    a.area_map([('LARDER TOWN', 0, -96, 'n'), ('SPROUTHOLLOW', 0, 96, 's'), ('BRINE/VALLEY', -96, 60, 'w'), ('PEPPERMILL', 96, -88, 'e'),
+                ('THICKET', 96, 40, 'e'), ('DAIRY', 46, 15, '')])
     a.save()
 
 

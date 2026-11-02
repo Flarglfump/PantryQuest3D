@@ -32,7 +32,7 @@ def stairs(a, x, z, to_spawn, needs=''):
 
 
 def build():
-    a = Area('spire', 'Moldering Spire', music='music/castle.wav', kill_y=-20, sky='#101408ff', fog=(12, 34), fog_color='#182010ff',
+    a = Area('spire', 'Moldering Spire', music='music/castle.wav', kill_y=-20, sky='#101408ff', fog=(19, 54), fog_color='#182010ff',
              ambient=('#90a080ff', 0.55), sun=('#c0d0a0ff', 0.3), sun_rot=(-80, 0, 0), shadows=False, chunk=16)
     a.entity('Escape', t3((0, 0, 0)), script('scripts/escape.bs'))
     # ---- F1 ----

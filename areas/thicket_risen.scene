@@ -55,12 +55,12 @@ entity
   Camera3D
     fov = 62
     near_clip = 0.15
-    far_clip = 34
+    far_clip = 62
     clear_color = #3a4a38ff
     fog = true
     fog_color = #2a3a28ff
-    fog_start = 10
-    fog_end = 32
+    fog_start = 22
+    fog_end = 60
   Script
     file = "scripts/camera.bs"
 
