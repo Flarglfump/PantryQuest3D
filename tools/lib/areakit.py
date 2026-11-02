@@ -825,14 +825,15 @@ class Area:
         self.entity('Load Zone', t3((x, y + h / 2, z), (0, yaw, 0)), collider('box', (w, h, d), trigger=True),
                     tags('loadzone'), script('scripts/loadzone.bs', **kw))
 
-    def vine(self, x, y, z, width, height, out_yaw, top=None):
+    def vine(self, x, y, z, width, height, out_yaw, top=None, gap=0.15):
         """A climbable wall of vines on a wall facing out_yaw (degrees: 0 faces -z... the
         way something with rotation y = out_yaw looks). The vines are drawn; the trigger
         sits just in front."""
         fx, fz = -math.sin(math.radians(out_yaw)), -math.cos(math.radians(out_yaw))
         top = y + height if top is None else top
-        # (drawn well out from the wall, so they don't flicker against it or dip into a curved one)
-        self.entity('Vines', t3((x + fx * 0.15, y + height / 2, z + fz * 0.15), (0, out_yaw, 0), (width, height, 0.04)),
+        # (drawn out from the wall by gap, so they don't flicker against it or dip into a curved
+        # one; on a flat wall, a small gap: right on it)
+        self.entity('Vines', t3((x + fx * gap, y + height / 2, z + fz * gap), (0, out_yaw, 0), (width, height, 0.04)),
                     mesh('cube', '#7ac060ff', 'art/leaves.png', uv=(width, height)))
         self.entity('Vine Climb', t3((x + fx * 0.45, y + height / 2, z + fz * 0.45), (0, out_yaw, 0)),
                     collider('box', (width, height + 0.6, 0.7), trigger=True), tags('climbable'),

@@ -629,9 +629,9 @@ entity
   Name
     text = "Blanket"
   Transform3D
-    position = -8.6 3.5437 14.6
+    position = -8.45 3.5437 14.6598
     rotation = 0 30 0
-    scale = 0.95 0.1 1.2
+    scale = 1.02 0.1 1.16
   Mesh
     shape = cube
     color = #7ab868ff
@@ -639,27 +639,39 @@ entity
 
 entity
   Name
+    text = "Pillow"
+  Transform3D
+    position = -8.91 3.5737 13.8631
+    rotation = 0 30 0
+    scale = 0.7 0.12 0.4
+  Mesh
+    shape = cube
+    color = #f0ead8ff
+    uv_scale = 1 1
+
+entity
+  Name
     text = "Vines"
   Transform3D
-    position = -8 1.566 18.2
+    position = -8 1.5664 18.035
     rotation = 0 180 0
-    scale = 1 3.1554 0.04
+    scale = 1 3.1545 0.04
   Mesh
     shape = cube
     texture = "art/leaves.png"
     color = #7ac060ff
-    uv_scale = 1 3.1554
+    uv_scale = 1 3.1545
 
 entity
   Name
     text = "Vine Climb"
   Transform3D
-    position = -8 1.566 18.5
+    position = -8 1.5664 18.45
     rotation = 0 180 0
     scale = 1 1 1
   Collider3D
     shape = box
-    size = 1 3.7554 0.7
+    size = 1 3.7545 0.7
     radius = 0.5
     friction = 0.8
     trigger = true
@@ -667,7 +679,7 @@ entity
     list = "climbable"
   Script
     file = "scripts/vine.bs"
-    vars = "out = vec3(0, 0, 1), top = 3.1437, bottom = -0.0117"
+    vars = "out = vec3(0, 0, 1), top = 3.1437, bottom = -0.0108"
 
 entity
   Name
@@ -716,7 +728,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 42
+    entity = 43
 
 entity
   Name
@@ -1205,7 +1217,7 @@ entity
     color = #ffffffff
     uv_scale = 1 1
   Parent
-    entity = 66
+    entity = 67
 
 entity
   Name
@@ -3799,7 +3811,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 187
+    entity = 188
   Particles
     rate = 3
     max = 6
@@ -3845,7 +3857,7 @@ entity
     rotation = 0 0 0
     scale = 1 1 1
   Parent
-    entity = 189
+    entity = 190
   Particles
     rate = 3
     max = 6

@@ -208,10 +208,14 @@ def build():
         qx, qz = tx + math.cos(ang1) * 2.85, tz + math.sin(ang1) * 2.85
         box_wall(a, 'bark', px, pz, qx, qz, deck_y - 0.1, deck_y + 0.75 + 0.012 * (k % 2), thick=0.4)   # (tops a hair apart where they meet)
     a.entity('Bed', t3((tx - 0.6, deck_y + 0.2, tz - 0.6), (0, 30, 0), (1.0, 0.35, 1.8)), mesh('cube', '#ffffffff', 'art/planks.png'), collider('box'))
-    a.entity('Blanket', t3((tx - 0.6, deck_y + 0.4, tz - 0.4), (0, 30, 0), (0.95, 0.1, 1.2)), mesh('cube', '#7ab868ff'))
+    # the blanket over its foot end and a pillow at its head: placed along the bed (turned 30 degrees), not the world's axes
+    bx, bz, by = tx - 0.6, tz - 0.6, deck_y + 0.2
+    along = (math.sin(math.radians(30)), math.cos(math.radians(30)))      # (the bed's own +z: towards its foot)
+    a.entity('Blanket', t3((bx + along[0] * 0.3, by + 0.2, bz + along[1] * 0.3), (0, 30, 0), (1.02, 0.1, 1.16)), mesh('cube', '#7ab868ff'))
+    a.entity('Pillow', t3((bx - along[0] * 0.62, by + 0.23, bz - along[1] * 0.62), (0, 30, 0), (0.7, 0.12, 0.4)), mesh('cube', '#f0ead8ff'))
     # the vine ladder down the south side (facing +z... out of the deck)
     # (hanging from the deck's edge, which stands out past the stump: he climbs out round it)
-    a.vine(tx + 0.0, height(tx, tz + 3.05), tz + 3.05, 1.0, deck_y - height(tx, tz + 3.05), 180, top=deck_y)
+    a.vine(tx + 0.0, height(tx, tz + 3.0), tz + 3.0, 1.0, deck_y - height(tx, tz + 3.0), 180, top=deck_y, gap=0.035)   # (on the board's face)
     # (they grow up a board, from the ground to the deck's edge: something to hold on to)
     a.geo('bark', tx, tz + 2.9).box((tx - 0.65, height(tx, tz + 3.0) - 0.3, tz + 2.78), (tx + 0.65, deck_y - 0.21, tz + 3.0), uvs=0.6)
     # the bridge gap on the deck rail: the vines come up there (no rail post in the way)
