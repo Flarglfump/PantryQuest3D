@@ -862,9 +862,29 @@ func update(dt: number) -> void {
         }
         if on_floor { hover_t = 0 }
         if on_floor and vel.y < -2 { vel.y = -2 }
+        # going down a slope: down with it, as fast as it falls away under him (else he leaves it
+        # every step, and stutters in the air, and can't roll)
+        var downhill: bool = false
+        if (on_floor or was_floor) and vel.y <= 0 and st != "swim" and st != "dive" {
+            var under: any = raycast(self.position + vec3(0, 0.3, 0), self.position + vec3(0, -0.6, 0), self)
+            if under != nil and under[2].y > 0.6 {
+                var follow: number = -(under[2].x * vel.x + under[2].z * vel.z) / under[2].y
+                if follow < 0 {
+                    vel.y = min(vel.y, follow - 0.5)
+                    downhill = true
+                }
+            }
+        }
         carry_on_platform()
         vel = move_and_slide(self, vel)
         var now_floor: bool = is_on_floor(self)
+        if downhill and not now_floor {             # (still left it, over a bump: back down on to it)
+            var below: any = raycast(self.position + vec3(0, 0.2, 0), self.position + vec3(0, -0.5, 0), self)
+            if below != nil and below[2].y > 0.6 {
+                self.position = vec3(self.x, below[1].y + 0.01, self.z)
+                now_floor = true
+            }
+        }
         if was_floor and not now_floor and vel.y <= 0.5 and (st == "free" or st == "roll") and length(vec2(vel.x, vel.z)) > 3.6 and ledge_ahead() and not game.flag("hover_on") {
             if st == "roll" {                           # (rolling off: up out of the roll into the hop)
                 st = "free"
