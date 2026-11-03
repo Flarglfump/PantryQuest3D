@@ -86,7 +86,7 @@ def build():
     a = Area('sprouthollow', 'Sprouthollow', music='music/sprouthollow.wav', kill_y=-6, sky='#b8e0f0ff', fog=(60, 115),
              fog_color='#c8e8d8ff', ambient=('#8898b8ff', 0.55))
     # ---- the ground ----
-    for cz in range(-48, 60, 12):
+    for cz in range(-72, 60, 12):              # (from up the rim behind Mother Starter, to the way out south)
         for cx in range(-48, 48, 12):
             if cz >= 48 and abs(cx + 6) > 12:
                 continue                       # (beyond the rim: only behind the way out)
@@ -174,6 +174,10 @@ def build():
     box_wall(a, 'hedge', 2.4, -26.8, 18, -26.8, 0, 3.6, thick=1.6)
     box_wall(a, 'hedge', -18, -26.3, -26, -40, 0, 4.0, thick=1.0)
     box_wall(a, 'hedge', 18, -26.3, 26, -40, 0, 4.0, thick=1.0)
+    # ... and round behind Mother Starter, taller: no jumping off the back of the grove
+    back = [(-26, -40), (-22, -50), (-12, -56.5), (0, -58), (12, -56.5), (22, -50), (26, -40)]
+    for k, ((x0, z0), (x1, z1)) in enumerate(zip(back, back[1:])):
+        box_wall(a, 'hedge', x0, z0, x1, z1, 0, 6.5 + 0.012 * (k % 2), thick=1.6)     # (tops a hair apart where they meet)
     # the gate posts and Chive's fence
     for xx in (-2.8, 2.8):
         a.geo('bark', xx, -18).cylinder((xx, height(xx, -18) - 0.2, -18), 0.25, 2.2, 8, uvs=1)
