@@ -24,7 +24,7 @@ func update(dt: number) -> void {
         destroy(self)
         return
     }
-    var swinging: bool = sprig.st == "slash" or sprig.st == "slash2" or sprig.st == "thrust" or sprig.st == "spin" or sprig.st == "jumpatk"
+    var swinging: bool = sprig.st == "slash" or sprig.st == "slash2" or sprig.st == "thrust" or sprig.st == "spin" or sprig.st == "jumpatk" or sprig.st == "airatk"
     if not back and swinging and distance(self.position, sprig.position + vec3(0, 0.9, 0)) < 1.9 {
         hit(1, "blade", sprig.position)                 # (a swing near it sends it back)
     }

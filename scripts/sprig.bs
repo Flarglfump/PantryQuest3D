@@ -24,7 +24,7 @@ var lid: entity
 
 var vel: vec3
 var facing: number = 0             # yaw, degrees (0: looking down -z)
-var st: string = "free"            # free slash charge spin roll hop jumpatk hurt climb hold talk shoot aim grab dead
+var st: string = "free"            # free slash charge spin roll hop jumpatk airatk hurt climb hold talk shoot aim grab dead
 var st_t: number = 0
 var combo: int = 0
 var queued: bool = false
@@ -78,6 +78,7 @@ var switch_acc: number = 0         # the mouse moved sideways while focused (to 
 var motion: vec2 = vec2(0, 0)
 var toggled: bool = false          # focused by a press, in the TARGETING: TOGGLE setting
 var last_target: entity            # (the last thing focused on: taken up again by a held Focus)
+var air_t: number = 0              # how long he has been off the ground
 var lost_ok: bool = false          # (toggled on with nothing to target: it stays on without one)
 var rs_was: number = 0             # the right stick's x a step ago
 var shooter: entity                # the Pea Shooter in his hand, while aiming
@@ -344,6 +345,28 @@ func start_slash(kind: string) -> void {
     if kind == "thrust" { clip = "thrust" }
     play_animation(body, clip, 1, false)
     play_sound("sfx/swing.wav", 0.6, 0.9 + random() * 0.2)
+}
+
+# Attack in the air (off a ledge, a hop, a back-flip): the spoon up over his head and down,
+# carrying on the way he was going - a hit on the way down and a heavier one as he lands.
+var air_dir: vec3
+func can_air_attack(on_floor: bool) -> bool {
+    return action_pressed("attack") and has_spoon() and carrying == nil and not on_floor and air_t > 0.08 and st != "swim" and st != "dive"
+}
+
+func start_airatk() -> void {
+    air_dir = vec3(vel.x, 0, vel.z)
+    if length(air_dir) > 5 { air_dir = normalize(air_dir) * 5 }
+    if target != nil { facing = yaw_of(target.global_position - self.position) }
+    elif length(air_dir) > 0.5 { facing = yaw_of(air_dir) }
+    st = "airatk"
+    st_t = 0
+    pitch = 0
+    hit_list = []
+    drawn = 3
+    vel.y = max(vel.y, 3)                        # (a lift to swing in)
+    play_animation(body, "jumpslash", 1.5, false)
+    play_sound("sfx/jumpatk.wav", 0.6, 1.1)
 }
 
 # A low jab from behind the raised shield (attack while crouching): quick, and the shield
@@ -676,6 +699,7 @@ func update(dt: number) -> void {
     }
 
     var on_floor: bool = is_on_floor(self)
+    if on_floor { air_t = 0 } else { air_t += dt }
     shielding = false
     var want := vec3(0, 0, 0)      # horizontal speed wanted
 
@@ -819,6 +843,8 @@ func update(dt: number) -> void {
             st = "free"
             pitch = 0
         }
+    } elif (st == "hop" or st == "backflip") and can_air_attack(on_floor) {
+        start_airatk()
     } elif st == "hop" {
         want = hop_dir * 5.5
         if target != nil { turn_to(yaw_of(target.global_position - self.position), 900, dt) }
@@ -841,6 +867,22 @@ func update(dt: number) -> void {
             play_sound("sfx/land.wav", 0.7)
             st = "slash"
             st_t = 0.2
+        }
+    } elif st == "airatk" {
+        # the midair attack: carried on as he was going, the spoon over his head and down;
+        # it hits on the way down, and again (harder) as he lands
+        want = air_dir
+        if st_t > 0.1 and st_t < 0.3 {
+            strike(self.position + vec3(0, 0.4, 0) + forward_of(facing) * 0.75, 0.8, damage(), "blade")
+        }
+        if st_t > 0.08 and on_floor {
+            strike(self.position + vec3(0, 0.5, 0) + forward_of(facing) * 0.8, 1.0, floor(damage() * 1.5), "jump")
+            shake_camera(1.0, 0.12)
+            play_sound("sfx/land.wav", 0.6)
+            st = "slash"
+            st_t = 0.2
+        } elif st_t > 1.5 {
+            st = "free"                          # (a long way down: just falling)
         }
     } elif st == "hurt" {
         want = vec3(vel.x, 0, vel.z) * 0.9
@@ -1079,6 +1121,10 @@ func update_free(dt: number, mv: vec2, dir: vec3, on_floor: bool) -> void {
             play_sound("sfx/roll.wav", 0.6)
             return
         }
+    }
+    if can_air_attack(on_floor) {
+        start_airatk()                           # (off the ground: over his head and down)
+        return
     }
     if action_pressed("attack") and has_spoon() and carrying == nil and crouching() {
         start_crouchstab()                       # (crouched behind the shield: a low jab past it)
@@ -1422,7 +1468,7 @@ func place_gear(dt: number) -> void {
     weapon.Mesh.visible = has_spoon()
     lid.Mesh.visible = has_lid()
     var busy: bool = st == "climb" or st == "swim" or st == "dive" or st == "grab" or st == "aim" or st == "hold" or carrying != nil
-    var swinging: bool = st == "slash" or st == "slash2" or st == "thrust" or st == "jumpatk" or st == "spin" or st == "charge" or st == "crouchstab"
+    var swinging: bool = st == "slash" or st == "slash2" or st == "thrust" or st == "jumpatk" or st == "airatk" or st == "spin" or st == "charge" or st == "crouchstab"
     var out: bool = (drawn > 0 or focusing or swinging) and not busy
     if st == "hammer" {
         if hammer == nil or not hammer.alive { hammer = spawn("prefabs/hammer.scene", vec3(0, 0, 0), body) }
@@ -1443,7 +1489,7 @@ func place_gear(dt: number) -> void {
         weapon.rotation = vec3(115, 0, -25)
     }
     # the streak: through the sweep of a swing (not the wind-up or the recovery), all through a spin
-    var sweep: bool = st == "spin" or (st == "jumpatk" and st_t > 0.12) or (st == "crouchstab" and st_t > 0.02 and st_t < 0.16)
+    var sweep: bool = st == "spin" or (st == "jumpatk" and st_t > 0.12) or (st == "airatk" and st_t > 0.08) or (st == "crouchstab" and st_t > 0.02 and st_t < 0.16)
     if (st == "slash" or st == "slash2" or st == "thrust") and st_t > 0.04 and st_t < 0.23 { sweep = true }
     trail.Particles.emitting = sweep and out and has_spoon()
     var placed: bool = false

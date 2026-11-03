@@ -130,10 +130,22 @@ def main():
     g.axis('left_y', -1.0); g.frames(10); g.axis('left_y', 0.0)
     check(g.var('Sprig', 'aim_pitch')[0] > 5, 'the stick tilts the aim')
     g.pad_press('lb', 6)
-    check(g.var('Game', 'peas')[0] == peas - 1 and st(g) == 'aim', 'pressed again, it shoots (and he keeps aiming)')
+    check(g.var('Game', 'peas')[0] == peas - 1 and st(g) == 'aim', 'pressed again, it shoots (and he keeps aiming) (%s -> %s, %s)' % (peas, g.var('Game', 'peas')[0], st(g)))
     g.pad_press('b', 6)
     g.pad_press('x', 30)
     check(st(g) != 'aim', 'attack puts it away')
+    g.frames(20)
+    # attack in the air (off a back-flip): the midair attack, then down into a slash's end
+    g.key('shift', True); g.frames(3)
+    g.key('s', True); g.frames(2); g.press('space', 8); g.key('s', False)
+    g.press('j', 2)
+    s = st(g)
+    seen = [s]
+    for i in range(20):
+        g.frames(3); seen.append(st(g))
+    g.key('shift', False)
+    check(s == 'airatk' and 'free' in seen, 'Attack in the air is the midair attack, and he lands out of it (%s)' % ' '.join(seen[:8]))
+    g.frames(30)
     # the D-pad: boots on and off, the pipe
     g.pad_press('left', 6)
     check('boots_on' in flags(g), 'D-pad left: the Cast-Iron Boots on')
