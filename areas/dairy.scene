@@ -527,6 +527,21 @@ entity
 
 entity
   Name
+    text = "grass_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/dairy/grass_bk_0_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "planks -2 0"
   Transform3D
     position = 0 0 0
@@ -679,6 +694,36 @@ entity
 
 entity
   Name
+    text = "planks_bk -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/dairy/planks_bk_-1_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "planks_bk 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/dairy/planks_bk_0_-1.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "thatch -1 -1"
   Transform3D
     position = 0 0 0
@@ -714,6 +759,36 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "thatch_bk -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/dairy/thatch_bk_-1_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "thatch_bk 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/dairy/thatch_bk_0_-1.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
 
 entity
   Name

@@ -702,6 +702,81 @@ entity
 
 entity
   Name
+    text = "ice_bk -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_bk_-1_-2.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "ice_bk -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_bk_-1_0.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "ice_bk 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_bk_0_-2.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "ice_bk 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_bk_0_-1.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "ice_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/ice_bk_0_0.obj"
+    texture = "art/ice.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "stone -1 -1"
   Transform3D
     position = 0 0 0
@@ -721,9 +796,24 @@ entity
 
 entity
   Name
+    text = "stone_bk -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/freezer/stone_bk_-1_-1.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "Map Info"
   Transform
     position = 0 0
   Script
     file = "scripts/mapinfo.bs"
-    vars = "base = \"art/maps/freezer_\", names = [\"1F\", \"2F\"], lows = [-999, 4.9], highs = [4.9, 999], x0 = -9.393, z0 = -31.393, ppm = 2.5455, w = 47, h = 114"
+    vars = "base = \"art/maps/freezer_\", names = [\"1F\"], lows = [-999], highs = [999], x0 = -9.393, z0 = -31.393, ppm = 2.5455, w = 47, h = 114"

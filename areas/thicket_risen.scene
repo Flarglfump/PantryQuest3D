@@ -1861,6 +1861,21 @@ entity
 
 entity
   Name
+    text = "bark_bk 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/bark_bk_2_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "canopy -3 -1"
   Transform3D
     position = 0 0 0
@@ -2575,6 +2590,246 @@ entity
 
 entity
   Name
+    text = "grass_bk -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-3_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-3_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-3_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-3_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-2_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-1_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_-1_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_0_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_0_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 1 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_1_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 1 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_1_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_2_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_2_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_2_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/grass_bk_2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "hedge -3 -2"
   Transform3D
     position = 0 0 0
@@ -2879,6 +3134,36 @@ entity
 
 entity
   Name
+    text = "hedge_bk -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/hedge_bk_-3_-1.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "hedge_bk -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/hedge_bk_-3_0.obj"
+    texture = "art/hedge.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "preview_bark -6 -2"
   Transform3D
     position = 0 0 0
@@ -2887,6 +3172,24 @@ entity
   Mesh
     shape = model
     file = "models/areas/thicket_risen/preview_bark_-6_-2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -111.5, cz = -36, r = 3.3"
+
+entity
+  Name
+    text = "preview_bark_bk -6 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/preview_bark_bk_-6_-2.obj"
     texture = "art/bark.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -3707,6 +4010,24 @@ entity
 
 entity
   Name
+    text = "preview_thatch_bk -5 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/preview_thatch_bk_-5_-2.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -97, cz = -36, r = 7.1"
+
+entity
+  Name
     text = "stone 2 0"
   Transform3D
     position = 0 0 0
@@ -3723,6 +4044,21 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "stone_bk 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/thicket_risen/stone_bk_2_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
 
 entity
   Name

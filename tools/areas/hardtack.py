@@ -60,9 +60,11 @@ def build(era='fresh'):
     a.spawn_point('start', 0, 0.1, R - 2, 0)
     # Big Biscotti's door (north ledge) and his room
     tunnel(a.geo('rock', 0, -16), a.geo('rock', 0, -16), 0, -R + 0.5, 0, -R - 3.5, UP)
-    a.entity('Biscotti Door', t3((0, UP + 1.5, -R - 0.6), (0, 0, 0), (2.6, 3.0, 0.3)), mesh('cube', '#8a6a3aff', 'art/planks.png'),
+    door = a.entity('Biscotti Door', t3((0, UP + 1.5, -R - 0.6), (0, 0, 0), (2.6, 3.0, 0.3)), mesh('cube', '#8a6a3aff', 'art/planks.png'),
              collider('box'), tags('interact', 'focusable'), script('scripts/songdoor.bs', song='lullaby', id='door:biscotti', say='biscotti_door'))
-    a.entity('Crest', t3((0, UP + 2.2, -R - 0.42), (0, 0, 0), (0.7, 0.7, 0.05)), mesh('cylinder', '#e0b040ff'))
+    # the royal crest on it (its child: it goes up and away with the door when the song opens it)
+    a.entity('Crest', t3((0, 0.7 / 3.0, 0.18 / 0.3), (0, 0, 0), (0.7 / 2.6, 0.7 / 3.0, 0.05 / 0.3)), mesh('cylinder', '#e0b040ff'),
+             ('Parent', [('entity', door)]))
     bz = -R - 9
     ring_wall(a.geo('rock', 0, bz), 0, bz, 6, UP - 0.5, UP + 6, 20, [(90, 1.4, UP, UP + 3.0)])
     ceiling_disc(a.geo('rock', 0, bz), 0, bz, 6, UP + 6, 0, 16)

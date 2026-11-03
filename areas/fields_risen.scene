@@ -4936,6 +4936,36 @@ entity
 
 entity
   Name
+    text = "bark_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/bark_bk_0_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "bark_bk 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/bark_bk_0_1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "far_roof 0 -6"
   Transform3D
     position = 0 0 0
@@ -4959,6 +4989,21 @@ entity
   Mesh
     shape = model
     file = "models/areas/fields_risen/far_stone_0_-6.obj"
+    texture = "art/stone.png"
+    color = #e8e0d0ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "far_stone_bk 0 -6"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/far_stone_bk_0_-6.obj"
     texture = "art/stone.png"
     color = #e8e0d0ff
     uv_scale = 1 1
@@ -5686,6 +5731,306 @@ entity
 
 entity
   Name
+    text = "grass_bk -3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_0_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_0_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_-2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_-1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "grass_bk 2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/grass_bk_2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "path -3 1"
   Transform3D
     position = 0 0 0
@@ -6174,6 +6519,204 @@ entity
 
 entity
   Name
+    text = "preview_bark_bk -3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-3_0.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -109, cz = 24, r = 6.4"
+
+entity
+  Name
+    text = "preview_bark_bk -3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-3_1.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -109.8, cz = 50.7, r = 2.6"
+
+entity
+  Name
+    text = "preview_bark_bk -2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-2_3.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -43.4, cz = 132.7, r = 10.2"
+
+entity
+  Name
+    text = "preview_bark_bk -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-1_-4.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -1.2, cz = -128.6, r = 0.1"
+
+entity
+  Name
+    text = "preview_bark_bk -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-1_2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -18.9, cz = 108.8, r = 20.1"
+
+entity
+  Name
+    text = "preview_bark_bk -1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_-1_3.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -14, cz = 126.5, r = 3.3"
+
+entity
+  Name
+    text = "preview_bark_bk 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_0_-4.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 1.2, cz = -128.6, r = 0.1"
+
+entity
+  Name
+    text = "preview_bark_bk 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_0_2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 19.6, cz = 106.9, r = 19.6"
+
+entity
+  Name
+    text = "preview_bark_bk 0 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_0_3.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 23, cz = 124.9, r = 17.9"
+
+entity
+  Name
+    text = "preview_bark_bk 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_1_2.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 41.7, cz = 119.9, r = 0.6"
+
+entity
+  Name
+    text = "preview_bark_bk 1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_bark_bk_1_3.obj"
+    texture = "art/bark.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 43.4, cz = 130.4, r = 11.2"
+
+entity
+  Name
     text = "preview_cliff -4 0"
   Transform3D
     position = 0 0 0
@@ -6315,6 +6858,96 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = 18, cz = 103.8, r = 18.6"
+
+entity
+  Name
+    text = "preview_cliff_bk -4 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cliff_bk_-4_0.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -125.5, cz = 22.5, r = 9.5"
+
+entity
+  Name
+    text = "preview_cliff_bk -4 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cliff_bk_-4_1.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -125.5, cz = 68, r = 12"
+
+entity
+  Name
+    text = "preview_cliff_bk -4 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cliff_bk_-4_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -124, cz = 92, r = 13"
+
+entity
+  Name
+    text = "preview_cliff_bk -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cliff_bk_-1_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -35, cz = 103.7, r = 4.9"
+
+entity
+  Name
+    text = "preview_cliff_bk 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cliff_bk_0_2.obj"
+    texture = "art/stone.png"
+    color = #c8d0b8ff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 35, cz = 103.8, r = 4.9"
 
 entity
   Name
@@ -6531,6 +7164,186 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = 41.2, cz = -111.3, r = 12.6"
+
+entity
+  Name
+    text = "preview_cobble_bk -2 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_-2_-5.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -41.8, cz = -168.6, r = 8.9"
+
+entity
+  Name
+    text = "preview_cobble_bk -2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_-2_-4.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -41.2, cz = -141.8, r = 18.4"
+
+entity
+  Name
+    text = "preview_cobble_bk -2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_-2_-3.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -41.2, cz = -111.3, r = 12.6"
+
+entity
+  Name
+    text = "preview_cobble_bk -1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_-1_-5.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -20.2, cz = -176.8, r = 20.2"
+
+entity
+  Name
+    text = "preview_cobble_bk -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_-1_-4.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -19.8, cz = -143.4, r = 20.1"
+
+entity
+  Name
+    text = "preview_cobble_bk 0 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_0_-5.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 19.8, cz = -176.8, r = 19.8"
+
+entity
+  Name
+    text = "preview_cobble_bk 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_0_-4.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 20.4, cz = -143.4, r = 20.6"
+
+entity
+  Name
+    text = "preview_cobble_bk 1 -5"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_1_-5.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 41.8, cz = -168.6, r = 8.9"
+
+entity
+  Name
+    text = "preview_cobble_bk 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_1_-4.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 41.2, cz = -139, r = 21.1"
+
+entity
+  Name
+    text = "preview_cobble_bk 1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_cobble_bk_1_-3.obj"
+    texture = "art/cobble.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 41.2, cz = -108.5, r = 9.9"
 
 entity
   Name
@@ -6945,6 +7758,312 @@ entity
   Script
     file = "scripts/preview.bs"
     vars = "cx = 131.5, cz = 53, r = 20.1"
+
+entity
+  Name
+    text = "preview_grass_bk -4 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-4_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -125.5, cz = 36, r = 4"
+
+entity
+  Name
+    text = "preview_grass_bk -4 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-4_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -125.5, cz = 48, r = 8"
+
+entity
+  Name
+    text = "preview_grass_bk -3 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-3_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -109, cz = 97, r = 12.2"
+
+entity
+  Name
+    text = "preview_grass_bk -2 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-2_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -47, cz = 109.9, r = 10.6"
+
+entity
+  Name
+    text = "preview_grass_bk -2 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-2_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -47, cz = 130.5, r = 10"
+
+entity
+  Name
+    text = "preview_grass_bk -1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_-1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -37, cz = 103.7, r = 4.9"
+
+entity
+  Name
+    text = "preview_grass_bk 0 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_0_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 37, cz = 103.8, r = 4.9"
+
+entity
+  Name
+    text = "preview_grass_bk 1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_1_-4.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 64.8, cz = -136.1, r = 16.4"
+
+entity
+  Name
+    text = "preview_grass_bk 1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_1_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 63.1, cz = -112.1, r = 8.5"
+
+entity
+  Name
+    text = "preview_grass_bk 1 2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_1_2.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 46.9, cz = 106.4, r = 6"
+
+entity
+  Name
+    text = "preview_grass_bk 1 3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_1_3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 47, cz = 128.5, r = 6"
+
+entity
+  Name
+    text = "preview_grass_bk 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_2_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 107.7, cz = -90.8, r = 12.2"
+
+entity
+  Name
+    text = "preview_grass_bk 2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_2_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 108.6, cz = 9.7, r = 9.7"
+
+entity
+  Name
+    text = "preview_grass_bk 2 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_2_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 110.2, cz = 66.3, r = 11.4"
+
+entity
+  Name
+    text = "preview_grass_bk 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_3_-3.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 123.3, cz = -89.6, r = 4.4"
+
+entity
+  Name
+    text = "preview_grass_bk 3 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_3_0.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 131.5, cz = 9.7, r = 13.4"
+
+entity
+  Name
+    text = "preview_grass_bk 3 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_grass_bk_3_1.obj"
+    texture = "art/grass.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 131.5, cz = 66.3, r = 10.1"
 
 entity
   Name
@@ -7416,6 +8535,132 @@ entity
 
 entity
   Name
+    text = "preview_planks_bk -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_-1_-4.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -22, cz = -134.3, r = 20.9"
+
+entity
+  Name
+    text = "preview_planks_bk -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_-1_-3.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21.8, cz = -113.1, r = 16.1"
+
+entity
+  Name
+    text = "preview_planks_bk 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_0_-4.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 24, cz = -135.1, r = 22.6"
+
+entity
+  Name
+    text = "preview_planks_bk 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_0_-3.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21.8, cz = -113.1, r = 16.1"
+
+entity
+  Name
+    text = "preview_planks_bk 2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_2_-4.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 86.8, cz = -132.5, r = 4.9"
+
+entity
+  Name
+    text = "preview_planks_bk 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_2_-3.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 99.4, cz = -113.5, r = 4.5"
+
+entity
+  Name
+    text = "preview_planks_bk 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_planks_bk_3_-3.obj"
+    texture = "art/planks.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 123.6, cz = -115.7, r = 4.9"
+
+entity
+  Name
     text = "preview_stone -2 -5"
   Transform3D
     position = 0 0 0
@@ -7614,6 +8859,60 @@ entity
 
 entity
   Name
+    text = "preview_stone_bk -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_stone_bk_-1_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -15.7, cz = -133.4, r = 16.9"
+
+entity
+  Name
+    text = "preview_stone_bk 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_stone_bk_0_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 16, cz = -136.4, r = 18.5"
+
+entity
+  Name
+    text = "preview_stone_bk 2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_stone_bk_2_-4.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 116.7, cz = -130.2, r = 1.9"
+
+entity
+  Name
     text = "preview_thatch -1 -4"
   Transform3D
     position = 0 0 0
@@ -7628,7 +8927,7 @@ entity
     cast_shadow = false
   Script
     file = "scripts/preview.bs"
-    vars = "cx = -22, cz = -136.5, r = 19.6"
+    vars = "cx = -22, cz = -136.6, r = 19.6"
 
 entity
   Name
@@ -7784,6 +9083,132 @@ entity
   Mesh
     shape = model
     file = "models/areas/fields_risen/preview_thatch_3_-3.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 123.6, cz = -115.7, r = 5.5"
+
+entity
+  Name
+    text = "preview_thatch_bk -1 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_-1_-4.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -22, cz = -136.5, r = 19.6"
+
+entity
+  Name
+    text = "preview_thatch_bk -1 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_-1_-3.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = -21.8, cz = -110.9, r = 15.2"
+
+entity
+  Name
+    text = "preview_thatch_bk 0 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_0_-4.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 24, cz = -137.3, r = 21.4"
+
+entity
+  Name
+    text = "preview_thatch_bk 0 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_0_-3.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 21.8, cz = -110.9, r = 15.2"
+
+entity
+  Name
+    text = "preview_thatch_bk 2 -4"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_2_-4.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 86.8, cz = -132.5, r = 5.5"
+
+entity
+  Name
+    text = "preview_thatch_bk 2 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_2_-3.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+  Script
+    file = "scripts/preview.bs"
+    vars = "cx = 99.4, cz = -113.5, r = 5.1"
+
+entity
+  Name
+    text = "preview_thatch_bk 3 -3"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/preview_thatch_bk_3_-3.obj"
     texture = "art/thatch.png"
     color = #ffffffff
     uv_scale = 1 1
@@ -8018,6 +9443,21 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "thatch_bk 1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/fields_risen/thatch_bk_1_0.obj"
+    texture = "art/thatch.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
 
 entity
   Name

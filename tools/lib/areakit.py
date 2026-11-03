@@ -72,11 +72,11 @@ def clip_face(o, P, T, N, f, _):
 def mat_info(material):
     """MATERIALS[material]; a preview_<m> (another place's, seen past a way out) looks like <m>
     but is only to look at: not solid, no shadows."""
-    if material.endswith('_2s'):                         # (its open faces: drawn from both sides)
-        t, c, solid, cast, lit, cull = mat_info(material[:-3])
-        return (t, c, solid, cast, lit, False)
+    if material.endswith('_bk'):                         # (open faces' backs: only to look at - not to stand on or
+        t, c, solid, cast, lit, cull = mat_info(material[:-3])     #  bump into: the front's collision is enough, and a
+        return (t, c, False, False, lit, cull)                     #  second surface a hair behind it would push the other way)
     if material.startswith('preview_'):
-        t, c, solid, cast, lit, cull = MATERIALS[material[8:]]
+        t, c, solid, cast, lit, cull = mat_info(material[8:])
         return (t, c, False, False, lit, cull)
     return MATERIALS[material]
 
@@ -538,7 +538,7 @@ class Area:
             theirs = []
             for f in sorted(set(re.findall(r'file = "(models/areas/%s/[^"]+\.obj)"' % re.escape(to), sc))):
                 mat = re.sub(r'_-?\d+_-?\d+\.obj$', '', os.path.basename(f))
-                base = mat[:-3] if mat.endswith('_2s') else mat
+                base = mat[:-3] if mat.endswith('_bk') else mat
                 if mat.startswith('preview_') or mat.startswith('far_') or base == 'canopy' or base not in MATERIALS:
                     continue
                 V, T, N = [], [], []
@@ -736,7 +736,7 @@ class Area:
                 n = lambda k: tuple(-x for x in o.vn[k[2] - 1])
                 off = tuple(-c * 0.012 for c in pl[0])            # (a hair out behind it: never in another face's plane)
                 mv = lambda k: tuple(o.v[k[0] - 1][i] + off[i] for i in range(3))
-                o.tri(mv(a_), mv(c_), mv(b_), o.vt[a_[1] - 1], o.vt[c_[1] - 1], o.vt[b_[1] - 1], n(a_), n(c_), n(b_))
+                self.chunks.objs.setdefault((mat + '_bk', cx, cz), Obj()).tri(mv(a_), mv(c_), mv(b_), o.vt[a_[1] - 1], o.vt[c_[1] - 1], o.vt[b_[1] - 1], n(a_), n(c_), n(b_))
 
     def extra_planes(self):
         """The faces of the scene's plain cube entities (doors, windows, signs...), by plane."""
@@ -832,7 +832,7 @@ class Area:
             if 0 <= px < W and 0 <= py < H and (top[py][px] is None or h > top[py][px][0]):
                 top[py][px] = (h, c)
         for (material, cx, cz), obj in self.chunks.items():
-            col = self.MAP_COLOURS.get(material[:-3] if material.endswith('_2s') else material)
+            col = None if material.endswith('_bk') else self.MAP_COLOURS.get(material)
             if col is None or obj.empty():
                 continue
             for f in obj.f:

@@ -223,13 +223,15 @@ entity
   Name
     text = "Crest"
   Transform3D
-    position = 0 6.7 -14.42
+    position = 0 0.2333 0.6
     rotation = 0 0 0
-    scale = 0.7 0.7 0.05
+    scale = 0.2692 0.2333 0.1667
   Mesh
     shape = cylinder
     color = #e0b040ff
     uv_scale = 1 1
+  Parent
+    entity = 13
 
 entity
   Name
@@ -546,6 +548,22 @@ entity
 
 entity
   Name
+    text = "lava_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/lava_bk_0_0.obj"
+    texture = "art/lavacheese.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    lit = false
+    cast_shadow = false
+
+entity
+  Name
     text = "rock -1 -1"
   Transform3D
     position = 0 0 0
@@ -666,6 +684,96 @@ entity
 
 entity
   Name
+    text = "rock_bk -1 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_-1_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock_bk -1 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_-1_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock_bk 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_0_-2.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock_bk 0 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_0_-1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_0_0.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "rock_bk 0 1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/rock_bk_0_1.obj"
+    texture = "art/stone.png"
+    color = #c8a080ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "stone 0 0"
   Transform3D
     position = 0 0 0
@@ -682,6 +790,21 @@ entity
     size = 1 1 1
     radius = 0.5
     friction = 0.9
+
+entity
+  Name
+    text = "stone_bk 0 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/hardtack/stone_bk_0_0.obj"
+    texture = "art/stone.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
 
 entity
   Name

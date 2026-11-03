@@ -2617,6 +2617,21 @@ entity
 
 entity
   Name
+    text = "ceiling_bk -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/crock/ceiling_bk_-2_-1.obj"
+    texture = "art/dough.png"
+    color = #a89878ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "crust -2 -1"
   Transform3D
     position = 0 0 0
@@ -3113,6 +3128,21 @@ entity
 
 entity
   Name
+    text = "mould_bk -2 -1"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/crock/mould_bk_-2_-1.obj"
+    texture = "art/mould.png"
+    color = #ffffffff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
     text = "starter_pool -2 0"
   Transform3D
     position = 0 0 0
@@ -3136,6 +3166,36 @@ entity
   Mesh
     shape = model
     file = "models/areas/crock/starter_pool_0_-2.obj"
+    texture = "art/dough.png"
+    color = #d8c090ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "starter_pool_bk -2 0"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/crock/starter_pool_bk_-2_0.obj"
+    texture = "art/dough.png"
+    color = #d8c090ff
+    uv_scale = 1 1
+    cast_shadow = false
+
+entity
+  Name
+    text = "starter_pool_bk 0 -2"
+  Transform3D
+    position = 0 0 0
+    rotation = 0 0 0
+    scale = 1 1 1
+  Mesh
+    shape = model
+    file = "models/areas/crock/starter_pool_bk_0_-2.obj"
     texture = "art/dough.png"
     color = #d8c090ff
     uv_scale = 1 1
